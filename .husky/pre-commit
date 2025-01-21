@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# Test (You can uncomment if you want to run tests)
+# npm test
+
+# Run linting (You can uncomment if you want to run linting)
+# pnpm lint
+
+# If linting fails, exit with an error code
+# if [ $? -ne 0 ]; then
+#   exit 1
+# fi
+
+# Run formatting only on staged files
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=d)
+
+# If there are any staged files, run formatting
+if [ -n "$STAGED_FILES" ]; then
+  # Run formatting on the staged files
+  pnpm format --write $STAGED_FILES
+  
+  # Add formatted files back to staging (if formatting changed any files)
+  git add $STAGED_FILES
+fi
+
+# If formatting fails, exit with an error code
+# if [ $? -ne 0 ]; then
+#   exit 1
+# fi
+
+# All checks passed
+exit 0
