@@ -1,10 +1,9 @@
-'use clinet';
-import Login from '@/app/login/page';
+import LoginPage from "./login/page";
 
 export default function Home() {
   return (
     <>
-      <Login />
+      <LoginPage />
     </>
   );
 }

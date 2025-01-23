@@ -29,7 +29,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex h-screen w-full items-center justify-center p-4">
+    <div className="flex h-full w-full items-center justify-center p-4">
       <div className="flex w-full max-w-[550px] flex-col justify-center gap-8 rounded-lg bg-white p-4 shadow-lg md:p-8">
         <div className="flex flex-col items-center gap-6">
           <h1 className="text-xl font-semibold">이메일 회원가입</h1>
