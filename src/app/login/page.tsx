@@ -73,12 +73,14 @@ const Login = () => {
             >
               로그인
             </button>{' '}
-            <button
-              type="submit"
-              className="rounded-lg bg-gray-400 py-2 text-white transition-colors hover:bg-[#F0EDD4]"
-            >
-              <Link href="signup">아메일 회원가입 </Link>
-            </button>
+            <Link href="signup">
+              <button
+                type="submit"
+                className="w-full rounded-lg bg-gray-400 py-2 text-white transition-colors hover:bg-[#F0EDD4]"
+              >
+                아메일 회원가입{' '}
+              </button>
+            </Link>
             <div className="cursor-pointer text-center text-sm text-gray-500 hover:text-gray-700">
               [로그인 없이 레벨 테스트 진행하기]
             </div>
