@@ -1,9 +1,7 @@
 import Login from '@/page/login/ui';
 
 const LoginPage = () => {
-  return (
-    <Login />
-  )
+  return <Login />;
 };
 
 export default LoginPage;

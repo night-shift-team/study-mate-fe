@@ -1,6 +1,6 @@
 'use client';
 
-import Logo from '@/assets/logo.png'
+import Logo from '@/assets/logo.png';
 import Image from 'next/image';
 import { useState } from 'react';
 import { LoginButton } from '@/entities';
