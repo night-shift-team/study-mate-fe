@@ -4,9 +4,9 @@ import Image from 'next/image';
 
 const Header = () => {
   return (
-    <div className="fixed flex w-[100%] items-center justify-center">
-      <div className="w-[100%] border-b border-[#ECCDB4] pb-5 pt-5">
-        <Image src={Logo} alt="" width={150} />
+    <div className="flex h-full w-full items-center border-b border-[#ECCDB4] pl-2 pt-[2%]">
+      <div className="relative flex h-full w-[8rem]">
+        <Image src={Logo} alt="" fill objectFit="contain" />
       </div>
     </div>
   );
