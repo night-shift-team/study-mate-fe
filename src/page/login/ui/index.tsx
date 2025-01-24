@@ -88,7 +88,7 @@ const Login = () => {
 
           <div className="flex flex-col justify-center gap-4">
             <div className="cursor-pointer text-center text-sm text-gray-700">
-              SNS 계정으로 간단하게 시작하기
+              SNS 계정으로 간단하게 시작하기!
             </div>
             <div className="flex justify-between">
               {LoginButton.map((item) => (
