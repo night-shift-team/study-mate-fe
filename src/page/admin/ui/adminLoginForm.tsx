@@ -1,10 +1,14 @@
 'use client';
 import { FaArrowRightLong } from 'react-icons/fa6';
+import { useRouter } from 'next/navigation';
 
 const AdminLoginForm = () => {
+  const router = useRouter();
+
   const adminLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('hi');
+    router.push('/admin/dashboard');
   };
   return (
     <form
@@ -23,7 +27,7 @@ const AdminLoginForm = () => {
       ></input>
       <button
         type="submit"
-        className="flex aspect-square w-[20%] items-center justify-center rounded-full bg-[#f0edd4] hover:border-2 hover:border-teal-200"
+        className="flex aspect-square w-[20%] items-center justify-center rounded-full bg-[#f0edd4] hover:border-2 hover:border-[#ECCDB4] active:scale-[0.99] active:cursor-grabbing"
       >
         <FaArrowRightLong />
       </button>

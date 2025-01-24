@@ -22,6 +22,9 @@ importers:
       react-dom:
         specifier: ^19.0.0
         version: 19.0.0(react@19.0.0)
+      tailwind-scrollbar-hide:
+        specifier: ^2.0.0
+        version: 2.0.0(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@20.17.14)(typescript@5.7.3)))
       zustand:
         specifier: ^5.0.3
         version: 5.0.3(@types/react@19.0.7)(react@19.0.0)
@@ -4010,6 +4013,14 @@ packages:
       }
     engines: { node: '>= 0.4' }
 
+  tailwind-scrollbar-hide@2.0.0:
+    resolution:
+      {
+        integrity: sha512-lqiIutHliEiODwBRHy4G2+Tcayo2U7+3+4frBmoMETD72qtah+XhOk5XcPzC1nJvXhXUdfl2ajlMhUc2qC6CIg==,
+      }
+    peerDependencies:
+      tailwindcss: '>=3.0.0 || >= 4.0.0 || >= 4.0.0-beta.8 || >= 4.0.0-alpha.20'
+
   tailwindcss@3.4.17:
     resolution:
       {
@@ -6929,6 +6940,10 @@ snapshots:
       has-flag: 4.0.0
 
   supports-preserve-symlinks-flag@1.0.0: {}
+
+  tailwind-scrollbar-hide@2.0.0(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@20.17.14)(typescript@5.7.3))):
+    dependencies:
+      tailwindcss: 3.4.17(ts-node@10.9.1(@types/node@20.17.14)(typescript@5.7.3))
 
   tailwindcss@3.4.17(ts-node@10.9.1(@types/node@20.17.14)(typescript@5.7.3)):
     dependencies:
