@@ -11,18 +11,18 @@ const RightHeaderComponents = () => {
     case '/admin/management/problem':
       return (
         <>
-          <div
-            className="flex h-full w-fit items-center justify-center px-[2%]"
+          <button
+            className="flex h-fit w-fit items-center justify-center rounded-2xl px-[0.5rem] py-[0.2rem] hover:bg-gray-100 active:cursor-grabbing"
             onClick={() => router.push(getRoutePath('AdminDashboard'))}
           >
             관리 대시보드
-          </div>
-          <div
-            className="flex h-full w-fit items-center justify-center px-[2%]"
+          </button>
+          <button
+            className="flex h-fit w-fit items-center justify-center rounded-2xl px-[0.5rem] py-[0.2rem] hover:bg-gray-100 active:cursor-grabbing"
             onClick={() => router.push(getRoutePath('AdminLogin'))}
           >
             로그아웃
-          </div>
+          </button>
         </>
       );
     default:
