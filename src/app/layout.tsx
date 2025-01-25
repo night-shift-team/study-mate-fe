@@ -26,12 +26,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="h-screen w-screen">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} h-full w-full antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} flex h-full w-full antialiased`}
       >
         <div className="fixed flex h-[8vh] min-h-[3rem] w-full px-[4vh]">
           <Header />
         </div>
-        <div className="flex h-[calc(100%-8vh)] w-full items-center justify-center pt-[8vh]">
+        <div className="mt-[8vh] flex h-[calc(100%-8vh)] w-full justify-center">
           {children}
         </div>
       </body>

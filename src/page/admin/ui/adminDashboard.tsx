@@ -1,8 +1,10 @@
+import { DetailManagementButton } from './detailManagementButton';
+
 const AdminDashboard = () => {
   return (
-    <div className="flex h-full w-full px-[2%]">
-      <div className="flex h-full w-[50%] flex-shrink-0 flex-col p-[2%]">
-        <ManageMentCategory title="유저 관리" buttonText="상세 보기" />
+    <div className="flex h-full w-full px-[1%]">
+      <div className="flex h-full w-[50%] flex-shrink-0 flex-col p-[2.5%]">
+        <DetailManagementButton title="유저 관리" buttonText="상세 보기" />
         <RecentUserComponent
           title="생성"
           titleColor="text-green-500"
@@ -14,9 +16,9 @@ const AdminDashboard = () => {
           userData={mockDeletedUser}
         />
       </div>
-      <div className="flex h-full w-[50%] flex-shrink-0 flex-col p-[2%]">
-        <ManageMentCategory title="문제 관리" buttonText="더 보기" />
-        <div className="flex h-[75%] w-full">
+      <div className="flex h-full w-[50%] flex-shrink-0 flex-col p-[2.5%]">
+        <DetailManagementButton title="문제 관리" buttonText="더 보기" />
+        <div className="flex h-[65%] w-full">
           <div className="relative mt-[2%] flex h-full w-full flex-shrink-0 flex-col items-center justify-center rounded-[2rem] bg-gray-100 pt-[3%]">
             <span className="flex h-[10%] w-full flex-shrink-0 items-center justify-center whitespace-pre-wrap text-[2.5vh] font-semibold">
               문제 <span className="text-yellow-500">업데이트</span> 내역
@@ -55,23 +57,6 @@ const AdminDashboard = () => {
 };
 export default AdminDashboard;
 
-const ManageMentCategory = ({
-  title,
-  buttonText,
-}: {
-  title: string;
-  buttonText: string;
-}) => {
-  return (
-    <div className="flex h-[10%] w-full flex-shrink-0 items-center justify-between text-[3vh]">
-      <span>{title}</span>
-      <button className="flex h-[50%] w-fit items-center justify-center rounded-2xl border border-black px-[3%] pt-[0.4%] text-[2vh] font-semibold hover:border-2 hover:border-none hover:border-[#9f8b7a] hover:bg-[#ECCDB4] hover:text-white active:scale-[0.99] active:cursor-grabbing">
-        {buttonText}
-      </button>
-    </div>
-  );
-};
-
 const RecentUserComponent = ({
   title,
   titleColor,
@@ -82,7 +67,7 @@ const RecentUserComponent = ({
   userData: MockCreatedUser[] | MockDeletedUser[];
 }) => {
   return (
-    <div className="relative mt-[2%] flex h-[45%] w-full flex-shrink-0 flex-col items-center justify-center rounded-[2rem] bg-gray-100 pt-[3%]">
+    <div className="relative mt-[2%] flex h-[40%] w-full flex-shrink-0 flex-col items-center justify-center rounded-[2rem] bg-gray-100 pt-[3%]">
       <span className="flex h-[10%] w-full flex-shrink-0 items-center justify-center whitespace-pre-wrap text-[2.5vh] font-semibold">
         최근 <span className={titleColor}>{title}</span> 유저
       </span>
