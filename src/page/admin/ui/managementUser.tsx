@@ -1,3 +1,5 @@
+import { UserTableForm } from './userTableForm';
+
 const ManageUser = () => {
   return (
     <div className="flex h-full w-full px-[2.5%] py-[1%]">
@@ -13,7 +15,7 @@ const ManageUser = () => {
           ></input>
         </div>
         <div className="flex h-[70%] w-full px-[5%] pt-1.5">
-          <div className="flex h-full w-full rounded-[2rem] bg-gray-100"></div>
+          <UserTableForm />
         </div>
         <div className="flex h-fit w-full justify-center pt-[2%]">
           pagenation section
