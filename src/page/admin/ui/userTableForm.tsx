@@ -3,7 +3,7 @@ import { DialogPopup } from '@/shared/ui/dialogPopup';
 import { UserData, UserTableData } from './userTableData';
 import { useState } from 'react';
 
-export const UserTableForm = () => {
+export const UserTableForm = ({ userData }: { userData: UserData[] }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   return (
     <div className="flex h-full w-full rounded-[2rem] bg-gray-100 p-[2%]">
@@ -25,7 +25,7 @@ export const UserTableForm = () => {
             </th>
           </tr>
         </thead>
-        <UserTableData userData={mockUserData} setDialogOpen={setDialogOpen} />
+        <UserTableData userData={userData} setDialogOpen={setDialogOpen} />
       </table>
       {dialogOpen && (
         <DialogPopup
@@ -39,66 +39,3 @@ export const UserTableForm = () => {
     </div>
   );
 };
-
-const mockUserData: UserData[] = [
-  {
-    username: 'user1',
-    createdDt: '240531T00:14:32',
-    solvedCount: 10,
-    deletedDt: null,
-  },
-  {
-    username: 'user2',
-    createdDt: '240531T00:14:32',
-    solvedCount: 10,
-    deletedDt: null,
-  },
-  {
-    username: 'user3',
-    createdDt: '240531T00:14:32',
-    solvedCount: 1,
-    deletedDt: '240531T00:14:32',
-  },
-  {
-    username: 'user4',
-    createdDt: '240531T00:14:32',
-    solvedCount: 0,
-    deletedDt: null,
-  },
-  {
-    username: 'user5',
-    createdDt: '240531T00:14:32',
-    solvedCount: 10,
-    deletedDt: '240531T00:14:32',
-  },
-  {
-    username: 'user6',
-    createdDt: '240531T00:14:32',
-    solvedCount: 10,
-    deletedDt: null,
-  },
-  {
-    username: 'user7',
-    createdDt: '240531T00:14:32',
-    solvedCount: 10,
-    deletedDt: '240531T00:14:32',
-  },
-  {
-    username: 'user8',
-    createdDt: '240531T00:14:32',
-    solvedCount: 10,
-    deletedDt: null,
-  },
-  {
-    username: 'user9',
-    createdDt: '240531T00:14:32',
-    solvedCount: 10,
-    deletedDt: null,
-  },
-  {
-    username: 'user10',
-    createdDt: '240531T00:14:32',
-    solvedCount: 10,
-    deletedDt: null,
-  },
-];
