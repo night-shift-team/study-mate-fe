@@ -2,17 +2,40 @@
 import { useEffect, useState } from 'react';
 import { UserTableForm } from './userTableForm';
 import { UserData } from './userTableData';
+import { RiArrowLeftDoubleLine } from 'react-icons/ri';
+import { RiArrowRightDoubleLine } from 'react-icons/ri';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
 
 const ManageUser = () => {
   const [findUserText, setFindUserText] = useState('');
   const [userList, setUserList] = useState<UserData[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageNextListNum, setPageNextListNum] = useState(5);
+  const [maxPage, setMaxPage] = useState(10);
 
   const findUsers = (findStr: string) => {
     if (findStr === '') {
-      setUserList(mockUserData);
+      switch (currentPage) {
+        case 1:
+          setUserList(mockUserData);
+          break;
+        case 2:
+          setUserList(mockUserData2);
+          break;
+        default:
+          setUserList(mockUserData);
+      }
       return;
     }
-    const targetUsers = mockUserData.filter((user) => {
+    const targetUsers = mockUserData.concat(mockUserData2).filter((user) => {
       if (user.username.includes(findStr)) {
         return user;
       }
@@ -22,8 +45,12 @@ const ManageUser = () => {
   };
 
   useEffect(() => {
-    setUserList(mockUserData);
-  }, []);
+    if (currentPage === 1) {
+      setUserList(mockUserData);
+    } else if (currentPage === 2) {
+      setUserList(mockUserData2);
+    }
+  }, [currentPage]);
 
   useEffect(() => {
     const debouncingCall = setTimeout(() => {
@@ -54,7 +81,50 @@ const ManageUser = () => {
           <UserTableForm userData={userList} />
         </div>
         <div className="flex h-fit w-full justify-center pt-[2%]">
-          pagenation section
+          <div className="flex h-fit w-fit">
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    onClick={() => {
+                      setPageNextListNum((prev) => {
+                        if (prev < 1) {
+                          return prev;
+                        } else {
+                          setCurrentPage(prev - 4);
+                          return prev - 5;
+                        }
+                      });
+                    }}
+                  />
+                </PaginationItem>
+                {Array.from({ length: 5 }, (_, i) => (
+                  <PaginationItem key={i}>
+                    <PaginationLink
+                      onClick={() => setCurrentPage(i + pageNextListNum + 1)}
+                      isActive={pageNextListNum + i + 1 === currentPage}
+                    >
+                      {pageNextListNum + i + 1}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+                <PaginationItem>
+                  <PaginationNext
+                    onClick={() => {
+                      setPageNextListNum((prev) => {
+                        if (prev < maxPage - 5) {
+                          setCurrentPage(prev + 10);
+                          return prev + 5;
+                        } else {
+                          return prev;
+                        }
+                      });
+                    }}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
         </div>
       </div>
     </div>

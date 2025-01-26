@@ -23,7 +23,7 @@ export const UserTableData = ({
         return (
           <tr
             key={key}
-            className="flex h-[10%] w-full justify-between border-b border-dotted px-[5%] py-[0.5%]"
+            className="flex h-[10%] min-h-[2rem] w-full justify-between border-b border-dotted px-[5%] py-[0.5%]"
           >
             <td className="flex w-[20%] items-center justify-center">
               {data.username}
