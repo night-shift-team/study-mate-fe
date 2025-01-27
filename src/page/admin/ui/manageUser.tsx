@@ -2,12 +2,10 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { UserTableForm } from './userTableForm';
 import { UserData } from './userTableData';
-import { RiArrowLeftDoubleLine } from 'react-icons/ri';
-import { RiArrowRightDoubleLine } from 'react-icons/ri';
+
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,

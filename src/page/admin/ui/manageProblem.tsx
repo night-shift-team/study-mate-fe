@@ -1,11 +1,11 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ListPagination } from './manageUser';
 
 type MangeProlemCRUD = 'create' | 'update' | 'delete' | 'read';
 
 const ManageProblem = () => {
-  const params = new URLSearchParams(window.location.search);
+  const params = new URLSearchParams();
   const problemNo = params.get('no');
   const problemCRUD = params.get('crud');
   console.log(problemNo, problemCRUD);
