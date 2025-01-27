@@ -11,40 +11,54 @@ const LevelTest = () => {
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState<boolean>(false);
-  //답안 저장 배열
   const [userAnswers, setUserAnswers] = useState<number[]>([]);
 
-  // 답 선택 로직
+  // csQuizQuestions가 유효한지 확인
+  if (!Array.isArray(csQuizQuestions) || csQuizQuestions.length === 0) {
+    return <div>퀴즈 데이터를 불러오는 중...</div>;
+  }
+
   const handleAnswerSelect = (index: number) => {
     setSelectedAnswer(index);
     setShowResult(true);
   };
 
   const handleNextQuestion = () => {
-    // 현재 답안을 저장
-    setUserAnswers((prev) => [...prev, selectedAnswer!]);
+    if (selectedAnswer === null) return;
+
+    const newAnswers = [...userAnswers, selectedAnswer];
 
     if (currentQuestion < csQuizQuestions.length - 1) {
+      setUserAnswers(newAnswers);
       setCurrentQuestion((prev) => prev + 1);
       setSelectedAnswer(null);
       setShowResult(false);
     } else {
-      // 마지막 답안을 포함한 최종 답안 배열
-      const submitAnswer = [...userAnswers, selectedAnswer!];
-      const correctCount = submitAnswer.reduce((count, answer, index) => {
+      // 안전하게 정답 체크
+      const correctCount = newAnswers.reduce((count, answer, index) => {
+        // csQuizQuestions[index]가 존재하는지 확인
+        if (
+          !csQuizQuestions[index] ||
+          typeof csQuizQuestions[index].correctAnswer === 'undefined'
+        ) {
+          return count;
+        }
         return (
           count + (answer === csQuizQuestions[index].correctAnswer ? 1 : 0)
         );
       }, 0);
 
-      // answers 파라미터 추가하여 사용자의 답안도 전달
       router.push(
-        `/testresult?correct=${correctCount}&total=${csQuizQuestions.length}&answers=${submitAnswer.join(',')}`
+        `/testresult?correct=${correctCount}&total=${csQuizQuestions.length}&answers=${newAnswers.join(',')}`
       );
     }
   };
 
+  // 현재 문제가 유효한지 확인
   const currentQuiz = csQuizQuestions[currentQuestion];
+  if (!currentQuiz) {
+    return <div>문제를 불러올 수 없습니다.</div>;
+  }
 
   return (
     <div className="flex h-full w-full items-center justify-center">
