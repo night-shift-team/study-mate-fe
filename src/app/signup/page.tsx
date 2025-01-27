@@ -1,10 +1,7 @@
-
-import SignUp from "@/page/signup/ui";
+import SignUp from '@/page/signup/ui';
 
 const SignUpPage = () => {
-  return (
-    <SignUp />
-  )
+  return <SignUp />;
 };
 
 export default SignUpPage;
