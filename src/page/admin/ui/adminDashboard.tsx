@@ -75,7 +75,7 @@ const RecentUserComponent = ({
         <thead className="flex h-[15%] w-full flex-shrink-0 justify-center">
           <tr className="flex h-full w-[90%] flex-shrink-0 justify-between border-b border-dashed px-[5%]">
             <th>유저명</th>
-            <th>생성 일자</th>
+            <th>{title} 일자</th>
             <th>풀은 문제</th>
           </tr>
         </thead>
