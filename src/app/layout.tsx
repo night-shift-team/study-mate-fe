@@ -24,12 +24,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="h-screen w-screen">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} h-screen w-full p-5 antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} flex h-full w-full antialiased`}
       >
-        <Header />
-        {children}
+        <div className="fixed flex h-[8vh] min-h-[3rem] w-full px-[4vh]">
+          <Header />
+        </div>
+        <div className="mt-[8vh] flex h-[calc(100%-8vh)] w-full justify-center">
+          {children}
+        </div>
       </body>
     </html>
   );
