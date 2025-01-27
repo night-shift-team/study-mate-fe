@@ -81,9 +81,11 @@ const Login = () => {
                 아메일 회원가입{' '}
               </button>
             </Link>
-            <div className="cursor-pointer text-center text-sm text-gray-500 hover:text-gray-700">
-              [로그인 없이 레벨 테스트 진행하기]
-            </div>
+            <Link href="/leveltest">
+              <div className="cursor-pointer text-center text-sm text-gray-500 hover:text-gray-700">
+                [로그인 없이 레벨 테스트 진행하기]
+              </div>
+            </Link>
           </form>
 
           <div className="flex flex-col justify-center gap-4">

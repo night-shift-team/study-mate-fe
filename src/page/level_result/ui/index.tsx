@@ -3,10 +3,9 @@
 import { DonutChart } from '@/feature/charts/DonutChart';
 import Item from '@/feature/level_result/Item';
 import { csQuizQuestions } from '@/entities/test';
-import { useSearchParams } from 'next/navigation';
 
 const LevelResult = () => {
-  const searchParams = useSearchParams();
+  const searchParams = new URLSearchParams();
   const correctCount = Number(searchParams.get('correct')) || 0;
   const totalQuestions =
     Number(searchParams.get('total')) || csQuizQuestions.length;
