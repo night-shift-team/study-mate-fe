@@ -4,8 +4,8 @@ interface ChoiceItemProps {
   text: string;
   onClick: () => void;
   isSelected: boolean;
-  isCorrect: boolean;
-  showResult: boolean;
+  isCorrect?: boolean;
+  showResult?: boolean;
 }
 
 export const ChoiceItem: React.FC<ChoiceItemProps> = ({
