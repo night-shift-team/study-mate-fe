@@ -1,4 +1,6 @@
+import Link from 'next/link';
 import { DetailManagementButton } from './detailManagementButton';
+import { getRoutePath } from '@/shared/model/getRoutePath';
 
 const AdminDashboard = () => {
   return (
@@ -37,19 +39,24 @@ const AdminDashboard = () => {
             </table>
           </div>
         </div>
-        <div className="flex h-[15%] w-full justify-between px-[5%] font-bold">
-          <button className="mt-[7%] flex h-[80%] w-[25%] items-center justify-center rounded-2xl bg-[#ECCDB4] text-black shadow-md hover:bg-[#E65A5A] hover:text-white active:scale-[0.97] active:cursor-grabbing active:bg-[#D94D4D] active:shadow-sm">
+        <div className="flex h-[15%] w-full justify-center px-[5%] font-bold">
+          {/* <button className="mt-[7%] flex h-[80%] w-[25%] items-center justify-center rounded-2xl bg-[#ECCDB4] text-black shadow-md hover:bg-[#E65A5A] hover:text-white active:scale-[0.97] active:cursor-grabbing active:bg-[#D94D4D] active:shadow-sm">
             {' '}
             문제 삭제
           </button>
           <button className="mt-[7%] flex h-[80%] w-[25%] items-center justify-center rounded-2xl bg-[#ECCDB4] text-black shadow-md hover:border-2 hover:border-[#4E96F0] hover:bg-[#4E96F0] hover:text-white active:scale-[0.97] active:cursor-grabbing active:bg-[#3D86E0] active:shadow-sm">
             {' '}
             문제 수정
-          </button>
-          <button className="mt-[7%] flex h-[80%] w-[25%] items-center justify-center rounded-2xl bg-[#ECCDB4] text-black shadow-md hover:bg-[#2DBE87] hover:text-white active:scale-[0.97] active:cursor-grabbing active:bg-[#28A374] active:shadow-sm">
-            {' '}
-            문제 생성
-          </button>
+          </button> */}
+          <Link
+            className="mt-[7%] flex h-[80%] w-[25%]"
+            href={getRoutePath('AdminManagementProblem') + '?crud=create'}
+          >
+            <button className="flex h-full w-full items-center justify-center rounded-2xl bg-[#ECCDB4] text-black shadow-md hover:bg-[#2DBE87] hover:text-white active:scale-[0.97] active:cursor-grabbing active:bg-[#28A374] active:shadow-sm">
+              {' '}
+              문제 생성
+            </button>
+          </Link>
         </div>
       </div>
     </div>

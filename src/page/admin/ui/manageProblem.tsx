@@ -27,24 +27,25 @@ const selectionDefaultValue = {
 };
 
 const ManageProblem = () => {
-  const params = new URLSearchParams(window.location.search);
-  const queryProblemNo = params.get('no');
-  const queryProblemCRUD = params.get('crud');
-
   const [findProblemText, setFindProblemText] = useState('');
   const [problemList, setProblemList] = useState<ProblemData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [manageProblemNo, setManageProblemNo] = useState(
-    queryProblemNo ? parseInt(queryProblemNo) : 0
-  );
-  const [manageProblemCRUD, setManageProblemCRUD] = useState<
-    'create' | 'update' | 'delete' | 'read'
-  >((queryProblemCRUD as MangeProlemCRUD) ?? 'read');
+  const [manageProblemNo, setManageProblemNo] = useState(0);
+  const [manageProblemCRUD, setManageProblemCRUD] =
+    useState<MangeProlemCRUD>('read');
+
   const [currentProblem, setCurrentProblem] = useState<ProblemData | null>(
     null
   );
-  console.log(queryProblemNo, queryProblemNo, manageProblemNo);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const queryProblemNo = params.get('no');
+    const queryProblemCRUD = params.get('crud');
+    setManageProblemNo(queryProblemNo ? parseInt(queryProblemNo) : 0);
+    setManageProblemCRUD((queryProblemCRUD as MangeProlemCRUD) ?? 'read');
+  }, []);
 
   const convertCRUDTextToKorean = (crud: MangeProlemCRUD) => {
     if (crud === 'create') return '생성';
@@ -301,7 +302,7 @@ const ManageProblem = () => {
             ></input>
           </div>
           <form className="relative flex h-[80%] w-full flex-col items-center justify-center">
-            <div className="z-[1] mt-[1%] flex h-[89%] w-[90%] justify-center rounded-sm border border-black bg-white shadow-2xl shadow-border">
+            <div className="z-[1] mt-[1%] flex h-[89%] w-[90%] justify-center overflow-scroll rounded-sm border border-black bg-white shadow-2xl shadow-border scrollbar-hide">
               <div className="flex h-full w-[90%] flex-col items-center justify-center">
                 <div className="flex h-fit w-fit pt-[5%]">
                   문제 {currentProblem?.no ?? ''} 정보
