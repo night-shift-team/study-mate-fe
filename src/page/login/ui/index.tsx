@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { LoginButton } from '@/entities';
 import Link from 'next/link';
+import { openNewWindowWithoutDuplicate } from '@/shared/window/model/openWindow';
 const Login = () => {
   let windowReference: Window | null = null;
   const [formData, setFormData] = useState({
@@ -39,6 +40,7 @@ const Login = () => {
       console.error('로그인 에러:', error);
     }
   };
+
   return (
     <div className="flex h-full w-full items-center justify-center">
       <div className="flex w-full max-w-[700px] flex-col justify-around gap-6 rounded-lg bg-white p-8 shadow-lg md:flex-row">
@@ -96,22 +98,9 @@ const Login = () => {
               {LoginButton.map((item) => (
                 <div
                   key={item.id}
-                  onClick={() => {
-                    if (
-                      !windowReference ||
-                      windowReference.closed === undefined ||
-                      windowReference.closed
-                    ) {
-                      windowReference = window.open(
-                        item.link,
-                        'GoogleAuthenticate',
-                        'width=400,height=650'
-                      );
-                    } else {
-                      windowReference.location.href = item.link;
-                      windowReference.focus();
-                    }
-                  }}
+                  onClick={() =>
+                    openNewWindowWithoutDuplicate(windowReference, item.link)
+                  }
                   className="flex cursor-pointer flex-col justify-center"
                 >
                   <Image
