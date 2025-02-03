@@ -29,7 +29,6 @@ const selectionDefaultValue = {
 };
 
 const ManageProblem = () => {
-
   const params = new URLSearchParams();
   const problemNo = params.get('no');
   const problemCRUD = params.get('crud');
@@ -152,7 +151,7 @@ const ManageProblem = () => {
     setInputCategory(currentProblem.category ?? '운영체제');
     setInputLevel(currentProblem.level ?? '');
     setInputContent(currentProblem.content ?? '');
-    let tempInputSelction: InputSelection = {
+    const tempInputSelction: InputSelection = {
       select1: '',
       select2: '',
       select3: '',

@@ -1,6 +1,10 @@
 import Problem from '@/page/solveProblem/ui/problem';
 
-const ProblemPage = async ({ params }: { params: { category: string } }) => {
+const ProblemPage = async ({
+  params,
+}: {
+  params: Promise<{ category: string }>;
+}) => {
   const { category } = await params;
   console.log(category);
 
