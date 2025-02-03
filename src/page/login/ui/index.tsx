@@ -39,6 +39,10 @@ const Login = () => {
     }
   };
 
+  const ClinetID =
+    '877767008504-iq3dn2jdum3dhilejajhhotek0rdelts.apps.googleusercontent.com';
+  const ClientSecret = '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';
+
   return (
     <div className="flex h-full w-full items-center justify-center">
       <div className="flex w-full max-w-[700px] flex-col justify-around gap-6 rounded-lg bg-white p-8 shadow-lg md:flex-row">
@@ -94,8 +98,9 @@ const Login = () => {
             </div>
             <div className="flex justify-between">
               {LoginButton.map((item) => (
-                <div
+                <Link
                   key={item.id}
+                  href={item.link}
                   className="flex cursor-pointer flex-col justify-center"
                 >
                   <Image
@@ -106,7 +111,7 @@ const Login = () => {
                     className="rounded-full"
                   />
                   <div className="text-center text-[1.3vh]">{item.title}</div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
