@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { LoginButton } from '@/entities';
 import Link from 'next/link';
 const Login = () => {
+  let windowReference: Window | null = null;
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -38,11 +39,6 @@ const Login = () => {
       console.error('로그인 에러:', error);
     }
   };
-
-  const ClinetID =
-    '877767008504-iq3dn2jdum3dhilejajhhotek0rdelts.apps.googleusercontent.com';
-  const ClientSecret = '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';
-
   return (
     <div className="flex h-full w-full items-center justify-center">
       <div className="flex w-full max-w-[700px] flex-col justify-around gap-6 rounded-lg bg-white p-8 shadow-lg md:flex-row">
@@ -62,7 +58,7 @@ const Login = () => {
                 required
               />
               <input
-                type="password"
+                type="current-password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
@@ -98,9 +94,24 @@ const Login = () => {
             </div>
             <div className="flex justify-between">
               {LoginButton.map((item) => (
-                <Link
+                <div
                   key={item.id}
-                  href={item.link}
+                  onClick={() => {
+                    if (
+                      !windowReference ||
+                      windowReference.closed === undefined ||
+                      windowReference.closed
+                    ) {
+                      windowReference = window.open(
+                        item.link,
+                        'GoogleAuthenticate',
+                        'width=400,height=650'
+                      );
+                    } else {
+                      windowReference.location.href = item.link;
+                      windowReference.focus();
+                    }
+                  }}
                   className="flex cursor-pointer flex-col justify-center"
                 >
                   <Image
@@ -111,7 +122,7 @@ const Login = () => {
                     className="rounded-full"
                   />
                   <div className="text-center text-[1.3vh]">{item.title}</div>
-                </Link>
+                </div>
               ))}
             </div>
           </div>
