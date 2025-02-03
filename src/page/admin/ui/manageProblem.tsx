@@ -1,5 +1,7 @@
 'use client';
+
 import { RefObject, useEffect, useRef, useState } from 'react';
+
 import { ListPagination } from './manageUser';
 import useHoverEvent from '@/shared/model/useHoverEvent';
 import {
@@ -27,6 +29,12 @@ const selectionDefaultValue = {
 };
 
 const ManageProblem = () => {
+
+  const params = new URLSearchParams();
+  const problemNo = params.get('no');
+  const problemCRUD = params.get('crud');
+  console.log(problemNo, problemCRUD);
+
   const [findProblemText, setFindProblemText] = useState('');
   const [problemList, setProblemList] = useState<ProblemData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);

@@ -8,7 +8,6 @@ export interface UserData {
   solvedCount: number;
   deletedDt: string | null;
 }
-[];
 
 export const UserTableData = ({
   userData,

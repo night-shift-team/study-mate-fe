@@ -12,7 +12,7 @@ export const DialogPopup = ({
   open: boolean;
   title: string;
   description: string;
-  execFunc: () => any;
+  execFunc: () => void;
   setDialogOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const dialogRef = useOutsideClick(() => setDialogOpen(false));
