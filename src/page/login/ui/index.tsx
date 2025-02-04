@@ -6,8 +6,12 @@ import { useState } from 'react';
 import { LoginButton } from '@/entities';
 import Link from 'next/link';
 import { openNewWindowWithoutDuplicate } from '@/shared/window/model/openWindow';
+import { useAddAuthListener } from '../model/loginInfoListener';
 const Login = () => {
   const windowReference: Window | null = null;
+  const [isAuthSuccess, setIsAuthSucess] = useState(false);
+  useAddAuthListener(setIsAuthSucess);
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -42,7 +46,12 @@ const Login = () => {
   };
 
   return (
-    <div className="flex h-full w-full items-center justify-center">
+    <div className="relative flex h-full w-full items-center justify-center">
+      {isAuthSuccess && (
+        <div className="absolute z-[1] flex h-[50%] w-[50%] items-center justify-center border border-black bg-white text-[4vh]">
+          인증 성공
+        </div>
+      )}
       <div className="flex w-full max-w-[700px] flex-col justify-around gap-6 rounded-lg bg-white p-8 shadow-lg md:flex-row">
         <div className="flex justify-center md:items-center">
           <Image src={Logo} alt="" width={200} />
