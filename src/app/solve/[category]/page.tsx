@@ -6,7 +6,6 @@ const ProblemPage = async ({
   params: Promise<{ category: string }>;
 }) => {
   const { category } = await params;
-  console.log(category);
 
   return <Problem category={category} />;
 };

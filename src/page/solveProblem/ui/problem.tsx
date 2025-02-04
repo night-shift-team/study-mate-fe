@@ -19,7 +19,7 @@ const Problem = ({ category }: { category: string }) => {
         <div className="h-[15vh] w-full">
           <div className="flex w-full items-center justify-between">
             <span>
-              {category} 문제 {currentQuiz.id}
+              {decodeURIComponent(category)} 문제 {currentQuiz.id}
             </span>{' '}
             <span className="rounded-[5rem] bg-gray-100 px-4 py-2">
               응답 : {15}
