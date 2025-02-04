@@ -7,7 +7,7 @@ import { LoginButton } from '@/entities';
 import Link from 'next/link';
 import { openNewWindowWithoutDuplicate } from '@/shared/window/model/openWindow';
 const Login = () => {
-  let windowReference: Window | null = null;
+  const windowReference: Window | null = null;
   const [formData, setFormData] = useState({
     email: '',
     password: '',
