@@ -54,7 +54,7 @@ const CategoryGridContents = ({
   return (
     <Link
       className="relative mx-[0.5rem] flex h-full w-fit text-[2.5vh]"
-      href={`/solveproblem/${title}`}
+      href={`/solve/${title}`}
     >
       <div
         className={`flex aspect-square h-full flex-col rounded-[2rem] p-[5%] ${bgColor()} z-[1] items-center justify-center`}
