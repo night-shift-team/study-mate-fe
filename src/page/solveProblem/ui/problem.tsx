@@ -1,25 +1,32 @@
 'use client';
-import { csQuizQuestions } from '@/entities/test';
+import { QuizQuestion, csQuizQuestions } from '@/entities/test';
 import { ChoiceItem } from '@/feature/level_test/ChoiceItem';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 
 const Problem = ({ category }: { category: string }) => {
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const [currentQuiz, setCurrentQuiz] = useState<QuizQuestion>(
+    csQuizQuestions[currentQuestion]
+  );
 
-  const currentQuiz = csQuizQuestions[currentQuestion];
+  useEffect(() => {
+    setCurrentQuiz(csQuizQuestions[currentQuestion]);
+  }, [currentQuestion]);
 
   const handleAnswerSelect = (index: number) => {
     setSelectedAnswer(index);
   };
+
   return (
     <div className="flex h-full w-full items-center justify-center">
       <div className="flex w-[90%] max-w-[700px] flex-col">
         <div className="h-[15vh] w-full">
           <div className="flex w-full items-center justify-between">
-            <span>
-              {decodeURIComponent(category)} 문제 {currentQuiz.id}
+            <span className="flex flex-col">
+              {decodeURIComponent(category)}
+              <span>문제 {currentQuiz.id}</span>
             </span>{' '}
             <span className="rounded-[5rem] bg-gray-100 px-4 py-2">
               응답 : {15}
@@ -38,7 +45,11 @@ const Problem = ({ category }: { category: string }) => {
           ))}
         </div>
         <div className="flex w-full justify-between gap-x-[1rem]">
-          <button className="mt-4 flex h-[50px] w-[50px] items-center justify-center rounded-full border bg-[#f9fbe7] transition-all duration-200 ease-in-out hover:border-gray-400">
+          <button
+            className="mt-4 flex h-[50px] w-[50px] items-center justify-center rounded-full border bg-[#D9D9D9] transition-all duration-200 ease-in-out hover:border-gray-400"
+            disabled={currentQuestion >= csQuizQuestions.length - 1}
+            onClick={() => setCurrentQuestion((prev) => prev + 1)}
+          >
             skip
           </button>
           <button
