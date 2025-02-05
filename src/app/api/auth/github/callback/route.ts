@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const code = searchParams.get("code");
+  const state = searchParams.get("state");
   
   if (!code) {
     return NextResponse.json(
@@ -89,26 +90,26 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error("GitHub OAuth Error:", error);
     // 에러 발생 시에도 HTML로 응답하여 창 닫기
-    return new NextResponse(
-      `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>로그인 실패</title>
-        </head>
-        <body>
-          <script>
-            window.opener.location.href = '/login?error=auth_failed';  // 에러 페이지로 리다이렉트
-            window.close();
-          </script>
-        </body>
-      </html>
-      `,
-      {
-        headers: {
-          'Content-Type': 'text/html',
-        },
-      }
-    );
+    if (!state || (Date.now() - parseInt(state)) > 600000) {
+      return new NextResponse(
+        `
+        <!DOCTYPE html>
+        <html>
+          <head><title>인증 실패</title></head>
+          <body>
+            <script>
+              window.opener.location.href = '/login?error=invalid_state';
+              window.close();
+            </script>
+          </body>
+        </html>
+        `,
+        {
+          headers: {
+            'Content-Type': 'text/html',
+          },
+        }
+      );
+    };
   }
 }
