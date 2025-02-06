@@ -6,22 +6,10 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get('code');
   const state = searchParams.get('state');
 
-  if (!code) {
-    return NextResponse.json({ error: 'Code not received' }, { status: 400 });
-  }
-
-  if (
-    !process.env.NEXT_PUBLIC_GITHUB_AUTH_CLIENT_ID ||
-    !process.env.NEXT_PUBLIC_GITHUB_AUTH_CLIENT_SECERT
-  ) {
-    return NextResponse.json(
-      { error: 'GitHub OAuth credentials are not configured' },
-      { status: 500 }
-    );
-  }
+  console.log('Code:', code);
+  console.log('State:', state);
 
   try {
-    // GitHub Access Token 요청
     const tokenResponse = await fetch(
       'https://github.com/login/oauth/access_token',
       {
@@ -53,26 +41,138 @@ export async function GET(request: NextRequest) {
 
     const userData = await userResponse.json();
 
-    // 쿠키 설정을 위한 응답 생성
+    const escapeHtml = (str: string) => {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    };
+
+    // 응답 생성
     const response = new NextResponse(
       `
       <!DOCTYPE html>
       <html>
         <head>
+          <meta charset="UTF-8">
           <title>로그인 처리중...</title>
+          <style>
+            body {
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
+                          'Helvetica Neue', Arial, sans-serif;
+              padding: 20px;
+              background-color: #f5f5f5;
+            }
+            .container {
+              background-color: white;
+              padding: 20px;
+              border-radius: 8px;
+              box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+              margin-bottom: 20px;
+              max-width: 500px;
+              margin: 0 auto;
+            }
+            .user-info {
+              margin-bottom: 20px;
+              text-align: center;
+            }
+            .user-info img {
+              width: 100px;
+              height: 100px;
+              border-radius: 50%;
+              margin-bottom: 10px;
+            }
+            .button {
+              background-color: #2ea44f;
+              color: white;
+              border: none;
+              padding: 10px 20px;
+              border-radius: 6px;
+              cursor: pointer;
+              font-size: 14px;
+              font-weight: 500;
+              width: 100%;
+            }
+            .button:hover {
+              background-color: #2c974b;
+            }
+            .info-row {
+              margin: 10px 0;
+              text-align: left;
+              padding: 8px;
+              border-bottom: 1px solid #eee;
+            }
+            .info-label {
+              font-weight: bold;
+              color: #24292e;
+            }
+            .info-value {
+              color: #586069;
+            }
+          </style>
         </head>
         <body>
+          <div class="container">
+            <div class="user-info">
+              <h2>GitHub 로그인 성공! 🎉</h2>
+              <img src="${userData.avatar_url}" alt="Profile Image">
+              <div class="info-row">
+                <span class="info-label">이름:</span>
+                <span class="info-value">${escapeHtml(userData.name || '이름 없음')}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">사용자명:</span>
+                <span class="info-value">${escapeHtml(userData.login)}</span>
+              </div>
+            
+            </div>
+            <button class="button" onclick="completeLogin()">계속하기</button>
+          </div>
+  
           <script>
-            // 쿠키 설정이 완료된 후
-            window.opener.location.href = '/solveproblem';  // 부모 창 리다이렉트
-            window.close();  // 현재 창 닫기
+            console.log('Callback URL Parameters:', {
+          code: '${code}',
+          state: '${state}'
+        });
+            const userData = ${JSON.stringify(userData)};
+            console.log('GitHub User Data:', userData);
+            
+function completeLogin() {
+  try {
+    // GitHub 사용자 데이터와 함께 인증 정보도 저장
+    const authData = {
+      userData,
+      authInfo: {
+        code: '${code}',
+        state: '${state}'
+      }
+    };
+    localStorage.setItem('githubAuthData', JSON.stringify(authData));
+    console.log('Stored auth data:', JSON.parse(localStorage.getItem('githubAuthData')));
+    
+    // URL에 인증 정보를 포함하여 리다이렉트
+    const redirectUrl = '/solveproblem?' + new URLSearchParams({
+      code: '${code}',
+      state: '${state}'
+    }).toString();
+    
+    window.opener.location.href = redirectUrl;
+    window.close();
+  } catch (error) {
+    console.error('Login completion error:', error);
+    window.opener.location.href = '/solveproblem';
+    window.close();
+  }
+}
           </script>
         </body>
       </html>
       `,
       {
         headers: {
-          'Content-Type': 'text/html',
+          'Content-Type': 'text/html; charset=utf-8',
         },
       }
     );
@@ -82,33 +182,59 @@ export async function GET(request: NextRequest) {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 60 * 60 * 24, // 24시간
+      maxAge: 60 * 60 * 24,
     });
 
     return response;
+
   } catch (error) {
     console.error('GitHub OAuth Error:', error);
-    // 에러 발생 시에도 HTML로 응답하여 창 닫기
-    if (!state || Date.now() - parseInt(state) > 600000) {
-      return new NextResponse(
-        `
-        <!DOCTYPE html>
-        <html>
-          <head><title>인증 실패</title></head>
-          <body>
+    
+    return new NextResponse(
+      `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>인증 실패</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              padding: 20px;
+              background-color: #f5f5f5;
+              text-align: center;
+            }
+            .error-container {
+              background-color: #fff3f3;
+              padding: 20px;
+              border-radius: 8px;
+              box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .error-message {
+              color: #dc3545;
+              margin-bottom: 20px;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="error-container">
+            <h2 class="error-message">인증 실패</h2>
+            <p>GitHub 로그인 중 오류가 발생했습니다.</p>
             <script>
-              window.opener.location.href = '/login?error=invalid_state';
-              window.close();
+              console.error('Authentication failed:', ${JSON.stringify((error as any).message)});
+              setTimeout(() => {
+                window.opener.location.href = '/login?error=auth_failed';
+                window.close();
+              }, 3000);
             </script>
-          </body>
-        </html>
-        `,
-        {
-          headers: {
-            'Content-Type': 'text/html',
-          },
-        }
-      );
-    }
+          </div>
+        </body>
+      </html>
+      `,
+      {
+        headers: {
+          'Content-Type': 'text/html',
+        },
+      }
+    );
   }
 }
