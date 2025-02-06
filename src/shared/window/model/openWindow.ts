@@ -20,8 +20,9 @@ export const openNewWindowWithoutDuplicate = (
   // GitHub 로그인인 경우
   if (link.includes('github.com/login/oauth')) {
     // 기존 쿠키 삭제
-    document.cookie = 'access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    
+    document.cookie =
+      'access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+
     const newWindow = window.open(
       link,
       'githubLogin',

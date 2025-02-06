@@ -1,21 +1,21 @@
 // app/api/auth/github/callback/route.ts
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const code = searchParams.get("code");
-  const state = searchParams.get("state");
-  
+  const code = searchParams.get('code');
+  const state = searchParams.get('state');
+
   if (!code) {
-    return NextResponse.json(
-      { error: "Code not received" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: 'Code not received' }, { status: 400 });
   }
 
-  if (!process.env.NEXT_PUBLIC_GITHUB_AUTH_CLIENT_ID || !process.env.NEXT_PUBLIC_GITHUB_AUTH_CLIENT_SECERT) {
+  if (
+    !process.env.NEXT_PUBLIC_GITHUB_AUTH_CLIENT_ID ||
+    !process.env.NEXT_PUBLIC_GITHUB_AUTH_CLIENT_SECERT
+  ) {
     return NextResponse.json(
-      { error: "GitHub OAuth credentials are not configured" },
+      { error: 'GitHub OAuth credentials are not configured' },
       { status: 500 }
     );
   }
@@ -23,12 +23,12 @@ export async function GET(request: NextRequest) {
   try {
     // GitHub Access Token 요청
     const tokenResponse = await fetch(
-      "https://github.com/login/oauth/access_token",
+      'https://github.com/login/oauth/access_token',
       {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
         body: JSON.stringify({
           client_id: process.env.NEXT_PUBLIC_GITHUB_AUTH_CLIENT_ID,
@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
     }
 
     // GitHub 사용자 정보 요청
-    const userResponse = await fetch("https://api.github.com/user", {
+    const userResponse = await fetch('https://api.github.com/user', {
       headers: {
         Authorization: `Bearer ${tokenData.access_token}`,
       },
@@ -86,11 +86,10 @@ export async function GET(request: NextRequest) {
     });
 
     return response;
-
   } catch (error) {
-    console.error("GitHub OAuth Error:", error);
+    console.error('GitHub OAuth Error:', error);
     // 에러 발생 시에도 HTML로 응답하여 창 닫기
-    if (!state || (Date.now() - parseInt(state)) > 600000) {
+    if (!state || Date.now() - parseInt(state) > 600000) {
       return new NextResponse(
         `
         <!DOCTYPE html>
@@ -110,6 +109,6 @@ export async function GET(request: NextRequest) {
           },
         }
       );
-    };
+    }
   }
 }
