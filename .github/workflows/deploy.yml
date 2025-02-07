@@ -23,16 +23,17 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build project
-        env:
-          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
-          NEXT_PUBLIC_GITHUB_AUTH_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_GITHUB_AUTH_CLIENT_ID }}
-          NEXT_PUBLIC_GITHUB_AUTH_CLIENT_SECERT: ${{ secrets.NEXT_PUBLIC_GITHUB_AUTH_CLIENT_SECERT }}
-          NEXT_PUBLIC_GITHUB_REDIRECT_URI: ${{ secrets.NEXT_PUBLIC_GITHUB_REDIRECT_URI }}
-          NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID }}
-          NEXT_PUBLIC_GOOGLE_AUTH_REDIRECT_URI: ${{ secrets.NEXT_PUBLIC_GOOGLE_AUTH_REDIRECT_URI }}
-          NEXT_PUBLIC_GOOGLE_AUTH_SCOPE: ${{ secrets.NEXT_PUBLIC_GOOGLE_AUTH_SCOPE }}
+      - name: Create .env file
+        run:
+          echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" >> .env
+          echo "NEXT_PUBLIC_GITHUB_AUTH_CLIENT_ID=${{ secrets.NEXT_PUBLIC_GITHUB_AUTH_CLIENT_ID }}" >> .env
+          echo "NEXT_PUBLIC_GITHUB_AUTH_CLIENT_SECERT=${{ secrets.NEXT_PUBLIC_GITHUB_AUTH_CLIENT_SECERT }}" >> .env
+          echo "NEXT_PUBLIC_GITHUB_REDIRECT_URI=${{ secrets.NEXT_PUBLIC_GITHUB_REDIRECT_URI }}" >> .env
+          echo "NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID=${{ secrets.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID }}" >> .env
+          echo "NEXT_PUBLIC_GOOGLE_AUTH_REDIRECT_URI=${{ secrets.NEXT_PUBLIC_GOOGLE_AUTH_REDIRECT_URI }}" >> .env
+          echo "NEXT_PUBLIC_GOOGLE_AUTH_SCOPE=${{ secrets.NEXT_PUBLIC_GOOGLE_AUTH_SCOPE }}" >> .env
 
+      - name: Build project
         run: pnpm build
 
       - name: Install Vercel CLI
