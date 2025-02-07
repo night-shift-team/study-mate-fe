@@ -1,6 +1,7 @@
 import { getRoutePath } from '@/shared/model/getRoutePath';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useEffect } from 'react';
+import { googleSignInApi, nickNameDuplicateCheckApi } from '../api';
 
 export const useAddAuthListener = (
   setIsAuthSucess: Dispatch<SetStateAction<boolean>>
@@ -13,13 +14,24 @@ export const useAddAuthListener = (
 
       const { authData } = event.data;
       if (!authData) return;
+
       console.log('Received authentication code:', authData);
       // 여기서 code를 사용하여 추가적인 처리를 수행합니다.
+      try {
+        // nickNameDuplicateCheckApi('kim').then(res=>{
+        //   console.log("is nickanme kim duplicated?", res)
+        // })
+        googleSignInApi(authData).then((res) =>
+          console.log('googleApiRes', res)
+        );
+      } catch (e: any) {
+        console.log(e);
+      }
       setIsAuthSucess(true);
-      lazyLink = setTimeout(() => {
-        setIsAuthSucess(false);
-        router.push('/solveproblem');
-      }, 1500);
+      // lazyLink = setTimeout(async() => {
+      //   setIsAuthSucess(false);
+      //   router.push('/solve');
+      // }, 1500);
     };
     window.addEventListener('message', messageListener);
     return () => {

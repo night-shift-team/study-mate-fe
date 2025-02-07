@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
           <script>
             if (window.opener) {
               window.opener.postMessage({ authData: "${code}" }, window.location.origin);
-              window.close();
+              // window.close();
             }
           </script>
         </body>

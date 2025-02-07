@@ -10,6 +10,8 @@ import { useAddAuthListener } from '../model/loginInfoListener';
 const Login = () => {
   const windowReference: Window | null = null;
   const [isAuthSuccess, setIsAuthSucess] = useState(false);
+
+  // 인증 response 리스너
   useAddAuthListener(setIsAuthSucess);
 
   const [formData, setFormData] = useState({
