@@ -109,9 +109,21 @@ const Login = () => {
               {LoginButton.map((item) => (
                 <div
                   key={item.id}
-                  onClick={() =>
-                    openNewWindowWithoutDuplicate(windowReference, item.link)
-                  }
+                  onClick={() => {
+                    console.log(process.env.NEXT_PUBLIC_API_URL);
+                    console.log(process.env.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID);
+                    console.log(
+                      process.env.NEXT_PUBLIC_GOOGLE_AUTH_REDIRECT_URI
+                    );
+                    console.log(process.env.NEXT_PUBLIC_GOOGLE_AUTH_SCOPE);
+                    console.log(process.env.NEXT_PUBLIC_GITHUB_AUTH_CLIENT_ID);
+                    console.log(
+                      process.env.NEXT_PUBLIC_GITHUB_AUTH_CLIENT_SECERT
+                    );
+                    console.log(process.env.NEXT_PUBLIC_GITHUB_REDIRECT_URI);
+
+                    openNewWindowWithoutDuplicate(windowReference, item.link);
+                  }}
                   className="flex cursor-pointer flex-col justify-center"
                 >
                   <Image
