@@ -19,7 +19,7 @@ const interceptor = new BatchInterceptor({
 });
 
 // 인터셉터 적용
-interceptor.apply();
+// interceptor.apply();
 
 /**
  * @typedef {(
@@ -33,17 +33,19 @@ interceptor.apply();
  */
 export const _fetchApi = async <T = any>(
   link: string,
-  method: HTTPRequestMethod = 'GET',
-  contentType: ContentType = 'application/json',
-  body?: any
+  method: HTTPRequestMethod,
+  body?: any,
+  contentType?: ContentType
 ): Promise<T> => {
+  contentType = contentType ?? 'application/json';
+
   const options: RequestInit = {
     method,
     headers: {
       'Content-Type': contentType,
     },
   };
-
+  console.log('before', options, contentType);
   switch (method) {
     case 'POST':
     case 'PUT':
@@ -61,54 +63,49 @@ export const _fetchApi = async <T = any>(
   }
 
   try {
-    // 인터셉터를 통한 요청 처리
     const response = await fetch(link, options);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return response.json as unknown as Promise<T>;
+    console.log(response);
+    return response as unknown as Promise<T>;
   } catch (error) {
     console.error('Fetch error:', error);
-    throw error;
+    return new Promise<T>((resolve) => resolve('fail' as T));
   }
 };
 
 // 인터셉터 리스너 설정
-interceptor.on('request', ({ request }) => {
-  console.log('Intercepted request:', request.method, request.url);
-  if (request.url.startsWith('https://api.yourservice.com/')) {
-    const accessToken = localStorage.getItem('accessToken');
-    request.headers.append('Authorization', `Bearer ${accessToken}`);
-  }
+interceptor.on('request', async ({ request }) => {
+  // console.log('Intercepted request:', request.method, request.url);
+  // if (request.url.startsWith(process.env.NEXT_PUBLIC_API_URL!)) {
+  //   const accessToken = localStorage.getItem('accessToken');
+  //   console.log("accessToken", accessToken)
+  //   request.headers.append('Authorization', `Bearer ${accessToken}`);
+  // }
 });
 
 interceptor.on('response', async ({ response }) => {
-  if (!apiDomainUrl) return;
-  console.log('Intercepted response:', response.status);
-
-  //Todo: status(401) = token update
-  // if (status === 401){}
-  const refreshToken = localStorage.getItem('refreshToken');
-  if (refreshToken) {
-    try {
-      const newToken = await updateAccessToken();
-      const data = newToken as unknown as {
-        accessToken: string;
-        refreshToken: string;
-      };
-
-      localStorage.removeItem('accessToken');
-
-      localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
-
-      //Todo: login api(accessToken)
-    } catch (e: any) {
-      console.log(e);
-      window.location.href = '/login?fail';
-    }
-  } else {
-    //Todo: logout -> login api(id,pw)
-    window.location.href = '/login';
-  }
+  // if (!apiDomainUrl) return;
+  // console.log('Intercepted response:', response.status);
+  // //Todo: status(401) = token update
+  // if (response.status === 401){
+  //   const refreshToken = localStorage.getItem('refreshToken');
+  //   if (refreshToken) {
+  //     try {
+  //       const newToken = await updateAccessToken();
+  //       const data = newToken as unknown as {
+  //         accessToken: string;
+  //         refreshToken: string;
+  //       };
+  //       localStorage.removeItem('accessToken');
+  //       localStorage.setItem('accessToken', data.accessToken);
+  //       localStorage.setItem('refreshToken', data.refreshToken);
+  //       //Todo: login api(accessToken)
+  //     } catch (e: any) {
+  //       console.log(e);
+  //       window.location.href = '/login?fail';
+  //     }
+  //   } else {
+  //     //Todo: logout -> login api(id,pw)
+  //     window.location.href = '/login';
+  //   }
+  // }
 });
