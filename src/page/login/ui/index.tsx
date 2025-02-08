@@ -2,17 +2,17 @@
 
 import Logo from '@/assets/logo.png';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LoginButton } from '@/entities';
 import Link from 'next/link';
 import { openNewWindowWithoutDuplicate } from '@/shared/window/model/openWindow';
-import { useAddAuthListener } from '../model/loginInfoListener';
+import { addSocialLoginRedirectDataListener } from '../model/loginInfoListener';
 const Login = () => {
   const windowReference: Window | null = null;
-  const [isAuthSuccess, setIsAuthSucess] = useState(false);
+  const [isAuthSuccess, setIsAuthSuccess] = useState(false);
 
   // 인증 response 리스너
-  useAddAuthListener(setIsAuthSucess);
+  addSocialLoginRedirectDataListener(setIsAuthSuccess);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -32,16 +32,6 @@ const Login = () => {
     try {
       // 여기에 실제 로그인 API 호출 로직 구현
       console.log('로그인 시도:', formData);
-      // const response = await fetch('/api/login', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(formData),
-      // });
-      // if (response.ok) {
-      //   // 로그인 성공 처리
-      // }
     } catch (error) {
       console.error('로그인 에러:', error);
     }
@@ -110,18 +100,6 @@ const Login = () => {
                 <div
                   key={item.id}
                   onClick={() => {
-                    console.log(process.env.NEXT_PUBLIC_API_URL);
-                    console.log(process.env.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID);
-                    console.log(
-                      process.env.NEXT_PUBLIC_GOOGLE_AUTH_REDIRECT_URI
-                    );
-                    console.log(process.env.NEXT_PUBLIC_GOOGLE_AUTH_SCOPE);
-                    console.log(process.env.NEXT_PUBLIC_GITHUB_AUTH_CLIENT_ID);
-                    console.log(
-                      process.env.NEXT_PUBLIC_GITHUB_AUTH_CLIENT_SECERT
-                    );
-                    console.log(process.env.NEXT_PUBLIC_GITHUB_REDIRECT_URI);
-
                     openNewWindowWithoutDuplicate(windowReference, item.link);
                   }}
                   className="flex cursor-pointer flex-col justify-center"

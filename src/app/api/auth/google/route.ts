@@ -4,14 +4,14 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const code = searchParams.get('code');
-    console.log(code);
+
     const html = `
       <html>
         <body>
           <script>
             if (window.opener) {
               window.opener.postMessage({ authData: "${code}" }, window.location.origin);
-              // window.close();
+              window.close();
             }
           </script>
         </body>

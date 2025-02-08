@@ -1,5 +1,6 @@
 type RouteName =
   | 'Home'
+  | 'SolveProblem'
   | 'AdminLogin'
   | 'AdminDashboard'
   | 'AdminManagementUser'
@@ -8,6 +9,7 @@ type RoutePath =
   | '/'
   | '/login'
   | '/signup'
+  | '/solve'
   | '/admin'
   | '/admin/dashboard'
   | '/admin/management/user'
@@ -17,6 +19,8 @@ export const getRoutePath = (routeName: RouteName): RoutePath => {
   switch (routeName) {
     case 'Home':
       return '/';
+    case 'SolveProblem':
+      return '/solve';
     case 'AdminLogin':
       return '/admin';
     case 'AdminDashboard':
