@@ -1,14 +1,18 @@
-import { getRoutePath } from '@/shared/model/getRoutePath';
+'use client';
 import { useRouter } from 'next/navigation';
-import { Dispatch, SetStateAction, useEffect } from 'react';
-import { googleSignInApi, nickNameDuplicateCheckApi } from '../api';
-import { ServerErrorResponse } from '@/shared/api/config';
+import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
+import { GoogleSignInApiRes, googleSignInApi } from '../api';
+import { ServerErrorResponse } from '@/shared/apis/model/config';
 import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
 
 export const addSocialLoginRedirectDataListener = (
   setIsAuthSucess: Dispatch<SetStateAction<boolean>>
 ) => {
   const router = useRouter();
+
+  const navigateToSolve = useCallback(() => {
+    router.push('/solve');
+  }, [router]);
 
   const googleLogin = async (authData: string) => {
     try {
@@ -17,15 +21,19 @@ export const addSocialLoginRedirectDataListener = (
       if (!res.ok) {
         const errData = res.payload as ServerErrorResponse;
         if (errData.ecode === Ecode.E0106) {
-          // EcodeMessage(Ecode.E0106) 토스트
+          EcodeMessage(Ecode.E0106);
+          return;
         }
       }
+      const data = res.payload as GoogleSignInApiRes;
+      localStorage.setItem('accessToken', data.accessToken);
+      localStorage.setItem('refreshToken', data.refreshToken);
     } catch (e: any) {
       console.log(e);
     }
   };
+
   useEffect(() => {
-    let lazyLink: number | NodeJS.Timeout | undefined;
     const messageListener = (event: MessageEvent<any>) => {
       if (event.origin !== window.location.origin) return;
 
@@ -34,17 +42,18 @@ export const addSocialLoginRedirectDataListener = (
 
       console.log('Received authentication code:', authData);
       // 여기서 code를 사용하여 추가적인 처리를 수행합니다.
-
-      setIsAuthSucess(true);
-      // lazyLink = setTimeout(async() => {
-      //   setIsAuthSucess(false);
-      //   router.push('/solve');
-      // }, 1500);
+      googleLogin(authData)
+        .then(() => {
+          setIsAuthSucess(true);
+        })
+        .catch((e) => {
+          console.log(e);
+          router.push('/login');
+        });
     };
     window.addEventListener('message', messageListener);
     return () => {
-      removeEventListener('message', messageListener);
-      clearTimeout(lazyLink);
+      window.removeEventListener('message', messageListener);
     };
   }, []);
 };

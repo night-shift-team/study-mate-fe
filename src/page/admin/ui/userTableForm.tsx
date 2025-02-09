@@ -1,5 +1,5 @@
 'use client';
-import { DialogPopup } from '@/shared/ui/dialogPopup';
+import { DialogPopup } from '@/shared/popUp/ui/dialogPopup';
 import { UserData, UserTableData } from './userTableData';
 import { useState } from 'react';
 

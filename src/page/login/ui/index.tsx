@@ -6,13 +6,22 @@ import { useEffect, useState } from 'react';
 import { LoginButton } from '@/entities';
 import Link from 'next/link';
 import { openNewWindowWithoutDuplicate } from '@/shared/window/model/openWindow';
-import { addSocialLoginRedirectDataListener } from '../model/loginInfoListener';
+import { addSocialLoginRedirectDataListener } from '../model/addSocialLoginResponseListener';
+import { Router } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 const Login = () => {
+  const router = useRouter();
   const windowReference: Window | null = null;
   const [isAuthSuccess, setIsAuthSuccess] = useState(false);
 
   // 인증 response 리스너
   addSocialLoginRedirectDataListener(setIsAuthSuccess);
+
+  useEffect(() => {
+    if (isAuthSuccess) {
+      router.push('/solve');
+    }
+  }, [isAuthSuccess]);
 
   const [formData, setFormData] = useState({
     email: '',

@@ -2,7 +2,7 @@ import React from 'react';
 import Logo from '@/assets/logo.png';
 import Image from 'next/image';
 import RightHeaderComponents from '../model/rightHeader';
-import { getRoutePath } from '@/shared/model/getRoutePath';
+import { getRoutePath } from '@/shared/routes/model/getRoutePath';
 import Link from 'next/link';
 
 const Header = () => {

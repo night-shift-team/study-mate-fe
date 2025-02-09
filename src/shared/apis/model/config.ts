@@ -1,3 +1,4 @@
+import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
 import { BatchInterceptor } from '@mswjs/interceptors';
 import { FetchInterceptor } from '@mswjs/interceptors/fetch';
 import { ok } from 'assert';
@@ -83,9 +84,18 @@ export const _apiFetch = async <T = any>(
 };
 
 // 인터셉터 리스너 설정
-interceptor.on('request', async ({ request }) => {});
+interceptor.on('request', async ({ request }) => {
+  const localStorageToken = localStorage.getItem('accessToken');
+  request.headers.append('Authorization', `Bearer ${localStorageToken}`);
+});
 
-interceptor.on('response', async ({ response }) => {});
+interceptor.on('response', async ({ response }) => {
+  const isEmptyToken = (await response.json()).ecode === Ecode.E0002;
+  if (isEmptyToken) {
+    EcodeMessage(Ecode.E0002);
+    localStorage.removeItem('accessToken');
+  }
+});
 
 export const handleFetchErrors = (error: Error) => {
   if (error.name === 'TypeError') {

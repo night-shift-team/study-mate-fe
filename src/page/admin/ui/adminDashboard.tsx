@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { DetailManagementButton } from './detailManagementButton';
-import { getRoutePath } from '@/shared/model/getRoutePath';
+import { getRoutePath } from '@/shared/routes/model/getRoutePath';
 
 const AdminDashboard = () => {
   return (

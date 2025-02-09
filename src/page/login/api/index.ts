@@ -1,4 +1,4 @@
-import { ApiResponseType, _apiFetch } from '@/shared/api/config';
+import { _apiFetch } from '@/shared/apis/model/config';
 
 const Api_Prefix = '/api/v1/users/';
 
