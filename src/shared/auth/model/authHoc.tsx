@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { ComponentType, useEffect, useState } from 'react';
 
 const LoginHoc = <P extends object>(WrappedComponent: ComponentType<P>) => {
-  return (props: P) => {
+  const HOC = (props: P) => {
     const initialAccessToken =
       typeof window !== 'undefined'
         ? localStorage.getItem('accessToken')
@@ -36,5 +36,7 @@ const LoginHoc = <P extends object>(WrappedComponent: ComponentType<P>) => {
 
     return isLogin ? <WrappedComponent {...props} /> : null;
   };
+  HOC.displayName = `LoginHoc(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+  return HOC;
 };
 export default LoginHoc;
