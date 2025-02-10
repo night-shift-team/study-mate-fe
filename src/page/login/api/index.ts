@@ -28,6 +28,7 @@ export const googleSignInApi = async (code: string) => {
   const body = {
     googleCode: code,
   };
+  console.log('api_Prefix', Api_Prefix + `sign-in/google`);
   return await _apiFetch<GoogleSignInApiRes>(
     'POST',
     Api_Prefix + `sign-in/google`,

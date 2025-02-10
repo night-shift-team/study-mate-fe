@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { DetailManagementButton } from './detailManagementButton';
-import { getRoutePath } from '@/shared/routes/model/getRoutePath';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
 
 const AdminDashboard = () => {
   return (
@@ -50,7 +50,7 @@ const AdminDashboard = () => {
           </button> */}
           <Link
             className="mt-[7%] flex h-[80%] w-[25%]"
-            href={getRoutePath('AdminManagementProblem') + '?crud=create'}
+            href={RouteTo.AdminManagementProblem + '?crud=create'}
           >
             <button className="flex h-full w-full items-center justify-center rounded-2xl bg-[#ECCDB4] text-black shadow-md hover:bg-[#2DBE87] hover:text-white active:scale-[0.97] active:cursor-grabbing active:bg-[#28A374] active:shadow-sm">
               {' '}

@@ -73,11 +73,11 @@ export const _apiFetch = async <T = any>(
   } catch (error: any) {
     // 에러 메시지에 따라 적절히 처리
     if (error instanceof SyntaxError) {
-      console.error('JSON 파싱 에러:', error.message);
+      console.log('JSON 파싱 에러:', error.message);
     } else if (error.name === 'TypeError') {
-      console.error('네트워크 에러 또는 CORS 문제:', error.message);
+      console.log('네트워크 에러 또는 CORS 문제:', error.message);
     } else {
-      console.error('알 수 없는 에러:', error.message);
+      console.log('알 수 없는 에러:', error.message);
     }
     return Promise.reject(error);
   }

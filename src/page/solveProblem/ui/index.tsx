@@ -2,6 +2,8 @@
 import LoginHoc from '@/shared/auth/model/authHoc';
 import Link from 'next/link';
 import { CategoryGridContents } from './categoryGridContents';
+import { userStore } from '@/state/userStore';
+import { useEffect } from 'react';
 
 const SolveProblem = () => {
   return (

@@ -6,7 +6,7 @@ export enum Ecode {
 export const EcodeMessage = (ecode: Ecode) => {
   switch (ecode) {
     case Ecode.E0002:
-      return '로그인 실패';
+      return '토큰 만료';
     case Ecode.E0106:
       return '구글 인증에 실패하였습니다.';
     default:

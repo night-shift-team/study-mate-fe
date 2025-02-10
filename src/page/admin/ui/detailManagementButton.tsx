@@ -1,5 +1,6 @@
 'use client';
 
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { useRouter } from 'next/navigation';
 
 export const DetailManagementButton = ({
@@ -16,9 +17,9 @@ export const DetailManagementButton = ({
       <span>{title}</span>
       <button
         onClick={() => {
-          if (title === '유저 관리') router.push('/admin/management/user');
+          if (title === '유저 관리') router.push(RouteTo.AdminManagementUser);
           else if (title === '문제 관리')
-            router.push('/admin/management/problem');
+            router.push(RouteTo.AdminManagementProblem);
         }}
         className="flex h-[50%] w-fit items-center justify-center rounded-2xl border border-black px-[3%] pt-[0.4%] text-[2vh] font-semibold hover:border-2 hover:border-none hover:border-[#9f8b7a] hover:bg-[#ECCDB4] hover:text-white active:scale-[0.99] active:cursor-grabbing"
       >

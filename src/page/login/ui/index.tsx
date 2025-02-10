@@ -9,17 +9,48 @@ import { openNewWindowWithoutDuplicate } from '@/shared/window/model/openWindow'
 import { addSocialLoginRedirectDataListener } from '../model/addSocialLoginResponseListener';
 import { Router } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { UserLoginApiRes, userLoginApi } from '../api';
+import { ServerErrorResponse } from '@/shared/apis/model/config';
+import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import { userStore } from '@/state/userStore';
+import LoginHoc from '@/shared/auth/model/authHoc';
 const Login = () => {
   const router = useRouter();
   const windowReference: Window | null = null;
   const [isAuthSuccess, setIsAuthSuccess] = useState(false);
 
+  const { user, setUser } = userStore();
   // 인증 response 리스너
   addSocialLoginRedirectDataListener(setIsAuthSuccess);
 
+  const userLogin = async () => {
+    try {
+      const res = await userLoginApi();
+      console.log(res);
+      if (!res.ok) {
+        const errData = res.payload as ServerErrorResponse;
+        if (errData.ecode === Ecode.E0106) {
+          EcodeMessage(Ecode.E0106);
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
+          return;
+        }
+        router.push(RouteTo.Home);
+      }
+      console.log(res.payload);
+      setUser(res.payload as UserLoginApiRes);
+      console.log('udpateUser', userStore.getState().user);
+      router.push(RouteTo.Solve);
+    } catch (e: any) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
+    console.log('auth', isAuthSuccess);
     if (isAuthSuccess) {
-      router.push('/solve');
+      userLogin();
     }
   }, [isAuthSuccess]);
 
@@ -131,4 +162,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginHoc(Login);

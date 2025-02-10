@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 import { GoogleSignInApiRes, googleSignInApi } from '../api';
 import { ServerErrorResponse } from '@/shared/apis/model/config';
 import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
 
 export const addSocialLoginRedirectDataListener = (
   setIsAuthSucess: Dispatch<SetStateAction<boolean>>
@@ -39,12 +40,12 @@ export const addSocialLoginRedirectDataListener = (
       console.log('Received authentication code:', authData);
       // 여기서 code를 사용하여 추가적인 처리를 수행합니다.
       googleLogin(authData)
-        .then((res) => {
+        .then(() => {
           setIsAuthSucess(true);
         })
         .catch((e) => {
           console.log(e);
-          router.push('/login');
+          router.push(RouteTo.Login);
         });
     };
     window.addEventListener('message', messageListener);
