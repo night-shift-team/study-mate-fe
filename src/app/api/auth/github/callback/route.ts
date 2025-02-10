@@ -41,7 +41,8 @@ export async function GET(request: NextRequest) {
 
     const userData = await userResponse.json();
 
-    const escapeHtml = (str: string) => {
+    const escapeHtml = (str: string | null | undefined) => {
+      if (!str) return ''; // null 또는 undefined인 경우 빈 문자열 반환
       return str
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
@@ -153,7 +154,7 @@ function completeLogin() {
     console.log('Stored auth data:', JSON.parse(localStorage.getItem('githubAuthData')));
     
     // URL에 인증 정보를 포함하여 리다이렉트
-    const redirectUrl = '/solveproblem?' + new URLSearchParams({
+    const redirectUrl = '/solve?' + new URLSearchParams({
       code: '${code}',
       state: '${state}'
     }).toString();
@@ -162,7 +163,7 @@ function completeLogin() {
     window.close();
   } catch (error) {
     console.error('Login completion error:', error);
-    window.opener.location.href = '/solveproblem';
+    window.opener.location.href = '/solve';
     window.close();
   }
 }

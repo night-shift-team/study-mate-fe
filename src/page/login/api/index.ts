@@ -7,6 +7,11 @@ export interface GoogleSignInApiRes {
   refreshToken: string;
 }
 
+export interface GitHubSignInApiRes {
+  accessToken: string;
+  refreshToken: string;
+}
+
 export type LoginType = 'LOCAL' | 'GITHUB' | 'KAKAO' | 'NAVER' | 'GOOGLE';
 export type UserStatus = 'ACTIVE' | 'PAUSE' | 'BAN';
 export interface UserLoginApiRes {
@@ -38,4 +43,15 @@ export const googleSignInApi = async (code: string) => {
 export const nickNameDuplicateCheckApi = async (nickname: string) => {
   const query = `?nickname=${nickname}`;
   return await _apiFetch('GET', Api_Prefix + `nickname/duplicate${query}`);
+};
+
+export const githubSigninApi = async (code: string) => {
+  const body = {
+    googleCode: code,
+  };
+  return await _apiFetch<GitHubSignInApiRes>(
+    'POST',
+    Api_Prefix + `sign-in/github`,
+    body
+  );
 };
