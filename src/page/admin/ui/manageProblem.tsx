@@ -3,7 +3,7 @@
 import { RefObject, useEffect, useRef, useState } from 'react';
 
 import { ListPagination } from './manageUser';
-import useHoverEvent from '@/shared/model/useHoverEvent';
+import useHoverEvent from '@/shared/routes/model/useHoverEvent';
 import {
   Select,
   SelectContent,
@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { GoArrowRight } from 'react-icons/go';
-import { DialogPopup } from '@/shared/ui/dialogPopup';
+import { DialogPopup } from '@/shared/popUp/ui/dialogPopup';
 
 type MangeProlemCRUD = 'create' | 'update' | 'delete' | 'read';
 interface InputSelection {

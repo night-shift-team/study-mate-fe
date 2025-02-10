@@ -1,6 +1,6 @@
 'use client';
 import { Dispatch, SetStateAction } from 'react';
-import useOutsideClick from '../model/useOutsideClick';
+import useOutsideClick from '../../routes/model/useOutsideClick';
 
 export const DialogPopup = ({
   open,

@@ -2,15 +2,26 @@
 
 import Logo from '@/assets/logo.png';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LoginButton } from '@/entities';
 import Link from 'next/link';
 import { openNewWindowWithoutDuplicate } from '@/shared/window/model/openWindow';
-import { useAddAuthListener } from '../model/loginInfoListener';
+import { addSocialLoginRedirectDataListener } from '../model/addSocialLoginResponseListener';
+import { Router } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 const Login = () => {
+  const router = useRouter();
   const windowReference: Window | null = null;
-  const [isAuthSuccess, setIsAuthSucess] = useState(false);
-  useAddAuthListener(setIsAuthSucess);
+  const [isAuthSuccess, setIsAuthSuccess] = useState(false);
+
+  // 인증 response 리스너
+  addSocialLoginRedirectDataListener(setIsAuthSuccess);
+
+  useEffect(() => {
+    if (isAuthSuccess) {
+      router.push('/solve');
+    }
+  }, [isAuthSuccess]);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -30,16 +41,6 @@ const Login = () => {
     try {
       // 여기에 실제 로그인 API 호출 로직 구현
       console.log('로그인 시도:', formData);
-      // const response = await fetch('/api/login', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(formData),
-      // });
-      // if (response.ok) {
-      //   // 로그인 성공 처리
-      // }
     } catch (error) {
       console.error('로그인 에러:', error);
     }
@@ -107,9 +108,9 @@ const Login = () => {
               {LoginButton.map((item) => (
                 <div
                   key={item.id}
-                  onClick={() =>
-                    openNewWindowWithoutDuplicate(windowReference, item.link)
-                  }
+                  onClick={() => {
+                    openNewWindowWithoutDuplicate(windowReference, item.link);
+                  }}
                   className="flex cursor-pointer flex-col justify-center"
                 >
                   <Image

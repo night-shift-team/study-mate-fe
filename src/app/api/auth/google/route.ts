@@ -4,7 +4,7 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const code = searchParams.get('code');
-    console.log(code);
+
     const html = `
       <html>
         <body>

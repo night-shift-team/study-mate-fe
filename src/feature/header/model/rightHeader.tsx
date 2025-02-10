@@ -1,5 +1,5 @@
 'use client';
-import { getRoutePath } from '@/shared/model/getRoutePath';
+import { getRoutePath } from '@/shared/routes/model/getRoutePath';
 import { usePathname, useRouter } from 'next/navigation';
 
 const RightHeaderComponents = () => {
