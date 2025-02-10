@@ -10,10 +10,6 @@ export const addSocialLoginRedirectDataListener = (
 ) => {
   const router = useRouter();
 
-  const navigateToSolve = useCallback(() => {
-    router.push('/solve');
-  }, [router]);
-
   const googleLogin = async (authData: string) => {
     try {
       const res = await googleSignInApi(authData);
@@ -43,7 +39,7 @@ export const addSocialLoginRedirectDataListener = (
       console.log('Received authentication code:', authData);
       // 여기서 code를 사용하여 추가적인 처리를 수행합니다.
       googleLogin(authData)
-        .then(() => {
+        .then((res) => {
           setIsAuthSucess(true);
         })
         .catch((e) => {
