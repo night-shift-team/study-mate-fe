@@ -186,10 +186,9 @@ function completeLogin() {
     });
 
     return response;
-
   } catch (error) {
     console.error('GitHub OAuth Error:', error);
-    
+
     return new NextResponse(
       `
       <!DOCTYPE html>
