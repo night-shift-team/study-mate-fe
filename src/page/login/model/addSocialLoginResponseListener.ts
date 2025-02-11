@@ -31,7 +31,6 @@ export const addSocialLoginRedirectDataListener = (
 
   const githubLogin = async (authData: string) => {
     try {
-      // GitHub API 호출로 수정
       const res = await githubSigninApi(authData); // GitHub 전용 API 호출
       console.log('GitHub Login Response:', res);
       if (!res.ok) {

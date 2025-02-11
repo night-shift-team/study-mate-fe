@@ -47,7 +47,7 @@ export const nickNameDuplicateCheckApi = async (nickname: string) => {
 
 export const githubSigninApi = async (code: string) => {
   const body = {
-    googleCode: code,
+    githubCode: code,
   };
   return await _apiFetch<GitHubSignInApiRes>(
     'POST',
