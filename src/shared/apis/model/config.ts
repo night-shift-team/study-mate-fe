@@ -47,40 +47,28 @@ export const _apiFetch = async <T = any>(
   body?: any,
   contentType = 'application/json'
 ): Promise<{ ok: boolean; payload: T | ServerErrorResponse }> => {
-  try {
-    if (!apiDomainUrl) {
-      throw new Error('Domain URL is not defined');
-    }
-    endPoint = apiDomainUrl + endPoint;
-
-    const options: RequestInit = {
-      method,
-      headers: {
-        'Content-Type': contentType,
-      },
-      body: body ? JSON.stringify(body) : undefined,
-    };
-    const response = await fetch(endPoint, options);
-
-    const responseWithData = {
-      ok: response.ok,
-      payload: await response.json(),
-    };
-    if (!response.ok)
-      handleServerErrors(responseWithData.payload as ServerErrorResponse);
-
-    return responseWithData;
-  } catch (error: any) {
-    // 에러 메시지에 따라 적절히 처리
-    if (error instanceof SyntaxError) {
-      console.log('JSON 파싱 에러:', error.message);
-    } else if (error.name === 'TypeError') {
-      console.log('네트워크 에러 또는 CORS 문제:', error.message);
-    } else {
-      console.log('알 수 없는 에러:', error.message);
-    }
-    return Promise.reject(error);
+  if (!apiDomainUrl) {
+    throw new Error('Domain URL is not defined');
   }
+  endPoint = apiDomainUrl + endPoint;
+
+  const options: RequestInit = {
+    method,
+    headers: {
+      'Content-Type': contentType,
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  };
+  const response = await fetch(endPoint, options);
+
+  const responseWithData = {
+    ok: response.ok,
+    payload: await response.json(),
+  };
+  if (!response.ok) {
+    handleServerErrors(responseWithData.payload as ServerErrorResponse);
+  }
+  return responseWithData;
 };
 
 // 인터셉터 리스너 설정
@@ -100,10 +88,13 @@ interceptor.on('response', async ({ response }) => {
 export const handleFetchErrors = (error: Error) => {
   if (error.name === 'TypeError') {
     console.error('Network Error or CORS issue:', error.message);
+    return 'TypeError';
   } else if (error.name === 'AbortError') {
     console.error('Request was aborted:', error.message);
+    return 'AbortError';
   } else {
     console.error('Frontend Error:', error.message);
+    return;
   }
   //로그 관리
 };

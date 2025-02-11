@@ -31,6 +31,20 @@ const RightHeaderComponents = () => {
           </button>
         </>
       );
+    case RouteTo.Solve:
+      return (
+        <>
+          <button
+            className="flex h-fit w-fit items-center justify-center rounded-2xl px-[0.5rem] py-[0.2rem] hover:bg-gray-100 active:cursor-grabbing"
+            onClick={() => {
+              setUser(null);
+              router.push(RouteTo.Login);
+            }}
+          >
+            로그아웃
+          </button>
+        </>
+      );
     default:
       return <></>;
   }

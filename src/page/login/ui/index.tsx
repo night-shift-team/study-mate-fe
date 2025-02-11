@@ -10,15 +10,19 @@ import { addSocialLoginRedirectDataListener } from '../model/addSocialLoginRespo
 import { Router } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { UserLoginApiRes, userLoginApi } from '../api';
-import { ServerErrorResponse } from '@/shared/apis/model/config';
+import {
+  ServerErrorResponse,
+  handleFetchErrors,
+} from '@/shared/apis/model/config';
 import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import { userStore } from '@/state/userStore';
+import { UserStoreStorage, userStore } from '@/state/userStore';
 import LoginHoc from '@/shared/auth/model/authHoc';
 const Login = () => {
   const router = useRouter();
   const windowReference: Window | null = null;
   const [isAuthSuccess, setIsAuthSuccess] = useState(false);
+  const [isLoginSuccess, setIsLoginSuccess] = useState(false);
 
   const { user, setUser } = userStore();
   // 인증 response 리스너
@@ -33,7 +37,7 @@ const Login = () => {
         if (errData.ecode === Ecode.E0106) {
           EcodeMessage(Ecode.E0106);
           localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
+          localStorage.removeItem(UserStoreStorage.userStore);
           return;
         }
         router.push(RouteTo.Home);
@@ -41,9 +45,14 @@ const Login = () => {
       console.log(res.payload);
       setUser(res.payload as UserLoginApiRes);
       console.log('udpateUser', userStore.getState().user);
+      setIsLoginSuccess(true);
       router.push(RouteTo.Solve);
     } catch (e: any) {
-      console.log(e);
+      const error = handleFetchErrors(e);
+      console.log('error', error);
+      if (error === 'TypeError' || error === 'AbortError') {
+        console.log('서버 에러');
+      }
     }
   };
 
@@ -79,7 +88,7 @@ const Login = () => {
 
   return (
     <div className="relative flex h-full w-full items-center justify-center">
-      {isAuthSuccess && (
+      {isLoginSuccess && (
         <div className="absolute z-[1] flex h-[50%] w-[50%] items-center justify-center border border-black bg-white text-[4vh]">
           인증 성공
         </div>

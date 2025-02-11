@@ -7,6 +7,10 @@ interface UserStore {
   setUser: (newUser: UserLoginApiRes | null) => void;
 }
 
+export enum UserStoreStorage {
+  userStore = 'userStore',
+}
+
 export const userStore = create(
   persist<UserStore>(
     (set) => ({
