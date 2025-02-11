@@ -34,12 +34,15 @@ const Login = () => {
       console.log(res);
       if (!res.ok) {
         const errData = res.payload as ServerErrorResponse;
+
         if (errData.ecode === Ecode.E0106) {
           EcodeMessage(Ecode.E0106);
           localStorage.removeItem('accessToken');
           localStorage.removeItem(UserStoreStorage.userStore);
+          setIsLoginSuccess(false);
           return;
         }
+
         router.push(RouteTo.Home);
       }
       console.log(res.payload);
@@ -62,6 +65,12 @@ const Login = () => {
       userLogin();
     }
   }, [isAuthSuccess]);
+
+  useEffect(() => {
+    if (isLoginSuccess) {
+      console.log('Login Success', isLoginSuccess);
+    }
+  }, [isLoginSuccess]);
 
   const [formData, setFormData] = useState({
     email: '',

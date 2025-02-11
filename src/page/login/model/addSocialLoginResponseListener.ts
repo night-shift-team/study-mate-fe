@@ -25,8 +25,10 @@ export const addSocialLoginRedirectDataListener = (
       const data = res.payload as GoogleSignInApiRes;
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
+      setIsAuthSucess(true);
     } catch (e: any) {
       console.log(e);
+      // router.push(RouteTo.Login);
     }
   };
 
@@ -39,14 +41,7 @@ export const addSocialLoginRedirectDataListener = (
 
       console.log('Received authentication code:', authData);
       // 여기서 code를 사용하여 추가적인 처리를 수행합니다.
-      googleLogin(authData)
-        .then(() => {
-          setIsAuthSucess(true);
-        })
-        .catch((e) => {
-          console.log(e);
-          router.push(RouteTo.Login);
-        });
+      googleLogin(authData);
     };
     window.addEventListener('message', messageListener);
     return () => {
