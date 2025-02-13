@@ -36,4 +36,4 @@ const SolveProblem = () => {
     </div>
   );
 };
-export default LoginHoc(SolveProblem);
+export default SolveProblem;

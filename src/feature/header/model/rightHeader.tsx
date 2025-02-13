@@ -1,6 +1,7 @@
 'use client';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { userStore } from '@/state/userStore';
+import { Button, Flex, Heading, Text } from '@chakra-ui/react';
 import { usePathname, useRouter } from 'next/navigation';
 
 const RightHeaderComponents = () => {
@@ -9,33 +10,39 @@ const RightHeaderComponents = () => {
 
   const { setUser } = userStore();
   switch (routePath) {
-    case '/admin/dashboard':
-    case '/admin/management/user':
-    case '/admin/management/problem':
+    case RouteTo.AdminDashboard:
+    case RouteTo.AdminManagementUser:
+    case RouteTo.AdminManagementProblem:
       return (
-        <>
-          <button
-            className="flex h-fit w-fit items-center justify-center rounded-2xl px-[0.5rem] py-[0.2rem] hover:bg-gray-100 active:cursor-grabbing"
+        <Flex gapX={2}>
+          <Button
+            variant={'ghost'}
+            rounded={'2xl'}
+            paddingX={2}
+            className="hover:bg-gray-100 active:cursor-grabbing"
             onClick={() => router.push(RouteTo.AdminDashboard)}
           >
-            관리 대시보드
-          </button>
-          <button
-            className="flex h-fit w-fit items-center justify-center rounded-2xl px-[0.5rem] py-[0.2rem] hover:bg-gray-100 active:cursor-grabbing"
+            <Text fontSize={'sm'}>대시보드</Text>
+          </Button>
+          <Button
+            variant={'ghost'}
+            rounded={'2xl'}
+            paddingX={2}
+            className="px-[0.5rem] py-[0.2rem] hover:bg-gray-100 active:cursor-grabbing"
             onClick={() => {
               setUser(null);
               router.push(RouteTo.Home);
             }}
           >
-            로그아웃
-          </button>
-        </>
+            <Text fontSize={'sm'}>로그아웃</Text>
+          </Button>
+        </Flex>
       );
     case RouteTo.Solve:
       return (
         <>
           <button
-            className="flex h-fit w-fit items-center justify-center rounded-2xl px-[0.5rem] py-[0.2rem] hover:bg-gray-100 active:cursor-grabbing"
+            className="flex h-fit w-fit items-center justify-center rounded-2xl hover:bg-gray-100 active:cursor-grabbing"
             onClick={() => {
               setUser(null);
               router.push(RouteTo.Login);

@@ -5,6 +5,7 @@ import { csQuizQuestions } from '@/entities/test';
 import { ChoiceItem } from '@/feature/level_test/ChoiceItem';
 import { useRouter } from 'next/navigation';
 import { FaArrowRight } from 'react-icons/fa';
+import { IconButton } from '@chakra-ui/react';
 
 const LevelTest = () => {
   const router = useRouter();
@@ -66,9 +67,16 @@ const LevelTest = () => {
         <div className="h-[15vh] w-full">
           <div className="flex w-full items-center justify-between">
             <span>문제. {currentQuestion + 1}</span>{' '}
-            <span className="rounded-lg bg-[#F0EDD4] p-2">
+            {/* <span className="rounded-lg bg-[#F0EDD4] p-2">
               {currentQuestion + 1}/{csQuizQuestions.length}
-            </span>
+            </span> */}
+            <IconButton
+              bgColor={'#F0EDD4'}
+              rounded={'lg'}
+              className="p-2 hover:cursor-auto"
+            >
+              {currentQuestion + 1}/{csQuizQuestions.length}
+            </IconButton>
           </div>
           <div className="p-5">{currentQuiz.question}</div>
         </div>
