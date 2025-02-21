@@ -28,10 +28,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className="h-screen w-screen">
       <body className={`flex h-full w-full font-spoqa antialiased`}>
         <Provider>
-          <div className="fixed flex h-[4rem] w-full px-0 md:px-[4vh]">
+          <div className="fixed z-[100] flex h-[4rem] w-full px-0 md:px-[4vh]">
             <Header />
           </div>
-          <div className="mt-[8vh] flex h-[calc(100%-8vh)] w-full justify-center">
+          <div className="mt-[4rem] flex h-[calc(100%-4rem)] w-full justify-center">
             {children}
           </div>
         </Provider>

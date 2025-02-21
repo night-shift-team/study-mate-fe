@@ -13,24 +13,26 @@ const AdminLoginForm = () => {
   return (
     <form
       onSubmit={adminLogin}
-      className="relative flex h-[70%] max-h-[15rem] w-full flex-col items-center justify-center gap-y-[4%]"
+      className="relative mt-[3rem] flex h-full w-[80%] flex-col items-start gap-y-[0.6rem] md:items-center md:justify-center md:gap-y-[1rem]"
     >
       <input
         placeholder="ID"
-        className="flex h-[25%] w-full rounded-3xl bg-[#d9d9d9] pl-[10%]"
+        className="flex h-[2.6rem] w-full rounded-3xl bg-[#d9d9d9] pl-[10%] md:h-[4rem]"
         required
       ></input>
       <input
         placeholder="Password"
-        className="flex h-[25%] w-full rounded-3xl bg-[#d9d9d9] pl-[10%]"
+        className="flex h-[2.6rem] w-full rounded-3xl bg-[#d9d9d9] pl-[10%] md:h-[4rem]"
         required
       ></input>
-      <button
-        type="submit"
-        className="flex aspect-square w-[20%] items-center justify-center rounded-full bg-[#f0edd4] hover:border-2 hover:border-[#ECCDB4] active:scale-[0.99] active:cursor-grabbing"
-      >
-        <FaArrowRightLong />
-      </button>
+      <div className="mt-[0.5rem] flex w-full items-center justify-center md:mt-[1rem] md:w-[4rem]">
+        <button
+          type="submit"
+          className="flex aspect-square w-[3.5rem] items-center justify-center rounded-full bg-[#f0edd4] hover:border-2 hover:border-[#ECCDB4] active:scale-[0.99] active:cursor-grabbing"
+        >
+          <FaArrowRightLong />
+        </button>
+      </div>
     </form>
   );
 };
