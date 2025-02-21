@@ -4,7 +4,7 @@ import AdminLoginForm from './adminLoginForm';
 
 const Admin = () => {
   return (
-    <div className="flex w-[80rem] min-w-[320px] flex-col items-center justify-center border p-5 md:flex-row md:p-0">
+    <div className="flex w-[80rem] min-w-[320px] flex-col items-center justify-center p-5 md:flex-row md:p-0">
       <div className="flex w-full max-w-[30rem] items-end justify-center md:w-[50%] md:max-w-none md:justify-end md:p-[3rem]">
         <div className="relative flex aspect-square w-[80%] rounded-full border-4 border-[#fafbe7]">
           <div className="flex h-full w-full items-end justify-center">
