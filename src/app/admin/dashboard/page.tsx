@@ -1,4 +1,4 @@
-import NewAdminDashboard from '@/page/admin/ui/newAdminDashboard';
+import NewAdminDashboard from '@/page/adminHomeDashboard/ui/newAdminDashboard';
 
 const AdminDashboardPage = () => {
   return <NewAdminDashboard />;

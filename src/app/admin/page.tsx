@@ -1,4 +1,4 @@
-import Admin from '@/page/admin/ui';
+import Admin from '@/page/adminHomeDashboard/ui';
 
 const AdminPage = () => {
   return <Admin />;
