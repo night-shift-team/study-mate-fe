@@ -25,12 +25,12 @@ export const CategoryGridContents = ({
       href={`/solve/${title}`}
     >
       <div
-        className={`flex aspect-square h-full flex-col rounded-[2rem] p-[5%] ${bgColor()} z-[1] items-center justify-center`}
+        className={`aspect-square flex h-full flex-col rounded-[2rem] p-[5%] ${bgColor()} z-[1] items-center justify-center`}
       >
         <span className="flex whitespace-pre-wrap text-center">{title}</span>
         <span>{`(${count})`}</span>
       </div>
-      <div className="absolute left-[3%] top-[3%] flex aspect-square h-full rounded-[2rem] bg-[#D9D9D9]" />
+      <div className="aspect-square absolute left-[3%] top-[3%] flex h-full rounded-[2rem] bg-[#D9D9D9]" />
     </Link>
   );
 };

@@ -37,7 +37,7 @@ const NewAdminDashboard = () => {
       <span className="flex text-sm">
         유저 및 문제 관리 대시보드를 선택하세요.
       </span>
-      <div className="mt-4 flex h-[75%] w-full flex-col gap-5 px-[2rem] py-[0.5rem]">
+      <div className="relative mt-4 flex h-[75%] w-full max-w-[45rem] flex-col items-center px-[2rem] py-[0.5rem] md:flex-row md:items-start md:justify-center">
         <DashboardCard data={UserDashboardCardData} />
         <DashboardCard data={ProblemDashboardCardData} />
       </div>
@@ -48,7 +48,9 @@ export default NewAdminDashboard;
 
 const DashboardCard = ({ data }: { data: DashboardCardProps }) => {
   return (
-    <div className="box-shadow-sm flex h-[50%] w-full flex-col items-center justify-center gap-1 border">
+    <div
+      className={`box-shadow-sm absolute flex aspect-1 h-[48%] w-[60%] min-w-[20rem] p-5 md:w-[48%] md:p-0 ${data.id === 1 ? 'top-0 md:left-0' : 'bottom-0 md:right-0 md:top-0'} flex-col items-center justify-center gap-1 border`}
+    >
       <div className="flex h-[2.5rem] w-[2.5rem] rounded-full bg-[#dddddd] p-2">
         {data.id === 1 ? (
           <PiUsersThreeFill size={'100%'} />

@@ -28,7 +28,7 @@ const AdminLoginForm = () => {
       <div className="mt-[0.5rem] flex w-full items-center justify-center md:mt-[1rem] md:w-[4rem]">
         <button
           type="submit"
-          className="flex aspect-square w-[3.5rem] items-center justify-center rounded-full bg-[#f0edd4] hover:border-2 hover:border-[#ECCDB4] active:scale-[0.99] active:cursor-grabbing"
+          className="aspect-square flex w-[3.5rem] items-center justify-center rounded-full bg-[#f0edd4] hover:border-2 hover:border-[#ECCDB4] active:scale-[0.99] active:cursor-grabbing"
         >
           <FaArrowRightLong />
         </button>
