@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import type { Config } from 'tailwindcss';
 
 module.exports = {
@@ -62,5 +63,9 @@ module.exports = {
       },
     },
   },
-  plugins: [require('tailwind-scrollbar-hide'), require('tailwindcss-animate')],
+  plugins: [
+    require('tailwind-scrollbar-hide'),
+    require('tailwindcss-animate'),
+    require('@tailwindcss/aspect-ratio'),
+  ],
 } satisfies Config;
