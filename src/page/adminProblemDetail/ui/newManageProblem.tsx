@@ -4,6 +4,7 @@ import { LuArrowDownUp } from 'react-icons/lu';
 import { IoSearch } from 'react-icons/io5';
 import { csQuizQuestions, QuizQuestion } from '@/entities/test';
 import ProblemPagination from './problemPagination';
+import MarkdownComponent from '@/shared/markdown/ui/showMarkdownData';
 
 type CurrentFilter = '최신 순' | '오래된 순';
 
@@ -13,6 +14,15 @@ const NewManageProlem = () => {
   const [selectedProblem, setSelectedProblem] = useState<QuizQuestion | null>(
     null
   );
+  const [markdown, _] = useState(`
+### Heading 3  
+#### Heading 4  
+_italic_ and **bold**
+> 아
+- List item 1
+
+[Click here](https://example.com)
+`);
 
   const [currentPage, setCurrentPage] = useState(1);
   const LAST_PAGE = 10;
@@ -80,8 +90,8 @@ const NewManageProlem = () => {
           <span className="text-lg font-bold">Title</span>
           <span className="mt-2 text-xs">{selectedProblem?.question}</span>
           <span className="mt-4 text-lg font-bold">Contents</span>
-          <div className="h-[60%] w-full border border-black">
-            {'//TODO: MarkDown insert'}
+          <div className="h-[60%] w-full border border-black bg-white">
+            <MarkdownComponent markdown={markdown} />
           </div>
           <div className="absolute bottom-4 left-0 flex w-full justify-center">
             <span className="flex items-center justify-center rounded-xl px-3 pb-1 pt-2 text-sm hover:bg-gray-100 hover:underline">

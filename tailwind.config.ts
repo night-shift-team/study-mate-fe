@@ -67,5 +67,6 @@ module.exports = {
     require('tailwind-scrollbar-hide'),
     require('tailwindcss-animate'),
     require('@tailwindcss/aspect-ratio'),
+    require('@tailwindcss/typography'),
   ],
 } satisfies Config;
