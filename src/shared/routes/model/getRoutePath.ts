@@ -6,4 +6,5 @@ export enum RouteTo {
   AdminDashboard = '/admin/dashboard',
   AdminManagementUser = '/admin/management/user',
   AdminManagementProblem = '/admin/management/problem',
+  AdminManagementProblemDetail = '/admin/management/problem/detail',
 }

@@ -37,10 +37,10 @@ const MarkdownComponent = ({ markdown }: { markdown: string }) => {
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <div className="editor-container">
+      <div className="h-full w-full">
         <RichTextPlugin
           contentEditable={
-            <ContentEditable className="editor-input prose prose-lg focus:outline-none" />
+            <ContentEditable className="editor-input prose prose-lg min-w-full focus:outline-none" />
           }
           placeholder={<div>Enter some text...</div>}
           ErrorBoundary={LexicalErrorBoundary}

@@ -5,6 +5,8 @@ import { IoSearch } from 'react-icons/io5';
 import { csQuizQuestions, QuizQuestion } from '@/entities/test';
 import ProblemPagination from './problemPagination';
 import MarkdownComponent from '@/shared/markdown/ui/showMarkdownData';
+import Link from 'next/link';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
 
 type CurrentFilter = '최신 순' | '오래된 순';
 
@@ -94,9 +96,20 @@ _italic_ and **bold**
             <MarkdownComponent markdown={markdown} />
           </div>
           <div className="absolute bottom-4 left-0 flex w-full justify-center">
-            <span className="flex items-center justify-center rounded-xl px-3 pb-1 pt-2 text-sm hover:bg-gray-100 hover:underline">
+            <Link
+              href={{
+                pathname: RouteTo.AdminManagementProblemDetail,
+                query: {
+                  id: problemList[0].id,
+                  title: problemList[0].question,
+                  descr: problemList[0].explanation,
+                  markdown: markdown,
+                },
+              }}
+              className="flex items-center justify-center rounded-xl px-3 pb-1 pt-2 text-sm hover:bg-gray-100 hover:underline"
+            >
               자세히 보기
-            </span>
+            </Link>
           </div>
         </div>
       </div>
