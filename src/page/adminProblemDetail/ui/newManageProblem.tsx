@@ -1,99 +1,84 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LuArrowDownUp } from 'react-icons/lu';
 import { IoSearch } from 'react-icons/io5';
-import {
-  PaginationNext,
-  Pagination,
-  PaginationPrevious,
-  PaginationEllipsis,
-  PaginationContent,
-} from '@/components/ui/pagination';
+import { csQuizQuestions, QuizQuestion } from '@/entities/test';
 import ProblemPagination from './problemPagination';
 
 type CurrentFilter = '최신 순' | '오래된 순';
 
-const ProblemList = [
-  { id: 1, title: '문제1', date: '2023-01-01' },
-  { id: 2, title: '문제2', date: '2023-01-02' },
-  { id: 3, title: '문제3', date: '2023-01-03' },
-  { id: 4, title: '문제4', date: '2023-01-04' },
-  { id: 5, title: '문제5', date: '2023-01-05' },
-];
 const NewManageProlem = () => {
-  const [problemList, setProblemList] = useState(
-    ProblemList ?? Array.from({ length: 5 })
-  );
+  const [problemList, setProblemList] = useState(csQuizQuestions);
   const [currentFilter, setCurrentFilter] = useState<CurrentFilter>('최신 순');
-  const [selectedProblem, setSelectedProblem] = useState<number | null>(null);
+  const [selectedProblem, setSelectedProblem] = useState<QuizQuestion | null>(
+    null
+  );
 
   const [currentPage, setCurrentPage] = useState(1);
   const LAST_PAGE = 10;
   return (
-    <div className="relative flex h-full w-full flex-col overflow-y-auto p-4 scrollbar-hide">
-      <span className="flex w-full justify-center text-[1.4rem]">
-        문제 관리
-      </span>
-      <span className="absolute left-4 top-3 flex w-20 items-center justify-center whitespace-nowrap rounded-xl border bg-gray-200 p-2 text-sm">
+    <div className="relative flex h-full w-full flex-col overflow-y-auto p-4 scrollbar-hide md:flex-row md:gap-6 md:p-10 md:pb-20">
+      <span className="absolute left-4 right-10 top-3 flex w-20 items-center justify-center whitespace-nowrap rounded-xl border bg-gray-200 p-2 text-sm md:left-auto md:top-4">
         문제 생성
       </span>
-      <div className="mt-8 flex w-full flex-col">
-        <div className="flex w-full justify-between">
+      <div className="mt-4 flex w-full flex-col md:w-[60%]">
+        <span className="flex w-full justify-center text-[1.4rem]">
+          문제 관리
+        </span>
+        <div className="mt-4 flex w-full justify-between">
           <ProblemFilterComponent />
           <ProblemSearchComponent />
         </div>
-        {ProblemList.map((problem, index) => {
-          return (
-            <div
-              key={index}
-              className="mt-2 flex h-[2.5rem] w-full items-center justify-between rounded-xl border bg-gray-300 p-1.5 px-3"
-              onClick={(e) => {
-                setSelectedProblem(problem.id);
-              }}
-            >
-              <span className="hover:cursor-pointer hover:underline">
-                {problem.id} {problem.title} {problem.date}
-              </span>
-              <div className="flex h-full w-20 gap-1 text-xs">
-                <div
-                  className="flex h-full w-1/2 items-center justify-center rounded-md border border-black hover:cursor-pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    console.log('child');
-                  }}
-                >
-                  수정
-                </div>
-                <div
-                  className="flex h-full w-1/2 items-center justify-center rounded-md border border-black hover:cursor-pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                >
-                  삭제
+        <div className="mt-2 flex h-[15rem] w-full flex-shrink-0 flex-col overflow-auto scrollbar-hide md:h-[60vh]">
+          {problemList.map((problem, index) => {
+            return (
+              <div
+                key={index}
+                className="box-shadow-sm mt-2 flex h-[2.5rem] w-full flex-shrink-0 items-center justify-between rounded-xl border bg-gray-300 p-1.5 px-3 shadow-sm transition-shadow duration-300 ease-in-out hover:shadow-md md:mt-3 md:h-[2.8rem]"
+                onClick={(e) => {
+                  setSelectedProblem(problem);
+                }}
+              >
+                <span className="px-1 text-xs hover:cursor-pointer hover:underline md:text-base">
+                  {problem.id}. {problem.question}
+                </span>
+                <div className="flex h-full w-20 flex-shrink-0 gap-1 text-xs">
+                  <div
+                    className="flex h-full w-1/2 items-center justify-center rounded-md border border-black hover:cursor-pointer hover:bg-gray-200"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      console.log('child');
+                    }}
+                  >
+                    수정
+                  </div>
+                  <div
+                    className="flex h-full w-1/2 items-center justify-center rounded-md border border-black hover:cursor-pointer hover:bg-gray-200"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    삭제
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
         <div className="mt-4 flex w-full justify-center">
           <ProblemPagination
             data={{ currentPage, LAST_PAGE, setCurrentPage }}
           />
         </div>
       </div>
-      <div className="flex w-full flex-col">
+      <div className="flex w-full flex-col md:w-[40%]">
         <span className="mt-8 flex w-full justify-center text-[1.4rem]">
           {' '}
           Preview
         </span>
-        <div className="relative mt-4 flex h-[33rem] w-full flex-col rounded-2xl bg-gray-200 p-6">
+        <div className="relative mt-4 flex min-h-[33rem] w-full flex-col rounded-2xl bg-gray-200 p-6 md:h-full">
           <span className="text-lg font-bold">Title</span>
-          <span className="mt-2 text-xs">
-            {
-              '다음 중 객체지향 프로그래밍의 4가지 주요 특징에 포함되지 않는 것은?'
-            }
-          </span>
+          <span className="mt-2 text-xs">{selectedProblem?.question}</span>
           <span className="mt-4 text-lg font-bold">Contents</span>
           <div className="h-[60%] w-full border border-black">
             {'//TODO: MarkDown insert'}
@@ -113,9 +98,23 @@ export default NewManageProlem;
 const ProblemSearchComponent = () => {
   const [searchText, setSearchText] = useState('');
 
+  const handleSearchTextEnter = (
+    e: React.KeyboardEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
+  ) => {
+    if (e.type === 'click' || ('key' in e && e.key === 'Enter')) {
+      //TODO: 검색 api 호출
+      console.log(searchText);
+    }
+  };
+
   return (
     <div className="flex h-8 w-36 items-center overflow-y-auto scrollbar-hide">
-      <div className="flex aspect-1 h-full justify-center rounded-md border-2">
+      <div
+        className="flex aspect-1 h-full justify-center rounded-md border-2 hover:cursor-pointer active:cursor-grabbing"
+        onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+          handleSearchTextEnter(e);
+        }}
+      >
         <IoSearch className="aspect-1 h-full" />
       </div>
       <input
@@ -123,6 +122,7 @@ const ProblemSearchComponent = () => {
         placeholder="문제 검색"
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}
+        onKeyDown={handleSearchTextEnter}
         className="h-full w-full rounded-md border-2 px-1 text-xs"
       />
     </div>

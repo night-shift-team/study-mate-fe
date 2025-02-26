@@ -517,7 +517,7 @@ const ManageProblem = () => {
             </div>
             {manageProblemCRUD !== 'read' && (
               <button
-                className="aspect-square z-[5] mt-[1%] flex h-[9%] flex-col items-center justify-center whitespace-pre-wrap rounded-full border border-black bg-white"
+                className="z-[5] mt-[1%] flex aspect-1 h-[9%] flex-col items-center justify-center whitespace-pre-wrap rounded-full border border-black bg-white"
                 onClick={(e) => {
                   console.log('onClick', e.currentTarget.form?.checkValidity());
                   if (!e.currentTarget.form?.checkValidity()) return;
