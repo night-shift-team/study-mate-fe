@@ -14,6 +14,7 @@
     "@chakra-ui/react": "^3.8.0",
     "@emotion/react": "^11.14.0",
     "@lexical/code": "^0.25.0",
+    "@lexical/html": "^0.25.0",
     "@lexical/link": "^0.25.0",
     "@lexical/list": "^0.25.0",
     "@lexical/markdown": "^0.25.0",

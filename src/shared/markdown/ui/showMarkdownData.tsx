@@ -37,7 +37,7 @@ const MarkdownComponent = ({ markdown }: { markdown: string }) => {
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <div className="h-full w-full">
+      <div className="h-full w-full overflow-hidden">
         <RichTextPlugin
           contentEditable={
             <ContentEditable className="editor-input prose prose-lg min-w-full focus:outline-none" />

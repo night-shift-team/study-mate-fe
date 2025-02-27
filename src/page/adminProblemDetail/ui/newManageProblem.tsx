@@ -23,7 +23,42 @@ _italic_ and **bold**
 > 아
 - List item 1
 
-[Click here](https://example.com)
+[새 탭에서 열기](https://www.google.com/){:target="_blank"}
+### Heading 3  
+#### Heading 4  
+_italic_ and **bold**
+> 아
+- List item 1
+
+[새 탭에서 열기](https://www.google.com/){:target="_blank"}
+### Heading 3  
+#### Heading 4  
+_italic_ and **bold**
+> 아
+- List item 1
+
+[새 탭에서 열기](https://www.google.com/){:target="_blank"}
+### Heading 3  
+#### Heading 4  
+_italic_ and **bold**
+> 아
+- List item 1
+
+[새 탭에서 열기](https://www.google.com/){:target="_blank"}
+### Heading 3  
+#### Heading 4  
+_italic_ and **bold**
+> 아
+- List item 1
+
+[새 탭에서 열기](https://www.google.com/){:target="_blank"}
+### Heading 3  
+#### Heading 4  
+_italic_ and **bold**
+> 아
+- List item 1
+
+[새 탭에서 열기](https://www.google.com/){:target="_blank"}
 `);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -51,7 +86,7 @@ _italic_ and **bold**
                   setSelectedProblem(problem);
                 }}
               >
-                <span className="px-1 text-xs hover:cursor-pointer hover:underline md:text-base">
+                <span className="overflow-hidden text-ellipsis whitespace-nowrap px-1 text-xs hover:cursor-pointer hover:underline md:text-base">
                   {problem.id}. {problem.question}
                 </span>
                 <div className="flex h-full w-20 flex-shrink-0 gap-1 text-xs">
@@ -88,11 +123,13 @@ _italic_ and **bold**
           {' '}
           Preview
         </span>
-        <div className="relative mt-4 flex min-h-[33rem] w-full flex-col rounded-2xl bg-gray-200 p-6 md:h-full">
+        <div className="relative mt-4 flex max-h-[33rem] w-full flex-col rounded-2xl bg-gray-200 p-6 md:h-full">
           <span className="text-lg font-bold">Title</span>
-          <span className="mt-2 text-xs">{selectedProblem?.question}</span>
+          <span className="mt-2 overflow-hidden text-ellipsis whitespace-nowrap text-xs">
+            {selectedProblem?.question}
+          </span>
           <span className="mt-4 text-lg font-bold">Contents</span>
-          <div className="h-[60%] w-full border border-black bg-white">
+          <div className="h-[70%] w-full border border-black bg-white">
             <MarkdownComponent markdown={markdown} />
           </div>
           <div className="absolute bottom-4 left-0 flex w-full justify-center">

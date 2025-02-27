@@ -1,6 +1,7 @@
 'use client';
 import { FaArrowRightLong } from 'react-icons/fa6';
 import { useRouter } from 'next/navigation';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
 
 const AdminLoginForm = () => {
   const router = useRouter();
@@ -8,7 +9,7 @@ const AdminLoginForm = () => {
   const adminLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('hi');
-    router.push('/admin/dashboard');
+    router.push(RouteTo.AdminDashboard);
   };
   return (
     <form
