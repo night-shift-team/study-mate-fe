@@ -1,0 +1,36 @@
+import React, { createContext, ReactNode, useContext } from 'react';
+import { UpdateProblemProps } from '../ui/updateProblem';
+interface UpdateProblemContextType {
+  updateProblemInfo: UpdateProblemProps;
+  setUpdateProblemInfo: React.Dispatch<
+    React.SetStateAction<UpdateProblemProps>
+  >;
+  children?: ReactNode;
+}
+
+export const UpdateProblemContext =
+  createContext<UpdateProblemContextType | null>(null);
+
+export const UpdateProblemProvider = ({
+  updateProblemInfo,
+  setUpdateProblemInfo,
+  children,
+}: UpdateProblemContextType) => {
+  return (
+    <UpdateProblemContext.Provider
+      value={{ updateProblemInfo, setUpdateProblemInfo }}
+    >
+      {children}
+    </UpdateProblemContext.Provider>
+  );
+};
+
+export const useUpdateProblem = () => {
+  const context = useContext(UpdateProblemContext);
+  if (!context) {
+    throw new Error(
+      'useUpdateProblem must be used within a UpdateProblemProvider'
+    );
+  }
+  return context;
+};

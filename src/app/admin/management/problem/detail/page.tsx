@@ -1,4 +1,4 @@
-import ProblemDetail from '@/page/adminProblemDetail/ui/problemDetail';
+import ProblemDetail from '@/page/adminProblem/ui/problemDetail';
 
 export interface ProblemDetailPageProps {
   id: number;

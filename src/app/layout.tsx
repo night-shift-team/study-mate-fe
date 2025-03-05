@@ -26,7 +26,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="h-screen w-screen">
-      <body className={`flex h-full w-full font-spoqa antialiased`}>
+      <body
+        id="root-container"
+        className={`flex h-full w-full font-spoqa antialiased`}
+      >
         <Provider>
           <div className="fixed z-[100] flex h-[4rem] w-full px-0 md:px-[4vh]">
             <Header />
