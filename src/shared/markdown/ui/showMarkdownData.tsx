@@ -1,10 +1,4 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
@@ -17,12 +11,12 @@ import { ListNode, ListItemNode } from '@lexical/list';
 import { CodeNode } from '@lexical/code';
 import { LinkNode } from '@lexical/link';
 import {
-  $createRangeSelection,
-  $getSelection,
-  $setSelection,
+  $getRoot,
+  COMMAND_PRIORITY_CRITICAL,
   EditorState,
   EditorThemeClasses,
-  RangeSelection,
+  INSERT_LINE_BREAK_COMMAND,
+  KEY_ENTER_COMMAND,
 } from 'lexical';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 
@@ -35,11 +29,14 @@ const MarkdownComponent = ({
   editable?: boolean;
   setMarkdown?: Dispatch<SetStateAction<string>>;
 }) => {
+  console.log('inmarkdown', markdown);
+
   const theme: EditorThemeClasses = {
     text: {
-      bold: 'font-semibold', // tailwind class
-      italic: 'italic', //tailwind class
+      bold: 'font-semibold',
+      italic: 'italic',
     },
+    paragraph: 'whitespace-pre-wrap',
   };
   const initialConfig = {
     namespace: 'markdown-editor',
@@ -51,7 +48,11 @@ const MarkdownComponent = ({
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <EditorContainer markdown={markdown} editable={editable} />
+      <EditorContainer
+        markdown={markdown}
+        editable={editable}
+        setMarkdown={setMarkdown}
+      />
     </LexicalComposer>
   );
 };
@@ -65,21 +66,37 @@ const EditorContainer = ({
   editable?: boolean;
   setMarkdown?: Dispatch<SetStateAction<string>>;
 }) => {
+  const [editor] = useLexicalComposerContext();
   const onChange = (editorState: EditorState) => {
     editorState.read(() => {
-      const markdown = $convertToMarkdownString(TRANSFORMERS);
+      const root = $getRoot();
       if (setMarkdown) {
-        setMarkdown(markdown);
+        console.log('transformer');
+        const newMarkdown =
+          root.getChildrenSize() === 0
+            ? ''
+            : $convertToMarkdownString(TRANSFORMERS);
+        setMarkdown((prevMarkdown) =>
+          prevMarkdown !== newMarkdown ? newMarkdown : prevMarkdown
+        );
+        console.log(newMarkdown);
       }
     });
   };
-  const LexicalErrorBoundary = ({
-    children,
-  }: {
-    children: React.ReactNode;
-  }) => {
-    return children;
-  };
+
+  useEffect(() => {
+    return editor.registerCommand(
+      KEY_ENTER_COMMAND,
+      (event) => {
+        if (event && event.shiftKey) {
+          editor.dispatchCommand(INSERT_LINE_BREAK_COMMAND, true);
+          return true;
+        }
+        return false;
+      },
+      COMMAND_PRIORITY_CRITICAL
+    );
+  }, [editor]);
 
   return (
     <div className="h-full w-full overflow-hidden">
@@ -87,12 +104,11 @@ const EditorContainer = ({
         contentEditable={
           <ContentEditable className="editor-input prose prose-lg min-w-full !border-none !p-4 focus:outline-none" />
         }
-        placeholder={<div>Enter some text...</div>}
-        ErrorBoundary={LexicalErrorBoundary}
+        placeholder={<div></div>}
+        ErrorBoundary={({ children }) => children}
       />
       <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
       <OnChangePlugin onChange={onChange} />
-      <SelectionPlugin editable={editable} />
       <MarkdownContent markdown={markdown} />
     </div>
   );
@@ -103,6 +119,8 @@ const MarkdownContent = ({ markdown }: { markdown: string }) => {
 
   useEffect(() => {
     editor.update(() => {
+      const root = $getRoot();
+      console.log('root', root.getChildrenSize());
       $convertFromMarkdownString(markdown, TRANSFORMERS);
     });
   }, [editor, markdown]);
@@ -110,34 +128,4 @@ const MarkdownContent = ({ markdown }: { markdown: string }) => {
   return null;
 };
 
-const SelectionPlugin = ({ editable }: { editable?: boolean }) => {
-  if (!editable) return;
-  const [editor] = useLexicalComposerContext();
-
-  useEffect(() => {
-    return editor.registerUpdateListener(({ editorState }) => {
-      editorState.read(() => {
-        const selection = $getSelection() as RangeSelection;
-        if (selection && selection.isCollapsed() && !editor._editable) {
-          editor.update(() => {
-            const currentSelection = $createRangeSelection();
-            currentSelection.anchor.set(
-              selection.anchor.key,
-              selection.anchor.offset,
-              selection.anchor.type
-            );
-            currentSelection.focus.set(
-              selection.focus.key,
-              selection.focus.offset,
-              selection.focus.type
-            );
-            $setSelection(currentSelection);
-          });
-        }
-      });
-    });
-  }, [editor]);
-
-  return null;
-};
 export default MarkdownComponent;
