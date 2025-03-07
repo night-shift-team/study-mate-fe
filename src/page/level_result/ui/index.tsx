@@ -1,10 +1,11 @@
 'use client';
 
-import { Suspense } from 'react'; // Suspense import 추가
+import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { DonutChart } from '@/feature/charts/DonutChart';
 import Item from '@/feature/level_result/Item';
 import { csQuizQuestions } from '@/entities/test';
+import Popup from '@/feature/level_result/popup';
 
 const ResultContent = () => {
   const searchParams = useSearchParams();
@@ -27,6 +28,30 @@ const ResultContent = () => {
     { name: 'incorrect', value: incorrectCount },
   ];
 
+  const [popup, setPopup] = useState(false);
+  const [selectedQuestion, setSelectedQuestion] = useState<null | {
+    index: number;
+    userAnswer: number | null;
+    correctAnswer: number;
+    explanation: string;
+  }>(null);
+
+  const handleOpenPopup = (index: number, userAnswer: number | null) => {
+    const question = csQuizQuestions[index];
+    setSelectedQuestion({
+      index,
+      userAnswer,
+      correctAnswer: question.correctAnswer,
+      explanation: question.explanation,
+    });
+    setPopup(true);
+  };
+
+  const handleClosePopup = () => {
+    setPopup(false);
+    setSelectedQuestion(null);
+  };
+
   return (
     <div className="flex w-full max-w-[700px] flex-col items-center justify-around gap-6 rounded-2xl bg-white p-3 shadow-[0_8px_30px_rgb(0,0,0,0.06)] sm:flex-row">
       <div className="flex w-[100%] flex-col items-center space-y-4">
@@ -48,16 +73,27 @@ const ResultContent = () => {
 
       <div className="flex w-[100%] flex-col space-y-4">
         <span className="text-lg font-semibold text-gray-700">문제풀이</span>
-        <div className="grid h-[40vh] grid-cols-1 gap-2 overflow-y-scroll rounded-lg border border-gray-200 bg-gray-50 p-3 shadow-inner sm:grid-cols-2">
+        <div className="scrollbar-none grid h-[40vh] grid-cols-1 gap-2 overflow-y-scroll rounded-lg border border-gray-200 bg-gray-200 p-3 shadow-inner sm:grid-cols-2">
           {csQuizQuestions.map((item, index) => (
             <Item
               key={index}
               index={index}
-              userAnswer={userAnswers[index] ?? null}
+              userAnswer={userAnswers[index] ?? null} // 유저의 답변 전달
+              onClick={() => handleOpenPopup(index, userAnswers[index] ?? null)} // 유저 답변 전달
             />
           ))}
         </div>
       </div>
+
+      {popup && selectedQuestion && (
+        <Popup
+          index={selectedQuestion.index}
+          userAnswer={selectedQuestion.userAnswer}
+          correctAnswer={selectedQuestion.correctAnswer}
+          explanation={selectedQuestion.explanation}
+          onClose={handleClosePopup}
+        />
+      )}
     </div>
   );
 };
