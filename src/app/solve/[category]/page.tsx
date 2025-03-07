@@ -1,4 +1,4 @@
-import Problem from '@/page/solveProblem/ui/problem';
+import Problem from '@/page/solve/ui/problem';
 
 const ProblemPage = async ({
   params,

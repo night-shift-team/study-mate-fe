@@ -1,5 +1,5 @@
 'use client';
-import SolveProblem from '@/page/solveProblem/ui';
+import SolveProblem from '@/page/solve/ui';
 import { useSearchParams } from 'next/navigation';
 
 const SolveProblemPage = () => {
