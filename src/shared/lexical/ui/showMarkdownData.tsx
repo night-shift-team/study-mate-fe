@@ -19,6 +19,7 @@ import {
   KEY_ENTER_COMMAND,
 } from 'lexical';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
+import { CustomLinkNode } from '../model/extendLinkNode';
 
 const MarkdownComponent = ({
   markdown,
@@ -119,8 +120,6 @@ const MarkdownContent = ({ markdown }: { markdown: string }) => {
 
   useEffect(() => {
     editor.update(() => {
-      const root = $getRoot();
-      console.log('root', root.getChildrenSize());
       $convertFromMarkdownString(markdown, TRANSFORMERS);
     });
   }, [editor, markdown]);

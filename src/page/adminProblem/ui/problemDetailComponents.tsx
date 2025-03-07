@@ -1,4 +1,4 @@
-import MarkdownComponent from '@/shared/markdown/ui/showMarkdownData';
+import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
 import { IconType } from 'react-icons/lib';
 
 export const TitleBox = ({ title }: { title: string }) => {

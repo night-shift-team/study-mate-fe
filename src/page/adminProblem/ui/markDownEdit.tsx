@@ -1,4 +1,4 @@
-import MarkdownComponent from '@/shared/markdown/ui/showMarkdownData';
+import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
 import { useLayoutEffect, useRef, useState } from 'react';
 
 const ContentsMarkDown = ({ markdown }: { markdown: string }) => {
@@ -14,10 +14,7 @@ const ContentsMarkDown = ({ markdown }: { markdown: string }) => {
   };
   useLayoutEffect(() => {
     updateHeight();
-  }, []);
-  useLayoutEffect(() => {
-    updateHeight();
-  }, [updateMarkdown]);
+  }, [updateMarkdown, textareaHeight]);
 
   return (
     <div className="flex min-h-80 w-full flex-shrink-0 flex-col rounded-2xl border md:flex-row">

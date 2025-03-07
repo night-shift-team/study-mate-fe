@@ -4,7 +4,7 @@ import { LuArrowDownUp } from 'react-icons/lu';
 import { IoSearch } from 'react-icons/io5';
 import { csQuizQuestions, QuizQuestion } from '@/entities/test';
 import ProblemPagination from './problemPagination';
-import MarkdownComponent from '@/shared/markdown/ui/showMarkdownData';
+import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 

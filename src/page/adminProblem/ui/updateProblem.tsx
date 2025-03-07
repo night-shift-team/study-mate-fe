@@ -1,10 +1,10 @@
 'use client';
 import { createListCollection, Select } from '@chakra-ui/react';
 import { ProblemDetailPageProps } from '@/app/admin/management/problem/detail/page';
-import MarkdownComponent from '@/shared/markdown/ui/showMarkdownData';
+import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import Link from 'next/link';
-import { JSX, useEffect, useLayoutEffect, useState } from 'react';
+import { Fragment, JSX, useEffect, useLayoutEffect, useState } from 'react';
 import { IconType } from 'react-icons/lib';
 import { MdCancel } from 'react-icons/md';
 import { outSideClickContainer } from '@/shared/eventListeners/model/mouseEvents';
@@ -38,7 +38,8 @@ const ProblemCategories: ProblemCategory[] = [
   '알고리즘',
   '기타',
 ];
-const ProblemTypes: ('객관식' | '주관식')[] = ['객관식', '주관식'];
+type ProblemType = '2지' | '4지' | '주관식';
+const problemTypes: ProblemType[] = ['2지', '4지', '주관식'];
 
 export interface UpdateProblemProps {
   id: number;
@@ -47,7 +48,8 @@ export interface UpdateProblemProps {
   markdown: string;
   category: ProblemCategory;
   level: number;
-  type: string;
+  type: ProblemType;
+  selectionData: string[];
   createdDt: string;
   activate: boolean;
 }
@@ -67,6 +69,7 @@ const UpdateProblem = ({ params }: { params: ProblemDetailPageProps }) => {
       category: '운영체제',
       level: 1,
       type: '주관식',
+      selectionData: ['data1'],
       createdDt: '2023-08-01',
       activate: true,
     });
@@ -138,7 +141,7 @@ const UpdateProblem = ({ params }: { params: ProblemDetailPageProps }) => {
               />
             </AttrBox>
             <AttrBox title={ProblemAttributeTitle.Type}>
-              <SelectComponent list={ProblemTypes} attrString={'type'} />
+              <SelectComponent list={problemTypes} attrString={'type'} />
             </AttrBox>
             <AttrBox title={ProblemAttributeTitle.Activate}>
               <SelectComponent
@@ -155,7 +158,7 @@ const UpdateProblem = ({ params }: { params: ProblemDetailPageProps }) => {
             </AttrBox>
           </div>
           <ContentsMarkDown markdown={markdown} />
-          <Selections />
+          <Selections problemInfo={updateProblemInfo} />
           <div className="flex w-full flex-col gap-2 rounded-2xl border p-2">
             <span className="mt-2 w-full text-center text-lg font-bold text-[#FEA1A1]">
               Solution
@@ -200,33 +203,76 @@ const AttrBox = ({
   );
 };
 
-const Selections = () => {
+const Selections = ({ problemInfo }: { problemInfo: UpdateProblemProps }) => {
+  const [selectionData, setSelectionData] = useState<string[]>(
+    problemInfo.selectionData
+  );
+
   return (
     <div className="flex w-full grow flex-col gap-2 rounded-2xl border p-2">
       <span className="mt-2 text-center text-lg font-bold text-[#FEA1A1]">
         Selections
       </span>
       <div className="flex w-full flex-col gap-1 px-2 text-[0.7rem]">
-        <span>
-          1.
-          --------------------------------------------------------------------
-        </span>
-        <span>
-          2.
-          --------------------------------------------------------------------
-        </span>
-        <span>
-          3.
-          --------------------------------------------------------------------
-        </span>
-        <span>
-          4.
-          --------------------------------------------------------------------
-        </span>
-        <span>
-          5.
-          --------------------------------------------------------------------
-        </span>
+        {problemInfo.type === '2지' ? (
+          problemInfo.selectionData.map((selection, idx) => {
+            console.log(selection);
+            return (
+              <div key={idx} className="flex w-full items-center gap-2 pr-2">
+                <input
+                  id={problemInfo.type + idx}
+                  type="radio"
+                  name="selection"
+                  className="h-8 w-4 text-3xl"
+                />
+                <label
+                  htmlFor={problemInfo.type + idx}
+                  className="w-full text-sm font-extrabold"
+                >
+                  {selection}
+                </label>
+              </div>
+            );
+          })
+        ) : (
+          <></>
+        )}
+        {problemInfo.type === '4지' ? (
+          problemInfo.selectionData.map((selection, idx) => {
+            return (
+              <div key={idx} className="flex w-full items-center gap-2 pr-2">
+                <input
+                  id={problemInfo.type + idx}
+                  type={'radio'}
+                  name="selection"
+                  className="h-8 w-4 text-3xl"
+                />
+                <label
+                  htmlFor={problemInfo.type + idx}
+                  className="w-full text-sm font-extrabold"
+                >
+                  {selection}
+                </label>
+              </div>
+            );
+          })
+        ) : (
+          <></>
+        )}
+        {problemInfo.type === '주관식' ? (
+          <textarea
+            className="flex h-16 w-full break-words p-2 text-base"
+            placeholder="정답을 입력하세요"
+            value={selectionData[0]}
+            onChange={(e) => {
+              const newSelectionData = [...selectionData];
+              newSelectionData[0] = e.target.value;
+              setSelectionData(newSelectionData);
+            }}
+          ></textarea>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
