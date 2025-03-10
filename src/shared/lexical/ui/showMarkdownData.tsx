@@ -30,8 +30,6 @@ const MarkdownComponent = ({
   editable?: boolean;
   setMarkdown?: Dispatch<SetStateAction<string>>;
 }) => {
-  console.log('inmarkdown', markdown);
-
   const theme: EditorThemeClasses = {
     text: {
       bold: 'font-semibold',

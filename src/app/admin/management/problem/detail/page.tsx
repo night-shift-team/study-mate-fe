@@ -1,17 +1,13 @@
-import ProblemDetail from '@/page/adminProblem/ui/problemDetail';
+import ProblemDetail from '@/page/adminProblem/ui/problemDetailPage';
 
 export interface ProblemDetailPageProps {
   id: number;
-  title: string;
-  descr: string;
-  markdown: string;
 }
 
 const ProblemDetailPage = async (props: {
   searchParams: Promise<ProblemDetailPageProps>;
 }) => {
   const searchParams = await props.searchParams;
-  const params = searchParams;
-  return <ProblemDetail params={params} />;
+  return <ProblemDetail id={searchParams.id} />;
 };
 export default ProblemDetailPage;

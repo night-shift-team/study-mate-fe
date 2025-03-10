@@ -1,5 +1,5 @@
-import UpdateProblem from '@/page/adminProblem/ui/updateProblem';
-import { ProblemDetailPageProps } from '../../detail/page';
+import UpdateProblem from '@/page/adminProblem/ui/updateProblemPage';
+import { ProblemDetailPageProps } from '../detail/page';
 
 const UpdateProblemPage = async (props: {
   searchParams: Promise<ProblemDetailPageProps>;

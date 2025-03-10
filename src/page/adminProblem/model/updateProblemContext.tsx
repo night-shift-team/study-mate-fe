@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode, useContext } from 'react';
-import { UpdateProblemProps } from '../ui/updateProblem';
+import { UpdateProblemProps } from '../ui/updateProblemPage';
 interface UpdateProblemContextType {
   updateProblemInfo: UpdateProblemProps;
   setUpdateProblemInfo: React.Dispatch<

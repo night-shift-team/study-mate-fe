@@ -14,7 +14,7 @@ const NewManageProlem = () => {
   const [problemList, setProblemList] = useState(csQuizQuestions);
   const [currentFilter, setCurrentFilter] = useState<CurrentFilter>('최신 순');
   const [selectedProblem, setSelectedProblem] = useState<QuizQuestion | null>(
-    null
+    problemList[0]
   );
   const [markdown, _] = useState(`
 ### Heading 3  
@@ -29,40 +29,20 @@ _italic_ and **bold**
 _italic_ and **bold**
 > 아
 - List item 1
-
-[새 탭에서 열기](https://www.google.com/){:target="_blank"}
-### Heading 3  
-#### Heading 4  
-_italic_ and **bold**
-> 아
-- List item 1
-
-[새 탭에서 열기](https://www.google.com/){:target="_blank"}
-### Heading 3  
-#### Heading 4  
-_italic_ and **bold**
-> 아
-- List item 1
-
-[새 탭에서 열기](https://www.google.com/){:target="_blank"}
-### Heading 3  
-#### Heading 4  
-_italic_ and **bold**
-> 아
-- List item 1
-
-[새 탭에서 열기](https://www.google.com/){:target="_blank"}
-### Heading 3  
-#### Heading 4  
-_italic_ and **bold**
-> 아
-- List item 1
-
-[새 탭에서 열기](https://www.google.com/){:target="_blank"}
 `);
 
   const [currentPage, setCurrentPage] = useState(1);
   const LAST_PAGE = 10;
+
+  useEffect(() => {
+    if (selectedProblem) {
+      localStorage.setItem(
+        'selectedProblemInfo',
+        JSON.stringify({ ...selectedProblem, markdown: markdown })
+      );
+    }
+  }, [selectedProblem]);
+
   return (
     <div className="relative flex h-full w-full flex-col overflow-y-auto p-4 scrollbar-hide md:flex-row md:gap-6 md:p-10 md:pb-20">
       <span className="absolute left-4 right-10 top-3 flex w-20 items-center justify-center whitespace-nowrap rounded-xl border bg-gray-200 p-2 text-sm md:left-auto md:top-4">
@@ -137,10 +117,7 @@ _italic_ and **bold**
               href={{
                 pathname: RouteTo.AdminManagementProblemDetail,
                 query: {
-                  id: problemList[0].id,
-                  title: problemList[0].question,
-                  descr: problemList[0].explanation,
-                  markdown: markdown,
+                  id: selectedProblem?.id ?? '',
                 },
               }}
               className="flex items-center justify-center rounded-xl px-3 pb-1 pt-2 text-sm hover:bg-gray-100 hover:underline"

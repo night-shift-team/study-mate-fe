@@ -1,8 +1,9 @@
 import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
 import { useLayoutEffect, useRef, useState } from 'react';
+import { useUpdateProblem } from '../model/updateProblemContext';
 
-const ContentsMarkDown = ({ markdown }: { markdown: string }) => {
-  const [updateMarkdown, setUpdateMarkdown] = useState(markdown);
+const ContentsMarkDown = () => {
+  const { updateProblemInfo, setUpdateProblemInfo } = useUpdateProblem();
   const markDownSizeRef = useRef<HTMLDivElement>(null);
   const [textareaHeight, setTextareaHeight] = useState('auto');
 
@@ -14,7 +15,7 @@ const ContentsMarkDown = ({ markdown }: { markdown: string }) => {
   };
   useLayoutEffect(() => {
     updateHeight();
-  }, [updateMarkdown, textareaHeight]);
+  }, [updateProblemInfo.markdown, textareaHeight]);
 
   return (
     <div className="flex min-h-80 w-full flex-shrink-0 flex-col rounded-2xl border md:flex-row">
@@ -27,8 +28,13 @@ const ContentsMarkDown = ({ markdown }: { markdown: string }) => {
             placeholder="Enter some text..."
             className={`flex w-full rounded-2xl p-4`}
             style={{ height: textareaHeight }}
-            value={updateMarkdown}
-            onChange={(e) => setUpdateMarkdown(e.target.value)}
+            value={updateProblemInfo.markdown}
+            onChange={(e) =>
+              setUpdateProblemInfo((prev) => ({
+                ...prev,
+                markdown: e.target.value,
+              }))
+            }
           />
         </div>
       </div>
@@ -37,7 +43,7 @@ const ContentsMarkDown = ({ markdown }: { markdown: string }) => {
           Preview
         </span>
         <div ref={markDownSizeRef} className="flex w-full bg-white">
-          <MarkdownComponent markdown={updateMarkdown} />
+          <MarkdownComponent markdown={updateProblemInfo.markdown} />
         </div>
       </div>
     </div>

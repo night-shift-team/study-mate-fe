@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState } from 'react';
 import { useUpdateProblem } from './updateProblemContext';
-import { UpdateProblemProps } from '../ui/updateProblem';
+import { UpdateProblemProps } from '../ui/updateProblemPage';
 import {
   outSideClickContainer,
   RootWheelSetStateListener,
