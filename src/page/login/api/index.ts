@@ -42,13 +42,20 @@ export const nickNameDuplicateCheckApi = async (nickname: string) => {
 };
 
 export const localSignInApi = async (loginId: string, loginPw: string) => {
-  const body = {
-    loginId,
-    loginPw,
-  };
-  return await _apiFetch<UserLoginApiRes>(
-    'POST',
-    Api_Prefix + `sign-in/local`,
-    body
-  );
+  const body = { loginId, loginPw };
+
+  console.log(body); // 요청 데이터 확인
+  try {
+    const response = await _apiFetch<UserLoginApiRes>(
+      'POST',
+      Api_Prefix + `sign-in/local`,
+      body
+    );
+
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };

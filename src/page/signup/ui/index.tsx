@@ -37,14 +37,9 @@ const SignUp = () => {
     }
 
     try {
-      const isDuplicate = await checkNicknameDuplicate(formData.name);
-      if (isDuplicate) {
-        alert('이미 사용 중인 닉네임입니다.');
-        setIsNameChecked(false);
-      } else {
-        alert('사용 가능한 닉네임입니다.');
-        setIsNameChecked(true);
-      }
+      await checkNicknameDuplicate(formData.name);
+      alert('사용 가능한 닉네임입니다.');
+      setIsNameChecked(true);
     } catch (error) {
       if (error instanceof Error) {
         alert(error.message || '닉네임 중복 확인에 실패했습니다.');
@@ -63,14 +58,9 @@ const SignUp = () => {
     }
 
     try {
-      const isDuplicate = await checkEmailDuplicate(formData.email);
-      if (isDuplicate) {
-        alert('이미 사용 중인 이메일입니다.');
-        setIsEmailChecked(false);
-      } else {
-        alert('사용 가능한 이메일입니다.');
-        setIsEmailChecked(true);
-      }
+      await checkEmailDuplicate(formData.email);
+      alert('사용 가능한 이메일입니다.');
+      setIsEmailChecked(true);
     } catch (error) {
       if (error instanceof Error) {
         alert(error.message || '이메일 중복 확인에 실패했습니다.');
@@ -102,7 +92,7 @@ const SignUp = () => {
     try {
       await signUpUser(formData.email, formData.password, formData.name);
       alert('회원가입이 완료되었습니다.');
-      router.push('/');
+      router.push('/login');
     } catch (error) {
       if (error instanceof Error) {
         alert(error.message || '회원가입에 실패했습니다.');

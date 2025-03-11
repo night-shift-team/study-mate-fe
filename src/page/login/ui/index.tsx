@@ -9,7 +9,7 @@ import { openNewWindowWithoutDuplicate } from '@/shared/window/model/openWindow'
 import { addSocialLoginRedirectDataListener } from '../model/addSocialLoginResponseListener';
 import { Router } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { UserLoginApiRes, userLoginApi } from '../api';
+import { UserLoginApiRes, userLoginApi, localSignInApi } from '../api';
 import {
   ServerErrorResponse,
   handleFetchErrors,
@@ -87,11 +87,30 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    console.log('이메일:', formData.email);
+    console.log('비밀번호:', formData.password);
+
+    if (!formData.email || !formData.password) {
+      alert('이메일과 비밀번호를 입력해주세요.');
+      return;
+    }
+
     try {
-      // 여기에 실제 로그인 API 호출 로직 구현
-      console.log('로그인 시도:', formData);
+      const response = await localSignInApi(formData.email, formData.password);
+
+      console.log('API 응답:', response);
+
+      if (response.ok) {
+        console.log('로그인 성공:', response.payload);
+      } else {
+        console.error('로그인 실패:', response.payload);
+        const errorMessage =
+          (response.payload as ServerErrorResponse).message || '로그인 실패';
+        alert(errorMessage);
+      }
     } catch (error) {
-      console.error('로그인 에러:', error);
+      console.error('로그인 요청 에러:', error);
     }
   };
 
@@ -119,7 +138,7 @@ const Login = () => {
                 required
               />
               <input
-                type="current-password"
+                type="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
@@ -139,7 +158,7 @@ const Login = () => {
                 type="submit"
                 className="w-full rounded-lg bg-gray-400 py-2 text-white transition-colors hover:bg-[#F0EDD4]"
               >
-                아메일 회원가입{' '}
+                이메일 회원가입{' '}
               </button>
             </Link>
             <Link href="/leveltest">
