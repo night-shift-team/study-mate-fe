@@ -1,32 +1,12 @@
-// api.ts
+import { _apiFetch } from '@/shared/apis/model/config';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const Api_Prefix = '/api/v1/users/';
 
-// 공통 fetch 함수
-const apiRequest = async (
-  endpoint: string,
-  method: string = 'GET',
-  body?: object
-) => {
-  try {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: body ? JSON.stringify(body) : undefined,
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'API 요청 실패');
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error(`API 요청 에러: ${error}`);
-    throw error;
-  }
+// 닉네임 중복 확인 API
+export const nickNameDuplicateCheckApi = async (nickname: string) => {
+  const query = `?nickname=${nickname}`;
+  console.log('api_Prefix', Api_Prefix + `nickname/duplicate${query}`);
+  return await _apiFetch('GET', Api_Prefix + `nickname/duplicate${query}`);
 };
 
 // 회원가입 API
@@ -35,24 +15,31 @@ export const signUpUser = async (
   loginPw: string,
   nickname: string
 ) => {
-  return await apiRequest('/user/sign-up/local', 'POST', {
+  const body = {
     loginId,
     loginPw,
     nickname,
-  });
+  };
+  console.log('api_Prefix', Api_Prefix + `sign-up/local`);
+  return await _apiFetch('POST', Api_Prefix + `sign-up/local`, body);
 };
 
 // 이메일 중복 확인 API
 export const checkEmailDuplicate = async (email: string) => {
-  return await apiRequest(`/users/email/duplicate?email=${email}`);
+  const query = `?email=${email}`;
+  console.log('api_Prefix', Api_Prefix + `email/duplicate${query}`);
+  return await _apiFetch('GET', Api_Prefix + `email/duplicate${query}`);
 };
 
 // 닉네임 중복 확인 API
 export const checkNicknameDuplicate = async (nickname: string) => {
-  return await apiRequest(`/users/nickname/duplicate?nickname=${nickname}`);
+  const query = `?nickname=${nickname}`;
+  console.log('api_Prefix', Api_Prefix + `nickname/duplicate${query}`);
+  return await _apiFetch('GET', Api_Prefix + `nickname/duplicate${query}`);
 };
 
 // 유저 정보 조회 API
 export const getUsers = async () => {
-  return await apiRequest('/users/');
+  console.log('api_Prefix', Api_Prefix);
+  return await _apiFetch('GET', Api_Prefix);
 };
