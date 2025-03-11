@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   signUpUser,
   checkEmailDuplicate,
@@ -14,6 +15,8 @@ const SignUp = () => {
     password: '',
     confirmPassword: '',
   });
+
+  const router = useRouter();
 
   const [isNameChecked, setIsNameChecked] = useState(false);
   const [isEmailChecked, setIsEmailChecked] = useState(false);
@@ -77,6 +80,7 @@ const SignUp = () => {
     try {
       await signUpUser(formData.email, formData.password, formData.name);
       alert('회원가입이 완료되었습니다.');
+      router.push('/');
     } catch (error) {
       if (error instanceof Error) {
         alert(error.message || '회원가입에 실패했습니다.');
