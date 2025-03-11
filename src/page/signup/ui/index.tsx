@@ -1,6 +1,19 @@
 'use client';
 
 import { useState } from 'react';
+import {
+  checkDuplicateEmailApi,
+  checkDuplicateNicknameApi,
+  signUpApi,
+} from '../model/api';
+import MoonLoader from 'react-spinners/MoonLoader';
+
+export interface SignUpFormData {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -8,7 +21,9 @@ const SignUp = () => {
     email: '',
     password: '',
     confirmPassword: '',
-  });
+  } as SignUpFormData);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -18,13 +33,52 @@ const SignUp = () => {
     }));
   };
 
+  const checkNicknameDuplicate = async (nickname: string) => {
+    try {
+      const res = await checkDuplicateNicknameApi(nickname);
+      console.log(res);
+      return res.payload;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+  };
+
+  const checkEmailDuplicate = async (email: string) => {
+    try {
+      const res = await checkDuplicateEmailApi(email);
+      console.log(res);
+      return res.payload;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
+    //TODO: 알람 대신 토스트 또는 텍스트로 변경 필요
     try {
-      // 여기에 실제 회원가입 API 호출 로직 구현
-      console.log('회원가입 시도:', formData);
-    } catch (error) {
-      console.error('회원가입 에러:', error);
+      if (await checkNicknameDuplicate(formData.name)) {
+        alert('이미 사용중인 닉네임입니다.');
+        return;
+      }
+      if (await checkEmailDuplicate(formData.email)) {
+        alert('이미 사용중인 이메일입니다.');
+        return;
+      }
+      if (formData.password !== formData.confirmPassword) {
+        alert('비밀번호가 일치하지 않습니다.');
+        return;
+      }
+
+      const res = await signUpApi(formData);
+      console.log(res);
+    } catch (e) {
+      console.error('회원가입 에러:', e);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -87,12 +141,22 @@ const SignUp = () => {
                 />
               </div>
 
-              <button
-                type="submit"
-                className="mt-4 rounded-lg bg-gray-400 py-2 text-white transition-colors hover:bg-[#F0EDD4]"
-              >
-                회원가입
-              </button>
+              {isLoading ? (
+                <button
+                  type="submit"
+                  disabled
+                  className="mt-4 flex h-[42px] w-full items-center justify-center rounded-lg bg-gray-400 text-white"
+                >
+                  <MoonLoader size={28} color="#ffffff" />
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="mt-4 h-[42px] rounded-lg bg-gray-400 py-2 text-white transition-colors hover:bg-[#F0EDD4]"
+                >
+                  회원가입
+                </button>
+              )}
             </div>
           </form>
         </div>
