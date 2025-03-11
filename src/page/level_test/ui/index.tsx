@@ -1,11 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { csQuizQuestions } from '@/entities/test';
 import { ChoiceItem } from '@/feature/level_test/ChoiceItem';
 import { useRouter } from 'next/navigation';
 import { FaArrowRight } from 'react-icons/fa';
 import { IconButton } from '@chakra-ui/react';
+import { getLevelTestQuestionsApi } from '../api';
+import { ProblemInfoMAQ } from '@/shared/constants/problemInfo';
 
 const LevelTest = () => {
   const router = useRouter();
@@ -18,6 +20,24 @@ const LevelTest = () => {
   if (!Array.isArray(csQuizQuestions) || csQuizQuestions.length === 0) {
     return <div>퀴즈 데이터를 불러오는 중...</div>;
   }
+
+  const [levelTestLists, setLevelTestLists] = useState<ProblemInfoMAQ[]>([]);
+
+  const getLevelTestQuestions = async () => {
+    try {
+      const res = await getLevelTestQuestionsApi();
+      if (res.ok) {
+        setLevelTestLists(res.payload as ProblemInfoMAQ[]);
+        return res.payload;
+      }
+      throw res.payload;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    getLevelTestQuestions();
+  }, []);
 
   const handleAnswerSelect = (index: number) => {
     setSelectedAnswer(index);

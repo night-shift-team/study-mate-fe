@@ -46,27 +46,6 @@ const Login = () => {
     }));
   };
 
-  const getAccessToken = async () => {
-    try {
-      const accessToken = localStorage.getItem('accessToken');
-      const refreshToken = localStorage.getItem('refreshToken');
-
-      if (accessToken) {
-        return accessToken;
-      }
-      //* header에 refresh Token을 담아서 보내야 함
-      if (refreshToken) {
-        const res = await accessTokenRefreshApi(refreshToken);
-        if (res.ok) {
-          return res.payload as AuthTokenRes;
-        } else {
-          throw res.payload as ServerErrorResponse;
-        }
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
   const setTokens = (tokens: LocalLoginRes) => {
     localStorage.setItem('accessToken', tokens.accessToken);
     localStorage.setItem('refreshToken', tokens.refreshToken);

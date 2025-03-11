@@ -2,6 +2,8 @@ import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
 import { BatchInterceptor } from '@mswjs/interceptors';
 import { FetchInterceptor } from '@mswjs/interceptors/fetch';
 import { ok } from 'assert';
+import { getAccessToken } from './refreshTokenApi';
+import { AuthTokenRes } from '@/shared/user/api';
 
 type HTTPRequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 type ContentType =
@@ -32,6 +34,9 @@ interceptor.apply();
 
 let currentToken: string | null = null;
 export const setAccessTokenToHeader = (token: string | null) => {
+  currentToken = token;
+};
+export const setRefreshTokenToHeader = (token: string | null) => {
   currentToken = token;
 };
 
@@ -78,9 +83,15 @@ export const _apiFetch = async <T = any>(
 // 인터셉터 리스너 설정
 interceptor.on('request', async ({ request }) => {
   if (request.url.includes('/api/')) {
-    if (currentToken) {
-      request.headers.set('Authorization', `Bearer ${currentToken}`);
+    if (!currentToken) {
+      try {
+        const res = (await getAccessToken()) as AuthTokenRes;
+        currentToken = res.accessToken;
+      } catch (e) {
+        console.log(e);
+      }
     }
+    request.headers.set('Authorization', `Bearer ${currentToken}`);
   }
 });
 
