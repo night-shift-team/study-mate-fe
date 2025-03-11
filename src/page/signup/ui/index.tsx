@@ -5,7 +5,7 @@ import {
   checkDuplicateEmailApi,
   checkDuplicateNicknameApi,
   signUpApi,
-} from '../model/api';
+} from '../api';
 import MoonLoader from 'react-spinners/MoonLoader';
 
 export interface SignUpFormData {

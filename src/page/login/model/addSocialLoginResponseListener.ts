@@ -2,7 +2,7 @@
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 import { GoogleSignInApiRes, googleSignInApi } from '../api';
-import { ServerErrorResponse } from '@/shared/apis/model/config';
+import { ServerErrorResponse } from '@/shared/api/model/config';
 import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 

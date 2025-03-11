@@ -1,6 +1,4 @@
 'use client';
-import { UserLoginApiRes, userLoginApi } from '@/page/login/api';
-import { ServerErrorResponse } from '@/shared/apis/model/config';
 import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { UserStoreStorage, userStore } from '@/state/userStore';

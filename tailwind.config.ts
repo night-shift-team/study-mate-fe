@@ -11,6 +11,11 @@ module.exports = {
   ],
   theme: {
     extend: {
+      boxShadow: {
+        soft: '0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.06)',
+        light: '0px 2px 4px rgba(0, 0, 0, 0.08)',
+        strong: '0px 6px 10px rgba(0, 0, 0, 0.15)',
+      },
       fontFamily: {
         spoqa: ['Spoqa Han Sans Neo', 'sans-serif'],
       },

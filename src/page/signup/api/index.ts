@@ -1,4 +1,4 @@
-import { _apiFetch } from '@/shared/apis/model/config';
+import { _apiFetch } from '@/shared/api/model/config';
 import { SignUpFormData } from '../ui';
 
 const API_Prefix = '/api/v1/users';

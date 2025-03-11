@@ -21,7 +21,6 @@ export interface ApiResponseType<T = any> {
   payload: T;
 }
 const apiDomainUrl = process.env.NEXT_PUBLIC_API_URL;
-
 // 인터셉터 인스턴스 생성
 const interceptor = new BatchInterceptor({
   name: 'fetch-interceptor',
@@ -30,6 +29,11 @@ const interceptor = new BatchInterceptor({
 
 // 인터셉터 적용
 interceptor.apply();
+
+let currentToken: string | null = null;
+export const setAccessTokenToHeader = (token: string | null) => {
+  currentToken = token;
+};
 
 /**
  * @typedef {(
@@ -73,8 +77,11 @@ export const _apiFetch = async <T = any>(
 
 // 인터셉터 리스너 설정
 interceptor.on('request', async ({ request }) => {
-  const localStorageToken = localStorage.getItem('accessToken');
-  request.headers.append('Authorization', `Bearer ${localStorageToken}`);
+  if (request.url.includes('/api/')) {
+    if (currentToken) {
+      request.headers.set('Authorization', `Bearer ${currentToken}`);
+    }
+  }
 });
 
 interceptor.on('response', async ({ response }) => {
