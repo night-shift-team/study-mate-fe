@@ -63,14 +63,14 @@ const LevelTest = () => {
   return (
     <div className="flex h-full w-full items-center justify-center">
       <div className="flex w-[90%] max-w-[700px] flex-col">
-        <div className="h-[15vh] w-full">
+        <div className="h-[15%] w-full">
           <div className="flex w-full items-center justify-between">
             <span>문제. {currentQuestion + 1}</span>{' '}
             <span className="rounded-lg bg-[#F0EDD4] p-2">
               {currentQuestion + 1}/{csQuizQuestions.length}
             </span>
           </div>
-          <div className="p-5">{currentQuiz.question}</div>
+          <div className="pb-2 pt-2">{currentQuiz.question}</div>
         </div>
         <div className="flex flex-col gap-4">
           {currentQuiz.options.map((option, index) => (
