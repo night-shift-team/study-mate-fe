@@ -40,3 +40,15 @@ export const nickNameDuplicateCheckApi = async (nickname: string) => {
   const query = `?nickname=${nickname}`;
   return await _apiFetch('GET', Api_Prefix + `nickname/duplicate${query}`);
 };
+
+export const localSignInApi = async (loginId: string, loginPw: string) => {
+  const body = {
+    loginId,
+    loginPw,
+  };
+  return await _apiFetch<UserLoginApiRes>(
+    'POST',
+    Api_Prefix + `sign-in/local`,
+    body
+  );
+};
