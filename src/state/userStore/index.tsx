@@ -1,10 +1,10 @@
-import { UserLoginApiRes } from '@/page/login/api';
+import { UserInfo } from '@/shared/constants/userInfo';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 interface UserStore {
-  user: UserLoginApiRes | null;
-  setUser: (newUser: UserLoginApiRes | null) => void;
+  user: UserInfo | null;
+  setUser: (newUser: UserInfo | null) => void;
 }
 
 export enum UserStoreStorage {
@@ -15,7 +15,7 @@ export const userStore = create(
   persist<UserStore>(
     (set) => ({
       user: null,
-      setUser: (newUser: UserLoginApiRes | null) => set({ user: newUser }),
+      setUser: (newUser: UserInfo | null) => set({ user: newUser }),
     }),
     {
       name: 'userStore',

@@ -1,5 +1,6 @@
 import { _apiFetch } from '@/shared/api/model/config';
 import { SignUpFormData } from '../ui';
+import { UserLoginType, UserStatus } from '@/shared/constants/userInfo';
 
 const API_Prefix = '/api/v1/users';
 
@@ -8,30 +9,6 @@ export interface SignUpReq {
   loginPw: string;
   nickname: string;
 }
-
-export enum EnumUserLoginType {
-  LOCAL = 'LOCAL',
-  KAKAO = 'KAKAO',
-  NAVER = 'NAVER',
-  GOOGLE = 'GOOGLE',
-  GITHUB = 'GITHUB',
-}
-export enum EnumUserStatus {
-  ACTIVE = 'ACTIVE',
-  PAUSE = 'PAUSE',
-  BAN = 'BAN',
-}
-
-export type UserLoginType =
-  | EnumUserLoginType.GITHUB
-  | EnumUserLoginType.GOOGLE
-  | EnumUserLoginType.KAKAO
-  | EnumUserLoginType.LOCAL
-  | EnumUserLoginType.NAVER;
-export type UserStatus =
-  | EnumUserStatus.ACTIVE
-  | EnumUserStatus.BAN
-  | EnumUserStatus.PAUSE;
 
 export interface GetUserInfoRes {
   userId: bigint;

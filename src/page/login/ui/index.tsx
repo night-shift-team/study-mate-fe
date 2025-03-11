@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation';
 import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { UserStoreStorage, userStore } from '@/state/userStore';
-import LoginHoc from '@/shared/auth/model/authHoc';
+import AuthHoc from '@/shared/auth/model/authHoc';
 import {
   handleFetchErrors,
   ServerErrorResponse,
@@ -22,6 +22,7 @@ import {
 import { localLoginApi, LocalLoginRes, userInfoApi, UserInfoRes } from '../api';
 import { accessTokenRefreshApi, AuthTokenRes } from '@/shared/user/api';
 import { access } from 'fs';
+import { usePopUpAnimationStyle } from '../model/usePopUpAnimationStyle';
 const Login = () => {
   const router = useRouter();
   const windowReference: Window | null = null;
@@ -92,7 +93,6 @@ const Login = () => {
       console.log(res);
       if (!res.ok) {
         const errData = res.payload as ServerErrorResponse;
-
         if (errData.ecode === Ecode.E0106) {
           EcodeMessage(Ecode.E0106);
           localStorage.removeItem('accessToken');
@@ -101,14 +101,19 @@ const Login = () => {
           return;
         }
         router.push(RouteTo.Home);
+      } else {
+        const userData = res.payload as UserInfoRes;
+        setUser(userData);
+        console.log('udpateUser', userStore.getState().user);
+        setIsLoginSuccess(true);
+        setTimeout(() => {
+          if (!userData.userScore) {
+            router.push(RouteTo.LevelTest);
+          } else {
+            router.push(RouteTo.Solve);
+          }
+        }, 1000);
       }
-      console.log(res.payload);
-      setUser(res.payload as UserInfoRes);
-      console.log('udpateUser', userStore.getState().user);
-      setIsLoginSuccess(true);
-      setTimeout(() => {
-        router.push(RouteTo.Solve);
-      }, 1000);
     } catch (e: any) {
       const error = handleFetchErrors(e);
       console.log('error', error);
@@ -131,17 +136,8 @@ const Login = () => {
       throw e;
     }
   };
+  const { popupAnimationLocate } = usePopUpAnimationStyle(isLoginSuccess);
 
-  const [popupAnimationLocate, setPopupAnimationLocate] = useState(
-    '-translate-y-[110%] opacity-0'
-  );
-  useLayoutEffect(() => {
-    if (isLoginSuccess) {
-      setPopupAnimationLocate('translate-y-[100%] opacity-100');
-    } else {
-      setPopupAnimationLocate('-translate-y-[110%] opacity-0');
-    }
-  }, [isLoginSuccess]);
   return (
     <div className="relative flex h-full w-full items-center justify-center">
       {
@@ -229,4 +225,4 @@ const Login = () => {
   );
 };
 
-export default LoginHoc(Login);
+export default AuthHoc(Login);

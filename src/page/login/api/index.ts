@@ -1,4 +1,5 @@
 import { _apiFetch } from '@/shared/api/model/config';
+import { UserLoginType, UserStatus } from '@/shared/constants/userInfo';
 
 const Api_Prefix = '/api/v1/users';
 
@@ -6,18 +7,16 @@ export interface GoogleSignInApiRes {
   accessToken: string;
   refreshToken: string;
 }
-
-export type LoginType = 'LOCAL' | 'GITHUB' | 'KAKAO' | 'NAVER' | 'GOOGLE';
-export type UserStatus = 'ACTIVE' | 'PAUSE' | 'BAN';
 export interface UserInfoRes {
   userId: bigint;
-  loginType: LoginType;
+  loginType: UserLoginType;
   loginId: string;
   nickname: string;
   profileImg: string;
   status: UserStatus;
   role: number;
-  registeredAt: string | null;
+  registeredAt: string;
+  userScore: number;
 }
 
 export interface LocalLoginRes {

@@ -1,5 +1,5 @@
 'use client';
-import LoginHoc from '@/shared/auth/model/authHoc';
+import AuthHoc from '@/shared/auth/model/authHoc';
 import Link from 'next/link';
 import { CategoryGridContents } from './categoryGridContents';
 import { userStore } from '@/state/userStore';
@@ -36,4 +36,4 @@ const SolveProblem = () => {
     </div>
   );
 };
-export default SolveProblem;
+export default AuthHoc(SolveProblem);
