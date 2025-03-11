@@ -29,7 +29,9 @@ const Login = () => {
   const [isAuthSuccess, setIsAuthSuccess] = useState(false);
   const [isLoginSuccess, setIsLoginSuccess] = useState(false);
 
-  const { user, setUser } = userStore();
+  const user = userStore.getState().user;
+  const setUser = userStore.getState().setUser;
+
   // 인증 response 리스너
   addSocialLoginRedirectDataListener(setIsAuthSuccess);
 
@@ -83,7 +85,7 @@ const Login = () => {
       } else {
         const userData = res.payload as UserInfoRes;
         setUser(userData);
-        console.log('udpateUser', userStore.getState().user);
+        console.log('udpateUser', user);
         setIsLoginSuccess(true);
         setTimeout(() => {
           if (!userData.userScore) {
@@ -115,6 +117,7 @@ const Login = () => {
       throw e;
     }
   };
+
   const { popupAnimationLocate } = usePopUpAnimationStyle(isLoginSuccess);
 
   return (

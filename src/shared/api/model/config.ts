@@ -83,10 +83,11 @@ export const _apiFetch = async <T = any>(
 // 인터셉터 리스너 설정
 interceptor.on('request', async ({ request }) => {
   if (request.url.includes('/api/')) {
+    console.log('token', currentToken);
     if (!currentToken) {
       try {
-        const res = (await getAccessToken()) as AuthTokenRes;
-        currentToken = res.accessToken;
+        const accessToken = await getAccessToken();
+        currentToken = accessToken as string;
       } catch (e) {
         console.log(e);
       }
