@@ -30,10 +30,21 @@ const SignUp = () => {
   };
 
   const handleNameCheck = async () => {
+    if (!formData.name.trim()) {
+      alert('닉네임을 입력해주세요.');
+      setIsNameChecked(false);
+      return;
+    }
+
     try {
-      await checkNicknameDuplicate(formData.name);
-      alert('사용 가능한 닉네임입니다.');
-      setIsNameChecked(true);
+      const isDuplicate = await checkNicknameDuplicate(formData.name);
+      if (isDuplicate) {
+        alert('이미 사용 중인 닉네임입니다.');
+        setIsNameChecked(false);
+      } else {
+        alert('사용 가능한 닉네임입니다.');
+        setIsNameChecked(true);
+      }
     } catch (error) {
       if (error instanceof Error) {
         alert(error.message || '닉네임 중복 확인에 실패했습니다.');
@@ -45,10 +56,21 @@ const SignUp = () => {
   };
 
   const handleEmailCheck = async () => {
+    if (!formData.email.trim()) {
+      alert('이메일을 입력해주세요.');
+      setIsEmailChecked(false);
+      return;
+    }
+
     try {
-      await checkEmailDuplicate(formData.email);
-      alert('사용 가능한 이메일입니다.');
-      setIsEmailChecked(true);
+      const isDuplicate = await checkEmailDuplicate(formData.email);
+      if (isDuplicate) {
+        alert('이미 사용 중인 이메일입니다.');
+        setIsEmailChecked(false);
+      } else {
+        alert('사용 가능한 이메일입니다.');
+        setIsEmailChecked(true);
+      }
     } catch (error) {
       if (error instanceof Error) {
         alert(error.message || '이메일 중복 확인에 실패했습니다.');
