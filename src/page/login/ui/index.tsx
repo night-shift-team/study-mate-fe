@@ -120,6 +120,13 @@ const Login = () => {
 
   const { popupAnimationLocate } = usePopUpAnimationStyle(isLoginSuccess);
 
+  const autoLoginFromAccessToken = async () => {
+    try {
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <div className="relative flex h-full w-full items-center justify-center">
       {

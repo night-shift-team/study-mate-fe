@@ -8,7 +8,7 @@ export interface GoogleSignInApiRes {
   refreshToken: string;
 }
 export interface UserInfoRes {
-  userId: bigint;
+  userId: string;
   loginType: UserLoginType;
   loginId: string;
   nickname: string;

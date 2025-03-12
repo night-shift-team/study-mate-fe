@@ -12,7 +12,6 @@ const AuthHoc = <P extends object>(WrappedComponent: ComponentType<P>) => {
     const [isMounted, setIsMounted] = useState(false);
     const user = userStore.getState().user;
     const path = usePathname();
-    console.log(user, path);
 
     useEffect(() => {
       setIsMounted(true);
