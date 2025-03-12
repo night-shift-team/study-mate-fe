@@ -4,7 +4,7 @@ import { ProblemCategory } from '@/shared/constants/problemInfo';
 const API_Prefix = '/api/v1';
 
 type GetLevelTestQuestionsRes = {
-  id: bigint;
+  id: string;
   description: string;
   comment: string;
   difficulty: number;
@@ -15,9 +15,42 @@ type GetLevelTestQuestionsRes = {
   choice4: string;
 }[];
 
+export type GetLevelTestResultReq = {
+  id: string;
+  answer: '1' | '2' | '3' | '4';
+}[];
+
+export interface GetLevelTestResultRes {
+  percentileScore: number;
+  yourInitScore: number;
+  requestedQuestionCount: number;
+  correctQuestions: string[];
+  wrongQuestions: string[];
+}
+
 export const getLevelTestQuestionsApi = async () => {
   return await _apiFetch<GetLevelTestQuestionsRes>(
     'GET',
     API_Prefix + '/question/level-test'
+  );
+};
+
+export const getLevelTestResultApi = async (
+  userAnswer: GetLevelTestResultReq
+) => {
+  const questionIds: string[] = [];
+  const userAnswers: string[] = [];
+  userAnswer.forEach((answer) => {
+    questionIds.push(answer.id);
+    userAnswers.push(answer.answer);
+  });
+  const body = {
+    questionIds: questionIds,
+    userAnswers: userAnswers,
+  };
+  return await _apiFetch<GetLevelTestResultRes>(
+    'POST',
+    API_Prefix + '/question/check/level-test',
+    body
   );
 };

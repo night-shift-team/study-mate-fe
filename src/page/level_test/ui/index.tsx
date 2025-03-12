@@ -6,10 +6,16 @@ import { ChoiceItem } from '@/feature/level_test/ChoiceItem';
 import { useRouter } from 'next/navigation';
 import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
 import { IconButton } from '@chakra-ui/react';
-import { getLevelTestQuestionsApi } from '../api';
+import {
+  getLevelTestQuestionsApi,
+  getLevelTestResultApi,
+  GetLevelTestResultReq,
+  GetLevelTestResultRes,
+} from '../api';
 import { ProblemInfoMAQ } from '@/shared/constants/problemInfo';
 import { PiPaperPlaneTilt } from 'react-icons/pi';
 import PulseLoader from 'react-spinners/PulseLoader';
+import { ServerErrorResponse } from '@/shared/api/model/config';
 
 type ChoiceAttrs = Pick<
   ProblemInfoMAQ,
@@ -49,39 +55,49 @@ const LevelTest = () => {
   };
 
   const getLevelTestResult = async () => {
-    //TODO: level test result api call
+    try {
+      const reqData = userAnswers.map((answer, index) => ({
+        id: levelTestLists[index].id,
+        answer: answer.toString() as '1' | '2' | '3' | '4',
+      }));
+      const res = await getLevelTestResultApi(reqData);
+      if (!res.ok) throw res.payload as ServerErrorResponse;
+      return res.payload as GetLevelTestResultRes;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
   };
 
   const handlePrevQuestion = () => {
     if (currentQuestionNo <= 0) return;
+    setSelectedAnswer(userAnswers[currentQuestionNo - 1]);
     setCurrentQuestionNo((prev) => prev - 1);
   };
 
-  const handleNextQuestion = () => {
-    if (selectedAnswer === null) return;
-    const newAnswers = [...userAnswers, selectedAnswer];
-    if (currentQuestionNo < csQuizQuestions.length - 1) {
-      setUserAnswers(newAnswers);
+  const handleNextQuestion = async () => {
+    if (!selectedAnswer) return;
+
+    if (currentQuestionNo < levelTestLists.length - 1) {
+      if (!userAnswers[currentQuestionNo]) {
+        setUserAnswers([...userAnswers, selectedAnswer]);
+      } else {
+        const newAnswer = [...userAnswers];
+        newAnswer[currentQuestionNo] = selectedAnswer;
+        setUserAnswers(newAnswer);
+      }
+      setSelectedAnswer(userAnswers[currentQuestionNo + 1] ?? null);
       setCurrentQuestionNo((prev) => prev + 1);
-      setSelectedAnswer(null);
       setShowResult(false);
-    } else {
-      // 안전하게 정답 체크
-      // const correctCount = newAnswers.reduce((count, answer, index) => {
-      //   // csQuizQuestions[index]가 존재하는지 확인
-      //   if (
-      //     !csQuizQuestions[index] ||
-      //     typeof csQuizQuestions[index].correctAnswer === 'undefined'
-      //   ) {
-      //     return count;
-      //   }
-      //   return (
-      //     count + (answer === csQuizQuestions[index].correctAnswer ? 1 : 0)
-      //   );
-      // }, 0);
-      // router.push(
-      //   `/testresult?correct=${correctCount}&total=${csQuizQuestions.length}&answers=${newAnswers.join(',')}`
-      // );
+      return;
+    }
+    // 마지막 문제일 경우
+    try {
+      const res = await getLevelTestResult();
+      sessionStorage.setItem('levelTestResult', JSON.stringify(res));
+      console.log(sessionStorage.getItem('levelTestResult'));
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -123,14 +139,14 @@ const LevelTest = () => {
                       `choice${index + 1}` as keyof ChoiceAttrs
                     ]
                   }
-                  onClick={() => handleAnswerSelect(index)}
-                  isSelected={selectedAnswer === index}
+                  onClick={() => handleAnswerSelect(index + 1)}
+                  isSelected={selectedAnswer === index + 1}
                   showResult={showResult}
                 />
               );
             })}
           </div>
-          <div className="flex w-full justify-end gap-4 border">
+          <div className="flex w-full justify-end gap-4">
             <button
               disabled={currentQuestionNo <= 0}
               className={`mt-4 flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all duration-200 ease-in-out ${
@@ -151,7 +167,7 @@ const LevelTest = () => {
               } text-white`}
               onClick={handleNextQuestion}
             >
-              {currentQuestionNo === levelTestLists.length ? (
+              {currentQuestionNo === levelTestLists.length - 1 ? (
                 <PiPaperPlaneTilt size={25} />
               ) : (
                 <FaArrowRight />
