@@ -16,6 +16,7 @@ import { ProblemInfoMAQ } from '@/shared/constants/problemInfo';
 import { PiPaperPlaneTilt } from 'react-icons/pi';
 import PulseLoader from 'react-spinners/PulseLoader';
 import { ServerErrorResponse } from '@/shared/api/model/config';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
 
 type ChoiceAttrs = Pick<
   ProblemInfoMAQ,
@@ -96,6 +97,7 @@ const LevelTest = () => {
       const res = await getLevelTestResult();
       sessionStorage.setItem('levelTestResult', JSON.stringify(res));
       console.log(sessionStorage.getItem('levelTestResult'));
+      router.push(RouteTo.LevelTestResult);
     } catch (e) {
       console.log(e);
     }
