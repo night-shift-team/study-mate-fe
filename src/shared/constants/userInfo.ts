@@ -24,7 +24,7 @@ export type UserStatus =
   | EnumUserStatus.PAUSE;
 
 export interface UserInfo {
-  userId: bigint;
+  userId: string;
   loginType: UserLoginType;
   loginId: string;
   nickname: string;

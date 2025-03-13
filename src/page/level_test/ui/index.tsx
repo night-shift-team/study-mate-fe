@@ -4,39 +4,67 @@ import React, { useEffect, useState } from 'react';
 import { csQuizQuestions } from '@/entities/test';
 import { ChoiceItem } from '@/feature/level_test/ChoiceItem';
 import { useRouter } from 'next/navigation';
-import { FaArrowRight } from 'react-icons/fa';
+import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
 import { IconButton } from '@chakra-ui/react';
-import { getLevelTestQuestionsApi } from '../api';
+import {
+  getLevelTestQuestionsApi,
+  getLevelTestResultApi,
+  GetLevelTestResultReq,
+  GetLevelTestResultRes,
+} from '../api';
 import { ProblemInfoMAQ } from '@/shared/constants/problemInfo';
+import { PiPaperPlaneTilt } from 'react-icons/pi';
+import PulseLoader from 'react-spinners/PulseLoader';
+import { ServerErrorResponse } from '@/shared/api/model/config';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import AuthHoc from '@/shared/auth/model/authHoc';
+
+type ChoiceAttrs = Pick<
+  ProblemInfoMAQ,
+  'choice1' | 'choice2' | 'choice3' | 'choice4'
+>;
 
 const LevelTest = () => {
   const router = useRouter();
-  const [currentQuestion, setCurrentQuestion] = useState<number>(0);
+  const [currentQuestionNo, setCurrentQuestionNo] = useState<number>(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState<boolean>(false);
   const [userAnswers, setUserAnswers] = useState<number[]>([]);
 
-  // csQuizQuestions가 유효한지 확인
-  if (!Array.isArray(csQuizQuestions) || csQuizQuestions.length === 0) {
-    return <div>퀴즈 데이터를 불러오는 중...</div>;
-  }
-
   const [levelTestLists, setLevelTestLists] = useState<ProblemInfoMAQ[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const getLevelTestQuestions = async () => {
     try {
       const res = await getLevelTestQuestionsApi();
       if (res.ok) {
         setLevelTestLists(res.payload as ProblemInfoMAQ[]);
+        setIsLoading(false);
         return res.payload;
       }
       throw res.payload;
     } catch (e) {
       console.log(e);
+      throw e;
     }
   };
   useEffect(() => {
-    getLevelTestQuestions();
+    getLevelTestQuestions()
+      .then((list) => {
+        const problemListWithNo = (list as ProblemInfoMAQ[]).map(
+          (item, index) => {
+            return {
+              no: index + 1,
+              id: item.id,
+            };
+          }
+        );
+        sessionStorage.setItem(
+          'levelTestListWithNo',
+          JSON.stringify(problemListWithNo)
+        );
+      })
+      .catch();
   }, []);
 
   const handleAnswerSelect = (index: number) => {
@@ -44,90 +72,134 @@ const LevelTest = () => {
     setShowResult(true);
   };
 
-  const handleNextQuestion = () => {
-    if (selectedAnswer === null) return;
-
-    const newAnswers = [...userAnswers, selectedAnswer];
-
-    if (currentQuestion < csQuizQuestions.length - 1) {
-      setUserAnswers(newAnswers);
-      setCurrentQuestion((prev) => prev + 1);
-      setSelectedAnswer(null);
-      setShowResult(false);
-    } else {
-      // 안전하게 정답 체크
-      const correctCount = newAnswers.reduce((count, answer, index) => {
-        // csQuizQuestions[index]가 존재하는지 확인
-        if (
-          !csQuizQuestions[index] ||
-          typeof csQuizQuestions[index].correctAnswer === 'undefined'
-        ) {
-          return count;
-        }
-        return (
-          count + (answer === csQuizQuestions[index].correctAnswer ? 1 : 0)
-        );
-      }, 0);
-
-      router.push(
-        `/testresult?correct=${correctCount}&total=${csQuizQuestions.length}&answers=${newAnswers.join(',')}`
-      );
+  const getLevelTestResult = async (updateAnswer: number[]) => {
+    try {
+      const reqData = updateAnswer.map((answer, index) => ({
+        id: levelTestLists[index].id,
+        answer: answer.toString() as '1' | '2' | '3' | '4',
+      }));
+      const res = await getLevelTestResultApi(reqData);
+      if (!res.ok) throw res.payload as ServerErrorResponse;
+      return res.payload as GetLevelTestResultRes;
+    } catch (e) {
+      console.log(e);
+      throw e;
     }
   };
 
-  // 현재 문제가 유효한지 확인
-  const currentQuiz = csQuizQuestions[currentQuestion];
-  if (!currentQuiz) {
-    return <div>문제를 불러올 수 없습니다.</div>;
-  }
+  const handlePrevQuestion = () => {
+    if (currentQuestionNo <= 0) return;
+    setSelectedAnswer(userAnswers[currentQuestionNo - 1]);
+    setCurrentQuestionNo((prev) => prev - 1);
+  };
+
+  const handleNextQuestion = async () => {
+    if (!selectedAnswer) return;
+    let updateAnswer: number[] = [];
+    if (currentQuestionNo <= levelTestLists.length - 1) {
+      if (!userAnswers[currentQuestionNo]) {
+        updateAnswer = [...userAnswers, selectedAnswer];
+        setUserAnswers(updateAnswer);
+      } else {
+        updateAnswer = [...userAnswers];
+        updateAnswer[currentQuestionNo] = selectedAnswer;
+        setUserAnswers(updateAnswer);
+      }
+      if (currentQuestionNo < levelTestLists.length - 1) {
+        setSelectedAnswer(userAnswers[currentQuestionNo + 1] ?? null);
+        setCurrentQuestionNo((prev) => prev + 1);
+        setShowResult(false);
+        return;
+      }
+    }
+    // 마지막 문제일 경우
+    try {
+      const res = await getLevelTestResult(updateAnswer);
+      const userData = { ...res, userAnswers: updateAnswer };
+      sessionStorage.setItem('levelTestResult', JSON.stringify(userData));
+      router.push(RouteTo.LevelTestResult);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <div className="flex h-full w-full items-center justify-center">
-      <div className="flex w-[90%] max-w-[700px] flex-col">
-        <div className="h-[15vh] w-full">
-          <div className="flex w-full items-center justify-between">
-            <span>문제. {currentQuestion + 1}</span>{' '}
-            {/* <span className="rounded-lg bg-[#F0EDD4] p-2">
-              {currentQuestion + 1}/{csQuizQuestions.length}
-            </span> */}
-            <IconButton
-              bgColor={'#F0EDD4'}
-              rounded={'lg'}
-              className="p-2 hover:cursor-auto"
-            >
-              {currentQuestion + 1}/{csQuizQuestions.length}
-            </IconButton>
+      {isLoading ? (
+        <PulseLoader />
+      ) : (
+        <div className="flex w-[90%] max-w-[700px] flex-col">
+          <div className="h-[15vh] w-full">
+            <div className="flex w-full items-center justify-between">
+              <span>문제. {currentQuestionNo + 1}</span>{' '}
+              <IconButton
+                bgColor={'#F0EDD4'}
+                rounded={'lg'}
+                className="p-2 hover:cursor-auto"
+              >
+                {currentQuestionNo + 1}/{levelTestLists.length ?? 1}
+              </IconButton>
+            </div>
+            <div className="p-5">
+              {levelTestLists[currentQuestionNo].description}
+            </div>
           </div>
-          <div className="p-5">{currentQuiz.question}</div>
+          <div className="flex flex-col gap-4">
+            {Array.from(
+              {
+                length: Object.keys(levelTestLists[currentQuestionNo]).filter(
+                  (keyValue) => keyValue.startsWith('choice') === true
+                ).length,
+              },
+              (_, i) => i
+            ).map((index) => {
+              return (
+                <ChoiceItem
+                  key={index}
+                  text={
+                    (levelTestLists[currentQuestionNo] as ProblemInfoMAQ)[
+                      `choice${index + 1}` as keyof ChoiceAttrs
+                    ]
+                  }
+                  onClick={() => handleAnswerSelect(index + 1)}
+                  isSelected={selectedAnswer === index + 1}
+                  showResult={showResult}
+                />
+              );
+            })}
+          </div>
+          <div className="flex w-full justify-end gap-4">
+            <button
+              disabled={currentQuestionNo <= 0}
+              className={`mt-4 flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all duration-200 ease-in-out ${
+                currentQuestionNo <= 0
+                  ? 'cursor-not-allowed bg-gray-400 opacity-50'
+                  : 'bg-[#FEA1A1] hover:bg-[#fe8989] active:scale-95'
+              } text-white`}
+              onClick={handlePrevQuestion}
+            >
+              <FaArrowLeft />
+            </button>
+            <button
+              disabled={selectedAnswer === null}
+              className={`mt-4 flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all duration-200 ease-in-out ${
+                selectedAnswer === null
+                  ? 'cursor-not-allowed bg-gray-400 opacity-50'
+                  : 'bg-[#FEA1A1] hover:bg-[#fe8989] active:scale-95'
+              } text-white`}
+              onClick={handleNextQuestion}
+            >
+              {currentQuestionNo === levelTestLists.length - 1 ? (
+                <PiPaperPlaneTilt size={25} />
+              ) : (
+                <FaArrowRight />
+              )}
+            </button>
+          </div>
         </div>
-        <div className="flex flex-col gap-4">
-          {currentQuiz.options.map((option, index) => (
-            <ChoiceItem
-              key={index}
-              text={option}
-              onClick={() => handleAnswerSelect(index)}
-              isSelected={selectedAnswer === index}
-              isCorrect={showResult && index === currentQuiz.correctAnswer}
-              showResult={showResult}
-            />
-          ))}
-        </div>
-        <div className="flex w-full justify-end">
-          <button
-            disabled={selectedAnswer === null}
-            className={`mt-4 flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all duration-200 ease-in-out ${
-              selectedAnswer === null
-                ? 'cursor-not-allowed bg-gray-400 opacity-50'
-                : 'bg-[#FEA1A1] hover:bg-[#fe8989] active:scale-95'
-            } text-white`}
-            onClick={handleNextQuestion}
-          >
-            <FaArrowRight />
-          </button>
-        </div>
-      </div>
+      )}
     </div>
   );
 };
 
-export default LevelTest;
+export default AuthHoc(LevelTest);

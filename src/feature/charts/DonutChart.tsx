@@ -18,6 +18,7 @@ interface DonutChartProps {
 const COLORS = ['#0088FE', '#969696'];
 
 export const DonutChart: React.FC<DonutChartProps> = ({ data }) => {
+  if (!data) return null;
   return (
     <div className="h-[200px] w-full sm:h-[250px]">
       <ResponsiveContainer width="100%" height="100%">

@@ -22,7 +22,7 @@ export const getAccessToken = async () => {
         const data = res.payload as AuthTokenRes;
         localStorage.setItem('accessToken', data.accessToken);
         localStorage.setItem('refreshToken', data.refreshToken);
-        return res.payload as AuthTokenRes;
+        return (res.payload as AuthTokenRes).accessToken;
       } else {
         throw res.payload as ServerErrorResponse;
       }

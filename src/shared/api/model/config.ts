@@ -4,6 +4,9 @@ import { FetchInterceptor } from '@mswjs/interceptors/fetch';
 import { ok } from 'assert';
 import { getAccessToken } from './refreshTokenApi';
 import { AuthTokenRes } from '@/shared/user/api';
+import { userStore } from '@/state/userStore';
+import { useRouter } from 'next/navigation';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
 
 type HTTPRequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 type ContentType =
@@ -88,7 +91,10 @@ interceptor.on('request', async ({ request }) => {
       try {
         const accessToken = await getAccessToken();
         currentToken = accessToken as string;
+        console.log(currentToken);
       } catch (e) {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
         console.log(e);
       }
     }
@@ -96,11 +102,26 @@ interceptor.on('request', async ({ request }) => {
   }
 });
 
-interceptor.on('response', async ({ response }) => {
-  const isEmptyToken = (await response.json()).ecode === Ecode.E0002;
-  if (isEmptyToken) {
-    EcodeMessage(Ecode.E0002);
-    localStorage.removeItem('accessToken');
+interceptor.on('response', async ({ response, request }) => {
+  const errCode = (await response.json()).ecode;
+  const isDisabaleToken = errCode === Ecode.E0002 || errCode === Ecode.E0005;
+  if (isDisabaleToken) {
+    try {
+      console.warn(EcodeMessage(errCode));
+      localStorage.removeItem('accessToken');
+
+      const accessToken = await getAccessToken();
+      currentToken = accessToken as string;
+      request.headers.set('Authorization', `Bearer ${currentToken}`);
+    } catch (e) {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      const setUser = userStore.getState().setUser;
+      setUser(null);
+      console.log(e);
+      const router = useRouter();
+      router.push(RouteTo.Home);
+    }
   }
 });
 

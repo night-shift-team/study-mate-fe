@@ -13,7 +13,7 @@ export enum ProblemCategory {
 }
 
 export interface ProblemInfoMAQ {
-  id: bigint;
+  id: string;
   description: string;
   comment: string;
   difficulty: number;

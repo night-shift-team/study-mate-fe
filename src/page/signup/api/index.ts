@@ -10,8 +10,13 @@ export interface SignUpReq {
   nickname: string;
 }
 
+export interface SignUpRes {
+  id: string;
+  userId: string;
+}
+
 export interface GetUserInfoRes {
-  userId: bigint;
+  userId: string;
   loginType: UserLoginType;
   loginId: string;
   nickname: string;
@@ -24,12 +29,18 @@ export interface GetUserInfoRes {
 
 export const checkDuplicateNicknameApi = async (nickname: string) => {
   const query = `?nickname=${nickname}`;
-  return await _apiFetch('GET', API_Prefix + '/nickname/duplicate' + query);
+  return await _apiFetch<boolean>(
+    'GET',
+    API_Prefix + '/nickname/duplicate' + query
+  );
 };
 
 export const checkDuplicateEmailApi = async (email: string) => {
   const query = `?email=${email}`;
-  return await _apiFetch('GET', API_Prefix + '/email/duplicate' + query);
+  return await _apiFetch<boolean>(
+    'GET',
+    API_Prefix + '/email/duplicate' + query
+  );
 };
 
 export const signUpApi = async (data: SignUpFormData) => {
@@ -38,9 +49,13 @@ export const signUpApi = async (data: SignUpFormData) => {
     loginPw: data.password,
     nickname: data.name,
   };
-  return await _apiFetch('POST', API_Prefix + '/sign-up/local', body);
+  return await _apiFetch<SignUpRes>(
+    'POST',
+    API_Prefix + '/sign-up/local',
+    body
+  );
 };
 
 export const getUserInfoApi = async () => {
-  return await _apiFetch('GET', API_Prefix + '/');
+  return await _apiFetch<GetUserInfoRes>('GET', API_Prefix + '/');
 };

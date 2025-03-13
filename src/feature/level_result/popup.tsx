@@ -4,7 +4,7 @@ import { IoMdClose } from 'react-icons/io';
 interface PopupProps {
   index: number;
   userAnswer: number | null;
-  correctAnswer: number;
+  correctAnswer: string;
   explanation: string;
   onClose: () => void;
 }
@@ -36,7 +36,7 @@ const Popup: React.FC<PopupProps> = ({
           <p className="text-gray-700">
             <span className="font-semibold text-gray-900">유저 답변:</span>{' '}
             {userAnswer !== null ? (
-              <span className="font-medium">{userAnswer + 1}</span>
+              <span className="font-medium">{userAnswer}</span>
             ) : (
               <span className="">선택 안 함</span>
             )}
