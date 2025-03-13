@@ -17,7 +17,6 @@ const ResultContent = () => {
   );
 
   useEffect(() => {
-    // 클라이언트에서만 실행
     const problems = sessionStorage.getItem('levelTestListWithNo');
     if (problems) {
       try {
@@ -37,10 +36,6 @@ const ResultContent = () => {
     }
   }, []);
 
-  if (!resultData) {
-    return <PulseLoader />; // 데이터가 없을 때 로딩 UI 표시
-  }
-
   const correctCount = resultData?.correctQuestions.length;
   const totalQuestions = resultData?.requestedQuestionCount;
   const incorrectCount = resultData?.wrongQuestions.length;
@@ -56,10 +51,12 @@ const ResultContent = () => {
   };
 
   const data = [
-    { name: 'Correct', value: correctCount },
-    { name: 'incorrect', value: incorrectCount },
+    { name: 'Correct', value: correctCount ?? 0 },
+    { name: 'incorrect', value: incorrectCount ?? 0 },
   ];
-
+  if (!resultData) {
+    return <PulseLoader />;
+  }
   return (
     <div className="flex w-full max-w-[700px] flex-col items-center justify-around gap-6 rounded-2xl bg-white p-3 shadow-[0_8px_30px_rgb(0,0,0,0.06)] sm:flex-row">
       <div className="flex w-[100%] flex-col items-center space-y-4">
@@ -68,7 +65,7 @@ const ResultContent = () => {
             당신의 테스트 결과
           </span>
           <h2 className="mt-2 text-3xl font-bold text-gray-800">
-            {calculateLevel(correctCount, totalQuestions)}
+            {calculateLevel(correctCount ?? 0, totalQuestions ?? 1)}
           </h2>
           <p className="mt-1 text-gray-600">
             {correctCount}/{totalQuestions} 문제 정답
@@ -88,7 +85,7 @@ const ResultContent = () => {
                 key={index}
                 index={index}
                 isCorrectAnswer={
-                  resultData.correctQuestions.find(
+                  resultData?.correctQuestions.find(
                     (value) => value === problem.id
                   )
                     ? true
@@ -106,9 +103,7 @@ const ResultContent = () => {
 const LevelResult = () => {
   return (
     <div className="flex h-full w-full items-center justify-center">
-      <Suspense fallback={<PulseLoader />}>
-        <ResultContent />
-      </Suspense>
+      <ResultContent />
     </div>
   );
 };
