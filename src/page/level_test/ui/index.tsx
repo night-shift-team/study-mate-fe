@@ -45,10 +45,26 @@ const LevelTest = () => {
       throw res.payload;
     } catch (e) {
       console.log(e);
+      throw e;
     }
   };
   useEffect(() => {
-    getLevelTestQuestions();
+    getLevelTestQuestions()
+      .then((list) => {
+        const problemListWithNo = (list as ProblemInfoMAQ[]).map(
+          (item, index) => {
+            return {
+              no: index + 1,
+              id: item.id,
+            };
+          }
+        );
+        sessionStorage.setItem(
+          'levelTestListWithNo',
+          JSON.stringify(problemListWithNo)
+        );
+      })
+      .catch();
   }, []);
 
   const handleAnswerSelect = (index: number) => {
