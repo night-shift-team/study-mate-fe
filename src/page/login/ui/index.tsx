@@ -172,7 +172,7 @@ const Login = () => {
             </button>{' '}
             <Link
               href={loginLoading ? '#' : '/signup'}
-              onClick={(e) => e.preventDefault()}
+              onClick={(e) => (loginLoading ? e.preventDefault() : null)}
             >
               <button
                 type="submit"
@@ -183,7 +183,7 @@ const Login = () => {
             </Link>
             <Link
               href={loginLoading ? '#' : '/leveltest'}
-              onClick={(e) => e.preventDefault()}
+              onClick={(e) => (loginLoading ? e.preventDefault() : null)}
             >
               <div className="cursor-pointer text-center text-sm text-gray-500 hover:text-gray-700">
                 [로그인 없이 레벨 테스트 진행하기]
