@@ -2,7 +2,7 @@
 
 import Logo from '@/assets/logo.png';
 import Image from 'next/image';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { LoginButton } from '@/entities';
 import Link from 'next/link';
 import { openNewWindowWithoutDuplicate } from '@/shared/window/model/openWindow';
@@ -23,17 +23,18 @@ import { localLoginApi, LocalLoginRes, userInfoApi, UserInfoRes } from '../api';
 import { accessTokenRefreshApi, AuthTokenRes } from '@/shared/user/api';
 import { access } from 'fs';
 import { usePopUpAnimationStyle } from '../model/usePopUpAnimationStyle';
+import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 const Login = () => {
   const router = useRouter();
   const windowReference: Window | null = null;
-  const [isAuthSuccess, setIsAuthSuccess] = useState(false);
+  const [loginLoading, setLoginLoading] = useState(false);
   const [isLoginSuccess, setIsLoginSuccess] = useState(false);
 
   const user = userStore.getState().user;
   const setUser = userStore.getState().setUser;
 
   // 인증 response 리스너
-  addSocialLoginRedirectDataListener(setIsAuthSuccess);
+  addSocialLoginRedirectDataListener(setLoginLoading);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -58,13 +59,15 @@ const Login = () => {
     try {
       // 여기에 실제 로그인 API 호출 로직 구현
       console.log('로그인 시도:', formData);
+      setLoginLoading(true);
       const tokens = await requestSignIn();
       setTokens(tokens);
-      setIsAuthSuccess(true);
       setAccessTokenToHeader(localStorage.getItem('accessToken'));
       getUserInfo();
     } catch (error) {
       console.error('로그인 에러:', error);
+    } finally {
+      setLoginLoading(false);
     }
   };
 
@@ -85,7 +88,6 @@ const Login = () => {
       } else {
         const userData = res.payload as UserInfoRes;
         setUser(userData);
-        console.log('udpateUser', user);
         setIsLoginSuccess(true);
         setTimeout(() => {
           if (!userData.userScore) {
@@ -120,12 +122,11 @@ const Login = () => {
 
   const { popupAnimationLocate } = usePopUpAnimationStyle(isLoginSuccess);
 
-  const autoLoginFromAccessToken = async () => {
-    try {
-    } catch (e) {
-      console.log(e);
+  useEffect(() => {
+    if (loginLoading) {
+      (document.activeElement as HTMLElement).blur();
     }
-  };
+  }, [loginLoading]);
 
   return (
     <div className="relative flex h-full w-full items-center justify-center">
@@ -164,11 +165,15 @@ const Login = () => {
             </div>
             <button
               type="submit"
-              className="rounded-lg bg-gray-400 py-2 text-white transition-colors hover:bg-[#F0EDD4]"
+              disabled={loginLoading}
+              className="flex h-[2.5rem] w-full items-center justify-center rounded-lg bg-gray-400 py-2 text-white transition-colors hover:bg-[#F0EDD4]"
             >
-              로그인
+              {loginLoading ? <Spinner /> : '로그인'}
             </button>{' '}
-            <Link href="/signup">
+            <Link
+              href={loginLoading ? '#' : '/signup'}
+              onClick={(e) => e.preventDefault()}
+            >
               <button
                 type="submit"
                 className="w-full rounded-lg bg-gray-400 py-2 text-white transition-colors hover:bg-[#F0EDD4]"
@@ -176,7 +181,10 @@ const Login = () => {
                 아메일 회원가입{' '}
               </button>
             </Link>
-            <Link href="/leveltest">
+            <Link
+              href={loginLoading ? '#' : '/leveltest'}
+              onClick={(e) => e.preventDefault()}
+            >
               <div className="cursor-pointer text-center text-sm text-gray-500 hover:text-gray-700">
                 [로그인 없이 레벨 테스트 진행하기]
               </div>
@@ -189,8 +197,9 @@ const Login = () => {
             </div>
             <div className="flex justify-between">
               {LoginButton.map((item) => (
-                <div
+                <button
                   key={item.id}
+                  disabled={loginLoading}
                   onClick={() => {
                     openNewWindowWithoutDuplicate(windowReference, item.link);
                   }}
@@ -204,7 +213,7 @@ const Login = () => {
                     className="rounded-full"
                   />
                   <div className="text-center text-[1.3vh]">{item.title}</div>
-                </div>
+                </button>
               ))}
             </div>
           </div>

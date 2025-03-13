@@ -7,6 +7,10 @@ import {
   signUpApi,
 } from '../api';
 import MoonLoader from 'react-spinners/MoonLoader';
+import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import { DialogPopup } from '@/shared/popUp/ui/dialogPopup';
+import { useRouter } from 'next/navigation';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
 
 export interface SignUpFormData {
   name: string;
@@ -24,6 +28,8 @@ const SignUp = () => {
   } as SignUpFormData);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [popupOpen, setPopupOpen] = useState(false);
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -57,8 +63,8 @@ const SignUp = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
     //TODO: 알람 대신 토스트 또는 텍스트로 변경 필요
+    setIsLoading(true);
     try {
       if (await checkNicknameDuplicate(formData.name)) {
         alert('이미 사용중인 닉네임입니다.');
@@ -75,6 +81,7 @@ const SignUp = () => {
 
       const res = await signUpApi(formData);
       console.log(res);
+      setPopupOpen(true);
     } catch (e) {
       console.error('회원가입 에러:', e);
     } finally {
@@ -83,7 +90,19 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex h-full w-full items-center justify-center p-4">
+    <div className="relative flex h-full w-full items-center justify-center p-4">
+      {popupOpen && (
+        <DialogPopup
+          open={popupOpen}
+          setDialogOpen={() => setPopupOpen(false)}
+          title="회원가입"
+          description="회원가입이 정상적으로 완료되었습니다"
+          execFunc={() => {
+            router.push(RouteTo.Home);
+          }}
+          disableX={true}
+        />
+      )}
       <div className="flex w-full max-w-[550px] flex-col justify-center gap-8 rounded-lg bg-white p-4 shadow-lg md:p-8">
         <div className="flex flex-col items-center gap-6">
           <h1 className="text-xl font-semibold">이메일 회원가입</h1>
@@ -147,7 +166,7 @@ const SignUp = () => {
                   disabled
                   className="mt-4 flex h-[42px] w-full items-center justify-center rounded-lg bg-gray-400 text-white"
                 >
-                  <MoonLoader size={28} color="#ffffff" />
+                  <Spinner color="#ffffff" />
                 </button>
               ) : (
                 <button

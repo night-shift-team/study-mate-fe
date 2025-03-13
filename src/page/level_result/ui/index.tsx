@@ -8,6 +8,8 @@ import { csQuizQuestions } from '@/entities/test';
 import Popup from '@/feature/level_result/popup';
 import PulseLoader from 'react-spinners/PulseLoader';
 import { GetLevelTestResultRes } from '@/page/level_test/api';
+import { userStore } from '@/state/userStore';
+import { UserInfo } from '@/shared/constants/userInfo';
 
 const TEMP_PROBLEM_DETTAIL = {
   questionId: 'e6c4a124-b55b-4e3e-a9c5-fe74f00d71b3',
@@ -36,6 +38,7 @@ const LevelResult = () => {
 export default LevelResult;
 
 const ResultContent = () => {
+  const { setUser } = userStore();
   const [problemLists, setProblemLists] = useState<
     { no: number; id: string }[]
   >([]);
@@ -82,6 +85,10 @@ const ResultContent = () => {
         };
       });
       userAnswers.current = userAnswersWithProblemNoByASC;
+      setUser({
+        ...userStore.getState().user,
+        userScore: resultData.yourInitScore,
+      } as UserInfo);
     }
   }, [problemLists, resultData]);
 

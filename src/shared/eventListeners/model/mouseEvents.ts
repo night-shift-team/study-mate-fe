@@ -21,16 +21,14 @@ export const HorizonTalScrollContainer = () => {
 };
 
 export const outSideClickContainer = (
-  attrStr: string,
+  idString: string,
   callback: () => void
 ) => {
   const container = document.getElementById('root-container');
   if (!container) return;
 
   const handleOutsideClick = (event: MouseEvent) => {
-    const targetContainer = document.getElementById(
-      'category-select-container-' + attrStr
-    );
+    const targetContainer = document.getElementById(idString);
     if (!targetContainer) return;
 
     if (!targetContainer.contains(event.target as Node)) {

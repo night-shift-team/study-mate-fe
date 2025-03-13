@@ -18,6 +18,8 @@ import PulseLoader from 'react-spinners/PulseLoader';
 import { ServerErrorResponse } from '@/shared/api/model/config';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import AuthHoc from '@/shared/auth/model/authHoc';
+import { useQuery } from '@tanstack/react-query';
+import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 
 type ChoiceAttrs = Pick<
   ProblemInfoMAQ,
@@ -32,14 +34,16 @@ const LevelTest = () => {
   const [userAnswers, setUserAnswers] = useState<number[]>([]);
 
   const [levelTestLists, setLevelTestLists] = useState<ProblemInfoMAQ[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isPageLoading, setIsPageLoading] = useState<boolean>(true);
+  const [isGetResultApiLoading, setIsGetResultApiLoading] =
+    useState<boolean>(false);
 
   const getLevelTestQuestions = async () => {
     try {
       const res = await getLevelTestQuestionsApi();
       if (res.ok) {
         setLevelTestLists(res.payload as ProblemInfoMAQ[]);
-        setIsLoading(false);
+        setIsPageLoading(false);
         return res.payload;
       }
       throw res.payload;
@@ -114,6 +118,7 @@ const LevelTest = () => {
     }
     // 마지막 문제일 경우
     try {
+      setIsGetResultApiLoading(true);
       const res = await getLevelTestResult(updateAnswer);
       const userData = { ...res, userAnswers: updateAnswer };
       sessionStorage.setItem('levelTestResult', JSON.stringify(userData));
@@ -125,7 +130,7 @@ const LevelTest = () => {
 
   return (
     <div className="flex h-full w-full items-center justify-center">
-      {isLoading ? (
+      {isPageLoading ? (
         <PulseLoader />
       ) : (
         <div className="flex w-[90%] max-w-[700px] flex-col">
@@ -161,7 +166,13 @@ const LevelTest = () => {
                       `choice${index + 1}` as keyof ChoiceAttrs
                     ]
                   }
-                  onClick={() => handleAnswerSelect(index + 1)}
+                  onClick={() => {
+                    if (isGetResultApiLoading) {
+                      return;
+                    } else {
+                      handleAnswerSelect(index + 1);
+                    }
+                  }}
                   isSelected={selectedAnswer === index + 1}
                   showResult={showResult}
                 />
@@ -170,9 +181,9 @@ const LevelTest = () => {
           </div>
           <div className="flex w-full justify-end gap-4">
             <button
-              disabled={currentQuestionNo <= 0}
+              disabled={isGetResultApiLoading || currentQuestionNo <= 0}
               className={`mt-4 flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all duration-200 ease-in-out ${
-                currentQuestionNo <= 0
+                isGetResultApiLoading || currentQuestionNo <= 0
                   ? 'cursor-not-allowed bg-gray-400 opacity-50'
                   : 'bg-[#FEA1A1] hover:bg-[#fe8989] active:scale-95'
               } text-white`}
@@ -181,16 +192,20 @@ const LevelTest = () => {
               <FaArrowLeft />
             </button>
             <button
-              disabled={selectedAnswer === null}
+              disabled={isGetResultApiLoading || selectedAnswer === null}
               className={`mt-4 flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all duration-200 ease-in-out ${
-                selectedAnswer === null
+                isGetResultApiLoading || selectedAnswer === null
                   ? 'cursor-not-allowed bg-gray-400 opacity-50'
                   : 'bg-[#FEA1A1] hover:bg-[#fe8989] active:scale-95'
               } text-white`}
               onClick={handleNextQuestion}
             >
               {currentQuestionNo === levelTestLists.length - 1 ? (
-                <PiPaperPlaneTilt size={25} />
+                isGetResultApiLoading ? (
+                  <Spinner color="white" />
+                ) : (
+                  <PiPaperPlaneTilt size={25} />
+                )
               ) : (
                 <FaArrowRight />
               )}

@@ -18,7 +18,9 @@ const SelectComponent = ({
   const { updateProblemInfo, setUpdateProblemInfo } = useUpdateProblem();
 
   useLayoutEffect(() => {
-    outSideClickContainer(attrString, () => setOpenSelect(false));
+    outSideClickContainer('category-select-container-' + attrString, () =>
+      setOpenSelect(false)
+    );
     RootWheelSetStateListener(() => setOpenSelect(false));
   }, []);
 
