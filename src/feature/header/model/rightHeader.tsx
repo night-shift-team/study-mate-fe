@@ -2,13 +2,26 @@
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { userStore } from '@/state/userStore';
 import { Button, Flex, Heading, Text } from '@chakra-ui/react';
+import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 const RightHeaderComponents = () => {
   const routePath = usePathname();
   const router = useRouter();
-
   const { setUser } = userStore();
+
+  useEffect(() => {
+    const accessTokenWatcher = (e: StorageEvent) => {
+      if (e.key === 'accessToken' && e.newValue === null) {
+        setUser(null);
+        router.push(RouteTo.Home);
+      }
+    };
+    window.addEventListener('storage', accessTokenWatcher);
+    return () => window.removeEventListener('storage', accessTokenWatcher);
+  }, []);
+
   switch (routePath) {
     case RouteTo.AdminDashboard:
     case RouteTo.AdminManagementUser:
@@ -39,17 +52,18 @@ const RightHeaderComponents = () => {
         </Flex>
       );
     case RouteTo.Solve:
+    case RouteTo.LevelTestResult:
       return (
         <>
-          <button
+          <Link
+            href={RouteTo.Login}
             className="flex h-fit w-fit items-center justify-center rounded-2xl hover:bg-gray-100 active:cursor-grabbing"
             onClick={() => {
               setUser(null);
-              router.push(RouteTo.Login);
             }}
           >
             로그아웃
-          </button>
+          </Link>
         </>
       );
     default:

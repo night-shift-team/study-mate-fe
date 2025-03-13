@@ -44,9 +44,8 @@ const AuthHoc = <P extends object>(WrappedComponent: ComponentType<P>) => {
         // 레벨테스트 완료 유저(!0)은 로그인,홈,레벨테스트 페이지 제외한모든 페이지 접근 가능
         (user?.userScore !== 0 &&
           !(
-            path === RouteTo.Home ||
-            path === RouteTo.Login ||
-            path === RouteTo.LevelTest
+            (path === RouteTo.Home || path === RouteTo.Login)
+            // || path === RouteTo.LevelTest
           )) ? (
         <WrappedComponent {...props} />
       ) : null

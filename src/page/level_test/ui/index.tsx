@@ -17,6 +17,7 @@ import { PiPaperPlaneTilt } from 'react-icons/pi';
 import PulseLoader from 'react-spinners/PulseLoader';
 import { ServerErrorResponse } from '@/shared/api/model/config';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import AuthHoc from '@/shared/auth/model/authHoc';
 
 type ChoiceAttrs = Pick<
   ProblemInfoMAQ,
@@ -79,7 +80,7 @@ const LevelTest = () => {
   const handleNextQuestion = async () => {
     if (!selectedAnswer) return;
 
-    if (currentQuestionNo < levelTestLists.length - 1) {
+    if (currentQuestionNo <= levelTestLists.length - 1) {
       if (!userAnswers[currentQuestionNo]) {
         setUserAnswers([...userAnswers, selectedAnswer]);
       } else {
@@ -87,12 +88,15 @@ const LevelTest = () => {
         newAnswer[currentQuestionNo] = selectedAnswer;
         setUserAnswers(newAnswer);
       }
-      setSelectedAnswer(userAnswers[currentQuestionNo + 1] ?? null);
-      setCurrentQuestionNo((prev) => prev + 1);
-      setShowResult(false);
-      return;
+      if (currentQuestionNo < levelTestLists.length - 1) {
+        setSelectedAnswer(userAnswers[currentQuestionNo + 1] ?? null);
+        setCurrentQuestionNo((prev) => prev + 1);
+        setShowResult(false);
+        return;
+      }
     }
     // 마지막 문제일 경우
+
     try {
       const res = await getLevelTestResult();
       sessionStorage.setItem('levelTestResult', JSON.stringify(res));
@@ -182,4 +186,4 @@ const LevelTest = () => {
   );
 };
 
-export default LevelTest;
+export default AuthHoc(LevelTest);
