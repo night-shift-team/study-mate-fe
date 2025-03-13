@@ -56,9 +56,9 @@ const LevelTest = () => {
     setShowResult(true);
   };
 
-  const getLevelTestResult = async () => {
+  const getLevelTestResult = async (updateAnswer: number[]) => {
     try {
-      const reqData = userAnswers.map((answer, index) => ({
+      const reqData = updateAnswer.map((answer, index) => ({
         id: levelTestLists[index].id,
         answer: answer.toString() as '1' | '2' | '3' | '4',
       }));
@@ -79,14 +79,15 @@ const LevelTest = () => {
 
   const handleNextQuestion = async () => {
     if (!selectedAnswer) return;
-
+    let updateAnswer: number[] = [];
     if (currentQuestionNo <= levelTestLists.length - 1) {
       if (!userAnswers[currentQuestionNo]) {
-        setUserAnswers([...userAnswers, selectedAnswer]);
+        updateAnswer = [...userAnswers, selectedAnswer];
+        setUserAnswers(updateAnswer);
       } else {
-        const newAnswer = [...userAnswers];
-        newAnswer[currentQuestionNo] = selectedAnswer;
-        setUserAnswers(newAnswer);
+        updateAnswer = [...userAnswers];
+        updateAnswer[currentQuestionNo] = selectedAnswer;
+        setUserAnswers(updateAnswer);
       }
       if (currentQuestionNo < levelTestLists.length - 1) {
         setSelectedAnswer(userAnswers[currentQuestionNo + 1] ?? null);
@@ -96,11 +97,9 @@ const LevelTest = () => {
       }
     }
     // 마지막 문제일 경우
-
     try {
-      const res = await getLevelTestResult();
+      const res = await getLevelTestResult(updateAnswer);
       sessionStorage.setItem('levelTestResult', JSON.stringify(res));
-      console.log(sessionStorage.getItem('levelTestResult'));
       router.push(RouteTo.LevelTestResult);
     } catch (e) {
       console.log(e);
