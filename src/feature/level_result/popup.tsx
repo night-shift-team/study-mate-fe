@@ -17,7 +17,7 @@ const Popup: React.FC<PopupProps> = ({
   onClose,
 }) => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm transition-opacity duration-300">
+    <div className="z-100 fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm transition-opacity duration-300">
       <div className="w-[90%] max-w-lg scale-100 transform rounded-2xl bg-white p-6 shadow-2xl transition-transform duration-300">
         {/* 헤더 */}
         <div className="mb-4 flex items-center justify-between border-b pb-4">

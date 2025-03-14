@@ -131,7 +131,7 @@ const LevelTest = () => {
   return (
     <div className="flex h-full w-full items-center justify-center">
       {isPageLoading ? (
-        <PulseLoader />
+        <Spinner size="xl" />
       ) : (
         <div className="flex w-[90%] max-w-[700px] flex-col">
           <div className="h-[15vh] w-full">
@@ -202,7 +202,7 @@ const LevelTest = () => {
             >
               {currentQuestionNo === levelTestLists.length - 1 ? (
                 isGetResultApiLoading ? (
-                  <Spinner color="white" />
+                  <Spinner color="white" size={'sm'} />
                 ) : (
                   <PiPaperPlaneTilt size={25} />
                 )

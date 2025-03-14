@@ -10,6 +10,7 @@ import PulseLoader from 'react-spinners/PulseLoader';
 import { GetLevelTestResultRes } from '@/page/level_test/api';
 import { userStore } from '@/state/userStore';
 import { UserInfo } from '@/shared/constants/userInfo';
+import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 
 const TEMP_PROBLEM_DETTAIL = {
   questionId: 'e6c4a124-b55b-4e3e-a9c5-fe74f00d71b3',
@@ -142,7 +143,7 @@ const ResultContent = () => {
   };
 
   if (!resultData) {
-    return <PulseLoader />;
+    return <Spinner size="xl" />;
   }
   return (
     <div className="flex w-full max-w-[700px] flex-col items-center justify-around gap-6 rounded-2xl bg-white p-3 shadow-[0_8px_30px_rgb(0,0,0,0.06)] sm:flex-row">
