@@ -11,6 +11,10 @@ import { GetLevelTestResultRes } from '@/page/level_test/api';
 import { userStore } from '@/state/userStore';
 import { UserInfo } from '@/shared/constants/userInfo';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import Button from '@/components/buttons';
+import { Router } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
 
 const TEMP_PROBLEM_DETTAIL = {
   questionId: 'e6c4a124-b55b-4e3e-a9c5-fe74f00d71b3',
@@ -43,6 +47,8 @@ const ResultContent = () => {
   const [problemLists, setProblemLists] = useState<
     { no: number; id: string }[]
   >([]);
+
+  const router = useRouter();
   const [resultData, setResultData] = useState<ResultData | null>(null);
   const userAnswers = useRef<
     {
@@ -192,6 +198,14 @@ const ResultContent = () => {
           })}
         </div>
       </div>
+
+      <Button
+        size="sm"
+        className="underline-offset-[3px] hover:bg-black/10 hover:underline"
+        onClick={() => router.push(RouteTo.Home)}
+      >
+        홈으로
+      </Button>
 
       {popup && selectedQuestion && (
         <Popup
