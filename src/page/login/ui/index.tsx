@@ -7,9 +7,7 @@ import { LoginButton } from '@/entities';
 import Link from 'next/link';
 import { openNewWindowWithoutDuplicate } from '@/shared/window/model/openWindow';
 import { addSocialLoginRedirectDataListener } from '../model/addSocialLoginResponseListener';
-import { Router } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-
 import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { UserStoreStorage, userStore } from '@/state/userStore';
@@ -20,19 +18,23 @@ import {
   setAccessTokenToHeader,
 } from '@/shared/api/model/config';
 import { localLoginApi, LocalLoginRes, userInfoApi, UserInfoRes } from '../api';
-import { accessTokenRefreshApi, AuthTokenRes } from '@/shared/user/api';
-import { access } from 'fs';
-import { usePopUpAnimationStyle } from '../model/usePopUpAnimationStyle';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import { resetFocus } from '@/shared/dom/model/focus';
+import useToast from '@/shared/toast/toast';
+
 const Login = () => {
   const router = useRouter();
   const windowReference: Window | null = null;
   const [loginLoading, setLoginLoading] = useState(false);
-  const [isLoginSuccess, setIsLoginSuccess] = useState(false);
+  const [toastOpen, setToastOpen] = useState(false);
 
   const user = userStore.getState().user;
   const setUser = userStore.getState().setUser;
 
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  const passwordInputRef = useRef<HTMLInputElement>(null);
+
+  const { Toaster, setToastDescription } = useToast(toastOpen, setToastOpen);
   // 인증 response 리스너
   addSocialLoginRedirectDataListener(setLoginLoading);
 
@@ -42,6 +44,8 @@ const Login = () => {
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    checkPasswordValidate(true);
+    checkEmailValidate(true);
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -58,14 +62,30 @@ const Login = () => {
     e.preventDefault();
     try {
       // 여기에 실제 로그인 API 호출 로직 구현
-      console.log('로그인 시도:', formData);
       setLoginLoading(true);
       const tokens = await requestSignIn();
       setTokens(tokens);
       setAccessTokenToHeader(localStorage.getItem('accessToken'));
-      getUserInfo();
+      await getUserInfo();
     } catch (error) {
-      console.error('로그인 에러:', error);
+      if ((error as ServerErrorResponse).ecode !== undefined) {
+        switch ((error as ServerErrorResponse).ecode) {
+          case Ecode.E0103:
+            emailInputRef.current?.focus();
+            checkEmailValidate(false);
+            break;
+          case Ecode.E0104:
+            passwordInputRef.current?.focus();
+            checkPasswordValidate(false);
+            break;
+          default:
+            break;
+        }
+      } else {
+        console.error('로그인 에러:', error);
+        setToastDescription('Login Failed');
+        setToastOpen(true);
+      }
     } finally {
       setLoginLoading(false);
     }
@@ -81,21 +101,23 @@ const Login = () => {
           EcodeMessage(Ecode.E0106);
           localStorage.removeItem('accessToken');
           localStorage.removeItem(UserStoreStorage.userStore);
-          setIsLoginSuccess(false);
+          setToastDescription('Login Failed');
+          setToastOpen(true);
           return;
         }
         router.push(RouteTo.Home);
       } else {
         const userData = res.payload as UserInfoRes;
         setUser(userData);
-        setIsLoginSuccess(true);
+        setToastDescription('Login Success');
+        setToastOpen(true);
         setTimeout(() => {
           if (!userData.userScore) {
             router.push(RouteTo.LevelTest);
           } else {
             router.push(RouteTo.Solve);
           }
-        }, 1000);
+        }, 2500);
       }
     } catch (e: any) {
       const error = handleFetchErrors(e);
@@ -120,23 +142,41 @@ const Login = () => {
     }
   };
 
-  const { popupAnimationLocate } = usePopUpAnimationStyle(isLoginSuccess);
+  const checkEmailValidate = (isValid: boolean) => {
+    if (!isValid && emailInputRef.current) {
+      emailInputRef.current.setCustomValidity(
+        '이메일 정보가 일치하지 않습니다.'
+      );
+      emailInputRef.current.reportValidity();
+      return;
+    } else if (isValid && emailInputRef.current) {
+      emailInputRef.current.setCustomValidity('');
+      return;
+    }
+  };
+
+  const checkPasswordValidate = (isValid: boolean) => {
+    if (!isValid && passwordInputRef.current) {
+      passwordInputRef.current.setCustomValidity(
+        '패스워드 정보가 일치하지 않습니다.'
+      );
+      passwordInputRef.current.reportValidity();
+      return;
+    } else if (isValid && passwordInputRef.current) {
+      passwordInputRef.current.setCustomValidity('');
+      return;
+    }
+  };
 
   useEffect(() => {
     if (loginLoading) {
-      (document.activeElement as HTMLElement).blur();
+      resetFocus();
     }
   }, [loginLoading]);
 
   return (
-    <div className="relative flex h-full w-full items-center justify-center">
-      {
-        <div
-          className={`absolute z-[1] ${popupAnimationLocate} top-0 flex h-[3rem] w-[16rem] items-center justify-center rounded-xl border border-[#ebe5d6] bg-[#F0EDD4] text-[2.2vh] shadow-light transition-all duration-300 ease-in-out`}
-        >
-          Login Success
-        </div>
-      }
+    <div className="relative flex h-full w-full items-center justify-center overflow-x-hidden">
+      <Toaster />
       <div className="flex w-full max-w-[700px] flex-col justify-around gap-6 rounded-lg bg-white p-8 shadow-lg md:flex-row">
         <div className="flex justify-center md:items-center">
           <Image src={Logo} alt="" width={200} />
@@ -145,6 +185,7 @@ const Login = () => {
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex w-[100%] flex-col gap-2">
               <input
+                ref={emailInputRef}
                 type="email"
                 name="email"
                 value={formData.email}
@@ -154,10 +195,13 @@ const Login = () => {
                 required
               />
               <input
+                ref={passwordInputRef}
                 type="password"
                 name="password"
                 value={formData.password}
-                onChange={handleChange}
+                onChange={(e) => {
+                  handleChange(e);
+                }}
                 placeholder="비밀번호"
                 className="rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FEA1A1]"
                 required
@@ -166,7 +210,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={loginLoading}
-              className="flex h-[2.5rem] w-full items-center justify-center rounded-lg bg-gray-400 py-2 text-white transition-colors hover:bg-[#F0EDD4]"
+              className={`flex h-[2.5rem] w-full items-center justify-center rounded-lg bg-gray-400 py-2 text-white transition-colors ${loginLoading ? 'hover:bg-gray-400' : 'hover:bg-[#F0EDD4]'}`}
             >
               {loginLoading ? <Spinner /> : '로그인'}
             </button>{' '}
