@@ -11,6 +11,7 @@ import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { DialogPopup } from '@/shared/popUp/ui/dialogPopup';
 import { useRouter } from 'next/navigation';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import useToast from '@/shared/toast/toast';
 
 export interface SignUpFormData {
   name: string;
@@ -26,6 +27,9 @@ const SignUp = () => {
     password: '',
     confirmPassword: '',
   } as SignUpFormData);
+
+  const [toastOpen, setToastOpen] = useState(false);
+  const { Toaster, setToastDescription } = useToast(toastOpen, setToastOpen);
 
   const [isLoading, setIsLoading] = useState(false);
   const [popupOpen, setPopupOpen] = useState(false);
@@ -66,16 +70,19 @@ const SignUp = () => {
     //TODO: 알람 대신 토스트 또는 텍스트로 변경 필요
     setIsLoading(true);
     try {
+      if (formData.password !== formData.confirmPassword) {
+        setToastDescription('비밀번호가 일치하지 않습니다.');
+        setToastOpen(true);
+        return;
+      }
       if (await checkNicknameDuplicate(formData.name)) {
-        alert('이미 사용중인 닉네임입니다.');
+        setToastDescription('이미 사용중인 닉네임입니다.');
+        setToastOpen(true);
         return;
       }
       if (await checkEmailDuplicate(formData.email)) {
-        alert('이미 사용중인 이메일입니다.');
-        return;
-      }
-      if (formData.password !== formData.confirmPassword) {
-        alert('비밀번호가 일치하지 않습니다.');
+        setToastDescription('이미 사용중인 이메일입니다.');
+        setToastOpen(true);
         return;
       }
 
@@ -91,6 +98,7 @@ const SignUp = () => {
 
   return (
     <div className="relative flex h-full w-full items-center justify-center p-4">
+      <Toaster />
       {popupOpen && (
         <DialogPopup
           open={popupOpen}
@@ -164,7 +172,7 @@ const SignUp = () => {
                 <button
                   type="submit"
                   disabled
-                  className="mt-4 flex h-[42px] w-full items-center justify-center rounded-lg bg-gray-400 text-white"
+                  className="mt-4 flex h-[42px] w-full items-center justify-center rounded-lg bg-gray-400 p-2 text-white"
                 >
                   <Spinner color="#ffffff" />
                 </button>
