@@ -20,6 +20,12 @@ module.exports = {
         spoqa: ['Spoqa Han Sans Neo', 'sans-serif'],
       },
       colors: {
+        pointcolor: {
+          beige: '#F9FBE7',
+          sand: '#F0EDD4',
+          apricot: '#ECCDB4',
+          coral: '#FEA1A1',
+        },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
