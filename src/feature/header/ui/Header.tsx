@@ -7,7 +7,7 @@ import { RouteTo } from '@/shared/routes/model/getRoutePath';
 
 const Header = () => {
   return (
-    <div className="flex h-full w-full items-center justify-between border-b border-[#ECCDB4] bg-white pl-4 md:pl-2">
+    <div className="flex h-full w-full items-center justify-between pl-4 md:pl-2">
       <Link
         href={RouteTo.Home}
         className="relative flex h-full w-[6.5rem] md:w-[8rem]"

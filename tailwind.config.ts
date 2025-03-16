@@ -15,9 +15,12 @@ module.exports = {
         soft: '0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.06)',
         light: '0px 2px 4px rgba(0, 0, 0, 0.08)',
         strong: '0px 6px 10px rgba(0, 0, 0, 0.15)',
+
+        'inner-right': 'inset 2px 0 0 #000', // 오른쪽 내부 테두리
       },
       fontFamily: {
         spoqa: ['Spoqa Han Sans Neo', 'sans-serif'],
+        doodle: ['CustomFontDoodle', 'sans-serif'],
       },
       colors: {
         pointcolor: {
@@ -79,5 +82,6 @@ module.exports = {
     require('tailwindcss-animate'),
     require('@tailwindcss/aspect-ratio'),
     require('@tailwindcss/typography'),
+    require('tailwindcss-inner-border'),
   ],
 } satisfies Config;

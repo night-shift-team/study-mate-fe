@@ -1,6 +1,6 @@
 'use client';
 
-import Logo from '@/assets/logo.png';
+import Logo from '@/assets/studyMate_logo.png';
 import Image from 'next/image';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { LoginButton } from '@/entities';
@@ -175,15 +175,26 @@ const Login = () => {
   }, [loginLoading]);
 
   return (
-    <div className="relative flex h-full w-full items-center justify-center overflow-x-hidden">
+    <div className="relative flex h-full w-full items-center justify-center overflow-x-hidden pb-[4rem]">
       <Toaster />
-      <div className="flex w-full max-w-[700px] flex-col justify-around gap-6 rounded-lg bg-white p-8 shadow-lg md:flex-row">
-        <div className="flex justify-center md:items-center">
-          <Image src={Logo} alt="" width={200} />
+      <div className="inner-border-left flex w-full max-w-[900px] flex-col justify-around gap-6 rounded-[1rem] bg-white/60 p-8 shadow-xl md:flex-row">
+        <div className="flex flex-col justify-center md:items-center">
+          <Image src={Logo} alt="" width={240} />
+          <div className="flex w-full flex-col">
+            <span className="text-2xl font-bold text-pointcolor-apricot">
+              Study Mate
+            </span>
+            <span className="mt-1 max-w-[240px]">
+              Online platform for solving computer science problems and
+              enhancing learning.
+            </span>
+          </div>
         </div>
         <div className="flex flex-col gap-10 sm:gap-6 md:w-[50%]">
+          <span className="font-doodle text-3xl font-bold">Welcome</span>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <div className="flex w-[100%] flex-col gap-2">
+            <div className="flex w-[100%] flex-col">
+              <span className="text-[0.8rem]">Email</span>
               <input
                 ref={emailInputRef}
                 type="email"
@@ -191,9 +202,10 @@ const Login = () => {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="이메일"
-                className="rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FEA1A1]"
+                className="rounded-lg border border-gray-300 px-4 py-2 text-sm"
                 required
               />
+              <span className="mt-2 text-[0.8rem]">Password</span>
               <input
                 ref={passwordInputRef}
                 type="password"
@@ -203,43 +215,53 @@ const Login = () => {
                   handleChange(e);
                 }}
                 placeholder="비밀번호"
-                className="rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FEA1A1]"
+                className="rounded-lg border border-gray-300 px-4 py-2 text-sm"
                 required
               />
+              <div className="mt-4 flex w-full justify-between">
+                <div>
+                  <input type="checkbox" disabled={true} className="mr-2" />
+                  <span className="text-[0.8rem]">로그인 상태 유지</span>
+                </div>
+                <div>
+                  <button
+                    disabled={true}
+                    className="text-[0.8rem] font-bold text-[#5761eb] hover:cursor-pointer hover:underline hover:underline-offset-4"
+                  >
+                    비밀번호 찾기
+                  </button>
+                </div>
+              </div>
             </div>
             <button
               type="submit"
               disabled={loginLoading}
-              className={`flex h-[2.5rem] w-full items-center justify-center rounded-lg bg-gray-400 py-2 text-white transition-colors ${loginLoading ? 'hover:bg-gray-400' : 'hover:bg-[#F0EDD4]'}`}
+              className={`flex h-[2.5rem] w-full items-center justify-center rounded-lg bg-gray-600 py-2 text-white transition-colors ${loginLoading ? 'hover:bg-gray-400' : 'hover:bg-[#F0EDD4] hover:text-black'}`}
             >
               {loginLoading ? <Spinner /> : '로그인'}
             </button>{' '}
-            <Link
-              href={loginLoading ? '#' : '/signup'}
-              onClick={(e) => (loginLoading ? e.preventDefault() : null)}
-            >
-              <button
-                type="submit"
-                className="w-full rounded-lg bg-gray-400 py-2 text-white transition-colors hover:bg-[#F0EDD4]"
-              >
-                아메일 회원가입{' '}
-              </button>
-            </Link>
-            <Link
+            {/* <Link
               href={loginLoading ? '#' : '/leveltest'}
               onClick={(e) => (loginLoading ? e.preventDefault() : null)}
             >
               <div className="cursor-pointer text-center text-sm text-gray-500 hover:text-gray-700">
                 [로그인 없이 레벨 테스트 진행하기]
               </div>
-            </Link>
+            </Link> */}
           </form>
 
-          <div className="flex flex-col justify-center gap-4">
-            <div className="cursor-pointer text-center text-sm text-gray-700">
-              SNS 계정으로 간단하게 시작하기!
+          <div className="flex flex-col justify-center">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="bg-[#fcfdf6] px-2 text-gray-500">
+                  간편 로그인
+                </span>
+              </div>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between gap-4">
               {LoginButton.map((item) => (
                 <button
                   key={item.id}
@@ -247,18 +269,30 @@ const Login = () => {
                   onClick={() => {
                     openNewWindowWithoutDuplicate(windowReference, item.link);
                   }}
-                  className="flex cursor-pointer flex-col justify-center"
+                  className="flex h-[5rem] w-1/3 cursor-pointer flex-col justify-center"
                 >
-                  <Image
-                    src={item.img}
-                    alt=""
-                    width={45}
-                    height={45}
-                    className="rounded-full"
-                  />
-                  <div className="text-center text-[1.3vh]">{item.title}</div>
+                  <div className="flex justify-center rounded-md border-2 py-1">
+                    <Image
+                      src={item.img}
+                      alt=""
+                      width={25}
+                      height={25}
+                      className="rounded-full"
+                    />
+                  </div>
                 </button>
               ))}
+            </div>
+            <div className="flex justify-center whitespace-pre-wrap text-[0.8rem]">
+              <span>계정이 없으신가요? </span>
+              <Link
+                href={loginLoading ? '#' : '/signup'}
+                onClick={(e) => (loginLoading ? e.preventDefault() : null)}
+              >
+                <span className="font-bold text-[#5761eb] hover:cursor-pointer hover:underline hover:underline-offset-4">
+                  회원가입
+                </span>
+              </Link>
             </div>
           </div>
         </div>

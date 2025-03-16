@@ -99,4 +99,18 @@ body {
     font-size: 16px;
     line-height: 1.5;
   }
+
+  .inner-border-left {
+    --tw-inner-border-shadow: inset 3px 0 0 #eccdb4; /* 왼쪽 내부 테두리 */
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+      var(--tw-ring-shadow, 0 0 #0000), var(--tw-inner-border-shadow),
+      var(--tw-shadow);
+  }
+
+  @font-face {
+    font-family: 'CustomFontDoodle';
+    src: url('../assets/beachday.regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
 }
