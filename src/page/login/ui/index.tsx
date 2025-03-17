@@ -174,10 +174,40 @@ const Login = () => {
     }
   }, [loginLoading]);
 
+  useEffect(() => {
+    const form = document.getElementById('loginForm') as HTMLFormElement | null;
+    if (!form) return;
+    const formEnterListener = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        const activeElement = document.activeElement as HTMLElement;
+        console.log('activeElement', activeElement.tagName);
+        if (activeElement.tagName === 'INPUT') {
+          e.preventDefault();
+          const loginButton = document.getElementById('loginButton');
+          if (loginButton) {
+            loginButton.focus();
+          }
+
+          const event = new Event('submit', {
+            bubbles: true,
+            cancelable: true,
+          });
+          if (form.dispatchEvent(event)) {
+            form.submit();
+          }
+        }
+      }
+    };
+    form.addEventListener('keydown', formEnterListener);
+    return () => {
+      form.removeEventListener('keydown', formEnterListener);
+    };
+  }, []);
+
   return (
     <div className="relative flex h-full w-full items-center justify-center overflow-x-hidden pb-[4rem]">
       <Toaster />
-      <div className="inner-border-left flex w-full max-w-[900px] flex-col justify-around gap-6 rounded-[1rem] bg-white/60 p-8 shadow-xl md:flex-row">
+      <div className="inner-border-left flex w-full max-w-[900px] flex-col justify-around gap-6 rounded-[1rem] border bg-white/60 p-8 shadow-xl md:flex-row">
         <div className="flex flex-col justify-center md:items-center">
           <Image src={Logo} alt="" width={240} />
           <div className="flex w-full flex-col">
@@ -192,7 +222,11 @@ const Login = () => {
         </div>
         <div className="flex flex-col gap-10 sm:gap-6 md:w-[50%]">
           <span className="font-doodle text-3xl font-bold">Welcome</span>
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <form
+            id={'loginForm'}
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-4"
+          >
             <div className="flex w-[100%] flex-col">
               <span className="text-[0.8rem]">Email</span>
               <input
@@ -234,6 +268,7 @@ const Login = () => {
               </div>
             </div>
             <button
+              id="loginButton"
               type="submit"
               disabled={loginLoading}
               className={`flex h-[2.5rem] w-full items-center justify-center rounded-lg bg-gray-600 py-2 text-white transition-colors ${loginLoading ? 'hover:bg-gray-400' : 'hover:bg-[#F0EDD4] hover:text-black'}`}
