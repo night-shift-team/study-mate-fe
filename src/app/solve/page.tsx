@@ -1,5 +1,5 @@
 'use client';
-import SolveProblem from '@/page/solveProblem/ui';
+import SolveProblem from '@/page/solve/ui';
 
 const SolveProblemPage = () => {
   return <SolveProblem />;

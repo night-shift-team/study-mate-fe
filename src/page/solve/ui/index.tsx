@@ -55,39 +55,39 @@ const getCategoriesIcon = (title: CategoryTitle) => {
   switch (title) {
     case 'Operating System':
       return (
-        <FaComputer className="h-full w-fit items-center justify-center py-0.5" />
+        <FaComputer className="h-[80%] w-fit items-center justify-center py-0.5" />
       );
     case 'Database':
       return (
-        <FaComputer className="h-full w-fit items-center justify-center py-0.5" />
+        <FaComputer className="h-[80%] w-fit items-center justify-center py-0.5" />
       );
     case 'Network':
       return (
-        <FaComputer className="h-full w-fit items-center justify-center py-0.5" />
+        <FaComputer className="h-[80%] w-fit items-center justify-center py-0.5" />
       );
     case `Data Structure and Algorithm`:
       return (
-        <FaComputer className="h-full w-fit items-center justify-center py-0.5" />
+        <FaComputer className="h-[80%] w-fit items-center justify-center py-0.5" />
       );
     case 'Javascript':
       return (
-        <FaComputer className="h-full w-fit items-center justify-center py-0.5" />
+        <FaComputer className="h-[80%] w-fit items-center justify-center py-0.5" />
       );
     case 'React':
       return (
-        <FaComputer className="h-full w-fit items-center justify-center py-0.5" />
+        <FaComputer className="h-[80%] w-fit items-center justify-center py-0.5" />
       );
     case 'Typescript':
       return (
-        <FaComputer className="h-full w-fit items-center justify-center py-0.5" />
+        <FaComputer className="h-[80%] w-fit items-center justify-center py-0.5" />
       );
     case 'Nextjs':
       return (
-        <FaComputer className="h-full w-fit items-center justify-center py-0.5" />
+        <FaComputer className="h-[80%] w-fit items-center justify-center py-0.5" />
       );
     default:
       return (
-        <FaComputer className="h-full w-fit items-center justify-center py-0.5" />
+        <FaComputer className="h-[80%] w-fit items-center justify-center py-0.5" />
       );
   }
 };
@@ -117,30 +117,62 @@ const getCategoriesLink = (title: CategoryTitle) => {
 const SolveProblem = () => {
   return (
     <div className="flex h-full w-full flex-shrink-0 flex-col items-center gap-5 overflow-auto px-[2.5rem] py-[3rem]">
-      {TempCategories.map((category, index) => {
-        return (
-          <div
-            key={index}
-            className="relative h-[6rem] w-[100%] flex-shrink-0 rounded-3xl border-2 p-4 shadow-md"
-          >
-            <div className="itmes-center flex h-[2rem] w-full gap-2">
-              {getCategoriesIcon(category.title)}
-              <span className="flex h-full items-center font-bold">
+      <div className="flex w-full flex-col gap-2">
+        <span className="w-full text-start text-xl font-bold">
+          문제 카테고리
+        </span>
+        <span className="text-stra w-full text-sm">
+          관심 있는 카테고리를 선택하여 문제를 풀어보세요
+        </span>
+      </div>
+      <div className="grid w-full place-items-center gap-5 md:grid-flow-col md:grid-cols-2 md:grid-rows-5 lg:grid-cols-3 lg:grid-rows-3 xl:grid-cols-4 xl:grid-rows-2">
+        {TempCategories.map((category, index) => {
+          return (
+            <div
+              key={index}
+              className="relative h-[6rem] w-[100%] flex-shrink-0 rounded-xl bg-white px-4 pt-2.5 shadow-md transition-all duration-300 ease-in-out hover:translate-y-[-5px] hover:shadow-2xl md:h-[12rem] md:w-[16rem] md:p-4"
+            >
+              <div className="itmes-center flex aspect-1 h-[2rem] items-center justify-center rounded-full bg-red-200 md:ml-1 md:mt-2 md:h-[2.5rem]">
+                {getCategoriesIcon(category.title)}
+              </div>
+              <span
+                className="mt-1 flex items-center font-bold md:ml-1 md:mt-4"
+                style={{
+                  letterSpacing: category.title.length > 20 ? '-0.05rem' : '',
+                }}
+              >
                 {category.title}
               </span>
-            </div>
-            <p className="pt-0.5 text-sm">({category.count})</p>
-            <Link
+              <span
+                className="flex items-center text-[0.7rem] md:ml-1 md:mt-2"
+                style={{
+                  letterSpacing: category.title.length > 20 ? '-0.05rem' : '',
+                }}
+              >
+                {'기본적인 알고리즘 문제를 풀어보세요.'}
+              </span>
+              <div className="absolute right-5 top-5 h-2 w-[50%] rounded-xl bg-gray-300 md:relative md:inset-0 md:ml-1 md:mt-2 md:flex md:w-full">
+                <div
+                  className={`absolute z-[1] flex h-2 rounded-xl bg-blue-400`}
+                  style={{
+                    width: ((category.count * 100) / 500).toFixed(1) + '%',
+                  }}
+                ></div>
+              </div>
+              <p className="absolute right-5 top-8 text-xs tracking-tighter md:static md:ml-1 md:mt-2 md:pt-0.5 md:text-sm md:tracking-normal">
+                진행률 : {((category.count * 100) / 500).toFixed(1) + '%'}
+              </p>
+              {/* <Link
               onClick={() => {}}
               href={getCategoriesLink(category.title)}
-              className="absolute bottom-3 right-4 rounded-full bg-gray-400 p-2.5"
+              className="absolute top-7 right-4 rounded-full bg-gray-400 p-2.5"
             >
               <FaArrowRight />
-            </Link>
-          </div>
-        );
-      })}
-
+            </Link> */}
+            </div>
+          );
+        })}
+      </div>
       {/* <div className="flex h-[50%] w-full">
         <div className="flex h-full w-[75%] px-[3rem] py-[3rem]">
           <div className="grid h-full w-full grid-flow-col justify-start gap-x-[3rem] overflow-x-scroll py-[0.3rem] scrollbar-hide">
