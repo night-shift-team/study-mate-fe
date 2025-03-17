@@ -6,6 +6,9 @@ import { userStore } from '@/state/userStore';
 import { Fragment, useEffect } from 'react';
 import { count } from 'console';
 import { FaArrowRight, FaComputer } from 'react-icons/fa6';
+import MultipleIcon from '@/assets/multipleIcon.png';
+import SentenseIcon from '@/assets/sentenseIcon.png';
+import Image from 'next/image';
 
 type CategoryTitle =
   | 'Operating System'
@@ -117,9 +120,50 @@ const getCategoriesLink = (title: CategoryTitle) => {
 const SolveProblem = () => {
   return (
     <div className="flex h-full w-full flex-shrink-0 flex-col items-center gap-5 overflow-auto px-[2.5rem] py-[3rem]">
-      <div className="flex w-full flex-col gap-2">
+      <div className="flex w-full flex-col">
         <span className="w-full text-start text-xl font-bold">
-          문제 카테고리
+          나의 문제 풀기
+        </span>
+        <div className="mt-4 flex w-full gap-10 px-10">
+          <div className="flex min-h-[8rem] w-[50%] min-w-[20rem] flex-col items-center justify-center rounded-xl bg-white shadow-md hover:cursor-pointer hover:inner-border">
+            <div className="mt-6 flex aspect-1 w-[2.6rem] items-center justify-center rounded-full bg-[#3b82f6]/40">
+              <Image
+                src={MultipleIcon}
+                alt="multipleIcon"
+                width={20}
+                height={20}
+              />
+            </div>
+            <span className="mt-3 text-[1.1rem] font-bold">객관식</span>
+            <span className="mt-3 text-sm text-gray-600">
+              4개의 보기 중 정답을 선택하세요
+            </span>
+            <span className="mb-4 mt-3 text-xl font-bold text-[#3b82f6]">
+              127 <span className="text-sm font-bold text-[#3b82f6]">문제</span>
+            </span>
+          </div>
+          <div className="flex min-h-[8rem] w-[50%] min-w-[20rem] flex-col items-center justify-center rounded-xl bg-white shadow-md hover:cursor-pointer hover:inner-border">
+            <div className="mt-6 flex aspect-1 w-[2.6rem] items-center justify-center rounded-full bg-[#f97316]/50">
+              <Image
+                src={SentenseIcon}
+                alt="multipleIcon"
+                width={20}
+                height={20}
+              />
+            </div>
+            <span className="mt-3 text-[1.1rem] font-bold">주관식</span>
+            <span className="mt-3 text-sm text-gray-600">
+              자유롭게 답안을 작성하세요
+            </span>
+            <span className="mb-4 mt-3 text-xl font-bold text-[#f97316]">
+              127 <span className="text-sm font-bold text-[#f97316]">문제</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className="mt-6 flex w-full flex-col gap-2 pt-2">
+        <span className="w-full text-start text-xl font-bold">
+          카테고리별 문제 풀기
         </span>
         <span className="text-stra w-full text-sm">
           관심 있는 카테고리를 선택하여 문제를 풀어보세요

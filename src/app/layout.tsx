@@ -31,7 +31,7 @@ export default function RootLayout({
         className={`flex h-full w-full font-spoqa antialiased`}
       >
         <Provider>
-          <div className="base h-full w-full bg-pointcolor-beige">
+          <div className="base h-full w-full bg-pointcolor-yogurt">
             <div className="fixed z-[100] flex h-[4rem] w-full px-0 md:px-[4vh]">
               <Header />
             </div>

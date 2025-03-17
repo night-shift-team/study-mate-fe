@@ -25,6 +25,7 @@ module.exports = {
       colors: {
         pointcolor: {
           beige: '#F9FBE7',
+          yogurt: '#fdfbf3',
           sand: '#F0EDD4',
           apricot: '#ECCDB4',
           coral: '#FEA1A1',
