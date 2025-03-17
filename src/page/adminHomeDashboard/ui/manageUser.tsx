@@ -2,15 +2,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { UserTableForm } from './userTableForm';
 import { UserData } from './userTableData';
-
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination';
 import { ProblemData } from './manageProblem';
 
 const ManageUser = () => {
@@ -130,48 +121,49 @@ export const ListPagination = ({
   }, [currentPage]);
 
   return (
-    <Pagination>
-      <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious
-            onClick={() => {
-              setPageNextListNum((prev) => {
-                if (prev < 1) {
-                  return prev;
-                } else {
-                  setCurrentPage(prev - PAGINATION_MAXLISTCOUNT + 1);
-                  return prev - PAGINATION_MAXLISTCOUNT;
-                }
-              });
-            }}
-          />
-        </PaginationItem>
-        {Array.from({ length: PAGINATION_MAXLISTCOUNT }, (_, i) => (
-          <PaginationItem key={i}>
-            <PaginationLink
-              onClick={() => setCurrentPage(i + pageNextListNum + 1)}
-              isActive={pageNextListNum + i + 1 === currentPage}
-            >
-              {pageNextListNum + i + 1}
-            </PaginationLink>
-          </PaginationItem>
-        ))}
-        <PaginationItem>
-          <PaginationNext
-            onClick={() => {
-              setPageNextListNum((prev) => {
-                if (prev < maxPage - PAGINATION_MAXLISTCOUNT) {
-                  setCurrentPage(prev + PAGINATION_MAXLISTCOUNT * 2);
-                  return prev + PAGINATION_MAXLISTCOUNT;
-                } else {
-                  return prev;
-                }
-              });
-            }}
-          />
-        </PaginationItem>
-      </PaginationContent>
-    </Pagination>
+    // <Pagination>
+    //   <PaginationContent>
+    //     <PaginationItem>
+    //       <PaginationPrevious
+    //         onClick={() => {
+    //           setPageNextListNum((prev) => {
+    //             if (prev < 1) {
+    //               return prev;
+    //             } else {
+    //               setCurrentPage(prev - PAGINATION_MAXLISTCOUNT + 1);
+    //               return prev - PAGINATION_MAXLISTCOUNT;
+    //             }
+    //           });
+    //         }}
+    //       />
+    //     </PaginationItem>
+    //     {Array.from({ length: PAGINATION_MAXLISTCOUNT }, (_, i) => (
+    //       <PaginationItem key={i}>
+    //         <PaginationLink
+    //           onClick={() => setCurrentPage(i + pageNextListNum + 1)}
+    //           isActive={pageNextListNum + i + 1 === currentPage}
+    //         >
+    //           {pageNextListNum + i + 1}
+    //         </PaginationLink>
+    //       </PaginationItem>
+    //     ))}
+    //     <PaginationItem>
+    //       <PaginationNext
+    //         onClick={() => {
+    //           setPageNextListNum((prev) => {
+    //             if (prev < maxPage - PAGINATION_MAXLISTCOUNT) {
+    //               setCurrentPage(prev + PAGINATION_MAXLISTCOUNT * 2);
+    //               return prev + PAGINATION_MAXLISTCOUNT;
+    //             } else {
+    //               return prev;
+    //             }
+    //           });
+    //         }}
+    //       />
+    //     </PaginationItem>
+    //   </PaginationContent>
+    // </Pagination>
+    <></>
   );
 };
 

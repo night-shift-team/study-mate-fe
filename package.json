@@ -13,6 +13,7 @@
   "dependencies": {
     "@chakra-ui/react": "^3.8.0",
     "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@lexical/code": "^0.25.0",
     "@lexical/html": "^0.25.0",
     "@lexical/link": "^0.25.0",
@@ -21,6 +22,7 @@
     "@lexical/react": "^0.25.0",
     "@lexical/rich-text": "^0.25.0",
     "@mswjs/interceptors": "^0.37.6",
+    "@mui/material": "^6.4.7",
     "@radix-ui/react-select": "^2.1.5",
     "@radix-ui/react-slot": "^1.1.1",
     "@tailwindcss/aspect-ratio": "^0.4.2",

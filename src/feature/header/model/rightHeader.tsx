@@ -1,7 +1,6 @@
 'use client';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { userStore } from '@/state/userStore';
-import { Button, Flex, Heading, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -27,29 +26,24 @@ const RightHeaderComponents = () => {
     case RouteTo.AdminManagementUser:
     case RouteTo.AdminManagementProblem:
       return (
-        <Flex gapX={2}>
-          <Button
-            variant={'ghost'}
-            rounded={'2xl'}
-            paddingX={2}
-            className="hover:bg-gray-100 active:cursor-grabbing"
+        <div className="flex gap-2">
+          <button
+            type="button"
+            className="rounded-2xl px-2 hover:bg-gray-100 active:cursor-grabbing"
             onClick={() => router.push(RouteTo.AdminDashboard)}
           >
-            <Text fontSize={'sm'}>대시보드</Text>
-          </Button>
-          <Button
-            variant={'ghost'}
-            rounded={'2xl'}
-            paddingX={2}
-            className="px-[0.5rem] py-[0.2rem] hover:bg-gray-100 active:cursor-grabbing"
+            <span className="text-sm">대시보드</span>
+          </button>
+          <button
+            className="rounded-2xl px-[0.5rem] py-[0.2rem] hover:bg-gray-100 active:cursor-grabbing"
             onClick={() => {
               setUser(null);
               router.push(RouteTo.Home);
             }}
           >
-            <Text fontSize={'sm'}>로그아웃</Text>
-          </Button>
-        </Flex>
+            <span className="text-sm">로그아웃</span>
+          </button>
+        </div>
       );
     case RouteTo.Solve:
     case RouteTo.LevelTestResult:

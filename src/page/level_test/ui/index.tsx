@@ -5,7 +5,6 @@ import { csQuizQuestions } from '@/entities/test';
 import { ChoiceItem } from '@/feature/level_test/ChoiceItem';
 import { useRouter } from 'next/navigation';
 import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
-import { IconButton } from '@chakra-ui/react';
 import {
   getLevelTestQuestionsApi,
   getLevelTestResultApi,
@@ -137,13 +136,9 @@ const LevelTest = () => {
           <div className="h-[15vh] w-full">
             <div className="flex w-full items-center justify-between">
               <span>문제. {currentQuestionNo + 1}</span>{' '}
-              <IconButton
-                bgColor={'#F0EDD4'}
-                rounded={'lg'}
-                className="p-2 hover:cursor-auto"
-              >
+              <button className="rounded-lg bg-[#F0EDD4] p-2 hover:cursor-auto">
                 {currentQuestionNo + 1}/{levelTestLists.length ?? 1}
-              </IconButton>
+              </button>
             </div>
             <div className="p-5">
               {levelTestLists[currentQuestionNo].description}

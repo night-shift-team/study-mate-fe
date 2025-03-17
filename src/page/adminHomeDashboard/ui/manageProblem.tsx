@@ -4,13 +4,7 @@ import { RefObject, useEffect, useRef, useState } from 'react';
 
 import { ListPagination } from './manageUser';
 import useHoverEvent from '@/shared/routes/model/useHoverEvent';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+
 import { GoArrowRight } from 'react-icons/go';
 import { DialogPopup } from '@/shared/popUp/ui/dialogPopup';
 
@@ -330,27 +324,28 @@ const ManageProblem = () => {
                     {manageProblemCRUD === 'create' ||
                     (manageProblemCRUD === 'update' &&
                       !isUpdateTextComplete) ? (
-                      <Select
-                        onValueChange={(value) =>
-                          setInputCategory(value as ProblemCategory)
-                        }
-                      >
-                        <SelectTrigger className="not-sr-only flex h-fit w-fit items-center justify-center border px-[1%] py-0 text-[2vh]">
-                          <SelectValue
-                            placeholder={
-                              currentProblem?.category ??
-                              ('운영체제' as ProblemCategory)
-                            }
-                          />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {ProblemCategories.map((value, key) => (
-                            <SelectItem key={key} value={value}>
-                              {value}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      // <Select
+                      //   onValueChange={(value) =>
+                      //     setInputCategory(value as ProblemCategory)
+                      //   }
+                      // >
+                      //   <SelectTrigger className="not-sr-only flex h-fit w-fit items-center justify-center border px-[1%] py-0 text-[2vh]">
+                      //     <SelectValue
+                      //       placeholder={
+                      //         currentProblem?.category ??
+                      //         ('운영체제' as ProblemCategory)
+                      //       }
+                      //     />
+                      //   </SelectTrigger>
+                      //   <SelectContent>
+                      //     {ProblemCategories.map((value, key) => (
+                      //       <SelectItem key={key} value={value}>
+                      //         {value}
+                      //       </SelectItem>
+                      //     ))}
+                      //   </SelectContent>
+                      // </Select>
+                      <></>
                     ) : (
                       <></>
                     )}
