@@ -35,7 +35,7 @@ const Mypage = () => {
         </div>
       </div>
 
-      <div className="flex h-[80vh] w-full flex-col gap-2 bg-[#F9FBE7] px-4 py-2 pt-[80px] md:pt-[10%]">
+      <div className="flex h-[80vh] w-full flex-col gap-2 bg-pointcolor-yogurt px-4 py-2 pt-[80px] md:pt-[10%]">
         <div className="mt-[6vh] h-1/2 max-w-full sm:mt-0 md:flex md:gap-3">
           <button className="mb-2 w-[10%] text-nowrap text-[2vh] font-bold text-[#ECCDB4]">
             활동기록

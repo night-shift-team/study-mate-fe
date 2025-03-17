@@ -119,13 +119,11 @@ const getCategoriesLink = (title: CategoryTitle) => {
 
 const SolveProblem = () => {
   return (
-    <div className="flex h-full w-full flex-shrink-0 flex-col items-center gap-5 overflow-auto px-[2.5rem] py-[3rem]">
-      <div className="flex w-full flex-col">
-        <span className="w-full text-start text-xl font-bold">
-          나의 문제 풀기
-        </span>
-        <div className="mt-4 flex w-full gap-10 px-10">
-          <div className="flex min-h-[8rem] w-[50%] min-w-[20rem] flex-col items-center justify-center rounded-xl bg-white shadow-md hover:cursor-pointer hover:inner-border">
+    <div className="flex h-full w-full flex-shrink-0 flex-col items-center gap-5 overflow-auto px-[2.5rem] py-[2rem]">
+      <div className="flex w-full flex-col justify-center">
+        <span className="text-center text-[1.6rem] font-bold">문제 풀기</span>
+        <div className="mt-6 flex w-full justify-center gap-10 px-10">
+          <div className="flex min-h-[8rem] w-[50%] min-w-[18rem] flex-col items-center justify-center rounded-xl bg-white shadow-md hover:cursor-pointer hover:shadow-lg hover:inner-border">
             <div className="mt-6 flex aspect-1 w-[2.6rem] items-center justify-center rounded-full bg-[#3b82f6]/40">
               <Image
                 src={MultipleIcon}
@@ -134,42 +132,28 @@ const SolveProblem = () => {
                 height={20}
               />
             </div>
-            <span className="mt-3 text-[1.1rem] font-bold">객관식</span>
+            <span className="mt-3 text-[1.1rem] font-bold">랜덤 문제 풀기</span>
             <span className="mt-3 text-sm text-gray-600">
-              4개의 보기 중 정답을 선택하세요
+              {`모든 카테고리`}
+            </span>
+            <span className="mt-1 text-sm text-gray-600">
+              {`4지 선다 or 주관식`}
             </span>
             <span className="mb-4 mt-3 text-xl font-bold text-[#3b82f6]">
               127 <span className="text-sm font-bold text-[#3b82f6]">문제</span>
             </span>
           </div>
-          <div className="flex min-h-[8rem] w-[50%] min-w-[20rem] flex-col items-center justify-center rounded-xl bg-white shadow-md hover:cursor-pointer hover:inner-border">
-            <div className="mt-6 flex aspect-1 w-[2.6rem] items-center justify-center rounded-full bg-[#f97316]/50">
-              <Image
-                src={SentenseIcon}
-                alt="multipleIcon"
-                width={20}
-                height={20}
-              />
-            </div>
-            <span className="mt-3 text-[1.1rem] font-bold">주관식</span>
-            <span className="mt-3 text-sm text-gray-600">
-              자유롭게 답안을 작성하세요
-            </span>
-            <span className="mb-4 mt-3 text-xl font-bold text-[#f97316]">
-              127 <span className="text-sm font-bold text-[#f97316]">문제</span>
-            </span>
-          </div>
         </div>
       </div>
-      <div className="mt-6 flex w-full flex-col gap-2 pt-2">
-        <span className="w-full text-start text-xl font-bold">
+      <div className="mt-6 flex flex-col gap-2 pt-2">
+        <span className="text-center text-xl font-bold">
           카테고리별 문제 풀기
         </span>
         <span className="text-stra w-full text-sm">
           관심 있는 카테고리를 선택하여 문제를 풀어보세요
         </span>
       </div>
-      <div className="grid w-full place-items-center gap-5 md:grid-flow-col md:grid-cols-2 md:grid-rows-5 lg:grid-cols-3 lg:grid-rows-3 xl:grid-cols-4 xl:grid-rows-2">
+      <div className="grid w-full place-items-center gap-5 md:w-auto md:grid-flow-col md:grid-cols-2 md:grid-rows-5 md:gap-10 lg:grid-cols-3 lg:grid-rows-3 xl:grid-cols-4 xl:grid-rows-2">
         {TempCategories.map((category, index) => {
           return (
             <div
@@ -182,7 +166,7 @@ const SolveProblem = () => {
               <span
                 className="mt-1 flex items-center font-bold md:ml-1 md:mt-4"
                 style={{
-                  letterSpacing: category.title.length > 20 ? '-0.05rem' : '',
+                  letterSpacing: category.title.length > 20 ? '-0.06rem' : '',
                 }}
               >
                 {category.title}
@@ -190,7 +174,7 @@ const SolveProblem = () => {
               <span
                 className="flex items-center text-[0.7rem] md:ml-1 md:mt-2"
                 style={{
-                  letterSpacing: category.title.length > 20 ? '-0.05rem' : '',
+                  letterSpacing: category.title.length > 20 ? '-0.06rem' : '',
                 }}
               >
                 {'기본적인 알고리즘 문제를 풀어보세요.'}

@@ -38,7 +38,7 @@ const Problem = ({ category }: { category: string }) => {
           ))}
         </div>
         <div className="flex w-full justify-between gap-x-[1rem]">
-          <button className="mt-4 flex h-[50px] w-[50px] items-center justify-center rounded-full border bg-[#f9fbe7] transition-all duration-200 ease-in-out hover:border-gray-400">
+          <button className="mt-4 flex h-[50px] w-[50px] items-center justify-center rounded-full border bg-pointcolor-beige transition-all duration-200 ease-in-out hover:border-gray-400">
             skip
           </button>
           <button
