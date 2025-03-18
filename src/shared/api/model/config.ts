@@ -86,12 +86,10 @@ export const _apiFetch = async <T = any>(
 // 인터셉터 리스너 설정
 interceptor.on('request', async ({ request }) => {
   if (request.url.includes('/api/')) {
-    console.log('token', currentToken);
     if (!currentToken) {
       try {
         const accessToken = await getAccessToken();
         currentToken = accessToken as string;
-        console.log(currentToken);
       } catch (e) {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');

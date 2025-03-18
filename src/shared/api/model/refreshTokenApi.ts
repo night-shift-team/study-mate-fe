@@ -9,7 +9,6 @@ export const getAccessToken = async () => {
   try {
     const accessToken = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
-    console.log('accessToken', accessToken, 'refreshToken', refreshToken);
     if (accessToken) {
       setAccessTokenToHeader(accessToken);
       return accessToken;

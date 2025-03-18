@@ -1,6 +1,6 @@
 'use client';
 import { csQuizQuestions } from '@/entities/test';
-import { ChoiceItem } from '@/feature/level_test/ChoiceItem';
+import { ChoicedItemResult, ChoiceItem } from '@/feature/level_test/ChoiceItem';
 import {
   ProblemCategoryTitle,
   ProblemCategoryTitleLength,
@@ -30,6 +30,7 @@ import { devNull } from 'os';
 import { userStore } from '@/state/userStore';
 import { Preahvihear } from 'next/font/google';
 import { UserInfo } from '@/shared/constants/userInfo';
+import { PiPaperPlaneTilt } from 'react-icons/pi';
 
 interface ProblemProps {
   category: 'random' | ProblemCategoryTitle;
@@ -42,8 +43,11 @@ const Problem = ({ category }: ProblemProps) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [currentQuestionWithType, setCurrentQuestionWithType] =
     useState<QuestionType | null>(null);
-  const [toastOpen, setToastOpen] = useState(false);
+  const [problemAnswer, setProblemAnswer] = useState<
+    SendMAQAnswerRes | SendSAQAnswerRes | null
+  >(null);
 
+  const [toastOpen, setToastOpen] = useState(false);
   const { Toaster, setToastDescription } = useToast(toastOpen, setToastOpen);
   const { user, setUser } = userStore();
 
@@ -116,31 +120,42 @@ const Problem = ({ category }: ProblemProps) => {
         setToastDescription(EcodeMessage(Ecode.E0406));
         setToastOpen(true);
 
+        setSelectedAnswer(null);
+        setCurrentQuestionWithType(null);
         await getProblem(category);
         return;
       }
     }
   };
 
-  const handleNextButton = async (id: string, answer: string) => {
+  const handleNextButton = async () => {
+    if (!problemAnswer) return;
+    setCurrentQuestionWithType(null);
+    setProblemAnswer(null);
+    setSelectedAnswer(null);
+    await getProblem(category);
+    return;
+  };
+
+  const sendAnswerButton = async (id: string, answer: string) => {
     if (!currentQuestionWithType) return;
     try {
       if (currentQuestionWithType.problemType === ProblemCategoryType.MAQ) {
         const res = await sendMAQAnswerApi(id, answer);
         console.log(res);
+        setProblemAnswer(res.payload as SendMAQAnswerRes);
         setUser({
           ...user,
           userScore: (res.payload as SendMAQAnswerRes).userScore,
         } as UserInfo);
-        await getProblem(category);
       } else {
         const res = await sendSAQAnswerApi(id, answer);
         console.log(res);
+        setProblemAnswer(res.payload as SendSAQAnswerRes);
         setUser({
           ...user,
           userScore: (res.payload as SendSAQAnswerRes).userScore,
         } as UserInfo);
-        await getProblem(category);
       }
     } catch (e) {
       console.log(e);
@@ -153,7 +168,7 @@ const Problem = ({ category }: ProblemProps) => {
   return (
     <div className="flex h-full w-full justify-center">
       <Toaster />
-      <div className="flex w-[90%] max-w-[1200px] flex-col rounded-2xl bg-white p-6 py-4">
+      <div className="flex w-[90%] max-w-[1200px] flex-col rounded-2xl bg-white p-8 py-6">
         <div className="w-full">
           <div className="flex w-full items-center justify-between">
             <span className="text-xl font-bold">
@@ -166,58 +181,134 @@ const Problem = ({ category }: ProblemProps) => {
               레벨 {currentQuestionWithType?.difficulty}
             </span>
           </div>
-          <div className="flex">{currentQuestionWithType?.questionTitle}</div>
+          <div className="mt-1">{currentQuestionWithType?.questionTitle}</div>
           <MarkdownComponent
             markdown={currentQuestionWithType?.content ?? ''}
           />
         </div>
-        <div className="mt-4 flex flex-col gap-4">
-          {currentQuestionWithType?.problemType === ProblemCategoryType.MAQ
-            ? Array.from({ length: 4 }, (_, i) => i).map((index) => {
-                return (
-                  <ChoiceItem
-                    key={index}
-                    text={
-                      currentQuestionWithType[
-                        `choice${index + 1}` as Extract<
-                          keyof ProblemInfoMAQ,
-                          `choice${string}`
-                        >
-                      ]
-                    }
-                    isSelected={selectedAnswer === index.toString()}
-                    onClick={() => setSelectedAnswer((index + 1).toString())}
+
+        {problemAnswer ? (
+          <>
+            <div className="mt-4 flex flex-col gap-4">
+              {currentQuestionWithType?.problemType ===
+              ProblemCategoryType.MAQ ? (
+                Array.from({ length: 4 }, (_, i) => i).map((index) => {
+                  return (
+                    <ChoicedItemResult
+                      key={index}
+                      index={index}
+                      text={
+                        currentQuestionWithType[
+                          `choice${index + 1}` as Extract<
+                            keyof ProblemInfoMAQ,
+                            `choice${string}`
+                          >
+                        ]
+                      }
+                      userAnswer={selectedAnswer ?? ''}
+                      problemAnswer={(problemAnswer as SendMAQAnswerRes).answer}
+                    />
+                  );
+                })
+              ) : (
+                <>
+                  <textarea
+                    className="w-full rounded-lg border"
+                    value={selectedAnswer ?? ''}
+                    readOnly
                   />
-                );
-              })
-            : null}
-          {currentQuestionWithType?.problemType === ProblemCategoryType.SAQ ? (
-            <textarea
-              className="w-full rounded-lg border border-gray-300 p-2"
-              placeholder="답을 입력해주세요"
-              onChange={(e) => setSelectedAnswer(e.target.value)}
-            />
-          ) : null}
-        </div>
-        <div className="flex w-full justify-end gap-x-[1rem]">
-          <button
-            disabled={selectedAnswer === null}
-            className={`mt-4 flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all duration-200 ease-in-out ${
-              selectedAnswer === null
-                ? 'cursor-not-allowed bg-gray-400 opacity-50'
-                : 'bg-[#FEA1A1] hover:bg-[#fe8989] active:scale-95'
-            } text-white`}
-            onClick={async () => {
-              if (!currentQuestionWithType || !selectedAnswer) return;
-              await handleNextButton(
-                currentQuestionWithType.id,
-                selectedAnswer
-              );
-            }}
-          >
-            <FaArrowRight />
-          </button>
-        </div>
+                  <div
+                    className={`mt-12 flex w-full flex-col gap-2 rounded-xl p-4 inner-border-2 ${(problemAnswer as SendSAQAnswerRes).reflectedScore > 0 ? 'bg-green-200' : 'bg-red-200'}`}
+                  >
+                    <p className="text-sm text-gray-600">정답 : </p>
+                    <span>
+                      {(problemAnswer as SendSAQAnswerRes).modelAnswer}
+                    </span>
+                  </div>
+                </>
+              )}
+            </div>
+            <div
+              className={`flex w-full flex-col ${currentQuestionWithType?.problemType === ProblemCategoryType.MAQ ? 'mt-12' : 'mt-2'} gap-2 rounded-xl bg-white p-4 inner-border-2`}
+            >
+              <p className="text-sm text-gray-600">해설 : </p>
+              <span>{problemAnswer.answerExplanation}</span>
+            </div>
+            <div className="flex w-full justify-end">
+              {currentQuestionWithType ? (
+                <button
+                  disabled={problemAnswer === null}
+                  className={`mt-4 flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all duration-200 ease-in-out ${
+                    problemAnswer === null
+                      ? 'cursor-not-allowed bg-gray-400 opacity-50'
+                      : 'bg-[#FEA1A1] hover:bg-[#fe8989] active:scale-95'
+                  } text-white`}
+                  onClick={async () => {
+                    if (!currentQuestionWithType || !selectedAnswer) return;
+                    await handleNextButton();
+                  }}
+                >
+                  <FaArrowRight />
+                </button>
+              ) : null}
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="mt-4 flex flex-col gap-4">
+              {currentQuestionWithType?.problemType === ProblemCategoryType.MAQ
+                ? Array.from({ length: 4 }, (_, i) => i).map((index) => {
+                    return (
+                      <ChoiceItem
+                        key={index}
+                        text={
+                          currentQuestionWithType[
+                            `choice${index + 1}` as Extract<
+                              keyof ProblemInfoMAQ,
+                              `choice${string}`
+                            >
+                          ]
+                        }
+                        isSelected={selectedAnswer === (index + 1).toString()}
+                        onClick={() =>
+                          setSelectedAnswer((index + 1).toString())
+                        }
+                      />
+                    );
+                  })
+                : null}
+              {currentQuestionWithType?.problemType ===
+              ProblemCategoryType.SAQ ? (
+                <textarea
+                  className="w-full rounded-lg border border-gray-300 p-2"
+                  placeholder="답을 입력해주세요"
+                  onChange={(e) => setSelectedAnswer(e.target.value)}
+                />
+              ) : null}
+            </div>
+            <div className="mt-2 flex w-full justify-end">
+              {currentQuestionWithType ? (
+                <button
+                  disabled={selectedAnswer === null}
+                  className={`mt-4 flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all duration-200 ease-in-out ${
+                    selectedAnswer === null
+                      ? 'cursor-not-allowed bg-gray-400 opacity-50'
+                      : 'bg-[#FEA1A1] hover:bg-[#fe8989] active:scale-95'
+                  } text-white`}
+                  onClick={async () => {
+                    if (!currentQuestionWithType || !selectedAnswer) return;
+                    await sendAnswerButton(
+                      currentQuestionWithType.id,
+                      selectedAnswer
+                    );
+                  }}
+                >
+                  <PiPaperPlaneTilt size={25} />
+                </button>
+              ) : null}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
