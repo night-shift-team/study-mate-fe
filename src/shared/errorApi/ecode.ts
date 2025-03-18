@@ -4,6 +4,7 @@ export enum Ecode {
   E0106 = '0106',
   E0103 = '0103',
   E0104 = '0104',
+  E0406 = '0406',
 }
 
 export const EcodeMessage = (ecode: Ecode) => {
@@ -18,7 +19,8 @@ export const EcodeMessage = (ecode: Ecode) => {
       return 'password가 일치하지 않습니다.';
     case Ecode.E0106:
       return '구글 인증에 실패하였습니다.';
-
+    case Ecode.E0406:
+      return '존재하지 않는 문제입니다.';
     default:
       return 'Unknown error';
   }

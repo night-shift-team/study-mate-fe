@@ -1,4 +1,5 @@
 import Problem from '@/page/solve/ui/problem';
+import { ProblemCategoryTitle } from '@/shared/constants/problemInfo';
 
 const ProblemPage = async ({
   params,
@@ -6,9 +7,8 @@ const ProblemPage = async ({
   params: Promise<{ category: string }>;
 }) => {
   const { category } = await params;
-  console.log(category);
 
-  return <Problem category={category} />;
+  return <Problem category={category as 'random' | ProblemCategoryTitle} />;
 };
 
 export default ProblemPage;

@@ -2,6 +2,7 @@ export enum RouteTo {
   Home = '/',
   Login = '/login',
   Solve = '/solve',
+  SolveRandom = '/solve/random',
   AdminLogin = '/admin',
   LevelTest = '/leveltest',
   LevelTestResult = '/testresult',

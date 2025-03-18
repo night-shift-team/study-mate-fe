@@ -103,6 +103,8 @@ interceptor.on('request', async ({ request }) => {
 });
 
 interceptor.on('response', async ({ response, request }) => {
+  // console.log("interceptor", response)
+  if (response.ok) return;
   const errCode = (await response.json()).ecode;
   const isDisabaleToken = errCode === Ecode.E0002 || errCode === Ecode.E0005;
   if (isDisabaleToken) {
