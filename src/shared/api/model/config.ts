@@ -104,10 +104,7 @@ interceptor.on('response', async ({ response, request }) => {
   // console.log("interceptor", response)
   if (response.ok) return;
   const errCode = (await response.json()).ecode;
-  const isDisabaleToken =
-    errCode === Ecode.E0002 ||
-    errCode === Ecode.E0005 ||
-    errCode === Ecode.E0403;
+  const isDisabaleToken = errCode === Ecode.E0002 || errCode === Ecode.E0005;
   if (isDisabaleToken) {
     try {
       console.warn(EcodeMessage(errCode));
