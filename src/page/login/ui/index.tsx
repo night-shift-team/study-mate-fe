@@ -21,6 +21,13 @@ import { localLoginApi, LocalLoginRes, userInfoApi, UserInfoRes } from '../api';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { resetFocus } from '@/shared/dom/model/focus';
 import useToast from '@/shared/toast/toast';
+import {
+  checkEmailValidate,
+  checkPasswordValidate,
+} from '../model/checkInputValidate';
+import { setTokens } from '../model/setTokens';
+import { requestSignIn } from '../model/requestSignIn';
+import { getUserInfo } from '../model/getUserInfo';
 
 const Login = () => {
   const router = useRouter();
@@ -44,8 +51,8 @@ const Login = () => {
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    checkPasswordValidate(true);
-    checkEmailValidate(true);
+    checkPasswordValidate(passwordInputRef, true);
+    checkEmailValidate(emailInputRef, true);
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -53,30 +60,25 @@ const Login = () => {
     }));
   };
 
-  const setTokens = (tokens: LocalLoginRes) => {
-    localStorage.setItem('accessToken', tokens.accessToken);
-    localStorage.setItem('refreshToken', tokens.refreshToken);
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       // 여기에 실제 로그인 API 호출 로직 구현
       setLoginLoading(true);
-      const tokens = await requestSignIn();
+      const tokens = await requestSignIn(formData.email, formData.password);
       setTokens(tokens);
       setAccessTokenToHeader(localStorage.getItem('accessToken'));
-      await getUserInfo();
+      await getUserInfo(setToastDescription, setToastOpen, setUser, router);
     } catch (error) {
       if ((error as ServerErrorResponse).ecode !== undefined) {
         switch ((error as ServerErrorResponse).ecode) {
           case Ecode.E0103:
             emailInputRef.current?.focus();
-            checkEmailValidate(false);
+            checkEmailValidate(emailInputRef, false);
             break;
           case Ecode.E0104:
             passwordInputRef.current?.focus();
-            checkPasswordValidate(false);
+            checkPasswordValidate(passwordInputRef, false);
             break;
           default:
             break;
@@ -88,83 +90,6 @@ const Login = () => {
       }
     } finally {
       setLoginLoading(false);
-    }
-  };
-
-  const getUserInfo = async () => {
-    try {
-      const res = await userInfoApi();
-      console.log(res);
-      if (!res.ok) {
-        const errData = res.payload as ServerErrorResponse;
-        if (errData.ecode === Ecode.E0106) {
-          EcodeMessage(Ecode.E0106);
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem(UserStoreStorage.userStore);
-          setToastDescription('Login Failed');
-          setToastOpen(true);
-          return;
-        }
-        router.push(RouteTo.Home);
-      } else {
-        const userData = res.payload as UserInfoRes;
-        setUser(userData);
-        setToastDescription('Login Success');
-        setToastOpen(true);
-        setTimeout(() => {
-          if (!userData.userScore) {
-            router.push(RouteTo.LevelTest);
-          } else {
-            router.push(RouteTo.Solve);
-          }
-        }, 2500);
-      }
-    } catch (e: any) {
-      const error = handleFetchErrors(e);
-      console.log('error', error);
-      if (error === 'TypeError' || error === 'AbortError') {
-        console.log('서버 에러');
-      }
-    }
-  };
-
-  const requestSignIn = async () => {
-    try {
-      const res = await localLoginApi(formData.email, formData.password);
-      console.log(res);
-      if (res.ok) {
-        return res.payload as LocalLoginRes;
-      }
-      throw res.payload as ServerErrorResponse;
-    } catch (e) {
-      console.log(e);
-      throw e;
-    }
-  };
-
-  const checkEmailValidate = (isValid: boolean) => {
-    if (!isValid && emailInputRef.current) {
-      emailInputRef.current.setCustomValidity(
-        '이메일 정보가 일치하지 않습니다.'
-      );
-      emailInputRef.current.reportValidity();
-      return;
-    } else if (isValid && emailInputRef.current) {
-      emailInputRef.current.setCustomValidity('');
-      return;
-    }
-  };
-
-  const checkPasswordValidate = (isValid: boolean) => {
-    if (!isValid && passwordInputRef.current) {
-      passwordInputRef.current.setCustomValidity(
-        '패스워드 정보가 일치하지 않습니다.'
-      );
-      passwordInputRef.current.reportValidity();
-      return;
-    } else if (isValid && passwordInputRef.current) {
-      passwordInputRef.current.setCustomValidity('');
-      return;
     }
   };
 

@@ -16,6 +16,7 @@ const useToast = (
         setToastAnimationLocate('translate-y-[100%] -right-[100%]');
       }, 2000);
       setTimeout(() => {
+        console.log(changeDescription);
         setOpen((prev) => !prev);
       }, 2500);
     } else {
@@ -23,14 +24,14 @@ const useToast = (
     }
   }, [open]);
 
-  const setToastDescription = (description: string) => {
+  const setToastDescription = async (description: string) => {
     setChangeDescription(description);
   };
 
   const Toaster = ({ description }: { description?: string }) => {
     return (
       <div
-        className={`absolute z-[1] ${toastAnimationLocate} top-0 flex h-[3rem] w-[16rem] items-center justify-center rounded-xl border border-[#ebe5d6] bg-[#F0EDD4] text-[2.2vh] shadow-light transition-all duration-300 ease-in-out`}
+        className={`absolute z-[1] ${toastAnimationLocate} top-0 flex h-[3rem] items-center justify-center rounded-xl border border-[#ebe5d6] bg-[#F0EDD4] px-4 text-[2.2vh] shadow-light transition-all duration-300 ease-in-out`}
       >
         {description ?? changeDescription}
       </div>

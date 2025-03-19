@@ -14,7 +14,7 @@ export const EcodeMessage = (ecode: Ecode) => {
     case Ecode.E0005:
       return '토큰 만료';
     case Ecode.E0103:
-      return '유효한 ID가 아닙니다.';
+      return '유효한 이메일이 아닙니다.';
     case Ecode.E0104:
       return 'password가 일치하지 않습니다.';
     case Ecode.E0106:

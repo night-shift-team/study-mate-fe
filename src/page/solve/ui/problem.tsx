@@ -119,7 +119,6 @@ const Problem = ({ category }: ProblemProps) => {
       }
     } catch (e) {
       console.log(e);
-      //TODO: 문제 불러오기 실패시 처리
       if ((e as ServerErrorResponse).ecode === Ecode.E0406) {
         setToastDescription(EcodeMessage(Ecode.E0406));
         setToastOpen(true);
