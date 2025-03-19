@@ -11,7 +11,10 @@ import {
   GetLevelTestResultReq,
   GetLevelTestResultRes,
 } from '../api';
-import { ProblemInfoMAQ } from '@/shared/constants/problemInfo';
+import {
+  ProblemInfoLevelTest,
+  ProblemInfoMAQ,
+} from '@/shared/constants/problemInfo';
 import { PiPaperPlaneTilt } from 'react-icons/pi';
 import PulseLoader from 'react-spinners/PulseLoader';
 import { ServerErrorResponse } from '@/shared/api/model/config';
@@ -32,7 +35,9 @@ const LevelTest = () => {
   const [showResult, setShowResult] = useState<boolean>(false);
   const [userAnswers, setUserAnswers] = useState<number[]>([]);
 
-  const [levelTestLists, setLevelTestLists] = useState<ProblemInfoMAQ[]>([]);
+  const [levelTestLists, setLevelTestLists] = useState<ProblemInfoLevelTest[]>(
+    []
+  );
   const [isPageLoading, setIsPageLoading] = useState<boolean>(true);
   const [isGetResultApiLoading, setIsGetResultApiLoading] =
     useState<boolean>(false);
@@ -41,7 +46,7 @@ const LevelTest = () => {
     try {
       const res = await getLevelTestQuestionsApi();
       if (res.ok) {
-        setLevelTestLists(res.payload as ProblemInfoMAQ[]);
+        setLevelTestLists(res.payload as ProblemInfoLevelTest[]);
         setIsPageLoading(false);
         return res.payload;
       }
@@ -54,7 +59,7 @@ const LevelTest = () => {
   useEffect(() => {
     getLevelTestQuestions()
       .then((list) => {
-        const problemListWithNo = (list as ProblemInfoMAQ[]).map(
+        const problemListWithNo = (list as ProblemInfoLevelTest[]).map(
           (item, index) => {
             return {
               no: index + 1,
@@ -141,7 +146,7 @@ const LevelTest = () => {
               </button>
             </div>
             <div className="p-5">
-              {levelTestLists[currentQuestionNo].description}
+              {levelTestLists[currentQuestionNo].content}
             </div>
           </div>
           <div className="flex flex-col gap-4">

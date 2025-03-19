@@ -5,8 +5,8 @@ const API_Prefix = '/api/v1';
 
 type GetLevelTestQuestionsRes = {
   id: string;
-  description: string;
-  comment: string;
+  questionTitle: string;
+  content: string;
   difficulty: number;
   category: ProblemCategory;
   choice1: string;

@@ -46,3 +46,15 @@ export interface ProblemInfoSAQ {
   difficulty: number;
   category: ProblemCategory;
 }
+
+export interface ProblemInfoLevelTest {
+  id: string;
+  questionTitle: string;
+  content: string;
+  difficulty: number;
+  category: ProblemCategory;
+  choice1: string;
+  choice2: string;
+  choice3: string;
+  choice4: string;
+}
