@@ -31,6 +31,7 @@ import { userStore } from '@/state/userStore';
 import { Preahvihear } from 'next/font/google';
 import { UserInfo } from '@/shared/constants/userInfo';
 import { PiPaperPlaneTilt } from 'react-icons/pi';
+import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 
 interface ProblemProps {
   category: 'random' | ProblemCategoryTitle;
@@ -50,6 +51,8 @@ const Problem = ({ category }: ProblemProps) => {
   const [toastOpen, setToastOpen] = useState(false);
   const { Toaster, setToastDescription } = useToast(toastOpen, setToastOpen);
   const { user, setUser } = userStore();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const getRandomProblem = async () => {
     const randomType = getRandomProblemType();
@@ -86,6 +89,7 @@ const Problem = ({ category }: ProblemProps) => {
   ) => {
     try {
       if (!category) return;
+      setIsLoading(true);
       if (category === 'random') {
         const res = await getRandomProblem();
         console.log(res);
@@ -119,12 +123,13 @@ const Problem = ({ category }: ProblemProps) => {
       if ((e as ServerErrorResponse).ecode === Ecode.E0406) {
         setToastDescription(EcodeMessage(Ecode.E0406));
         setToastOpen(true);
-
         setSelectedAnswer(null);
         setCurrentQuestionWithType(null);
         await getProblem(category);
         return;
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -139,6 +144,7 @@ const Problem = ({ category }: ProblemProps) => {
 
   const sendAnswerButton = async (id: string, answer: string) => {
     if (!currentQuestionWithType) return;
+    setIsLoading(true);
     try {
       if (currentQuestionWithType.problemType === ProblemCategoryType.MAQ) {
         const res = await sendMAQAnswerApi(id, answer);
@@ -159,6 +165,8 @@ const Problem = ({ category }: ProblemProps) => {
       }
     } catch (e) {
       console.log(e);
+    } finally {
+      setIsLoading(false);
     }
   };
   useLayoutEffect(() => {
@@ -270,9 +278,10 @@ const Problem = ({ category }: ProblemProps) => {
                           ]
                         }
                         isSelected={selectedAnswer === (index + 1).toString()}
-                        onClick={() =>
-                          setSelectedAnswer((index + 1).toString())
-                        }
+                        onClick={() => {
+                          if (isLoading) return;
+                          setSelectedAnswer((index + 1).toString());
+                        }}
                       />
                     );
                   })
@@ -282,7 +291,11 @@ const Problem = ({ category }: ProblemProps) => {
                 <textarea
                   className="w-full rounded-lg border border-gray-300 p-2"
                   placeholder="답을 입력해주세요"
-                  onChange={(e) => setSelectedAnswer(e.target.value)}
+                  value={selectedAnswer ?? ''}
+                  onChange={(e) => {
+                    if (isLoading) return;
+                    setSelectedAnswer(e.target.value);
+                  }}
                 />
               ) : null}
             </div>
@@ -291,7 +304,7 @@ const Problem = ({ category }: ProblemProps) => {
                 <button
                   disabled={selectedAnswer === null}
                   className={`mt-4 flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all duration-200 ease-in-out ${
-                    selectedAnswer === null
+                    selectedAnswer === null || isLoading
                       ? 'cursor-not-allowed bg-gray-400 opacity-50'
                       : 'bg-[#FEA1A1] hover:bg-[#fe8989] active:scale-95'
                   } text-white`}
@@ -303,7 +316,7 @@ const Problem = ({ category }: ProblemProps) => {
                     );
                   }}
                 >
-                  <PiPaperPlaneTilt size={25} />
+                  {isLoading ? <Spinner /> : <PiPaperPlaneTilt size={25} />}
                 </button>
               ) : null}
             </div>
