@@ -22,6 +22,7 @@
     "@lexical/react": "^0.25.0",
     "@lexical/rich-text": "^0.25.0",
     "@mswjs/interceptors": "^0.37.6",
+    "@mui/icons-material": "^6.4.8",
     "@mui/material": "^6.4.7",
     "@radix-ui/react-select": "^2.1.5",
     "@radix-ui/react-slot": "^1.1.1",

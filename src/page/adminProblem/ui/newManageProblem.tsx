@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { LuArrowDownUp } from 'react-icons/lu';
 import { IoSearch } from 'react-icons/io5';
 import { csQuizQuestions, QuizQuestion } from '@/entities/test';
@@ -8,41 +8,99 @@ import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import AuthHoc from '@/shared/auth/model/authHoc';
+import {
+  GetAdminMAQList,
+  getAdminMAQListApi,
+  GetAdminMAQListRes,
+  GetAdminSAQList,
+  getAdminSAQListApi,
+  GetAdminSAQListRes,
+} from '../api';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { ProblemCategoryType } from '@/shared/constants/problemInfo';
+import UnfoldMoreRoundedIcon from '@mui/icons-material/UnfoldMoreRounded';
+import { ServerErrorResponse } from '@/shared/api/model/config';
+import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 
 type CurrentFilter = '최신 순' | '오래된 순';
+type ProblemList = GetAdminMAQList | GetAdminSAQList;
 
 const NewManageProlem = () => {
-  const [problemList, setProblemList] = useState(csQuizQuestions);
-  const [currentFilter, setCurrentFilter] = useState<CurrentFilter>('최신 순');
-  const [selectedProblem, setSelectedProblem] = useState<QuizQuestion | null>(
-    problemList[0]
+  const PAGE_LIMIT = 10;
+  const [problemList, setProblemList] = useState<ProblemList[]>([]);
+  const [selectedProblem, setSelectedProblem] = useState<ProblemList | null>(
+    null
   );
-  const [markdown, _] = useState(`
-### Heading 3  
-#### Heading 4  
-_italic_ and **bold**
-> 아
-- List item 1
 
-[새 탭에서 열기](https://www.google.com/){:target="_blank"}
-### Heading 3  
-#### Heading 4  
-_italic_ and **bold**
-> 아
-- List item 1
-`);
+  const [problemType, setProblemType] = useState<ProblemCategoryType>(
+    ProblemCategoryType.MAQ
+  );
+  const [currentFilter, setCurrentFilter] = useState<CurrentFilter>('최신 순');
+  const [isLoading, setIsLoading] = useState(false);
+
+  //   const [markdown, _] = useState(`
+  // ### Heading 3
+  // #### Heading 4
+  // _italic_ and **bold**
+  // > 아
+  // - List item 1
+
+  // [새 탭에서 열기](https://www.google.com/){:target="_blank"}
+  // ### Heading 3
+  // #### Heading 4
+  // _italic_ and **bold**
+  // > 아
+  // - List item 1
+  // `);
 
   const [currentPage, setCurrentPage] = useState(1);
   const LAST_PAGE = 10;
 
-  useEffect(() => {
-    if (selectedProblem) {
-      localStorage.setItem(
-        'selectedProblemInfo',
-        JSON.stringify({ ...selectedProblem, markdown: markdown })
-      );
+  const getProblemList = async (
+    problemType: ProblemCategoryType,
+    page: number,
+    limit: number
+  ) => {
+    setIsLoading(true);
+    if (problemType === ProblemCategoryType.MAQ) {
+      try {
+        const res = await getAdminMAQListApi(page, limit);
+        if (res.ok) {
+          setProblemList((res.payload as GetAdminMAQListRes).content);
+        }
+        throw res.payload as ServerErrorResponse;
+      } catch (e) {
+        console.log(e);
+      }
     }
-  }, [selectedProblem]);
+
+    if (problemType === ProblemCategoryType.SAQ) {
+      try {
+        const res = await getAdminSAQListApi(page, limit);
+        if (res.ok) {
+          setProblemList((res.payload as GetAdminMAQListRes).content);
+        }
+        throw res.payload as ServerErrorResponse;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    // if (selectedProblem) {
+    //   localStorage.setItem(
+    //     'selectedProblemInfo',
+    //     JSON.stringify({ ...selectedProblem, markdown: markdown })
+    //   );
+    // }
+    getProblemList(problemType, currentPage, PAGE_LIMIT);
+  }, [problemType]);
 
   return (
     <div className="relative flex h-full w-full flex-col overflow-y-auto p-4 scrollbar-hide md:flex-row md:gap-6 md:p-10 md:pb-20">
@@ -53,45 +111,55 @@ _italic_ and **bold**
         <span className="flex w-full justify-center text-[1.4rem]">
           문제 관리
         </span>
+        <div className="mt-4 flex w-full justify-center">
+          <ProblemTypeSelectionComponent
+            problemType={problemType}
+            setProblemType={setProblemType}
+          />
+        </div>
         <div className="mt-4 flex w-full justify-between">
           <ProblemFilterComponent />
           <ProblemSearchComponent />
         </div>
         <div className="mt-2 flex h-[15rem] w-full flex-shrink-0 flex-col overflow-auto scrollbar-hide md:h-[60vh]">
-          {problemList.map((problem, index) => {
-            return (
-              <div
-                key={index}
-                className="box-shadow-sm mt-2 flex h-[2.5rem] w-full flex-shrink-0 items-center justify-between rounded-xl border bg-gray-300 p-1.5 px-3 shadow-sm transition-shadow duration-300 ease-in-out hover:shadow-md md:mt-3 md:h-[2.8rem]"
-                onClick={(e) => {
-                  setSelectedProblem(problem);
-                }}
-              >
-                <span className="overflow-hidden text-ellipsis whitespace-nowrap px-1 text-xs hover:cursor-pointer hover:underline md:text-base">
-                  {problem.id}. {problem.question}
-                </span>
-                <div className="flex h-full w-20 flex-shrink-0 gap-1 text-xs">
-                  <div
-                    className="flex h-full w-1/2 items-center justify-center rounded-md border border-black hover:cursor-pointer hover:bg-gray-200"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      console.log('child');
-                    }}
-                  >
-                    수정
-                  </div>
-                  <div
-                    className="flex h-full w-1/2 items-center justify-center rounded-md border border-black hover:cursor-pointer hover:bg-gray-200"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    삭제
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            problemList.map((problem, index) => {
+              return (
+                <div
+                  key={index}
+                  className="box-shadow-sm mt-2 flex h-[2.5rem] w-full flex-shrink-0 items-center justify-between rounded-xl border bg-gray-300 p-1.5 px-3 shadow-sm transition-shadow duration-300 ease-in-out hover:shadow-md md:mt-3 md:h-[2.8rem]"
+                  onClick={(e) => {
+                    setSelectedProblem(problem);
+                  }}
+                >
+                  <span className="overflow-hidden text-ellipsis whitespace-nowrap px-1 text-xs hover:cursor-pointer hover:underline md:text-base">
+                    {problem.questionTitle}
+                  </span>
+                  <div className="flex h-full w-20 flex-shrink-0 gap-1 text-xs">
+                    <div
+                      className="flex h-full w-1/2 items-center justify-center rounded-md border border-black hover:cursor-pointer hover:bg-gray-200"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        console.log('child');
+                      }}
+                    >
+                      수정
+                    </div>
+                    <div
+                      className="flex h-full w-1/2 items-center justify-center rounded-md border border-black hover:cursor-pointer hover:bg-gray-200"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                    >
+                      삭제
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })
+          )}
         </div>
         <div className="mt-4 flex w-full justify-center">
           <ProblemPagination
@@ -107,11 +175,13 @@ _italic_ and **bold**
         <div className="relative mt-4 flex max-h-[33rem] w-full flex-col rounded-2xl bg-gray-200 p-6 md:h-full">
           <span className="text-lg font-bold">Title</span>
           <span className="mt-2 overflow-hidden text-ellipsis whitespace-nowrap text-xs">
-            {selectedProblem?.question}
+            {isLoading ? null : selectedProblem?.questionTitle}
           </span>
           <span className="mt-4 text-lg font-bold">Contents</span>
-          <div className="h-[70%] w-full border border-black bg-white">
-            <MarkdownComponent markdown={markdown} />
+          <div className="h-[70%] min-h-[10rem] w-full border border-black bg-white">
+            {isLoading ? null : (
+              <MarkdownComponent markdown={selectedProblem?.content ?? ''} />
+            )}
           </div>
           <div className="absolute bottom-4 left-0 flex w-full justify-center">
             <Link
@@ -132,6 +202,57 @@ _italic_ and **bold**
   );
 };
 export default AuthHoc(NewManageProlem);
+
+const ProblemTypeSelectionComponent = ({
+  problemType,
+  setProblemType,
+}: {
+  problemType: ProblemCategoryType;
+  setProblemType: Dispatch<SetStateAction<ProblemCategoryType>>;
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleSelect = (problemType: ProblemCategoryType) => {
+    setProblemType(problemType);
+    setIsOpen(false);
+  };
+
+  const problemTypes = [
+    { name: '객관식', value: ProblemCategoryType.MAQ },
+    { name: '주관식', value: ProblemCategoryType.SAQ },
+  ];
+
+  return (
+    <div className="flex w-full max-w-sm justify-center">
+      {/* Select Button */}
+      <button
+        type="button"
+        className={`relative h-[2.5rem] w-[8rem] rounded-lg border bg-white px-3 py-2 text-left text-gray-900 shadow-md hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300`}
+        onClick={() => setIsOpen((prev) => !prev)}
+      >
+        {problemType === ProblemCategoryType.MAQ ? '객관식' : '주관식'}
+        <UnfoldMoreRoundedIcon className="absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-500" />
+      </button>
+
+      {/* Dropdown List */}
+      {isOpen && (
+        <ul className="absolute z-10 mt-[2.5rem] max-h-60 w-[8rem] overflow-auto rounded-lg border border-gray-300 bg-white shadow-lg">
+          {problemTypes.map((pType) => (
+            <li
+              key={pType.name}
+              className={`cursor-pointer px-3 py-2 hover:bg-gray-100 ${
+                problemType === pType.value ? 'bg-blue-100 text-blue-900' : ''
+              }`}
+              onClick={() => handleSelect(pType.value)}
+            >
+              {pType.name}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};
 
 const ProblemSearchComponent = () => {
   const [searchText, setSearchText] = useState('');
