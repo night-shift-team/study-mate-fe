@@ -18,7 +18,7 @@ const Profile = () => {
 
   return (
     <div
-      className="relative h-[100px] w-[100px] cursor-pointer rounded-full bg-gray-200 md:absolute md:top-[60%] md:ml-[3%] md:h-[120px] md:w-[120px]"
+      className="relative h-[100px] w-[100px] cursor-pointer rounded-full bg-gray-200 md:absolute md:left-[10%] md:h-[120px] md:w-[120px]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
