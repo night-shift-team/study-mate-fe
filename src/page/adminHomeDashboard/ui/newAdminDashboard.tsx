@@ -1,8 +1,10 @@
+'use client';
 import { PiUsersThreeFill } from 'react-icons/pi';
 import { TiArrowRight } from 'react-icons/ti';
 import { MdOutlineAutoGraph } from 'react-icons/md';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import Link from 'next/link';
+import AuthHoc from '@/shared/auth/model/authHoc';
 
 interface DashboardCardProps {
   id: 1 | 2;
@@ -44,7 +46,7 @@ const NewAdminDashboard = () => {
     </div>
   );
 };
-export default NewAdminDashboard;
+export default AuthHoc(NewAdminDashboard);
 
 const DashboardCard = ({ data }: { data: DashboardCardProps }) => {
   return (

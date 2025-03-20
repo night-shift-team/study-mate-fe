@@ -4,6 +4,7 @@ import Logo from '@/assets/logo.png';
 import AdminLoginForm from './adminLoginForm';
 import { useState } from 'react';
 import useToast from '@/shared/toast/toast';
+import AuthHoc from '@/shared/auth/model/authHoc';
 
 const Admin = () => {
   const [toastOpen, setToastOpen] = useState(false);
@@ -38,4 +39,4 @@ const Admin = () => {
     </div>
   );
 };
-export default Admin;
+export default AuthHoc(Admin);

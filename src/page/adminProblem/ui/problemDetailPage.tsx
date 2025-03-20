@@ -13,6 +13,7 @@ import {
   TitleBox,
 } from './problemDetailComponents';
 import { QuizQuestion } from '@/entities/test';
+import AuthHoc from '@/shared/auth/model/authHoc';
 
 export interface SelectedProblem extends QuizQuestion {
   markdown: string;
@@ -88,4 +89,4 @@ const ProblemDetail = ({ id }: ProblemDetailPageProps) => {
     </div>
   );
 };
-export default ProblemDetail;
+export default AuthHoc(ProblemDetail);

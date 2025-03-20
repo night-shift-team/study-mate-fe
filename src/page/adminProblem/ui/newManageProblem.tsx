@@ -7,6 +7,7 @@ import ProblemPagination from './problemPagination';
 import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import AuthHoc from '@/shared/auth/model/authHoc';
 
 type CurrentFilter = '최신 순' | '오래된 순';
 
@@ -130,7 +131,7 @@ _italic_ and **bold**
     </div>
   );
 };
-export default NewManageProlem;
+export default AuthHoc(NewManageProlem);
 
 const ProblemSearchComponent = () => {
   const [searchText, setSearchText] = useState('');

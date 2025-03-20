@@ -16,6 +16,7 @@ import {
 import SelectComponent from '../model/selectCategoryComponent';
 import ContentsMarkDown from './markDownEdit';
 import { SelectedProblem } from './problemDetailPage';
+import AuthHoc from '@/shared/auth/model/authHoc';
 
 enum ProblemAttributeTitle {
   Category = 'Category',
@@ -187,7 +188,7 @@ const UpdateProblem = ({ params }: { params: ProblemDetailPageProps }) => {
     </form>
   );
 };
-export default UpdateProblem;
+export default AuthHoc(UpdateProblem);
 
 const TitleBox = ({ title }: { title: string }) => {
   const { setUpdateProblemInfo } = useUpdateProblem();
