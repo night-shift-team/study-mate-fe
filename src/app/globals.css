@@ -107,6 +107,11 @@ body {
       var(--tw-shadow);
   }
 
+  .no-before::before,
+  .no-after::after {
+    content: none !important;
+  }
+
   @font-face {
     font-family: 'CustomFontDoodle';
     src: url('../assets/beachday.regular.ttf') format('truetype');

@@ -8,6 +8,7 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import { $convertFromMarkdownString } from '@lexical/markdown';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { ListNode, ListItemNode } from '@lexical/list';
+
 import { CodeNode } from '@lexical/code';
 import { LinkNode } from '@lexical/link';
 import {
@@ -19,7 +20,6 @@ import {
   KEY_ENTER_COMMAND,
 } from 'lexical';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
-import { CustomLinkNode } from '../model/extendLinkNode';
 
 const MarkdownComponent = ({
   markdown,
@@ -36,6 +36,7 @@ const MarkdownComponent = ({
       italic: 'italic',
     },
     paragraph: 'whitespace-pre-wrap',
+    code: 'bg-gray-100 text-gray-800 font-mono p-2 rounded block whitespace-pre-wrap no-before no-after',
   };
   const initialConfig = {
     namespace: 'markdown-editor',

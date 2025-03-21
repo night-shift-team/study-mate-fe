@@ -3,7 +3,14 @@ import { createListCollection, Select } from '@chakra-ui/react';
 import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import Link from 'next/link';
-import { Fragment, JSX, useEffect, useLayoutEffect, useState } from 'react';
+import {
+  FormEvent,
+  Fragment,
+  JSX,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react';
 import { IconType } from 'react-icons/lib';
 import { MdCancel } from 'react-icons/md';
 import { outSideClickContainer } from '@/shared/eventListeners/model/mouseEvents';
@@ -17,7 +24,13 @@ import ContentsMarkDown from './markDownEdit';
 import AuthHoc from '@/shared/auth/model/authHoc';
 import { Problem } from './newManageProblem';
 import { getProblemDetail } from '../model/getProblemDetailInfo';
-import { ProblemDetailInfoRes } from '../api';
+import {
+  CreateAdminMAQReq,
+  CreateAdminSAQReq,
+  ProblemDetailInfoRes,
+  updateAdminMAQApi,
+  updateAdminSAQApi,
+} from '../api';
 import {
   ProblemCategory,
   ProblemCategoryTitle,
@@ -65,15 +78,69 @@ const UpdateProblem = () => {
     }
   }, [selectedProblem]);
 
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!problemDetailInfo) return;
+    const [_, pType] = problemDetailInfo.category.split('_');
+
+    try {
+      if (pType === ProblemCategoryType.MAQ) {
+        const body: CreateAdminMAQReq = {
+          questionTitle: problemDetailInfo.questionTitle,
+          questionContent: problemDetailInfo.content,
+          answer: problemDetailInfo.answer,
+          answerExplanation: problemDetailInfo.answerExplanation,
+          difficulty: problemDetailInfo.difficulty,
+          category: problemDetailInfo.category,
+          choice1: (problemDetailInfo.options as string[])[0],
+          choice2: (problemDetailInfo.options as string[])[1],
+          choice3: (problemDetailInfo.options as string[])[2],
+          choice4: (problemDetailInfo.options as string[])[3],
+        };
+        const res = await updateAdminMAQApi(problemDetailInfo.questionId, body);
+        if (res.ok) {
+          console.log(`${problemDetailInfo.questionId} updated`, res.payload);
+        }
+      }
+      if (pType === ProblemCategoryType.SAQ) {
+        const body: CreateAdminSAQReq = {
+          questionTitle: problemDetailInfo.questionTitle,
+          questionContent: problemDetailInfo.content,
+          answer: problemDetailInfo.answer,
+          answerExplanation: problemDetailInfo.answerExplanation,
+          difficulty: problemDetailInfo.difficulty,
+          category: problemDetailInfo.category,
+          keyword1: (problemDetailInfo.options as string[])[0],
+          keyword2: (problemDetailInfo.options as string[])[1],
+          keyword3: (problemDetailInfo.options as string[])[2],
+        };
+        console.log(body);
+        const res = await updateAdminSAQApi(problemDetailInfo.questionId, body);
+        if (res.ok) {
+          console.log(`${problemDetailInfo.questionId} updated`, res.payload);
+        }
+      }
+      return;
+    } catch (e) {
+      console.log();
+    }
+  };
+
   return (
-    <form className="flex h-full w-full flex-col items-start p-4">
+    <form
+      onSubmit={async (e) => await handleSubmit(e)}
+      className="flex h-full w-full flex-col items-start p-4"
+    >
       <div className="fixed left-0 flex h-12 w-full items-center justify-between border-b-2 bg-pointcolor-sand px-4">
         <div className="flex h-12 max-w-full items-center justify-center text-xl font-bold">
           Problem {problemDetailInfo?.questionId ?? ''}
         </div>
         <div className="flex gap-1">
-          <button className="flex h-[2.5rem] w-16 items-center justify-center rounded-lg border bg-white text-sm hover:bg-pointcolor-coral/30">
-            <Link href={RouteTo.AdminManagementProblemUpdate}>수정 완료</Link>
+          <button
+            type="submit"
+            className="flex h-[2.5rem] w-16 items-center justify-center rounded-lg border bg-white text-sm hover:bg-pointcolor-coral/30"
+          >
+            수정 완료
           </button>
         </div>
       </div>
@@ -101,8 +168,9 @@ const UpdateProblem = () => {
                   try {
                     const level = e.target.value;
                     if (level === '' || isNaN(parseInt(level))) {
-                      setProblemDetailInfo((prev) =>
-                        prev ? { ...prev, difficulty: 0 } : null
+                      setProblemDetailInfo(
+                        (prev: ProblemDetailInfoRes | null) =>
+                          prev ? { ...prev, difficulty: 0 } : null
                       );
                       return;
                     }
@@ -117,25 +185,15 @@ const UpdateProblem = () => {
               />
             </AttrBox>
             <AttrBox title={ProblemAttributeTitle.Type}>
-              <SelectComponent list={problemTypes} attrString={'type'} />
+              <span className="w-full text-center">
+                {problemDetailInfo?.category.split('_')[1]}
+              </span>
             </AttrBox>
           </div>
           <ContentsMarkDown />
           <Answer />
-          <div className="flex w-full flex-col gap-2 rounded-2xl border bg-white p-2">
-            <span className="mt-2 w-full text-center text-lg font-bold text-[#FEA1A1]">
-              Solution
-            </span>
-            <textarea
-              className="w-full break-words p-1.5 text-sm"
-              value={problemDetailInfo?.answerExplanation}
-              onChange={(e) =>
-                setProblemDetailInfo((prev) =>
-                  prev ? { ...prev, answerExplanation: e.target.value } : null
-                )
-              }
-            ></textarea>
-          </div>
+          <ModelAnswer />
+          <Solution />
         </UpdateProblemProvider>
       </div>
     </form>
@@ -181,7 +239,7 @@ const AttrBox = ({
 const Answer = () => {
   const { updateProblemInfo } = useUpdateProblem();
   return (
-    <div className="flex w-full grow flex-col gap-2 rounded-2xl border bg-white p-2">
+    <div className="flex w-full flex-col gap-2 rounded-2xl border bg-white p-2">
       <span className="mt-2 text-center text-lg font-bold text-[#FEA1A1]">
         Answer
       </span>
@@ -274,6 +332,47 @@ const SelectionInputComponent = ({
           )
         }
       />
+    </div>
+  );
+};
+
+const Solution = () => {
+  const { updateProblemInfo, setUpdateProblemInfo } = useUpdateProblem();
+  return (
+    <div className="flex w-full flex-col gap-2 rounded-2xl border bg-white p-2">
+      <span className="mt-2 w-full text-center text-lg font-bold text-[#FEA1A1]">
+        Solution
+      </span>
+      <textarea
+        className="w-full break-words p-1.5 text-sm"
+        value={updateProblemInfo?.answerExplanation}
+        onChange={(e) =>
+          setUpdateProblemInfo((prev) =>
+            prev ? { ...prev, answerExplanation: e.target.value } : null
+          )
+        }
+      ></textarea>
+    </div>
+  );
+};
+
+const ModelAnswer = () => {
+  const { updateProblemInfo, setUpdateProblemInfo } = useUpdateProblem();
+
+  return (
+    <div className="flex w-full flex-col gap-2 rounded-2xl border bg-white p-2">
+      <span className="mt-2 w-full text-center text-lg font-bold text-[#FEA1A1]">
+        Model Answer
+      </span>
+      <textarea
+        className="w-full break-words p-1.5 text-sm"
+        value={updateProblemInfo?.answer}
+        onChange={(e) =>
+          setUpdateProblemInfo((prev) =>
+            prev ? { ...prev, answer: e.target.value } : null
+          )
+        }
+      ></textarea>
     </div>
   );
 };
