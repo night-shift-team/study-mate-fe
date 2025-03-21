@@ -67,7 +67,9 @@ export const Answer = ({
   return (
     <div className="flex w-full flex-col gap-2 rounded-2xl border bg-white pt-2">
       <span className="mt-2 text-center text-lg font-bold text-[#FEA1A1]">
-        Answer
+        {updateProblemInfo?.category.split('_')[1] === ProblemCategoryType.MAQ
+          ? 'Selection'
+          : 'Keyword'}
       </span>
       <div className="flex w-full flex-col gap-4 p-6 text-sm">
         {updateProblemInfo?.category.split('_')[1] ===
@@ -94,7 +96,7 @@ export const Answer = ({
                 key={index}
                 className="flex w-full flex-col justify-center gap-2 pr-2"
               >
-                <p>{'Keyword ' + (index + 1).toString() + ''} </p>
+                <p>{' ' + (index + 1).toString() + ''} </p>
                 <p className="pl-4 font-bold">{selection}</p>
               </div>
             );
@@ -120,6 +122,23 @@ export const Solution = ({
       <span className="w-full break-words p-6 text-xs">
         {problemDetailInfo?.answerExplanation}
       </span>
+    </div>
+  );
+};
+
+export const ModelAnswer = ({
+  problemDetailInfo,
+}: {
+  problemDetailInfo: ProblemDetailInfoRes | null;
+}) => {
+  return (
+    <div className="flex w-full flex-col gap-2 rounded-2xl border bg-white">
+      <span className="mt-2 w-full text-center text-lg font-bold text-[#FEA1A1]">
+        Model Answer
+      </span>
+      <div className="flex w-full p-6">
+        <span>{problemDetailInfo?.answer}</span>
+      </div>
     </div>
   );
 };

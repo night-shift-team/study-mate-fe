@@ -9,6 +9,7 @@ import {
   Answer,
   AttrBox,
   ContentsMarkDown,
+  ModelAnswer,
   Solution,
   TitleBox,
 } from './problemDetailComponents';
@@ -78,7 +79,7 @@ const ProblemDetail = () => {
             content={problemDetailInfo?.category.split('_')[0] ?? ''}
           />
           <AttrBox
-            title="Level"
+            title="Difficulty"
             content={problemDetailInfo?.difficulty.toString() ?? '0'}
           />
           <AttrBox
@@ -89,6 +90,7 @@ const ProblemDetail = () => {
         </div>
         <ContentsMarkDown markdown={problemDetailInfo?.content ?? ''} />
         <Answer updateProblemInfo={problemDetailInfo} />
+        <ModelAnswer problemDetailInfo={problemDetailInfo} />
         <Solution problemDetailInfo={problemDetailInfo} />
       </div>
     </div>
