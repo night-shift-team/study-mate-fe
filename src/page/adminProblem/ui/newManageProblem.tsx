@@ -1,5 +1,5 @@
 'use client';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { LuArrowDownUp } from 'react-icons/lu';
 import { IoSearch } from 'react-icons/io5';
 import { csQuizQuestions, QuizQuestion } from '@/entities/test';
@@ -9,10 +9,10 @@ import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import AuthHoc from '@/shared/auth/model/authHoc';
 import {
-  GetAdminMAQList,
+  GetAdminMAQ,
   getAdminMAQListApi,
   GetAdminMAQListRes,
-  GetAdminSAQList,
+  GetAdminSAQ,
   getAdminSAQListApi,
   GetAdminSAQListRes,
 } from '../api';
@@ -27,80 +27,65 @@ import { ServerErrorResponse } from '@/shared/api/model/config';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 
 type CurrentFilter = '최신 순' | '오래된 순';
-type ProblemList = GetAdminMAQList | GetAdminSAQList;
+export type Problem = GetAdminMAQ | GetAdminSAQ;
 
 const NewManageProlem = () => {
   const PAGE_LIMIT = 10;
-  const [problemList, setProblemList] = useState<ProblemList[]>([]);
-  const [selectedProblem, setSelectedProblem] = useState<ProblemList | null>(
-    null
-  );
+  const [problemList, setProblemList] = useState<Problem[]>([]);
+  const [totalProblemCount, setTotalProblemCount] = useState(0);
+  const [selectedProblem, setSelectedProblem] = useState<Problem | null>(null);
 
   const [problemType, setProblemType] = useState<ProblemCategoryType>(
     ProblemCategoryType.MAQ
   );
+  const prevProblemList = useRef(problemList);
   const [currentFilter, setCurrentFilter] = useState<CurrentFilter>('최신 순');
   const [isLoading, setIsLoading] = useState(false);
-
-  //   const [markdown, _] = useState(`
-  // ### Heading 3
-  // #### Heading 4
-  // _italic_ and **bold**
-  // > 아
-  // - List item 1
-
-  // [새 탭에서 열기](https://www.google.com/){:target="_blank"}
-  // ### Heading 3
-  // #### Heading 4
-  // _italic_ and **bold**
-  // > 아
-  // - List item 1
-  // `);
-
   const [currentPage, setCurrentPage] = useState(1);
-  const LAST_PAGE = 10;
 
   const getProblemList = async (
     problemType: ProblemCategoryType,
     page: number,
     limit: number
   ) => {
-    setIsLoading(true);
-    if (problemType === ProblemCategoryType.MAQ) {
-      try {
-        const res = await getAdminMAQListApi(page, limit);
+    try {
+      setIsLoading(true);
+      if (problemType === ProblemCategoryType.MAQ) {
+        const res = await getAdminMAQListApi(page - 1, limit);
         if (res.ok) {
           setProblemList((res.payload as GetAdminMAQListRes).content);
+          setSelectedProblem((res.payload as GetAdminMAQListRes).content[0]);
+          prevProblemList.current = (res.payload as GetAdminMAQListRes).content;
+          setTotalProblemCount((res.payload as GetAdminMAQListRes).totalPages);
         }
         throw res.payload as ServerErrorResponse;
-      } catch (e) {
-        console.log(e);
       }
+      if (problemType === ProblemCategoryType.SAQ) {
+        const res = await getAdminSAQListApi(page - 1, limit);
+        if (res.ok) {
+          setProblemList((res.payload as GetAdminSAQListRes).content);
+          setSelectedProblem((res.payload as GetAdminSAQListRes).content[0]);
+          prevProblemList.current = (res.payload as GetAdminSAQListRes).content;
+          setTotalProblemCount((res.payload as GetAdminSAQListRes).totalPages);
+        }
+        throw res.payload as ServerErrorResponse;
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsLoading(false);
     }
+  };
 
-    if (problemType === ProblemCategoryType.SAQ) {
-      try {
-        const res = await getAdminSAQListApi(page, limit);
-        if (res.ok) {
-          setProblemList((res.payload as GetAdminMAQListRes).content);
-        }
-        throw res.payload as ServerErrorResponse;
-      } catch (e) {
-        console.log(e);
-      }
+  const storeSelectedProblem = (problem: Problem) => {
+    if (problem) {
+      sessionStorage.setItem('selectedProblemInfo', JSON.stringify(problem));
     }
-    setIsLoading(false);
   };
 
   useEffect(() => {
-    // if (selectedProblem) {
-    //   localStorage.setItem(
-    //     'selectedProblemInfo',
-    //     JSON.stringify({ ...selectedProblem, markdown: markdown })
-    //   );
-    // }
     getProblemList(problemType, currentPage, PAGE_LIMIT);
-  }, [problemType]);
+  }, [problemType, currentPage]);
 
   return (
     <div className="relative flex h-full w-full flex-col overflow-y-auto p-4 scrollbar-hide md:flex-row md:gap-6 md:p-10 md:pb-20">
@@ -118,10 +103,13 @@ const NewManageProlem = () => {
           />
         </div>
         <div className="mt-4 flex w-full justify-between">
-          <ProblemFilterComponent />
+          <ProblemFilterComponent
+            currentFilter={currentFilter}
+            setCurrentFilter={setCurrentFilter}
+          />
           <ProblemSearchComponent />
         </div>
-        <div className="mt-2 flex h-[15rem] w-full flex-shrink-0 flex-col overflow-auto scrollbar-hide md:h-[60vh]">
+        <div className="mt-2 flex h-[48vh] w-full flex-shrink-0 flex-col overflow-auto scrollbar-hide md:max-h-[60vh]">
           {isLoading ? (
             <Spinner />
           ) : (
@@ -138,23 +126,26 @@ const NewManageProlem = () => {
                     {problem.questionTitle}
                   </span>
                   <div className="flex h-full w-20 flex-shrink-0 gap-1 text-xs">
-                    <div
+                    <Link
+                      href={RouteTo.AdminManagementProblemUpdate}
                       className="flex h-full w-1/2 items-center justify-center rounded-md border border-black hover:cursor-pointer hover:bg-gray-200"
                       onClick={(e) => {
                         e.stopPropagation();
-                        console.log('child');
+                        storeSelectedProblem(problem);
                       }}
                     >
                       수정
-                    </div>
-                    <div
+                    </Link>
+                    <Link
+                      href={'#'}
                       className="flex h-full w-1/2 items-center justify-center rounded-md border border-black hover:cursor-pointer hover:bg-gray-200"
                       onClick={(e) => {
                         e.stopPropagation();
+                        storeSelectedProblem(problem);
                       }}
                     >
                       삭제
-                    </div>
+                    </Link>
                   </div>
                 </div>
               );
@@ -163,7 +154,9 @@ const NewManageProlem = () => {
         </div>
         <div className="mt-4 flex w-full justify-center">
           <ProblemPagination
-            data={{ currentPage, LAST_PAGE, setCurrentPage }}
+            page={currentPage}
+            setPage={setCurrentPage}
+            paginationSize={totalProblemCount}
           />
         </div>
       </div>
@@ -175,23 +168,32 @@ const NewManageProlem = () => {
         <div className="relative mt-4 flex max-h-[33rem] w-full flex-col rounded-2xl bg-gray-200 p-6 md:h-full">
           <span className="text-lg font-bold">Title</span>
           <span className="mt-2 overflow-hidden text-ellipsis whitespace-nowrap text-xs">
-            {isLoading ? null : selectedProblem?.questionTitle}
+            {isLoading
+              ? null
+              : selectedProblem
+                ? selectedProblem.questionTitle
+                : (problemList[0]?.questionTitle ?? '')}
           </span>
           <span className="mt-4 text-lg font-bold">Contents</span>
           <div className="h-[70%] min-h-[10rem] w-full border border-black bg-white">
             {isLoading ? null : (
-              <MarkdownComponent markdown={selectedProblem?.content ?? ''} />
+              <MarkdownComponent
+                markdown={
+                  selectedProblem
+                    ? selectedProblem.content
+                    : (problemList[0]?.content ?? '')
+                }
+              />
             )}
           </div>
           <div className="absolute bottom-4 left-0 flex w-full justify-center">
             <Link
-              href={{
-                pathname: RouteTo.AdminManagementProblemDetail,
-                query: {
-                  id: selectedProblem?.id ?? '',
-                },
-              }}
+              href={RouteTo.AdminManagementProblemDetail}
               className="flex items-center justify-center rounded-xl px-3 pb-1 pt-2 text-sm hover:bg-gray-100 hover:underline"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (selectedProblem) storeSelectedProblem(selectedProblem);
+              }}
             >
               자세히 보기
             </Link>
@@ -288,8 +290,13 @@ const ProblemSearchComponent = () => {
   );
 };
 
-const ProblemFilterComponent = () => {
-  const [currentFilter, setCurrentFilter] = useState<CurrentFilter>('최신 순');
+const ProblemFilterComponent = ({
+  currentFilter,
+  setCurrentFilter,
+}: {
+  currentFilter: CurrentFilter;
+  setCurrentFilter: Dispatch<SetStateAction<CurrentFilter>>;
+}) => {
   const [isFilterClicked, setIsFilterClicked] = useState(false);
 
   return (
@@ -297,8 +304,9 @@ const ProblemFilterComponent = () => {
       className={`flex h-8 w-28 rounded-lg ${isFilterClicked ? 'pointer-events-none' : 'hover:bg-gray-200'}`}
     >
       <div className="pointer-events-none flex h-full w-full">
-        <div
+        <button
           className="pointer-events-auto relative flex h-full w-full items-center gap-2 px-2"
+          disabled={true}
           onClick={(e) => {
             e.stopPropagation();
             setIsFilterClicked(!isFilterClicked);
@@ -317,7 +325,7 @@ const ProblemFilterComponent = () => {
                 }}
               >
                 <LuArrowDownUp width={'calc(h-full)'} height={'80%'} />
-                <span className="text-xs">{'최근 순' as CurrentFilter}</span>
+                <span className="text-xs">{'최신 순' as CurrentFilter}</span>
               </div>
               <div
                 className="flex h-1/2 w-full cursor-pointer items-center gap-2 px-2 hover:bg-gray-200"
@@ -334,7 +342,7 @@ const ProblemFilterComponent = () => {
           ) : (
             <></>
           )}
-        </div>
+        </button>
       </div>
     </div>
   );

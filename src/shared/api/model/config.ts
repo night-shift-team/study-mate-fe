@@ -113,6 +113,16 @@ interceptor.on('response', async ({ response, request }) => {
       const accessToken = await getAccessToken();
       currentToken = accessToken as string;
       request.headers.set('Authorization', `Bearer ${currentToken}`);
+
+      const res = await _apiFetch(
+        request.method as HTTPRequestMethod,
+        request.url.split(
+          process.env.NEXT_PUBLIC_API_URL ??
+            'https//study-mate-bff-ecb080c0db60.herokuapp.com'
+        )[1],
+        request.body ? request.body : undefined
+      );
+      return res;
     } catch (e) {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');

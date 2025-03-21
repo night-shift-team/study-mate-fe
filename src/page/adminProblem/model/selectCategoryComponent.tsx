@@ -1,18 +1,19 @@
 import { useLayoutEffect, useState } from 'react';
 import { useUpdateProblem } from './updateProblemContext';
-import { UpdateProblemProps } from '../ui/updateProblemPage';
 import {
   outSideClickContainer,
   RootWheelSetStateListener,
 } from '@/shared/eventListeners/model/mouseEvents';
 import { createPortal } from 'react-dom';
+import { Problem } from '../ui/newManageProblem';
+import { ProblemDetailInfoRes } from '../api';
 
 const SelectComponent = ({
   list,
   attrString,
 }: {
   list: string[];
-  attrString: keyof UpdateProblemProps;
+  attrString: 'category' | 'type' | 'activate';
 }) => {
   const [openSelect, setOpenSelect] = useState(false);
   const { updateProblemInfo, setUpdateProblemInfo } = useUpdateProblem();
@@ -24,6 +25,19 @@ const SelectComponent = ({
     RootWheelSetStateListener(() => setOpenSelect(false));
   }, []);
 
+  const getAttrTitle = (attrString: 'category' | 'type' | 'activate') => {
+    switch (attrString) {
+      case 'category':
+        return '카테고리';
+      case 'type':
+        return '정답 유형';
+      case 'activate':
+        return '생성 여부';
+      default:
+        return '';
+    }
+  };
+
   return (
     <div
       id={'select-click-container-' + attrString}
@@ -33,11 +47,7 @@ const SelectComponent = ({
       }}
     >
       <span className="flex w-full items-center justify-center">
-        {typeof updateProblemInfo[attrString] === 'boolean'
-          ? updateProblemInfo.activate
-            ? 'true'
-            : 'false'
-          : updateProblemInfo[attrString]}
+        {updateProblemInfo && getAttrTitle(attrString)}
       </span>
       {openSelect
         ? createPortal(
@@ -57,10 +67,15 @@ const SelectComponent = ({
                     className="z-50 flex h-[14%] w-full items-center justify-center hover:cursor-pointer hover:bg-gray-50"
                     onClick={(e) => {
                       e.stopPropagation();
-                      setUpdateProblemInfo({
-                        ...updateProblemInfo,
-                        [attrString]: attrValue,
-                      });
+                      setUpdateProblemInfo((prev) =>
+                        prev
+                          ? {
+                              ...prev,
+                              [attrString]:
+                                attrValue as ProblemDetailInfoRes[keyof ProblemDetailInfoRes],
+                            }
+                          : null
+                      );
                       setOpenSelect(false);
                     }}
                   >

@@ -1,9 +1,11 @@
 import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
 import { IconType } from 'react-icons/lib';
+import { ProblemDetailInfoRes } from '../api';
+import { ProblemCategoryType } from '@/shared/constants/problemInfo';
 
 export const TitleBox = ({ title }: { title: string }) => {
   return (
-    <div className="flex h-16 w-full flex-shrink-0 flex-col items-center justify-center rounded-2xl border md:flex-row md:justify-start md:gap-2 md:px-6">
+    <div className="flex h-16 w-full flex-shrink-0 flex-col items-center justify-center rounded-2xl border bg-white md:flex-row md:justify-start md:gap-2 md:px-6">
       <span className="font-bold text-[#FEA1A1]">Title</span>
       <span className="w-full break-words px-2 text-center text-xs md:w-auto">
         {title}
@@ -41,45 +43,83 @@ export const AttrBox = ({
 
 export const ContentsMarkDown = ({ markdown }: { markdown: string }) => {
   return (
-    <div className="flex min-h-80 w-full flex-shrink-0 flex-col rounded-2xl border">
+    <div className="flex min-h-40 w-full flex-shrink-0 flex-col rounded-2xl border bg-white pt-2">
       <span className="mt-2 w-full text-center text-lg font-bold text-[#FEA1A1]">
         Contents
       </span>
-      <div className="flex w-full bg-white">
+      <div className="flex w-full bg-white p-2">
         <MarkdownComponent markdown={markdown} />
       </div>
     </div>
   );
 };
 
-export const Selections = () => {
+export const Answer = ({
+  updateProblemInfo,
+}: {
+  updateProblemInfo: ProblemDetailInfoRes | null;
+}) => {
+  console.log(
+    updateProblemInfo?.category.split('_')[1],
+    typeof updateProblemInfo?.options,
+    updateProblemInfo?.options
+  );
   return (
-    <div className="flex w-full grow flex-col gap-2 rounded-2xl border p-2">
+    <div className="flex w-full flex-col gap-2 rounded-2xl border bg-white pt-2">
       <span className="mt-2 text-center text-lg font-bold text-[#FEA1A1]">
-        Selections
+        Answer
       </span>
-      <div className="flex w-full flex-col gap-1 px-2 text-[0.7rem]">
-        <span>
-          1.
-          --------------------------------------------------------------------
-        </span>
-        <span>
-          2.
-          --------------------------------------------------------------------
-        </span>
-        <span>
-          3.
-          --------------------------------------------------------------------
-        </span>
-        <span>
-          4.
-          --------------------------------------------------------------------
-        </span>
-        <span>
-          5.
-          --------------------------------------------------------------------
-        </span>
+      <div className="flex w-full flex-col gap-4 p-6 text-sm">
+        {updateProblemInfo?.category.split('_')[1] ===
+        ProblemCategoryType.MAQ ? (
+          typeof updateProblemInfo.options !== 'string' &&
+          (updateProblemInfo.options as string[]).map((selection, index) => {
+            return (
+              <div key={index} className="flex w-full flex-col justify-center">
+                <span className="gap-4">
+                  {(index + 1).toString() + '. '} {selection}
+                </span>
+              </div>
+            );
+          })
+        ) : (
+          <></>
+        )}
+        {updateProblemInfo?.category.split('_')[1] ===
+        ProblemCategoryType.SAQ ? (
+          typeof updateProblemInfo.options !== 'string' &&
+          (updateProblemInfo.options as string[]).map((selection, index) => {
+            return (
+              <div
+                key={index}
+                className="flex w-full flex-col justify-center gap-2 pr-2"
+              >
+                <p>{'Keyword ' + (index + 1).toString() + ''} </p>
+                <p className="pl-4 font-bold">{selection}</p>
+              </div>
+            );
+          })
+        ) : (
+          <></>
+        )}
       </div>
+    </div>
+  );
+};
+
+export const Solution = ({
+  problemDetailInfo,
+}: {
+  problemDetailInfo: ProblemDetailInfoRes | null;
+}) => {
+  return (
+    <div className="flex w-full flex-col gap-2 rounded-2xl border bg-white pt-2">
+      <span className="mt-2 w-full text-center text-lg font-bold text-[#FEA1A1]">
+        Solution
+      </span>
+      <span className="w-full break-words p-6 text-xs">
+        {problemDetailInfo?.answerExplanation}
+      </span>
     </div>
   );
 };

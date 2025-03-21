@@ -1,6 +1,5 @@
 'use client';
 import { createListCollection, Select } from '@chakra-ui/react';
-import { ProblemDetailPageProps } from '@/app/admin/management/problem/detail/page';
 import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import Link from 'next/link';
@@ -15,8 +14,15 @@ import {
 } from '../model/updateProblemContext';
 import SelectComponent from '../model/selectCategoryComponent';
 import ContentsMarkDown from './markDownEdit';
-import { SelectedProblem } from './problemDetailPage';
 import AuthHoc from '@/shared/auth/model/authHoc';
+import { Problem } from './newManageProblem';
+import { getProblemDetail } from '../model/getProblemDetailInfo';
+import { ProblemDetailInfoRes } from '../api';
+import {
+  ProblemCategory,
+  ProblemCategoryTitle,
+  ProblemCategoryType,
+} from '@/shared/constants/problemInfo';
 
 enum ProblemAttributeTitle {
   Category = 'Category',
@@ -25,86 +31,44 @@ enum ProblemAttributeTitle {
   CreatedDt = 'CreatedDt',
   Activate = 'Activate',
 }
-type ProblemCategory =
-  | '운영체제'
-  | '네트워크'
-  | '데이터베이스'
-  | '자료구조'
-  | '알고리즘'
-  | '기타';
-const ProblemCategories: ProblemCategory[] = [
-  '운영체제',
-  '네트워크',
-  '데이터베이스',
-  '자료구조',
-  '알고리즘',
-  '기타',
-];
+
 type ProblemType = '2지' | '4지' | '주관식';
 const problemTypes: ProblemType[] = ['2지', '4지', '주관식'];
 
-export interface UpdateProblemProps {
-  id: number;
-  title: string;
-  descr: string;
-  markdown: string;
-  category: ProblemCategory;
-  level: string;
-  type: ProblemType;
-  selectionData: string[];
-  createdDt: string;
-  activate: boolean;
-}
-
-const UpdateProblem = ({ params }: { params: ProblemDetailPageProps }) => {
-  const id = params.id;
-  const localProblemData: SelectedProblem | null = localStorage.getItem(
+const UpdateProblem = () => {
+  const sessionProblemData: Problem | null = sessionStorage.getItem(
     'selectedProblemInfo'
   )
     ? JSON.parse(localStorage.getItem('selectedProblemInfo')!)
     : null;
   const [updateProblemInfo, setUpdateProblemInfo] =
-    useState<UpdateProblemProps>({
-      id: params.id,
-      title: localProblemData?.question ?? '',
-      descr: localProblemData?.explanation ?? '',
-      markdown: localProblemData?.markdown ?? '',
-      category: '운영체제',
-      level: '1',
-      type: '4지',
-      selectionData: ['data1', 'data2', 'data3', 'data4'],
-      createdDt: '2023-08-01',
-      activate: true,
-    });
+    useState<ProblemDetailInfoRes | null>(null);
 
-  useEffect(() => {
-    if (!params) {
-      console.log('api 호출');
-      // 잘못된 접근
+  useLayoutEffect(() => {
+    if (!updateProblemInfo && sessionProblemData) {
+      getProblemDetail(sessionProblemData.id, setUpdateProblemInfo);
+      return;
     }
-  }, []);
-  useEffect(() => {
-    console.log(updateProblemInfo);
+    if (updateProblemInfo) {
+      try {
+        setUpdateProblemInfo((prev) =>
+          prev ? { ...prev, options: JSON.stringify(prev.options) } : null
+        );
+      } catch (e) {
+        console.warn(e);
+      }
+    }
   }, [updateProblemInfo]);
 
   return (
     <form className="flex h-full w-full flex-col items-start p-4">
       <div className="fixed left-0 flex h-12 w-full items-center justify-between bg-white px-4">
         <div className="flex h-12 w-28 items-center justify-center text-xl font-bold">
-          Problem {id}
+          Problem {updateProblemInfo?.questionId ?? ''}
         </div>
         <div className="flex gap-1">
           <button className="flex h-[2.5rem] w-16 items-center justify-center rounded-lg border text-sm">
-            <Link
-              href={{
-                pathname: RouteTo.AdminManagementProblemUpdate + `/${id}`,
-                query: {
-                  id: id,
-                },
-              }}
-            >
-              수정 완료
-            </Link>
+            <Link href={RouteTo.AdminManagementProblemUpdate}>수정 완료</Link>
           </button>
         </div>
       </div>
@@ -113,35 +77,33 @@ const UpdateProblem = ({ params }: { params: ProblemDetailPageProps }) => {
           updateProblemInfo={updateProblemInfo}
           setUpdateProblemInfo={setUpdateProblemInfo}
         >
-          <TitleBox title={updateProblemInfo.title} />
+          <TitleBox title={updateProblemInfo?.questionTitle ?? ''} />
           <div
             id="horizontal-scroll-container"
             className="grid w-full shrink-0 grid-flow-col grid-cols-3 grid-rows-2 gap-2 md:min-h-16 md:grid-cols-[repeat(5,min-content)] md:grid-rows-1 md:overflow-y-visible md:overflow-x-scroll md:scrollbar-hide"
           >
             <AttrBox title={ProblemAttributeTitle.Category}>
               <SelectComponent
-                list={ProblemCategories}
+                list={Object.values(ProblemCategoryTitle)}
                 attrString={'category'}
               />
             </AttrBox>
             <AttrBox title={ProblemAttributeTitle.Level}>
               <input
                 type="text"
-                value={updateProblemInfo.level}
+                value={updateProblemInfo?.difficulty}
                 onChange={(e) => {
                   try {
                     const level = e.target.value;
                     if (level === '' || isNaN(parseInt(level))) {
-                      setUpdateProblemInfo({
-                        ...updateProblemInfo,
-                        level: '',
-                      });
+                      setUpdateProblemInfo((prev) =>
+                        prev ? { ...prev, difficulty: 0 } : null
+                      );
                       return;
                     }
-                    setUpdateProblemInfo({
-                      ...updateProblemInfo,
-                      level: level,
-                    });
+                    setUpdateProblemInfo((prev) =>
+                      prev ? { ...prev, difficulty: parseInt(level) } : null
+                    );
                   } catch (e: any) {
                     console.log(e);
                   }
@@ -161,25 +123,24 @@ const UpdateProblem = ({ params }: { params: ProblemDetailPageProps }) => {
             <AttrBox title={ProblemAttributeTitle.CreatedDt}>
               <input
                 disabled={true}
-                value={updateProblemInfo.createdDt}
+                value={new Date().toLocaleDateString()}
                 className="flex h-8 w-[80%] items-center justify-center break-words px-2 text-center text-xs md:w-full"
               />
             </AttrBox>
           </div>
           <ContentsMarkDown />
-          <Selections />
+          <Answer />
           <div className="flex w-full flex-col gap-2 rounded-2xl border p-2">
             <span className="mt-2 w-full text-center text-lg font-bold text-[#FEA1A1]">
               Solution
             </span>
             <textarea
               className="w-full break-words p-1.5 text-sm"
-              value={updateProblemInfo.descr}
+              value={updateProblemInfo?.answerExplanation}
               onChange={(e) =>
-                setUpdateProblemInfo({
-                  ...updateProblemInfo,
-                  descr: e.target.value,
-                })
+                setUpdateProblemInfo((prev) =>
+                  prev ? { ...prev, answerExplanation: e.target.value } : null
+                )
               }
             ></textarea>
           </div>
@@ -199,7 +160,9 @@ const TitleBox = ({ title }: { title: string }) => {
         className="flex w-full min-w-[90%] break-words px-2 text-xs md:w-auto"
         value={title}
         onChange={(e) => {
-          setUpdateProblemInfo((prev) => ({ ...prev, title: e.target.value }));
+          setUpdateProblemInfo((prev) =>
+            prev ? { ...prev, questionTitle: e.target.value } : null
+          );
         }}
       />
     </div>
@@ -223,23 +186,29 @@ const AttrBox = ({
   );
 };
 
-const Selections = () => {
+const Answer = () => {
   const { updateProblemInfo } = useUpdateProblem();
   return (
     <div className="flex w-full grow flex-col gap-2 rounded-2xl border p-2">
       <span className="mt-2 text-center text-lg font-bold text-[#FEA1A1]">
-        Selections
+        Answer
       </span>
       <div className="flex w-full flex-col gap-1 px-2 text-[0.7rem]">
-        {updateProblemInfo.type === '2지' ? (
-          updateProblemInfo.selectionData.map((selection, index) => {
+        {updateProblemInfo?.category.split('_')[1] ===
+        ProblemCategoryType.MAQ ? (
+          typeof updateProblemInfo.options !== 'string' &&
+          (updateProblemInfo.options as string[]).map((selection, index) => {
             return (
               <div
                 key={index}
                 className="flex w-full flex-col justify-center gap-2 pr-2"
               >
                 <SelectionInputComponent
-                  type={updateProblemInfo.type}
+                  type={
+                    updateProblemInfo.category.split(
+                      '_'
+                    )[1] as ProblemCategoryType
+                  }
                   index={index}
                   dataStr={selection}
                 />
@@ -249,33 +218,21 @@ const Selections = () => {
         ) : (
           <></>
         )}
-        {updateProblemInfo.type === '4지' ? (
-          updateProblemInfo.selectionData.map((selection, index) => {
+        {updateProblemInfo?.category.split('_')[1] ===
+        ProblemCategoryType.SAQ ? (
+          typeof updateProblemInfo.options !== 'string' &&
+          (updateProblemInfo.options as string[]).map((selection, index) => {
             return (
               <div
                 key={index}
                 className="flex w-full flex-col justify-center gap-2 pr-2"
               >
                 <SelectionInputComponent
-                  type={updateProblemInfo.type}
-                  index={index}
-                  dataStr={selection}
-                />
-              </div>
-            );
-          })
-        ) : (
-          <></>
-        )}
-        {updateProblemInfo.type === '주관식' ? (
-          updateProblemInfo.selectionData.map((selection, index) => {
-            return (
-              <div
-                key={index}
-                className="flex w-full flex-col justify-center gap-2 pr-2"
-              >
-                <SelectionInputComponent
-                  type={updateProblemInfo.type}
+                  type={
+                    updateProblemInfo.category.split(
+                      '_'
+                    )[1] as ProblemCategoryType
+                  }
                   index={index}
                   dataStr={selection}
                 />
@@ -295,7 +252,7 @@ const SelectionInputComponent = ({
   index,
   dataStr,
 }: {
-  type: ProblemType;
+  type: ProblemCategoryType;
   index: number;
   dataStr: string;
 }) => {
@@ -313,12 +270,16 @@ const SelectionInputComponent = ({
         className="h-8 w-full border p-1.5 text-sm font-extrabold"
         value={dataStr}
         onChange={(e) =>
-          setUpdateProblemInfo((prev) => ({
-            ...prev,
-            selectionData: prev.selectionData.map((data, idx) =>
-              idx === index ? e.target.value : data
-            ),
-          }))
+          setUpdateProblemInfo((prev) =>
+            prev
+              ? {
+                  ...prev,
+                  options: (prev.options as string[]).map((data, idx) =>
+                    idx === index ? e.target.value : data
+                  ),
+                }
+              : null
+          )
         }
       />
     </div>
