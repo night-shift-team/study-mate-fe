@@ -83,7 +83,6 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
     },
   ];
 
-  // 선택된 카테고리에 따라 데이터를 필터링
   const filteredHistory = selectedCategory
     ? questionHistory?.filter(
         (history) => history.questionType === `${selectedCategory}_MAQ`
@@ -125,8 +124,6 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
           })}
         </div>
       </div>
-
-      {/* 선택된 카테고리에 따라 보이는 영역 */}
       {selectedCategory && (
         <div className="h-[30vh] w-[100%] overflow-auto rounded-xl bg-white p-4 shadow-xl scrollbar-hide">
           <h2 className="text-center text-lg font-bold">{selectedCategory}</h2>

@@ -1,5 +1,4 @@
 import { _apiFetch } from '@/shared/api/model/config';
-
 const API_Prefix = '/api/v1/users';
 
 export interface UserRankingRes {
@@ -34,7 +33,7 @@ export interface QuestionHistoryRes {
   totalElements: number;
 }
 
-interface QuestionDetailRes {
+export interface QuestionDetailRes {
   questionId: string;
   questionTitle: string;
   content: string;
@@ -43,6 +42,16 @@ interface QuestionDetailRes {
   category: string;
   answer: string;
   answerExplanation: string;
+}
+interface SolveStats {
+  solveDay: string;
+  solveCount: number;
+}
+
+interface SolveStatsResponse {
+  solveStats: SolveStats[];
+  startDate: string;
+  endDate: string;
 }
 
 export const getUserRankingApi = async (page: number, limit: number) => {
@@ -63,5 +72,12 @@ export const getQuestionDetailApi = async (questionId: string) => {
   return await _apiFetch<QuestionDetailRes>(
     'GET',
     `/api/v1/question/${questionId}`
+  );
+};
+
+export const getSolveStatsApi = async () => {
+  return await _apiFetch<SolveStatsResponse>(
+    'GET',
+    `/api/v1/history/solve-stats`
   );
 };

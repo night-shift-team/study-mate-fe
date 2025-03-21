@@ -41,7 +41,6 @@ export const QuestionItem: React.FC<ItemProps> = ({
   const fetchQuestionDetail = async () => {
     try {
       const res = await getQuestionDetailApi(questionId);
-      console.log('API 응답:', res); // 전체 응답 확인
       if (res.ok && res.payload) {
         setQuestionDetail(res.payload);
       } else {
@@ -88,7 +87,7 @@ export const QuestionItem: React.FC<ItemProps> = ({
           <CircleX size={20} className="text-red-600" strokeWidth={2.5} />
         )}
       </div>
-      {isPopupOpen && (
+      {isPopupOpen && questionDetail && (
         <Popup
           questionTitle={questionTitle}
           onClick={handleClosePopup}

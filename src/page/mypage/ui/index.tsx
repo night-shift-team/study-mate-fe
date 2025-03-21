@@ -9,27 +9,23 @@ import GrassChart from '@/feature/charts/GrassChart';
 import CheckList from './CheckList';
 import { useEffect, useState } from 'react';
 import { userStore } from '@/state/userStore';
-import {
-  getUserRankingApi,
-  getQuestionHistoryApi,
-  QuestionHistoryRes,
-} from '../api';
+import { getUserRankingApi, getQuestionHistoryApi } from '../api';
 
 const Mypage = () => {
   const [questionHistory, setQuestionHistory] = useState<any[]>([]);
   const { user } = userStore();
   const [myRanking, setMyRanking] = useState<number | null>(null);
 
-  useEffect(() => {
-    console.log('현재 로그인한 유저 정보:', user);
-  }, [user]);
+  // useEffect(() => {
+  //   console.log('현재 로그인한 유저 정보:', user);
+  // }, [user]);
 
   useEffect(() => {
     userRanking();
     userQuestionHistory();
   }, []);
 
-  console.log('questionHistory', questionHistory);
+  // console.log('questionHistory', questionHistory);
 
   const userRanking = async () => {
     try {
@@ -52,7 +48,6 @@ const Mypage = () => {
   const userQuestionHistory = async () => {
     try {
       const res = await getQuestionHistoryApi(12);
-      console.log(' userQuestionHistory res', res);
       if (res.ok) {
         if (res.payload && 'content' in res.payload) {
           setQuestionHistory(res.payload.content);
@@ -66,24 +61,31 @@ const Mypage = () => {
       console.error(error);
     }
   };
+  console.log('유저정보', user);
 
   const userScore = user?.userScore ?? 0;
   const userHistoryLength = questionHistory.length;
 
   const cardData = [
-    { count: myRanking + '등', label: '순위', img: <PiRankingLight /> },
+    {
+      count: (myRanking !== null ? myRanking : '-') + '등',
+      label: '순위',
+      img: <PiRankingLight />,
+    },
     { count: userScore, label: '점수', img: <SlNote /> },
     { count: userHistoryLength, label: '풀이한 문제', img: <LuBookCheck /> },
   ];
 
   const [tap, setTap] = useState('1');
 
+  //       <div className="relative flex h-[30vh] w-full flex-col items-center justify-center bg-[#FEA1A1] px-4 py-4 md:rounded-t-3xl">
+
   return (
     <div className="flex h-screen w-screen flex-col items-center md:px-[5%] md:pt-10">
-      <div className="relative flex h-[30vh] w-full flex-col items-center justify-center bg-[#FEA1A1] px-4 py-4 md:rounded-t-3xl">
+      <div className="flex h-[30vh] w-full flex-col items-center justify-between bg-[#FEA1A1] px-4 py-4 md:flex-row md:rounded-t-3xl">
         <Profile />
 
-        <div className="mt-4 grid w-full max-w-md grid-cols-3 justify-items-center gap-10 md:absolute md:grid-cols-3">
+        <div className="flex w-[70%] gap-4">
           {cardData.map((item, index) => (
             <Card
               key={index}
@@ -94,10 +96,7 @@ const Mypage = () => {
           ))}
         </div>
       </div>
-
-      {/* 하단 활동 기록 및 탭 섹션 */}
       <div className="flex h-[70vh] w-full flex-col gap-4 bg-pointcolor-yogurt px-4 py-6 md:px-8">
-        {/* 활동 기록 */}
         <div className="flex flex-col items-center gap-4 md:flex-row md:justify-between">
           <button className="text-[2vh] font-bold text-[#ECCDB4] md:text-[1.5vw]">
             활동기록
