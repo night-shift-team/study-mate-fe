@@ -92,7 +92,7 @@ const NewManageProlem = () => {
       <span className="absolute left-4 right-10 top-3 flex w-20 items-center justify-center whitespace-nowrap rounded-xl border bg-gray-200 p-2 text-sm md:left-auto md:top-4">
         문제 생성
       </span>
-      <div className="mt-4 flex w-full flex-col md:w-[60%]">
+      <div className="mt-6 flex h-full w-full flex-col md:w-[60%]">
         <span className="flex w-full justify-center text-[1.4rem]">
           문제 관리
         </span>
@@ -109,7 +109,7 @@ const NewManageProlem = () => {
           />
           <ProblemSearchComponent />
         </div>
-        <div className="mt-2 flex h-[48vh] w-full flex-shrink-0 flex-col overflow-auto scrollbar-hide md:max-h-[60vh]">
+        <div className="mt-2 flex w-full flex-shrink-0 flex-col overflow-auto scrollbar-hide md:max-h-[60vh]">
           {isLoading ? (
             <Spinner />
           ) : (
@@ -160,12 +160,12 @@ const NewManageProlem = () => {
           />
         </div>
       </div>
-      <div className="flex w-full flex-col md:w-[40%]">
-        <span className="mt-8 flex w-full justify-center text-[1.4rem]">
+      <div className="mt-6 flex h-full w-full flex-col md:w-[40%]">
+        <span className="flex w-full justify-center text-[1.4rem]">
           {' '}
           Preview
         </span>
-        <div className="relative mt-4 flex max-h-[33rem] w-full flex-col rounded-2xl bg-gray-200 p-6 md:h-full">
+        <div className="relative mt-4 flex max-h-[42rem] min-h-[35rem] w-full flex-col rounded-2xl bg-gray-200 p-6 md:h-full">
           <span className="text-lg font-bold">Title</span>
           <span className="mt-2 overflow-hidden text-ellipsis whitespace-nowrap text-xs">
             {isLoading
@@ -175,7 +175,7 @@ const NewManageProlem = () => {
                 : (problemList[0]?.questionTitle ?? '')}
           </span>
           <span className="mt-4 text-lg font-bold">Contents</span>
-          <div className="h-[70%] min-h-[10rem] w-full border border-black bg-white">
+          <div className="h-[75%] min-h-[10rem] w-full border border-black bg-white">
             {isLoading ? null : (
               <MarkdownComponent
                 markdown={
