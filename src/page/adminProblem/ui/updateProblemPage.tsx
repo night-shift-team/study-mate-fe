@@ -32,52 +32,57 @@ enum ProblemAttributeTitle {
   Activate = 'Activate',
 }
 
-type ProblemType = '2지' | '4지' | '주관식';
-const problemTypes: ProblemType[] = ['2지', '4지', '주관식'];
+const problemTypes: ProblemCategoryType[] = [
+  ProblemCategoryType.MAQ,
+  ProblemCategoryType.SAQ,
+];
 
 const UpdateProblem = () => {
-  const sessionProblemData: Problem | null = sessionStorage.getItem(
-    'selectedProblemInfo'
-  )
-    ? JSON.parse(localStorage.getItem('selectedProblemInfo')!)
-    : null;
-  const [updateProblemInfo, setUpdateProblemInfo] =
+  const [selectedProblem, setSelectedProblem] = useState<Problem | null>(null);
+  const [problemDetailInfo, setProblemDetailInfo] =
     useState<ProblemDetailInfoRes | null>(null);
 
   useLayoutEffect(() => {
-    if (!updateProblemInfo && sessionProblemData) {
-      getProblemDetail(sessionProblemData.id, setUpdateProblemInfo);
+    if (selectedProblem && !problemDetailInfo) {
+      getProblemDetail(selectedProblem.id, setProblemDetailInfo).then(
+        (data) => {
+          try {
+            setProblemDetailInfo(
+              (prev) =>
+                prev && { ...prev, options: JSON.parse(prev.options as string) }
+            );
+          } catch (e) {
+            console.log(e);
+          }
+        }
+      );
       return;
     }
-    if (updateProblemInfo) {
-      try {
-        setUpdateProblemInfo((prev) =>
-          prev ? { ...prev, options: JSON.stringify(prev.options) } : null
-        );
-      } catch (e) {
-        console.warn(e);
-      }
+
+    const sessionProblemData = sessionStorage.getItem('selectedProblemInfo');
+    if (sessionProblemData && !selectedProblem) {
+      setSelectedProblem(JSON.parse(sessionProblemData));
     }
-  }, [updateProblemInfo]);
+  }, [selectedProblem]);
 
   return (
     <form className="flex h-full w-full flex-col items-start p-4">
-      <div className="fixed left-0 flex h-12 w-full items-center justify-between bg-white px-4">
-        <div className="flex h-12 w-28 items-center justify-center text-xl font-bold">
-          Problem {updateProblemInfo?.questionId ?? ''}
+      <div className="fixed left-0 flex h-12 w-full items-center justify-between border-b-2 bg-pointcolor-sand px-4">
+        <div className="flex h-12 max-w-full items-center justify-center text-xl font-bold">
+          Problem {problemDetailInfo?.questionId ?? ''}
         </div>
         <div className="flex gap-1">
-          <button className="flex h-[2.5rem] w-16 items-center justify-center rounded-lg border text-sm">
+          <button className="flex h-[2.5rem] w-16 items-center justify-center rounded-lg border bg-white text-sm hover:bg-pointcolor-coral/30">
             <Link href={RouteTo.AdminManagementProblemUpdate}>수정 완료</Link>
           </button>
         </div>
       </div>
       <div className="mt-14 flex h-[calc(100%-4rem)] w-full flex-col gap-2 overflow-y-auto scrollbar-hide">
         <UpdateProblemProvider
-          updateProblemInfo={updateProblemInfo}
-          setUpdateProblemInfo={setUpdateProblemInfo}
+          updateProblemInfo={problemDetailInfo}
+          setUpdateProblemInfo={setProblemDetailInfo}
         >
-          <TitleBox title={updateProblemInfo?.questionTitle ?? ''} />
+          <TitleBox title={problemDetailInfo?.questionTitle ?? ''} />
           <div
             id="horizontal-scroll-container"
             className="grid w-full shrink-0 grid-flow-col grid-cols-3 grid-rows-2 gap-2 md:min-h-16 md:grid-cols-[repeat(5,min-content)] md:grid-rows-1 md:overflow-y-visible md:overflow-x-scroll md:scrollbar-hide"
@@ -85,23 +90,23 @@ const UpdateProblem = () => {
             <AttrBox title={ProblemAttributeTitle.Category}>
               <SelectComponent
                 list={Object.values(ProblemCategoryTitle)}
-                attrString={'category'}
+                attrString={'title'}
               />
             </AttrBox>
             <AttrBox title={ProblemAttributeTitle.Level}>
               <input
                 type="text"
-                value={updateProblemInfo?.difficulty}
+                value={problemDetailInfo?.difficulty ?? ''}
                 onChange={(e) => {
                   try {
                     const level = e.target.value;
                     if (level === '' || isNaN(parseInt(level))) {
-                      setUpdateProblemInfo((prev) =>
+                      setProblemDetailInfo((prev) =>
                         prev ? { ...prev, difficulty: 0 } : null
                       );
                       return;
                     }
-                    setUpdateProblemInfo((prev) =>
+                    setProblemDetailInfo((prev) =>
                       prev ? { ...prev, difficulty: parseInt(level) } : null
                     );
                   } catch (e: any) {
@@ -114,31 +119,18 @@ const UpdateProblem = () => {
             <AttrBox title={ProblemAttributeTitle.Type}>
               <SelectComponent list={problemTypes} attrString={'type'} />
             </AttrBox>
-            <AttrBox title={ProblemAttributeTitle.Activate}>
-              <SelectComponent
-                list={['true', 'false']}
-                attrString={'activate'}
-              />
-            </AttrBox>
-            <AttrBox title={ProblemAttributeTitle.CreatedDt}>
-              <input
-                disabled={true}
-                value={new Date().toLocaleDateString()}
-                className="flex h-8 w-[80%] items-center justify-center break-words px-2 text-center text-xs md:w-full"
-              />
-            </AttrBox>
           </div>
           <ContentsMarkDown />
           <Answer />
-          <div className="flex w-full flex-col gap-2 rounded-2xl border p-2">
+          <div className="flex w-full flex-col gap-2 rounded-2xl border bg-white p-2">
             <span className="mt-2 w-full text-center text-lg font-bold text-[#FEA1A1]">
               Solution
             </span>
             <textarea
               className="w-full break-words p-1.5 text-sm"
-              value={updateProblemInfo?.answerExplanation}
+              value={problemDetailInfo?.answerExplanation}
               onChange={(e) =>
-                setUpdateProblemInfo((prev) =>
+                setProblemDetailInfo((prev) =>
                   prev ? { ...prev, answerExplanation: e.target.value } : null
                 )
               }
@@ -154,10 +146,10 @@ export default AuthHoc(UpdateProblem);
 const TitleBox = ({ title }: { title: string }) => {
   const { setUpdateProblemInfo } = useUpdateProblem();
   return (
-    <div className="flex min-h-16 w-full flex-shrink-0 flex-col items-center justify-center rounded-2xl border md:flex-row md:justify-start md:gap-2 md:px-6">
+    <div className="flex min-h-16 w-full flex-shrink-0 flex-col items-center justify-center rounded-2xl border bg-white py-2 text-lg md:justify-start md:gap-2 md:px-6">
       <span className="font-bold text-[#FEA1A1]">Title</span>
       <textarea
-        className="flex w-full min-w-[90%] break-words px-2 text-xs md:w-auto"
+        className="flex w-full min-w-[90%] break-words border px-2 text-xs md:w-auto"
         value={title}
         onChange={(e) => {
           setUpdateProblemInfo((prev) =>
@@ -189,7 +181,7 @@ const AttrBox = ({
 const Answer = () => {
   const { updateProblemInfo } = useUpdateProblem();
   return (
-    <div className="flex w-full grow flex-col gap-2 rounded-2xl border p-2">
+    <div className="flex w-full grow flex-col gap-2 rounded-2xl border bg-white p-2">
       <span className="mt-2 text-center text-lg font-bold text-[#FEA1A1]">
         Answer
       </span>

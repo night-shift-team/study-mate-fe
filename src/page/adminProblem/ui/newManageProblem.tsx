@@ -88,7 +88,7 @@ const NewManageProlem = () => {
   }, [problemType, currentPage]);
 
   return (
-    <div className="relative flex h-full w-full flex-col overflow-y-auto p-4 scrollbar-hide md:flex-row md:gap-6 md:p-10 md:pb-20">
+    <div className="relative flex h-full w-full flex-col overflow-y-auto p-4 scrollbar-hide md:flex-row md:gap-6 md:p-10 md:pb-10">
       <span className="absolute left-4 right-10 top-3 flex w-20 items-center justify-center whitespace-nowrap rounded-xl border bg-gray-200 p-2 text-sm md:left-auto md:top-4">
         문제 생성
       </span>

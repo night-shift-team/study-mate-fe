@@ -18,7 +18,7 @@ const ContentsMarkDown = () => {
   }, [updateProblemInfo?.content, textareaHeight]);
 
   return (
-    <div className="flex min-h-40 w-full flex-shrink-0 flex-col rounded-2xl border md:flex-row">
+    <div className="flex min-h-40 w-full flex-shrink-0 flex-col rounded-2xl border bg-white md:flex-row">
       <div className="flex w-full flex-col">
         <span className="mt-2 w-full text-center text-lg font-bold text-[#FEA1A1]">
           Contents

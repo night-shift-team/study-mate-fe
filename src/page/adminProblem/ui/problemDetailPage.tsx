@@ -40,7 +40,7 @@ const ProblemDetail = () => {
     }
 
     const sessionProblemData = sessionStorage.getItem('selectedProblemInfo');
-    if (sessionProblemData) {
+    if (sessionProblemData && !selectedProblem) {
       setSelectedProblem(JSON.parse(sessionProblemData));
     }
   }, [selectedProblem]);

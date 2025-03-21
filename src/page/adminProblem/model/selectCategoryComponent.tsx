@@ -7,13 +7,14 @@ import {
 import { createPortal } from 'react-dom';
 import { Problem } from '../ui/newManageProblem';
 import { ProblemDetailInfoRes } from '../api';
+import { ProblemCategory } from '@/shared/constants/problemInfo';
 
 const SelectComponent = ({
   list,
   attrString,
 }: {
   list: string[];
-  attrString: 'category' | 'type' | 'activate';
+  attrString: 'title' | 'type' | 'difficulty';
 }) => {
   const [openSelect, setOpenSelect] = useState(false);
   const { updateProblemInfo, setUpdateProblemInfo } = useUpdateProblem();
@@ -25,16 +26,20 @@ const SelectComponent = ({
     RootWheelSetStateListener(() => setOpenSelect(false));
   }, []);
 
-  const getAttrTitle = (attrString: 'category' | 'type' | 'activate') => {
+  const getAttrTitle = (
+    updateProblemInfo: ProblemDetailInfoRes | null,
+    attrString: 'title' | 'type' | 'difficulty'
+  ) => {
+    if (!updateProblemInfo) return null;
     switch (attrString) {
-      case 'category':
-        return '카테고리';
+      case 'title':
+        return updateProblemInfo.category.split('_')[0];
       case 'type':
-        return '정답 유형';
-      case 'activate':
-        return '생성 여부';
+        return updateProblemInfo.category.split('_')[1];
+      case 'difficulty':
+        return updateProblemInfo.difficulty;
       default:
-        return '';
+        return null;
     }
   };
 
@@ -47,7 +52,7 @@ const SelectComponent = ({
       }}
     >
       <span className="flex w-full items-center justify-center">
-        {updateProblemInfo && getAttrTitle(attrString)}
+        {getAttrTitle(updateProblemInfo, attrString)}
       </span>
       {openSelect
         ? createPortal(
@@ -67,15 +72,55 @@ const SelectComponent = ({
                     className="z-50 flex h-[14%] w-full items-center justify-center hover:cursor-pointer hover:bg-gray-50"
                     onClick={(e) => {
                       e.stopPropagation();
-                      setUpdateProblemInfo((prev) =>
-                        prev
-                          ? {
-                              ...prev,
-                              [attrString]:
-                                attrValue as ProblemDetailInfoRes[keyof ProblemDetailInfoRes],
+                      setUpdateProblemInfo((prev) => {
+                        if (!prev) return null;
+                        try {
+                          switch (attrString) {
+                            case 'title': {
+                              const [currentTitle, currentType] =
+                                prev.category.split('_');
+                              return currentTitle === attrValue
+                                ? prev
+                                : {
+                                    ...prev,
+                                    category:
+                                      `${attrValue}_${currentType}` as ProblemCategory,
+                                  };
                             }
-                          : null
-                      );
+
+                            case 'type': {
+                              const [currentTitle, currentType] =
+                                prev.category.split('_');
+                              return currentType === attrValue
+                                ? prev
+                                : {
+                                    ...prev,
+                                    category:
+                                      `${currentTitle}_${attrValue}` as ProblemCategory,
+                                  };
+                            }
+
+                            case 'difficulty': {
+                              const numericDifficulty = parseInt(attrValue, 10);
+                              return prev.difficulty === numericDifficulty
+                                ? prev
+                                : {
+                                    ...prev,
+                                    difficulty: isNaN(numericDifficulty)
+                                      ? 0
+                                      : numericDifficulty,
+                                  };
+                            }
+
+                            default:
+                              return prev;
+                          }
+                        } catch (e) {
+                          console.error(e);
+                          return prev;
+                        }
+                      });
+
                       setOpenSelect(false);
                     }}
                   >

@@ -11,7 +11,7 @@ export const getProblemDetail = async (
     const res = await getProblemDetailInfoApi(problemId);
     if (res.ok) {
       setState(res.payload as ProblemDetailInfoRes);
-      return;
+      return res.payload as ProblemDetailInfoRes;
     }
     throw res.payload as ServerErrorResponse;
   } catch (e) {
