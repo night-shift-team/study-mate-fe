@@ -1,12 +1,12 @@
 'use client';
 import Image from 'next/image';
 import Logo from '@/assets/logo.png';
-import AdminLoginForm from './adminLoginForm';
+import AdminLoginForm from './ui/adminLoginForm';
 import { useState } from 'react';
 import useToast from '@/shared/toast/toast';
 import AuthHoc from '@/shared/auth/model/authHoc';
 
-const Admin = () => {
+const AdminPage = () => {
   const [toastOpen, setToastOpen] = useState(false);
   const { Toaster, setToastDescription } = useToast(toastOpen, setToastOpen);
   //TODO: 로그인 상태 일 시 로그아웃
@@ -39,4 +39,4 @@ const Admin = () => {
     </div>
   );
 };
-export default AuthHoc(Admin);
+export default AuthHoc(AdminPage);

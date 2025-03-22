@@ -1,6 +1,6 @@
-import Admin from '@/page/adminHomeDashboard/ui';
+import AdminPage from '@/page/adminLogin/index';
 
-const AdminPage = () => {
-  return <Admin />;
+const Admin = () => {
+  return <AdminPage />;
 };
-export default AdminPage;
+export default Admin;

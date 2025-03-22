@@ -1,8 +1,7 @@
 'use client';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { UserTableForm } from './userTableForm';
-import { UserData } from './userTableData';
-import { ProblemData } from './manageProblem';
+import { UserData } from './ui/userTableData';
+import { UserTableForm } from './ui/userTableForm';
 
 const ManageUser = () => {
   const [findUserText, setFindUserText] = useState('');
@@ -61,111 +60,19 @@ const ManageUser = () => {
           <UserTableForm userData={userList} />
         </div>
         <div className="flex h-fit w-full justify-center pt-[2%]">
-          <ListPagination
+          {/* <ListPagination
             data1={mockUserData}
             data2={mockUserData2}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             setDataList={setUserList}
-          />
+          /> */}
         </div>
       </div>
     </div>
   );
 };
 export default ManageUser;
-
-export const ListPagination = ({
-  data1,
-  data2,
-  currentPage,
-  setCurrentPage,
-  setDataList,
-}: {
-  data1: UserData[] | ProblemData[];
-  data2: UserData[] | ProblemData[];
-  currentPage: number;
-  setCurrentPage: Dispatch<SetStateAction<number>>;
-  setDataList:
-    | Dispatch<SetStateAction<UserData[]>>
-    | Dispatch<SetStateAction<ProblemData[]>>;
-}) => {
-  const [pageNextListNum, setPageNextListNum] = useState(0);
-  const [maxPage, setMaxPage] = useState(10);
-  const PAGINATION_MAXLISTCOUNT = 5;
-
-  useEffect(() => {
-    if (currentPage === 1) {
-      if ('username' in data1[0]) {
-        (setDataList as Dispatch<SetStateAction<UserData[]>>)(
-          data1 as UserData[]
-        );
-      }
-      if ('no' in data2[0]) {
-        (setDataList as Dispatch<SetStateAction<ProblemData[]>>)(
-          data2 as ProblemData[]
-        );
-      }
-    } else if (currentPage === 2) {
-      if ('username' in data1[0]) {
-        (setDataList as Dispatch<SetStateAction<UserData[]>>)(
-          data1 as UserData[]
-        );
-      }
-      if ('no' in data2[0]) {
-        (setDataList as Dispatch<SetStateAction<ProblemData[]>>)(
-          data2 as ProblemData[]
-        );
-      }
-    }
-  }, [currentPage]);
-
-  return (
-    // <Pagination>
-    //   <PaginationContent>
-    //     <PaginationItem>
-    //       <PaginationPrevious
-    //         onClick={() => {
-    //           setPageNextListNum((prev) => {
-    //             if (prev < 1) {
-    //               return prev;
-    //             } else {
-    //               setCurrentPage(prev - PAGINATION_MAXLISTCOUNT + 1);
-    //               return prev - PAGINATION_MAXLISTCOUNT;
-    //             }
-    //           });
-    //         }}
-    //       />
-    //     </PaginationItem>
-    //     {Array.from({ length: PAGINATION_MAXLISTCOUNT }, (_, i) => (
-    //       <PaginationItem key={i}>
-    //         <PaginationLink
-    //           onClick={() => setCurrentPage(i + pageNextListNum + 1)}
-    //           isActive={pageNextListNum + i + 1 === currentPage}
-    //         >
-    //           {pageNextListNum + i + 1}
-    //         </PaginationLink>
-    //       </PaginationItem>
-    //     ))}
-    //     <PaginationItem>
-    //       <PaginationNext
-    //         onClick={() => {
-    //           setPageNextListNum((prev) => {
-    //             if (prev < maxPage - PAGINATION_MAXLISTCOUNT) {
-    //               setCurrentPage(prev + PAGINATION_MAXLISTCOUNT * 2);
-    //               return prev + PAGINATION_MAXLISTCOUNT;
-    //             } else {
-    //               return prev;
-    //             }
-    //           });
-    //         }}
-    //       />
-    //     </PaginationItem>
-    //   </PaginationContent>
-    // </Pagination>
-    <></>
-  );
-};
 
 const mockUserData: UserData[] = [
   {

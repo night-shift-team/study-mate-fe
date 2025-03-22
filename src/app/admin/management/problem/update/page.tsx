@@ -1,7 +1,7 @@
-import UpdateProblem from '@/page/adminProblem/ui/updateProblemPage';
+import UpdateProblemPage from '@/page/adminProblem/ui/updateProblemPage';
 
-const UpdateProblemPage = async () => {
-  return <UpdateProblem />;
+const UpdateProblem = async () => {
+  return <UpdateProblemPage />;
 };
 
-export default UpdateProblemPage;
+export default UpdateProblem;

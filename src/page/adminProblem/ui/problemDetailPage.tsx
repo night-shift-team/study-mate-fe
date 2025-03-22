@@ -1,8 +1,8 @@
 'use client';
 
-import { Dispatch, SetStateAction, useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { HorizonTalScrollContainer } from '@/shared/eventListeners/model/mouseEvents';
-import { MdCancel, MdCheck } from 'react-icons/md';
+import { MdCheck } from 'react-icons/md';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import {
@@ -12,15 +12,13 @@ import {
   ModelAnswer,
   Solution,
   TitleBox,
-} from './problemDetailComponents';
+} from '@/feature/adminProblem/detail/ui/problemDetailComponents';
 import AuthHoc from '@/shared/auth/model/authHoc';
-import type { Problem } from './newManageProblem';
-import { ProblemCategory } from '@/shared/constants/problemInfo';
-import { getProblemDetailInfoApi, ProblemDetailInfoRes } from '../api';
-import { ServerErrorResponse } from '@/shared/api/model/config';
+import { ProblemDetailInfoRes } from '../api';
 import { getProblemDetail } from '../model/getProblemDetailInfo';
+import { Problem } from '..';
 
-const ProblemDetail = () => {
+const ProblemDetailPage = () => {
   const [selectedProblem, setSelectedProblem] = useState<Problem | null>(null);
   const [problemDetailInfo, setProblemDetailInfo] =
     useState<ProblemDetailInfoRes | null>(null);
@@ -99,4 +97,4 @@ const ProblemDetail = () => {
     </div>
   );
 };
-export default AuthHoc(ProblemDetail);
+export default AuthHoc(ProblemDetailPage);

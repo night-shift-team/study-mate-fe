@@ -1,7 +1,7 @@
 import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
 import { IconType } from 'react-icons/lib';
-import { ProblemDetailInfoRes } from '../api';
 import { ProblemCategoryType } from '@/shared/constants/problemInfo';
+import { ProblemDetailInfoRes } from '@/page/adminProblem/api';
 
 export const TitleBox = ({ title }: { title: string }) => {
   return (

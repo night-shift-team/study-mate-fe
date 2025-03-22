@@ -1,16 +1,13 @@
 'use client';
 import { FaArrowRightLong } from 'react-icons/fa6';
 import { useRouter } from 'next/navigation';
-import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import { localLoginApi, LocalLoginRes } from '@/page/login/api';
 import {
   ServerErrorResponse,
   setAccessTokenToHeader,
   setRefreshTokenToHeader,
 } from '@/shared/api/model/config';
-import useToast from '@/shared/toast/toast';
 import { Dispatch, SetStateAction, useRef, useState } from 'react';
-import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
+import { Ecode } from '@/shared/errorApi/ecode';
 import {
   checkEmailValidate,
   checkPasswordValidate,

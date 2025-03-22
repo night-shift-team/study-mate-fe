@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction } from 'react';
-import { Problem } from '../ui/newManageProblem';
 import { getProblemDetailInfoApi, ProblemDetailInfoRes } from '../api';
 import { ServerErrorResponse } from '@/shared/api/model/config';
 

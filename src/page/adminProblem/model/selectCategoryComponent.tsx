@@ -5,7 +5,6 @@ import {
   RootWheelSetStateListener,
 } from '@/shared/eventListeners/model/mouseEvents';
 import { createPortal } from 'react-dom';
-import { Problem } from '../ui/newManageProblem';
 import { ProblemDetailInfoRes } from '../api';
 import { ProblemCategory } from '@/shared/constants/problemInfo';
 
