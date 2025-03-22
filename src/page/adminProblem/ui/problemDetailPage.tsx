@@ -69,7 +69,7 @@ const ProblemDetail = () => {
         </div>
       </div>
       <div className="mt-14 flex h-[calc(100%-4rem)] w-full flex-col gap-2 overflow-y-auto scrollbar-hide">
-        <TitleBox title={selectedProblem?.questionTitle ?? ''} />
+        <TitleBox title={problemDetailInfo?.questionTitle ?? ''} />
         <div
           id="horizontal-scroll-container"
           className="w-ful grid grid-flow-col grid-cols-3 grid-rows-2 gap-2 md:min-h-16 md:grid-cols-[repeat(5,min-content)] md:grid-rows-1 md:overflow-x-auto md:scrollbar-hide"
@@ -80,13 +80,16 @@ const ProblemDetail = () => {
           />
           <AttrBox
             title="Difficulty"
-            content={problemDetailInfo?.difficulty.toString() ?? '0'}
+            content={problemDetailInfo?.difficulty.toString() ?? ''}
           />
           <AttrBox
             title="Type"
             content={problemDetailInfo?.category.split('_')[1] ?? ''}
           />
-          <AttrBox title="Activate" content={MdCheck} />
+          <AttrBox
+            title="Activate"
+            content={problemDetailInfo ? MdCheck : ''}
+          />
         </div>
         <ContentsMarkDown markdown={problemDetailInfo?.content ?? ''} />
         <Answer updateProblemInfo={problemDetailInfo} />

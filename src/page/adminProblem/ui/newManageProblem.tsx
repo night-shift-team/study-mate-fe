@@ -87,8 +87,12 @@ const NewManageProlem = () => {
     getProblemList(problemType, currentPage, PAGE_LIMIT);
   }, [problemType, currentPage]);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [problemType]);
+
   return (
-    <div className="relative flex h-full w-full flex-col overflow-y-auto p-4 scrollbar-hide md:flex-row md:gap-6 md:p-10 md:pb-10">
+    <div className="relative flex h-full w-full flex-col p-4 md:flex-row md:gap-6 md:p-10 md:pb-10">
       <span className="absolute left-4 right-10 top-3 flex w-20 items-center justify-center whitespace-nowrap rounded-xl border bg-gray-200 p-2 text-sm md:left-auto md:top-4">
         문제 생성
       </span>
@@ -109,7 +113,7 @@ const NewManageProlem = () => {
           />
           <ProblemSearchComponent />
         </div>
-        <div className="mt-2 flex w-full flex-shrink-0 flex-col overflow-auto scrollbar-hide md:max-h-[60vh]">
+        <div className="mt-2 flex min-h-[35rem] w-full flex-shrink-0 flex-col overflow-auto scrollbar-hide">
           {isLoading ? (
             <Spinner />
           ) : (
