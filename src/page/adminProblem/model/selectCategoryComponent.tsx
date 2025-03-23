@@ -1,18 +1,23 @@
 import { useLayoutEffect, useState } from 'react';
 import { useUpdateProblem } from './updateProblemContext';
-import { UpdateProblemProps } from '../ui/updateProblemPage';
 import {
   outSideClickContainer,
   RootWheelSetStateListener,
 } from '@/shared/eventListeners/model/mouseEvents';
 import { createPortal } from 'react-dom';
+import { ProblemDetailInfoRes } from '../api';
+import {
+  ProblemCategory,
+  ProblemCategoryType,
+} from '@/shared/constants/problemInfo';
+import { resetFocus } from '@/shared/dom/model/focus';
 
 const SelectComponent = ({
   list,
   attrString,
 }: {
   list: string[];
-  attrString: keyof UpdateProblemProps;
+  attrString: 'title' | 'type' | 'difficulty';
 }) => {
   const [openSelect, setOpenSelect] = useState(false);
   const { updateProblemInfo, setUpdateProblemInfo } = useUpdateProblem();
@@ -24,6 +29,23 @@ const SelectComponent = ({
     RootWheelSetStateListener(() => setOpenSelect(false));
   }, []);
 
+  const getAttrTitle = (
+    updateProblemInfo: ProblemDetailInfoRes | null,
+    attrString: 'title' | 'type' | 'difficulty'
+  ) => {
+    if (!updateProblemInfo) return '';
+    switch (attrString) {
+      case 'title':
+        return updateProblemInfo.category.split('_')[0] ?? '';
+      case 'type':
+        return updateProblemInfo.category.split('_')[1] ?? '';
+      case 'difficulty':
+        return updateProblemInfo.difficulty;
+      default:
+        return '';
+    }
+  };
+
   return (
     <div
       id={'select-click-container-' + attrString}
@@ -32,13 +54,13 @@ const SelectComponent = ({
         setOpenSelect(true);
       }}
     >
-      <span className="flex w-full items-center justify-center">
-        {typeof updateProblemInfo[attrString] === 'boolean'
-          ? updateProblemInfo.activate
-            ? 'true'
-            : 'false'
-          : updateProblemInfo[attrString]}
-      </span>
+      <input
+        className="flex w-full items-center justify-center pl-1 hover:cursor-pointer"
+        value={getAttrTitle(updateProblemInfo, attrString)}
+        onFocus={resetFocus}
+        onChange={() => {}}
+        required
+      />
       {openSelect
         ? createPortal(
             <div
@@ -50,17 +72,61 @@ const SelectComponent = ({
               }}
             >
               {list.map((attrValue, index) => {
-                console.log(attrString, attrValue);
                 return (
                   <div
                     key={index}
                     className="z-50 flex h-[14%] w-full items-center justify-center hover:cursor-pointer hover:bg-gray-50"
                     onClick={(e) => {
                       e.stopPropagation();
-                      setUpdateProblemInfo({
-                        ...updateProblemInfo,
-                        [attrString]: attrValue,
+                      setUpdateProblemInfo((prev) => {
+                        if (!prev) return null;
+                        try {
+                          switch (attrString) {
+                            case 'title': {
+                              const [currentTitle, currentType] =
+                                prev.category.split('_');
+                              return currentTitle === attrValue
+                                ? prev
+                                : {
+                                    ...prev,
+                                    category:
+                                      `${attrValue}_${currentType ?? ProblemCategoryType.MAQ}` as ProblemCategory,
+                                  };
+                            }
+
+                            case 'type': {
+                              const [currentTitle, currentType] =
+                                prev.category.split('_');
+                              return currentType === attrValue
+                                ? prev
+                                : {
+                                    ...prev,
+                                    category:
+                                      `${currentTitle}_${attrValue}` as ProblemCategory,
+                                  };
+                            }
+
+                            case 'difficulty': {
+                              const numericDifficulty = parseInt(attrValue, 10);
+                              return prev.difficulty === numericDifficulty
+                                ? prev
+                                : {
+                                    ...prev,
+                                    difficulty: isNaN(numericDifficulty)
+                                      ? 0
+                                      : numericDifficulty,
+                                  };
+                            }
+
+                            default:
+                              return prev;
+                          }
+                        } catch (e) {
+                          console.error(e);
+                          return prev;
+                        }
                       });
+
                       setOpenSelect(false);
                     }}
                   >

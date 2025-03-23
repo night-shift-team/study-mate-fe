@@ -1,4 +1,4 @@
-import ManageUser from '@/page/adminHomeDashboard/ui/manageUser';
+import ManageUser from '@/page/adminUser';
 
 const ManageUserPage = () => {
   return <ManageUser />;

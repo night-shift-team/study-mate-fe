@@ -1,12 +1,7 @@
-import UpdateProblem from '@/page/adminProblem/ui/updateProblemPage';
-import { ProblemDetailPageProps } from '../detail/page';
+import UpdateProblemPage from '@/page/adminProblem/ui/updateProblemPage';
 
-const UpdateProblemPage = async (props: {
-  searchParams: Promise<ProblemDetailPageProps>;
-}) => {
-  const searchParams = await props.searchParams;
-  const params = searchParams;
-  return <UpdateProblem params={params} />;
+const UpdateProblem = async () => {
+  return <UpdateProblemPage />;
 };
 
-export default UpdateProblemPage;
+export default UpdateProblem;

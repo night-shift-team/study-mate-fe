@@ -21,6 +21,13 @@ import { localLoginApi, LocalLoginRes, userInfoApi, UserInfoRes } from '../api';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { resetFocus } from '@/shared/dom/model/focus';
 import useToast from '@/shared/toast/toast';
+import {
+  checkEmailValidate,
+  checkPasswordValidate,
+} from '../model/checkInputValidate';
+import { setTokens } from '../model/setTokens';
+import { requestSignIn } from '../model/requestSignIn';
+import { getUserInfo } from '../model/getUserInfo';
 
 const Login = () => {
   const router = useRouter();
@@ -44,8 +51,8 @@ const Login = () => {
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    checkPasswordValidate(true);
-    checkEmailValidate(true);
+    checkPasswordValidate(passwordInputRef, true);
+    checkEmailValidate(emailInputRef, true);
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -53,30 +60,25 @@ const Login = () => {
     }));
   };
 
-  const setTokens = (tokens: LocalLoginRes) => {
-    localStorage.setItem('accessToken', tokens.accessToken);
-    localStorage.setItem('refreshToken', tokens.refreshToken);
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       // 여기에 실제 로그인 API 호출 로직 구현
       setLoginLoading(true);
-      const tokens = await requestSignIn();
+      const tokens = await requestSignIn(formData.email, formData.password);
       setTokens(tokens);
       setAccessTokenToHeader(localStorage.getItem('accessToken'));
-      await getUserInfo();
+      await getUserInfo(setToastDescription, setToastOpen, setUser, router);
     } catch (error) {
       if ((error as ServerErrorResponse).ecode !== undefined) {
         switch ((error as ServerErrorResponse).ecode) {
           case Ecode.E0103:
             emailInputRef.current?.focus();
-            checkEmailValidate(false);
+            checkEmailValidate(emailInputRef, false);
             break;
           case Ecode.E0104:
             passwordInputRef.current?.focus();
-            checkPasswordValidate(false);
+            checkPasswordValidate(passwordInputRef, false);
             break;
           default:
             break;
@@ -88,83 +90,6 @@ const Login = () => {
       }
     } finally {
       setLoginLoading(false);
-    }
-  };
-
-  const getUserInfo = async () => {
-    try {
-      const res = await userInfoApi();
-      console.log(res);
-      if (!res.ok) {
-        const errData = res.payload as ServerErrorResponse;
-        if (errData.ecode === Ecode.E0106) {
-          EcodeMessage(Ecode.E0106);
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem(UserStoreStorage.userStore);
-          setToastDescription('Login Failed');
-          setToastOpen(true);
-          return;
-        }
-        router.push(RouteTo.Home);
-      } else {
-        const userData = res.payload as UserInfoRes;
-        setUser(userData);
-        setToastDescription('Login Success');
-        setToastOpen(true);
-        setTimeout(() => {
-          if (!userData.userScore) {
-            router.push(RouteTo.LevelTest);
-          } else {
-            router.push(RouteTo.Solve);
-          }
-        }, 2500);
-      }
-    } catch (e: any) {
-      const error = handleFetchErrors(e);
-      console.log('error', error);
-      if (error === 'TypeError' || error === 'AbortError') {
-        console.log('서버 에러');
-      }
-    }
-  };
-
-  const requestSignIn = async () => {
-    try {
-      const res = await localLoginApi(formData.email, formData.password);
-      console.log(res);
-      if (res.ok) {
-        return res.payload as LocalLoginRes;
-      }
-      throw res.payload as ServerErrorResponse;
-    } catch (e) {
-      console.log(e);
-      throw e;
-    }
-  };
-
-  const checkEmailValidate = (isValid: boolean) => {
-    if (!isValid && emailInputRef.current) {
-      emailInputRef.current.setCustomValidity(
-        '이메일 정보가 일치하지 않습니다.'
-      );
-      emailInputRef.current.reportValidity();
-      return;
-    } else if (isValid && emailInputRef.current) {
-      emailInputRef.current.setCustomValidity('');
-      return;
-    }
-  };
-
-  const checkPasswordValidate = (isValid: boolean) => {
-    if (!isValid && passwordInputRef.current) {
-      passwordInputRef.current.setCustomValidity(
-        '패스워드 정보가 일치하지 않습니다.'
-      );
-      passwordInputRef.current.reportValidity();
-      return;
-    } else if (isValid && passwordInputRef.current) {
-      passwordInputRef.current.setCustomValidity('');
-      return;
     }
   };
 
@@ -205,27 +130,29 @@ const Login = () => {
   }, []);
 
   return (
-    <div className="relative flex h-full w-full items-center justify-center overflow-x-hidden pb-[4rem]">
+    <div className="relative z-[1000] flex h-full w-full items-center justify-center overflow-hidden md:pb-[4rem]">
       <Toaster />
-      <div className="inner-border-left flex w-full max-w-[900px] flex-col justify-around gap-6 rounded-[1rem] border bg-white/60 p-8 shadow-xl md:flex-row">
+      <div className="md:inner-border-left flex w-full max-w-[900px] flex-col justify-around gap-4 rounded-[1rem] border bg-white/60 px-8 py-4 shadow-xl md:flex-row md:gap-6 md:p-8">
         <div className="flex flex-col justify-center md:items-center">
-          <Image src={Logo} alt="" width={240} />
+          <Image src={Logo} alt="" className="w-[120px] md:w-[240px]" />
           <div className="flex w-full flex-col">
-            <span className="text-2xl font-bold text-pointcolor-apricot">
+            <span className="text-lg font-bold text-pointcolor-apricot md:text-2xl">
               Study Mate
             </span>
-            <span className="mt-1 max-w-[240px]">
+            <span className="mt-1 break-words text-sm md:max-w-[240px] md:text-base">
               Online platform for solving computer science problems and
               enhancing learning.
             </span>
           </div>
         </div>
-        <div className="flex flex-col gap-10 sm:gap-6 md:w-[50%]">
-          <span className="font-doodle text-3xl font-bold">Welcome</span>
+        <div className="flex flex-col gap-4 sm:gap-6 md:w-[50%] md:gap-10">
+          <span className="font-doodle text-xl font-bold md:text-3xl">
+            Welcome
+          </span>
           <form
             id={'loginForm'}
             onSubmit={handleSubmit}
-            className="flex flex-col gap-4"
+            className="flex flex-col gap-2 md:gap-4"
           >
             <div className="flex w-[100%] flex-col">
               <span className="text-[0.8rem]">Email</span>
@@ -271,7 +198,7 @@ const Login = () => {
               id="loginButton"
               type="submit"
               disabled={loginLoading}
-              className={`flex h-[2.5rem] w-full items-center justify-center rounded-lg bg-gray-600 py-2 text-white transition-colors ${loginLoading ? 'hover:bg-gray-400' : 'hover:bg-[#F0EDD4] hover:text-black'}`}
+              className={`flex h-[2.5rem] w-full items-center justify-center rounded-lg bg-gray-600 py-1 text-white transition-colors md:py-2 ${loginLoading ? 'hover:bg-gray-400' : 'hover:bg-[#F0EDD4] hover:text-black'}`}
             >
               {loginLoading ? <Spinner /> : '로그인'}
             </button>{' '}
@@ -291,7 +218,7 @@ const Login = () => {
                 <div className="w-full border-t border-gray-300"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="bg-[#fcfdf6] px-2 text-gray-500">
+                <span className="bg-[#fcfdf6] px-2 text-xs text-gray-500 md:text-sm">
                   간편 로그인
                 </span>
               </div>
@@ -304,7 +231,7 @@ const Login = () => {
                   onClick={() => {
                     openNewWindowWithoutDuplicate(windowReference, item.link);
                   }}
-                  className="flex h-[5rem] w-1/3 cursor-pointer flex-col justify-center"
+                  className="flex h-[4rem] w-1/3 cursor-pointer flex-col justify-center md:h-[5rem]"
                 >
                   <div className="flex justify-center rounded-md border-2 py-1">
                     <Image

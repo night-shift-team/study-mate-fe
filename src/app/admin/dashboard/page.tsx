@@ -1,6 +1,6 @@
-import NewAdminDashboard from '@/page/adminHomeDashboard/ui/newAdminDashboard';
+import AdminHomeDashboardPage from '@/page/adminHomeDashboard/index';
 
-const AdminDashboardPage = () => {
-  return <NewAdminDashboard />;
+const AdminDashboard = () => {
+  return <AdminHomeDashboardPage />;
 };
-export default AdminDashboardPage;
+export default AdminDashboard;

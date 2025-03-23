@@ -1,21 +1,13 @@
 'use client';
-import { FormEvent, useLayoutEffect, useState } from 'react';
-
-import { UpdateProblemProvider } from '../model/updateProblemContext';
-import SelectComponent from '../model/selectCategoryComponent';
-import AuthHoc from '@/shared/auth/model/authHoc';
-import { getProblemDetail } from '../model/getProblemDetailInfo';
+import { useEffect, useState } from 'react';
 import {
+  createAdminMAQApi,
   CreateAdminMAQReq,
+  createAdminSAQApi,
   CreateAdminSAQReq,
   ProblemDetailInfoRes,
-  updateAdminMAQApi,
-  updateAdminSAQApi,
 } from '../api';
-import {
-  ProblemCategoryTitle,
-  ProblemCategoryType,
-} from '@/shared/constants/problemInfo';
+import { UpdateProblemProvider } from '../model/updateProblemContext';
 import {
   Answer,
   AttrBox,
@@ -23,12 +15,19 @@ import {
   Solution,
   TitleBox,
 } from '@/feature/adminProblem/update/ui/problemUpdateComponents';
+import SelectComponent from '../model/selectCategoryComponent';
 import ContentsMarkDown from '@/feature/adminProblem/update/ui/markDownEdit';
-import { Problem } from '..';
+import {
+  ProblemCategory,
+  ProblemCategoryTitle,
+  ProblemCategoryType,
+} from '@/shared/constants/problemInfo';
 import { updateAttrBox } from '../model/updateAttrBoxContents';
-import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
 import { ServerErrorResponse } from '@/shared/api/model/config';
+import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
 import useToast from '@/shared/toast/toast';
+import { useRouter } from 'next/navigation';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 
 enum ProblemAttributeTitle {
@@ -36,47 +35,55 @@ enum ProblemAttributeTitle {
   Level = 'Level',
   Type = 'Type',
   CreatedDt = 'CreatedDt',
-  Activate = 'Activate',
 }
 
-const UpdateProblemPage = () => {
-  const [selectedProblem, setSelectedProblem] = useState<Problem | null>(null);
+const CreateProblemPage = () => {
+  const router = useRouter();
   const [problemDetailInfo, setProblemDetailInfo] =
-    useState<ProblemDetailInfoRes | null>(null);
+    useState<ProblemDetailInfoRes | null>({
+      questionId: '',
+      questionTitle: '',
+      content: '',
+      difficulty: 0,
+      options: ['', '', '', ''],
+      category: '' as ProblemCategory,
+      answer: '',
+      answerExplanation: '',
+    });
 
   const [toastOpen, setToastOpen] = useState(false);
   const { Toaster, setToastDescription } = useToast(toastOpen, setToastOpen);
   const [isLoading, setIsLoading] = useState(false);
 
-  useLayoutEffect(() => {
-    if (selectedProblem && !problemDetailInfo) {
-      getProblemDetail(selectedProblem.id, setProblemDetailInfo).then(
-        (data) => {
-          try {
-            setProblemDetailInfo(
-              (prev) =>
-                prev && { ...prev, options: JSON.parse(prev.options as string) }
-            );
-          } catch (e) {
-            console.log(e);
-          }
-        }
-      );
-      return;
+  useEffect(() => {
+    if (problemDetailInfo?.category) {
+      if (
+        problemDetailInfo.category.split('_')[1] === ProblemCategoryType.MAQ
+      ) {
+        setProblemDetailInfo((prev) =>
+          prev
+            ? { ...prev, options: prev.options.slice(0, 3).concat('') }
+            : null
+        );
+        return;
+      }
+      if (
+        problemDetailInfo.category.split('_')[1] === ProblemCategoryType.SAQ
+      ) {
+        setProblemDetailInfo((prev) =>
+          prev ? { ...prev, options: prev.options.slice(0, 3) } : null
+        );
+        return;
+      }
     }
+  }, [problemDetailInfo?.category]);
 
-    const sessionProblemData = sessionStorage.getItem('selectedProblemInfo');
-    if (sessionProblemData && !selectedProblem) {
-      setSelectedProblem(JSON.parse(sessionProblemData));
-    }
-  }, [selectedProblem]);
-
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!problemDetailInfo) return;
     const [_, pType] = problemDetailInfo.category.split('_');
-    setIsLoading(true);
 
+    setIsLoading(true);
     try {
       const commontBody = {
         questionTitle: problemDetailInfo.questionTitle,
@@ -94,10 +101,21 @@ const UpdateProblemPage = () => {
           choice3: (problemDetailInfo.options as string[])[2],
           choice4: (problemDetailInfo.options as string[])[3],
         };
-        const res = await updateAdminMAQApi(problemDetailInfo.questionId, body);
+        const res = await createAdminMAQApi(body);
         if (res.ok) {
-          console.log(`${problemDetailInfo.questionId} updated`, res.payload);
-          setToastDescription('문제 수정이 완료되었습니다.');
+          console.log(
+            `${problemDetailInfo.questionTitle} created`,
+            res.payload
+          );
+          setToastDescription('문제 생성이 완료되었습니다.');
+          setToastOpen(true);
+          setTimeout(() => {
+            router.push(RouteTo.AdminManagementProblem);
+          }, 2500);
+          return;
+        }
+        if ((res.payload as ServerErrorResponse).ecode === Ecode.E0405) {
+          setToastDescription(EcodeMessage(Ecode.E0405));
           setToastOpen(true);
           return;
         }
@@ -110,10 +128,22 @@ const UpdateProblemPage = () => {
           keyword2: (problemDetailInfo.options as string[])[1],
           keyword3: (problemDetailInfo.options as string[])[2],
         };
-        const res = await updateAdminSAQApi(problemDetailInfo.questionId, body);
+        console.log(body);
+        const res = await createAdminSAQApi(body);
         if (res.ok) {
-          console.log(`${problemDetailInfo.questionId} updated`, res.payload);
-          setToastDescription('문제 수정이 완료되었습니다.');
+          console.log(
+            `${problemDetailInfo.questionTitle} created`,
+            res.payload
+          );
+          setToastDescription('문제 생성이 완료되었습니다.');
+          setToastOpen(true);
+          setTimeout(() => {
+            router.push(RouteTo.AdminManagementProblem);
+          }, 2500);
+          return;
+        }
+        if ((res.payload as ServerErrorResponse).ecode === Ecode.E0405) {
+          setToastDescription(EcodeMessage(Ecode.E0405));
           setToastOpen(true);
           return;
         }
@@ -122,7 +152,7 @@ const UpdateProblemPage = () => {
       return;
     } catch (e) {
       console.log(e);
-      setToastDescription('문제 수정에 실패했습니다.');
+      setToastDescription('문제 생성에 실패했습니다.');
       setToastOpen(true);
     } finally {
       setIsLoading(false);
@@ -135,7 +165,6 @@ const UpdateProblemPage = () => {
       className="relative flex h-full w-full flex-col items-center p-4"
     >
       <Toaster />
-
       <div className="fixed left-0 flex h-12 w-full items-center justify-between border-b-2 bg-pointcolor-sand px-4">
         <div className="flex h-12 max-w-full items-center justify-center text-xl font-bold">
           Problem {problemDetailInfo?.questionId ?? ''}
@@ -146,7 +175,7 @@ const UpdateProblemPage = () => {
             disabled={isLoading}
             className={`flex h-[2.5rem] w-16 items-center justify-center rounded-lg border text-sm hover:bg-pointcolor-coral/30 ${isLoading ? 'bg-gray-200' : 'bg-white'}`}
           >
-            {isLoading ? <Spinner /> : '수정 완료'}
+            {isLoading ? <Spinner /> : '생성하기'}
           </button>
         </div>
       </div>
@@ -170,9 +199,14 @@ const UpdateProblemPage = () => {
               <input
                 type="text"
                 value={problemDetailInfo?.difficulty ?? ''}
-                onChange={(e) => updateAttrBox(e, setProblemDetailInfo)}
+                onChange={(e) => {
+                  e.target.setCustomValidity('');
+                  updateAttrBox(e, setProblemDetailInfo);
+                }}
                 className="flex h-8 w-12 break-words border px-2 text-center text-xs md:w-auto"
+                // 100 이하의 자연수만 입력 가능하도록
                 pattern="[1-9][0-9]{0,1}"
+                // 포커스되면 유효성검증 데이터 변경 후 포커스 아웃 되면 유효성 검증 데이터 초기화
                 onFocus={(e) =>
                   Number(e.target.value) <= 0
                     ? e.target.setCustomValidity(
@@ -184,9 +218,10 @@ const UpdateProblemPage = () => {
               />
             </AttrBox>
             <AttrBox title={ProblemAttributeTitle.Type}>
-              <span className="w-full text-center">
-                {problemDetailInfo?.category.split('_')[1]}
-              </span>
+              <SelectComponent
+                list={Object.values(ProblemCategoryType)}
+                attrString={'type'}
+              />
             </AttrBox>
           </div>
           <ContentsMarkDown />
@@ -198,4 +233,4 @@ const UpdateProblemPage = () => {
     </form>
   );
 };
-export default AuthHoc(UpdateProblemPage);
+export default CreateProblemPage;

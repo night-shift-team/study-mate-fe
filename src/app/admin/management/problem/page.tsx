@@ -1,6 +1,6 @@
-import NewManageProlem from '@/page/adminProblem/ui/newManageProblem';
+import ManageProblemPage from '@/page/adminProblem/index';
 
-const ManageProblemPage = () => {
-  return <NewManageProlem />;
+const ManageProblem = () => {
+  return <ManageProblemPage />;
 };
-export default ManageProblemPage;
+export default ManageProblem;

@@ -1,6 +1,6 @@
+import { useUpdateProblem } from '@/page/adminProblem/model/updateProblemContext';
 import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
 import { useLayoutEffect, useRef, useState } from 'react';
-import { useUpdateProblem } from '../model/updateProblemContext';
 
 const ContentsMarkDown = () => {
   const { updateProblemInfo, setUpdateProblemInfo } = useUpdateProblem();
@@ -15,10 +15,10 @@ const ContentsMarkDown = () => {
   };
   useLayoutEffect(() => {
     updateHeight();
-  }, [updateProblemInfo.markdown, textareaHeight]);
+  }, [updateProblemInfo?.content, textareaHeight]);
 
   return (
-    <div className="flex min-h-80 w-full flex-shrink-0 flex-col rounded-2xl border md:flex-row">
+    <div className="flex min-h-40 w-full flex-shrink-0 flex-col rounded-2xl border bg-white md:flex-row">
       <div className="flex w-full flex-col">
         <span className="mt-2 w-full text-center text-lg font-bold text-[#FEA1A1]">
           Contents
@@ -28,13 +28,17 @@ const ContentsMarkDown = () => {
             placeholder="Enter some text..."
             className={`flex w-full rounded-2xl p-4`}
             style={{ height: textareaHeight }}
-            value={updateProblemInfo.markdown}
+            value={updateProblemInfo?.content}
             onChange={(e) =>
-              setUpdateProblemInfo((prev) => ({
-                ...prev,
-                markdown: e.target.value,
-              }))
+              setUpdateProblemInfo((prev) => {
+                if (!prev) return null;
+                return {
+                  ...prev,
+                  content: e.target.value,
+                };
+              })
             }
+            required
           />
         </div>
       </div>
@@ -43,7 +47,7 @@ const ContentsMarkDown = () => {
           Preview
         </span>
         <div ref={markDownSizeRef} className="flex w-full bg-white">
-          <MarkdownComponent markdown={updateProblemInfo.markdown} />
+          <MarkdownComponent markdown={updateProblemInfo?.content ?? ''} />
         </div>
       </div>
     </div>

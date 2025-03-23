@@ -1,9 +1,9 @@
 import React, { createContext, ReactNode, useContext } from 'react';
-import { UpdateProblemProps } from '../ui/updateProblemPage';
+import { ProblemDetailInfoRes } from '../api';
 interface UpdateProblemContextType {
-  updateProblemInfo: UpdateProblemProps;
+  updateProblemInfo: ProblemDetailInfoRes | null;
   setUpdateProblemInfo: React.Dispatch<
-    React.SetStateAction<UpdateProblemProps>
+    React.SetStateAction<ProblemDetailInfoRes | null>
   >;
   children?: ReactNode;
 }
