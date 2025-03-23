@@ -26,6 +26,9 @@ import {
 import ContentsMarkDown from '@/feature/adminProblem/update/ui/markDownEdit';
 import { Problem } from '..';
 import { updateAttrBox } from '../model/updateAttrBoxContents';
+import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
+import { ServerErrorResponse } from '@/shared/api/model/config';
+import useToast from '@/shared/toast/toast';
 
 enum ProblemAttributeTitle {
   Category = 'Category',
@@ -39,6 +42,9 @@ const UpdateProblemPage = () => {
   const [selectedProblem, setSelectedProblem] = useState<Problem | null>(null);
   const [problemDetailInfo, setProblemDetailInfo] =
     useState<ProblemDetailInfoRes | null>(null);
+
+  const [toastOpen, setToastOpen] = useState(false);
+  const { Toaster, setToastDescription } = useToast(toastOpen, setToastOpen);
 
   useLayoutEffect(() => {
     if (selectedProblem && !problemDetailInfo) {
@@ -69,14 +75,17 @@ const UpdateProblemPage = () => {
     const [_, pType] = problemDetailInfo.category.split('_');
 
     try {
+      const commontBody = {
+        questionTitle: problemDetailInfo.questionTitle,
+        questionContent: problemDetailInfo.content,
+        answer: problemDetailInfo.answer,
+        answerExplanation: problemDetailInfo.answerExplanation,
+        difficulty: problemDetailInfo.difficulty,
+        category: problemDetailInfo.category,
+      };
       if (pType === ProblemCategoryType.MAQ) {
         const body: CreateAdminMAQReq = {
-          questionTitle: problemDetailInfo.questionTitle,
-          questionContent: problemDetailInfo.content,
-          answer: problemDetailInfo.answer,
-          answerExplanation: problemDetailInfo.answerExplanation,
-          difficulty: problemDetailInfo.difficulty,
-          category: problemDetailInfo.category,
+          ...commontBody,
           choice1: (problemDetailInfo.options as string[])[0],
           choice2: (problemDetailInfo.options as string[])[1],
           choice3: (problemDetailInfo.options as string[])[2],
@@ -85,37 +94,43 @@ const UpdateProblemPage = () => {
         const res = await updateAdminMAQApi(problemDetailInfo.questionId, body);
         if (res.ok) {
           console.log(`${problemDetailInfo.questionId} updated`, res.payload);
+          setToastDescription('문제 수정이 완료되었습니다.');
+          setToastOpen(true);
+          return;
         }
+        throw res.payload;
       }
       if (pType === ProblemCategoryType.SAQ) {
         const body: CreateAdminSAQReq = {
-          questionTitle: problemDetailInfo.questionTitle,
-          questionContent: problemDetailInfo.content,
-          answer: problemDetailInfo.answer,
-          answerExplanation: problemDetailInfo.answerExplanation,
-          difficulty: problemDetailInfo.difficulty,
-          category: problemDetailInfo.category,
+          ...commontBody,
           keyword1: (problemDetailInfo.options as string[])[0],
           keyword2: (problemDetailInfo.options as string[])[1],
           keyword3: (problemDetailInfo.options as string[])[2],
         };
-        console.log(body);
         const res = await updateAdminSAQApi(problemDetailInfo.questionId, body);
         if (res.ok) {
           console.log(`${problemDetailInfo.questionId} updated`, res.payload);
+          setToastDescription('문제 수정이 완료되었습니다.');
+          setToastOpen(true);
+          return;
         }
+        throw res.payload;
       }
       return;
     } catch (e) {
-      console.log();
+      console.log(e);
+      setToastDescription('문제 수정에 실패했습니다.');
+      setToastOpen(true);
     }
   };
 
   return (
     <form
       onSubmit={async (e) => await handleSubmit(e)}
-      className="flex h-full w-full flex-col items-center p-4"
+      className="relative flex h-full w-full flex-col items-center p-4"
     >
+      <Toaster />
+
       <div className="fixed left-0 flex h-12 w-full items-center justify-between border-b-2 bg-pointcolor-sand px-4">
         <div className="flex h-12 max-w-full items-center justify-center text-xl font-bold">
           Problem {problemDetailInfo?.questionId ?? ''}
@@ -151,6 +166,14 @@ const UpdateProblemPage = () => {
                 value={problemDetailInfo?.difficulty ?? ''}
                 onChange={(e) => updateAttrBox(e, setProblemDetailInfo)}
                 className="flex h-8 w-12 break-words border px-2 text-center text-xs md:w-auto"
+                pattern="[1-9][0-9]{0,1}"
+                onFocus={(e) =>
+                  Number(e.target.value) <= 0
+                    ? e.target.setCustomValidity(
+                        '100 이하의 자연수만 입력 가능합니다.'
+                      )
+                    : e.target.setCustomValidity('')
+                }
                 required
               />
             </AttrBox>

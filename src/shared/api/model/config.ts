@@ -71,18 +71,30 @@ export const _apiFetch = async <T = any>(
     },
     body: body ? JSON.stringify(body) : undefined,
   };
-  const response = await fetch(endPoint, options);
-  const responseWithData = {
-    ok: response.ok,
-    payload: response.headers.get('content-type')?.includes('json')
-      ? await response.json()
-      : await response.text(),
-  };
-  console.log('res', response, responseWithData);
-  if (!response.ok) {
-    handleServerErrors(responseWithData.payload as ServerErrorResponse);
+  try {
+    const response = await fetch(endPoint, options);
+    const responseWithData = {
+      ok: response.ok,
+      payload: response.headers.get('content-type')?.includes('json')
+        ? await response.json()
+        : await response.text(),
+    };
+    console.log('res', response, responseWithData);
+    if (!response.ok) {
+      handleServerErrors(responseWithData.payload as ServerErrorResponse);
+    }
+    return responseWithData;
+  } catch (e: any) {
+    console.log(e);
+    return {
+      ok: false,
+      payload: {
+        ecode: Ecode.E9999,
+        message: e.message ?? '',
+        status: 500,
+      },
+    };
   }
-  return responseWithData;
 };
 
 // 인터셉터 리스너 설정

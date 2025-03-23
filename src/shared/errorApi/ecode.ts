@@ -1,4 +1,5 @@
 export enum Ecode {
+  E9999 = '9999',
   E0002 = '0002',
   E0005 = '0005',
   E0106 = '0106',
@@ -10,6 +11,8 @@ export enum Ecode {
 
 export const EcodeMessage = (ecode: Ecode) => {
   switch (ecode) {
+    case Ecode.E9999:
+      return 'Unknown error';
     case Ecode.E0002:
       return '토큰 없음';
     case Ecode.E0005:

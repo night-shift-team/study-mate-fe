@@ -49,8 +49,8 @@ const CreateProblemPage = () => {
       answer: '',
       answerExplanation: '',
     });
-  const [toastOpen, setToastOpen] = useState(false);
 
+  const [toastOpen, setToastOpen] = useState(false);
   const { Toaster, setToastDescription } = useToast(toastOpen, setToastOpen);
 
   useEffect(() => {
