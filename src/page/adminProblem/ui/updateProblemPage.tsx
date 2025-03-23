@@ -25,6 +25,7 @@ import {
 } from '@/feature/adminProblem/update/ui/problemUpdateComponents';
 import ContentsMarkDown from '@/feature/adminProblem/update/ui/markDownEdit';
 import { Problem } from '..';
+import { updateAttrBox } from '../model/updateAttrBoxContents';
 
 enum ProblemAttributeTitle {
   Category = 'Category',
@@ -110,27 +111,10 @@ const UpdateProblemPage = () => {
     }
   };
 
-  const updateAttrBox = (e: React.ChangeEvent<HTMLInputElement>) => {
-    try {
-      const level = e.target.value;
-      if (level === '' || isNaN(parseInt(level))) {
-        setProblemDetailInfo((prev: ProblemDetailInfoRes | null) =>
-          prev ? { ...prev, difficulty: 0 } : null
-        );
-        return;
-      }
-      setProblemDetailInfo((prev) =>
-        prev ? { ...prev, difficulty: parseInt(level) } : null
-      );
-    } catch (e: any) {
-      console.log(e);
-    }
-  };
-
   return (
     <form
       onSubmit={async (e) => await handleSubmit(e)}
-      className="flex h-full w-full flex-col items-start p-4"
+      className="flex h-full w-full flex-col items-center p-4"
     >
       <div className="fixed left-0 flex h-12 w-full items-center justify-between border-b-2 bg-pointcolor-sand px-4">
         <div className="flex h-12 max-w-full items-center justify-center text-xl font-bold">
@@ -165,8 +149,9 @@ const UpdateProblemPage = () => {
               <input
                 type="text"
                 value={problemDetailInfo?.difficulty ?? ''}
-                onChange={updateAttrBox}
+                onChange={(e) => updateAttrBox(e, setProblemDetailInfo)}
                 className="flex h-8 w-12 break-words border px-2 text-center text-xs md:w-auto"
+                required
               />
             </AttrBox>
             <AttrBox title={ProblemAttributeTitle.Type}>

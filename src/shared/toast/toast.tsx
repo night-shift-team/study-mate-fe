@@ -16,7 +16,6 @@ const useToast = (
         setToastAnimationLocate('translate-y-[100%] -right-[100%]');
       }, 2000);
       setTimeout(() => {
-        console.log(changeDescription);
         setOpen((prev) => !prev);
       }, 2500);
     } else {

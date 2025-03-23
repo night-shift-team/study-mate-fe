@@ -15,6 +15,7 @@ export const TitleBox = ({ title }: { title: string }) => {
             prev ? { ...prev, questionTitle: e.target.value } : null
           );
         }}
+        required
       />
     </div>
   );
@@ -42,7 +43,9 @@ export const Answer = () => {
   return (
     <div className="flex w-full flex-col gap-2 rounded-2xl border bg-white p-2">
       <span className="mt-2 text-center text-lg font-bold text-[#FEA1A1]">
-        Answer
+        {updateProblemInfo?.category.split('_')[1] === ProblemCategoryType.SAQ
+          ? 'Keyword'
+          : 'Answer'}
       </span>
       <div className="flex w-full flex-col gap-1 px-2 text-[0.7rem]">
         {updateProblemInfo?.category.split('_')[1] ===
@@ -132,6 +135,7 @@ export const SelectionInputComponent = ({
               : null
           )
         }
+        required
       />
     </div>
   );
@@ -152,6 +156,7 @@ export const Solution = () => {
             prev ? { ...prev, answerExplanation: e.target.value } : null
           )
         }
+        required
       ></textarea>
     </div>
   );
@@ -173,6 +178,7 @@ export const ModelAnswer = () => {
             prev ? { ...prev, answer: e.target.value } : null
           )
         }
+        required
       ></textarea>
     </div>
   );

@@ -72,11 +72,13 @@ export const _apiFetch = async <T = any>(
     body: body ? JSON.stringify(body) : undefined,
   };
   const response = await fetch(endPoint, options);
-
   const responseWithData = {
     ok: response.ok,
-    payload: await response.json(),
+    payload: response.headers.get('content-type')?.includes('json')
+      ? await response.json()
+      : await response.text(),
   };
+  console.log('res', response, responseWithData);
   if (!response.ok) {
     handleServerErrors(responseWithData.payload as ServerErrorResponse);
   }
@@ -101,9 +103,13 @@ interceptor.on('request', async ({ request }) => {
 });
 
 interceptor.on('response', async ({ response, request }) => {
-  // console.log("interceptor", response)
+  // console.log("interceptor", response.headers.get('Content-Type'))
   if (response.ok) return;
-  const errCode = (await response.json()).ecode;
+
+  const data = await response.json();
+  const errCode = data.ecode ? data.ecode : data.status;
+  console.warn(errCode);
+
   const isDisabaleToken = errCode === Ecode.E0002 || errCode === Ecode.E0005;
   if (isDisabaleToken) {
     try {
@@ -137,13 +143,13 @@ interceptor.on('response', async ({ response, request }) => {
 
 export const handleFetchErrors = (error: Error) => {
   if (error.name === 'TypeError') {
-    console.error('Network Error or CORS issue:', error.message);
+    console.warn('Network Error or CORS issue:', error.message);
     return 'TypeError';
   } else if (error.name === 'AbortError') {
-    console.error('Request was aborted:', error.message);
+    console.warn('Request was aborted:', error.message);
     return 'AbortError';
   } else {
-    console.error('Frontend Error:', error.message);
+    console.warn('Frontend Error:', error.message);
     return;
   }
   //로그 관리

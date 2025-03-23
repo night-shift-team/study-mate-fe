@@ -38,6 +38,7 @@ const ContentsMarkDown = () => {
                 };
               })
             }
+            required
           />
         </div>
       </div>

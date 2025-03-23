@@ -6,7 +6,11 @@ import {
 } from '@/shared/eventListeners/model/mouseEvents';
 import { createPortal } from 'react-dom';
 import { ProblemDetailInfoRes } from '../api';
-import { ProblemCategory } from '@/shared/constants/problemInfo';
+import {
+  ProblemCategory,
+  ProblemCategoryType,
+} from '@/shared/constants/problemInfo';
+import { resetFocus } from '@/shared/dom/model/focus';
 
 const SelectComponent = ({
   list,
@@ -29,16 +33,16 @@ const SelectComponent = ({
     updateProblemInfo: ProblemDetailInfoRes | null,
     attrString: 'title' | 'type' | 'difficulty'
   ) => {
-    if (!updateProblemInfo) return null;
+    if (!updateProblemInfo) return '';
     switch (attrString) {
       case 'title':
-        return updateProblemInfo.category.split('_')[0];
+        return updateProblemInfo.category.split('_')[0] ?? '';
       case 'type':
-        return updateProblemInfo.category.split('_')[1];
+        return updateProblemInfo.category.split('_')[1] ?? '';
       case 'difficulty':
         return updateProblemInfo.difficulty;
       default:
-        return null;
+        return '';
     }
   };
 
@@ -50,9 +54,13 @@ const SelectComponent = ({
         setOpenSelect(true);
       }}
     >
-      <span className="flex w-full items-center justify-center">
-        {getAttrTitle(updateProblemInfo, attrString)}
-      </span>
+      <input
+        className="flex w-full items-center justify-center pl-1 hover:cursor-pointer"
+        value={getAttrTitle(updateProblemInfo, attrString)}
+        onFocus={resetFocus}
+        onChange={() => {}}
+        required
+      />
       {openSelect
         ? createPortal(
             <div
@@ -64,7 +72,6 @@ const SelectComponent = ({
               }}
             >
               {list.map((attrValue, index) => {
-                console.log(attrString, attrValue);
                 return (
                   <div
                     key={index}
@@ -83,7 +90,7 @@ const SelectComponent = ({
                                 : {
                                     ...prev,
                                     category:
-                                      `${attrValue}_${currentType}` as ProblemCategory,
+                                      `${attrValue}_${currentType ?? ProblemCategoryType.MAQ}` as ProblemCategory,
                                   };
                             }
 
