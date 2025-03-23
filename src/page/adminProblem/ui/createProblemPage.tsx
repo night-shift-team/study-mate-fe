@@ -83,6 +83,7 @@ const CreateProblemPage = () => {
     if (!problemDetailInfo) return;
     const [_, pType] = problemDetailInfo.category.split('_');
 
+    setIsLoading(true);
     try {
       const commontBody = {
         questionTitle: problemDetailInfo.questionTitle,
@@ -153,6 +154,8 @@ const CreateProblemPage = () => {
       console.log(e);
       setToastDescription('문제 생성에 실패했습니다.');
       setToastOpen(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 

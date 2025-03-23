@@ -59,11 +59,6 @@ export const Answer = ({
 }: {
   updateProblemInfo: ProblemDetailInfoRes | null;
 }) => {
-  console.log(
-    updateProblemInfo?.category.split('_')[1],
-    typeof updateProblemInfo?.options,
-    updateProblemInfo?.options
-  );
   return (
     <div className="flex w-full flex-col gap-2 rounded-2xl border bg-white pt-2">
       <span className="mt-2 text-center text-lg font-bold text-[#FEA1A1]">

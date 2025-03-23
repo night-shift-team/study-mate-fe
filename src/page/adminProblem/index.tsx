@@ -55,6 +55,7 @@ const ManageProlemPage = () => {
           setSelectedProblem((res.payload as GetAdminMAQListRes).content[0]);
           prevProblemList.current = (res.payload as GetAdminMAQListRes).content;
           setTotalProblemCount((res.payload as GetAdminMAQListRes).totalPages);
+          return;
         }
         throw res.payload as ServerErrorResponse;
       }
@@ -65,6 +66,7 @@ const ManageProlemPage = () => {
           setSelectedProblem((res.payload as GetAdminSAQListRes).content[0]);
           prevProblemList.current = (res.payload as GetAdminSAQListRes).content;
           setTotalProblemCount((res.payload as GetAdminSAQListRes).totalPages);
+          return;
         }
         throw res.payload as ServerErrorResponse;
       }
