@@ -1,22 +1,82 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getSolveStatsApi } from '@/page/mypage/api';
 
 const GrassChart = () => {
-  const months = [
-    '1월',
-    '2월',
-    '3월',
-    '4월',
-    '5월',
-    '6월',
-    '7월',
-    '8월',
-    '9월',
-    '10월',
-    '11월',
-    '12월',
-  ];
-  const weeks = Array(53).fill(0);
+  const [stats, setStats] = useState<any>(null);
+
   const days = ['월', '화', '수', '목', '금', '토', '일'];
+
+  useEffect(() => {
+    fetchSolveStats();
+  }, []);
+
+  const fetchSolveStats = async () => {
+    try {
+      const res = await getSolveStatsApi();
+      if (res.ok && res.payload) {
+        setStats(res.payload);
+      } else {
+        console.error(res);
+      }
+    } catch (error) {
+      console.error('에러 발생:', error);
+    }
+  };
+
+  const mapSolveStats = (solveStats: any[]) => {
+    const mappedData: { [key: string]: number } = {};
+    solveStats.forEach((stat) => {
+      mappedData[stat.solveDay] = stat.solveCount;
+    });
+    return mappedData;
+  };
+
+  const getColorBySolveCount = (count: number) => {
+    if (count === 0) return 'bg-[#ebedf0]';
+    if (count >= 1 && count <= 3) return 'bg-[#9be9a8]';
+    if (count >= 4 && count <= 7) return 'bg-[#40c463]';
+    if (count >= 8 && count <= 12) return 'bg-[#30a14e]';
+    return 'bg-[#216e39]';
+  };
+
+  // 현재 날짜 기준으로 1년 전 날짜 계산
+  const getOneYearAgoDate = () => {
+    const now = new Date();
+    now.setFullYear(now.getFullYear() - 1);
+    return now.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 반환
+  };
+
+  const getMonthLabels = (startDate: string) => {
+    const labels: { [key: string]: string } = {};
+    const start = new Date(startDate);
+    const end = new Date();
+    const current = new Date(start);
+
+    while (current <= end) {
+      if (current.getDate() === 1) {
+        const weekIndex = Math.floor(
+          (current.getTime() - start.getTime()) / (1000 * 60 * 60 * 24 * 7)
+        );
+        labels[weekIndex] = `${current.getMonth() + 1}월`;
+      }
+      current.setDate(current.getDate() + 1);
+    }
+
+    return labels;
+  };
+
+  if (!stats) return <div>로딩 중...</div>;
+
+  const { solveStats } = stats;
+  const mappedStats = mapSolveStats(solveStats);
+
+  const oneYearAgo = getOneYearAgoDate();
+  const today = new Date().toISOString().split('T')[0];
+  const filteredStats = solveStats.filter(
+    (stat: any) => stat.solveDay >= oneYearAgo && stat.solveDay <= today
+  );
+
+  const monthLabels = getMonthLabels(oneYearAgo);
 
   return (
     <div className="w-full overflow-x-auto rounded-xl bg-white p-4 scrollbar-hide">
@@ -25,19 +85,15 @@ const GrassChart = () => {
           {/* 왼쪽 여백 */}
           <div className="w-8" />
 
-          {/* 월 표시 */}
+          {/* 동적 월 표시 */}
           <div className="mb-2 flex flex-1 text-xs text-gray-600">
-            {months.map((month, index) => (
-              <div
-                key={index}
-                className="flex-1"
-                style={{
-                  marginLeft: index === 0 ? 0 : '-8px', // 월 이름 겹침 방지
-                }}
-              >
-                {month}
-              </div>
-            ))}
+            {Array(53) // 53주 기준
+              .fill(0)
+              .map((_, weekIndex) => (
+                <div key={weekIndex} className="flex-1 text-center">
+                  {monthLabels[weekIndex] || ''}
+                </div>
+              ))}
           </div>
         </div>
 
@@ -53,22 +109,36 @@ const GrassChart = () => {
 
           {/* 잔디 그리드 */}
           <div className="flex flex-1 justify-between gap-[2px]">
-            {weeks.map((_, weekIndex) => (
-              <div key={weekIndex} className="flex flex-col gap-[2px]">
-                {Array(7)
-                  .fill(0)
-                  .map((_, dayIndex) => {
-                    const isWeekend = dayIndex === 5 || dayIndex === 6;
-                    return (
-                      <div
-                        key={dayIndex}
-                        className={`h-3 w-3 rounded-sm transition-colors duration-100 hover:ring-1 hover:ring-gray-300 ${isWeekend ? 'bg-[#ebedf0]/50' : 'bg-[#ebedf0]'}`}
-                        title={`활동 내역 없음 (${days[dayIndex]}요일)`}
-                      />
-                    );
-                  })}
-              </div>
-            ))}
+            {Array(53) // 53주를 기준으로 생성
+              .fill(0)
+              .map((_, weekIndex) => (
+                <div key={weekIndex} className="flex flex-col gap-[2px]">
+                  {Array(7) // 7일을 기준으로 생성
+                    .fill(0)
+                    .map((_, dayIndex) => {
+                      // 현재 날짜 계산
+                      const currentDate = new Date(oneYearAgo);
+                      currentDate.setDate(
+                        currentDate.getDate() + weekIndex * 7 + dayIndex
+                      );
+
+                      const dateString = currentDate
+                        .toISOString()
+                        .split('T')[0];
+                      const solveCount = mappedStats[dateString] || 0;
+
+                      return (
+                        <div
+                          key={dayIndex}
+                          className={`h-3 w-3 rounded-sm transition-colors duration-100 hover:ring-1 hover:ring-gray-300 ${getColorBySolveCount(
+                            solveCount
+                          )}`}
+                          title={`날짜: ${dateString}, 문제 풀이 수: ${solveCount}`}
+                        />
+                      );
+                    })}
+                </div>
+              ))}
           </div>
         </div>
 
