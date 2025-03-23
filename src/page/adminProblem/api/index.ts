@@ -135,3 +135,27 @@ export const updateAdminSAQApi = async (
   const body = questionInfoData;
   return await _apiFetch<string>('PATCH', API_PREFIX + path, body);
 };
+
+export const searchAdminMAQListApi = async (
+  page: number,
+  limit: number,
+  keyword: string
+) => {
+  const query = `page=${page.toString()}&limit=${limit.toString()}&keyword=${keyword}`;
+  return await _apiFetch<GetAdminMAQListRes>(
+    'GET',
+    `${API_PREFIX}/admin/search-maq?${query}`
+  );
+};
+
+export const searchAdminSAQListApi = async (
+  page: number,
+  limit: number,
+  keyword: string
+) => {
+  const query = `page=${page.toString()}&limit=${limit.toString()}&keyword=${keyword}`;
+  return await _apiFetch<GetAdminSAQListRes>(
+    'GET',
+    `${API_PREFIX}/admin/search-saq?${query}`
+  );
+};

@@ -1,10 +1,16 @@
-import { CurrentFilter } from '@/page/adminProblem';
+import { CurrentFilter, Problem } from '@/page/adminProblem';
 import { ProblemCategoryType } from '@/shared/constants/problemInfo';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { IoSearch } from 'react-icons/io5';
 import { LuArrowDownUp } from 'react-icons/lu';
 import UnfoldMoreRoundedIcon from '@mui/icons-material/UnfoldMoreRounded';
 import { Pagination } from '@mui/material';
+import {
+  GetAdminMAQListRes,
+  GetAdminSAQListRes,
+  searchAdminMAQListApi,
+  searchAdminSAQListApi,
+} from '@/page/adminProblem/api';
 
 interface ProblemPaginationProps {
   page: number;
@@ -63,14 +69,42 @@ export const ProblemTypeSelectionComponent = ({
   );
 };
 
-export const ProblemSearchComponent = () => {
+export const ProblemSearchComponent = ({
+  problemType,
+  setProblemList,
+}: {
+  problemType: ProblemCategoryType;
+  setProblemList: Dispatch<SetStateAction<Problem[]>>;
+}) => {
   const [searchText, setSearchText] = useState('');
 
-  const handleSearchTextEnter = (
+  const getProblemListBySearch = async (searchText: string) => {
+    try {
+      if (problemType === ProblemCategoryType.MAQ) {
+        const res = await searchAdminMAQListApi(0, 999, searchText);
+        if (res.ok) {
+          console.log(res.payload);
+          setProblemList((res.payload as GetAdminMAQListRes).content);
+        }
+      }
+      if (problemType === ProblemCategoryType.SAQ) {
+        const res = await searchAdminSAQListApi(0, 999, searchText);
+        if (res.ok) {
+          console.log(res.payload);
+          setProblemList((res.payload as GetAdminSAQListRes).content);
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleSearchTextEnter = async (
     e: React.KeyboardEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
   ) => {
     if (e.type === 'click' || ('key' in e && e.key === 'Enter')) {
-      //TODO: 검색 api 호출
+      await getProblemListBySearch(searchText);
+      //TODO: 조회 후 로직 처리 필요
       console.log(searchText);
     }
   };
@@ -90,7 +124,9 @@ export const ProblemSearchComponent = () => {
         placeholder="문제 검색"
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}
-        onKeyDown={handleSearchTextEnter}
+        onKeyDown={async (e) => {
+          await handleSearchTextEnter(e);
+        }}
         className="h-full w-full rounded-md border-2 px-1 text-xs"
       />
     </div>

@@ -115,7 +115,10 @@ const ManageProlemPage = () => {
               currentFilter={currentFilter}
               setCurrentFilter={setCurrentFilter}
             />
-            <ProblemSearchComponent />
+            <ProblemSearchComponent
+              problemType={problemType}
+              setProblemList={setProblemList}
+            />
           </div>
           <div className="mt-2 flex min-h-[35rem] w-full flex-shrink-0 flex-col overflow-auto scrollbar-hide">
             {isLoading ? (
