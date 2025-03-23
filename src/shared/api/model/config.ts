@@ -79,7 +79,6 @@ export const _apiFetch = async <T = any>(
         ? await response.json()
         : await response.text(),
     };
-    console.log('res', response, responseWithData);
     if (!response.ok) {
       handleServerErrors(responseWithData.payload as ServerErrorResponse);
     }

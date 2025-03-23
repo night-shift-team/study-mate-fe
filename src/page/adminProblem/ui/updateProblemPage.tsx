@@ -29,6 +29,7 @@ import { updateAttrBox } from '../model/updateAttrBoxContents';
 import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
 import { ServerErrorResponse } from '@/shared/api/model/config';
 import useToast from '@/shared/toast/toast';
+import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 
 enum ProblemAttributeTitle {
   Category = 'Category',
@@ -45,6 +46,7 @@ const UpdateProblemPage = () => {
 
   const [toastOpen, setToastOpen] = useState(false);
   const { Toaster, setToastDescription } = useToast(toastOpen, setToastOpen);
+  const [isLoading, setIsLoading] = useState(false);
 
   useLayoutEffect(() => {
     if (selectedProblem && !problemDetailInfo) {
@@ -73,6 +75,7 @@ const UpdateProblemPage = () => {
     e.preventDefault();
     if (!problemDetailInfo) return;
     const [_, pType] = problemDetailInfo.category.split('_');
+    setIsLoading(true);
 
     try {
       const commontBody = {
@@ -121,6 +124,8 @@ const UpdateProblemPage = () => {
       console.log(e);
       setToastDescription('문제 수정에 실패했습니다.');
       setToastOpen(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -138,9 +143,10 @@ const UpdateProblemPage = () => {
         <div className="flex gap-1">
           <button
             type="submit"
-            className="flex h-[2.5rem] w-16 items-center justify-center rounded-lg border bg-white text-sm hover:bg-pointcolor-coral/30"
+            disabled={isLoading}
+            className={`flex h-[2.5rem] w-16 items-center justify-center rounded-lg border text-sm hover:bg-pointcolor-coral/30 ${isLoading ? 'bg-gray-200' : 'bg-white'}`}
           >
-            수정 완료
+            {isLoading ? <Spinner /> : '수정 완료'}
           </button>
         </div>
       </div>

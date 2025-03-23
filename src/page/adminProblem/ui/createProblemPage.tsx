@@ -28,6 +28,7 @@ import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
 import useToast from '@/shared/toast/toast';
 import { useRouter } from 'next/navigation';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 
 enum ProblemAttributeTitle {
   Category = 'Category',
@@ -52,6 +53,7 @@ const CreateProblemPage = () => {
 
   const [toastOpen, setToastOpen] = useState(false);
   const { Toaster, setToastDescription } = useToast(toastOpen, setToastOpen);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (problemDetailInfo?.category) {
@@ -167,9 +169,10 @@ const CreateProblemPage = () => {
         <div className="flex gap-1">
           <button
             type="submit"
-            className="flex h-[2.5rem] w-16 items-center justify-center rounded-lg border bg-white text-sm hover:bg-pointcolor-coral/30"
+            disabled={isLoading}
+            className={`flex h-[2.5rem] w-16 items-center justify-center rounded-lg border text-sm hover:bg-pointcolor-coral/30 ${isLoading ? 'bg-gray-200' : 'bg-white'}`}
           >
-            생성하기
+            {isLoading ? <Spinner /> : '생성하기'}
           </button>
         </div>
       </div>
