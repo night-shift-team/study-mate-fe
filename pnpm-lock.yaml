@@ -115,6 +115,9 @@ importers:
       recharts:
         specifier: ^2.15.0
         version: 2.15.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      swiper:
+        specifier: ^11.2.6
+        version: 11.2.6
       tailwind-merge:
         specifier: ^2.6.0
         version: 2.6.0
@@ -6457,6 +6460,13 @@ packages:
       }
     engines: { node: '>= 0.4' }
 
+  swiper@11.2.6:
+    resolution:
+      {
+        integrity: sha512-8aXpYKtjy3DjcbzZfz+/OX/GhcU5h+looA6PbAzHMZT6ESSycSp9nAjPCenczgJyslV+rUGse64LMGpWE3PX9Q==,
+      }
+    engines: { node: '>= 4.7.0' }
+
   tailwind-merge@2.6.0:
     resolution:
       {
@@ -11442,6 +11452,8 @@ snapshots:
       has-flag: 4.0.0
 
   supports-preserve-symlinks-flag@1.0.0: {}
+
+  swiper@11.2.6: {}
 
   tailwind-merge@2.6.0: {}
 
