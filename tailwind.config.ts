@@ -30,7 +30,7 @@ module.exports = {
           sand: '#F0EDD4',
           apricot: '#ECCDB4',
           coral: '#FEA1A1',
-          deepcoral: '#f28b82',
+          deepcoral: '#ec857e',
         },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',

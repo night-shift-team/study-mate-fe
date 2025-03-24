@@ -23,6 +23,7 @@ import AuthHoc from '@/shared/auth/model/authHoc';
 import { useQuery } from '@tanstack/react-query';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 type ChoiceAttrs = Pick<
   ProblemInfoMAQ,
@@ -140,7 +141,7 @@ const LevelTest = () => {
       {isPageLoading ? (
         <Spinner size="xl" />
       ) : (
-        <div className="flex h-full w-full max-w-[1200px] items-center justify-center rounded-xl px-[2%] py-[2%] shadow-lg md:max-h-[80%] md:min-h-[50vh] md:border-2 md:border-pointcolor-sand">
+        <div className="flex h-full w-full max-w-[1200px] items-center justify-center rounded-xl px-[2%] py-[2%] md:max-h-[80%] md:min-h-[50vh] md:border-2 md:border-pointcolor-sand md:shadow-lg">
           <div className="flex h-full w-full flex-col gap-4 pb-4 md:pb-0">
             <div className="flex w-full items-center justify-between">
               <span className="pl-2">문제 {currentQuestionNo + 1}</span>{' '}
@@ -148,13 +149,13 @@ const LevelTest = () => {
                 {currentQuestionNo + 1}/{levelTestLists.length ?? 1}
               </button>
             </div>
-            <div className="h-full rounded-3xl bg-white p-2">
+            <div className="h-full rounded-3xl bg-white p-2 shadow-md">
               <MarkdownComponent
                 markdown={levelTestLists[currentQuestionNo].content}
               />
             </div>
             <div className="flex h-auto w-full flex-col justify-end">
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-2.5 md:gap-4">
                 {Array.from(
                   {
                     length: Object.keys(
@@ -186,35 +187,42 @@ const LevelTest = () => {
                   );
                 })}
               </div>
-              <div className="flex w-full justify-end gap-4">
+              <div className="flex w-full justify-end gap-2 md:gap-3">
                 <button
                   disabled={isGetResultApiLoading || currentQuestionNo <= 0}
-                  className={`mt-4 flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all duration-200 ease-in-out ${
+                  className={`mt-4 flex h-[40px] w-[40px] items-center justify-center rounded-full transition-all duration-200 ease-in-out md:h-[45px] md:w-[45px] ${
                     isGetResultApiLoading || currentQuestionNo <= 0
                       ? 'cursor-not-allowed bg-gray-400 opacity-50'
                       : 'bg-pointcolor-deepcoral hover:bg-pointcolor-deepcoral active:scale-95'
                   } text-white`}
                   onClick={handlePrevQuestion}
                 >
-                  <FaArrowLeft />
+                  <IoIosArrowBack
+                    color="white"
+                    className="h-[20px] w-[20px] md:h-[24px] md:w-[24px]"
+                  />
                 </button>
                 <button
                   disabled={isGetResultApiLoading || selectedAnswer === null}
-                  className={`mt-4 flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all duration-200 ease-in-out ${
+                  className={`mt-4 flex h-[40px] w-[40px] items-center justify-center rounded-full transition-all duration-200 ease-in-out md:h-[45px] md:w-[45px] ${
                     isGetResultApiLoading || selectedAnswer === null
-                      ? 'cursor-not-allowed bg-gray-400 opacity-50'
+                      ? 'cursor-not-allowed bg-black opacity-50'
                       : 'bg-pointcolor-deepcoral hover:bg-pointcolor-deepcoral active:scale-95'
                   } text-white`}
                   onClick={handleNextQuestion}
                 >
                   {currentQuestionNo === levelTestLists.length - 1 ? (
                     isGetResultApiLoading ? (
-                      <Spinner color="white" size={'sm'} />
+                      <Spinner color="white" size={'xs'} />
                     ) : (
-                      <PiPaperPlaneTilt size={25} />
+                      <PiPaperPlaneTilt className="h-[18px] w-[18px] md:h-[23px] md:w-[23px]" />
                     )
                   ) : (
-                    <FaArrowRight />
+                    // <FaArrowRight />
+                    <IoIosArrowForward
+                      color="white"
+                      className="h-[20px] w-[20px] md:h-[24px] md:w-[24px]"
+                    />
                   )}
                 </button>
               </div>
