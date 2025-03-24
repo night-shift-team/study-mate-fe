@@ -130,11 +130,15 @@ const Login = () => {
   }, []);
 
   return (
-    <div className="relative z-[1000] flex h-full w-full items-center justify-center overflow-hidden md:pb-[4rem]">
+    <div className="relative z-[1000] flex h-full w-full justify-center overflow-hidden md:items-center md:pb-[4rem]">
       <Toaster />
-      <div className="md:inner-border-left flex w-full max-w-[900px] flex-col justify-around gap-4 rounded-[1rem] border bg-white/60 px-8 py-4 shadow-xl md:flex-row md:gap-6 md:p-8">
+      <div className="md:inner-border-left flex w-full max-w-[900px] flex-col justify-evenly bg-white/60 px-8 py-3 shadow-xl md:flex-row md:justify-around md:gap-6 md:rounded-[1rem] md:border md:p-8">
         <div className="flex flex-col justify-center md:items-center">
-          <Image src={Logo} alt="" className="w-[120px] md:w-[240px]" />
+          <Image
+            src={Logo}
+            alt=""
+            className="h-[20vh] w-[20vh] md:h-[240px] md:w-[240px]"
+          />
           <div className="flex w-full flex-col">
             <span className="text-lg font-bold text-pointcolor-apricot md:text-2xl">
               Study Mate
@@ -212,7 +216,7 @@ const Login = () => {
             </Link> */}
           </form>
 
-          <div className="flex flex-col justify-center">
+          <div className="flex w-full flex-col justify-center">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-300"></div>
@@ -223,7 +227,7 @@ const Login = () => {
                 </span>
               </div>
             </div>
-            <div className="flex justify-between gap-4">
+            <div className="flex w-full justify-between gap-4">
               {LoginButton.map((item) => (
                 <button
                   key={item.id}
@@ -245,7 +249,7 @@ const Login = () => {
                 </button>
               ))}
             </div>
-            <div className="flex justify-center whitespace-pre-wrap text-[0.8rem]">
+            <div className="mt-0.5 flex justify-center whitespace-pre-wrap text-[0.8rem]">
               <span>계정이 없으신가요? </span>
               <Link
                 href={loginLoading ? '#' : '/signup'}
