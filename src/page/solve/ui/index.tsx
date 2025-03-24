@@ -18,6 +18,8 @@ import Image from 'next/image';
 import { getCategoriesIcon } from '../model/getCategoryIcons';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { ProblemCategoryTitle } from '@/shared/constants/problemInfo';
+import { NoticeComponent } from './notice';
+import { RecentProblem } from './recentProblem';
 
 const TempCategories: { title: ProblemCategoryTitle; count: number }[] = [
   {
@@ -45,34 +47,9 @@ const TempCategories: { title: ProblemCategoryTitle; count: number }[] = [
 const SolveProblem = () => {
   return (
     <div className="flex h-full w-full flex-shrink-0 flex-col items-center gap-5 overflow-auto px-[2.5rem] py-[2rem]">
-      <div className="flex w-full flex-col justify-center">
-        <span className="text-center text-[1.6rem] font-bold">문제 풀기</span>
-        <div className="mt-6 flex w-full justify-center gap-10 px-10">
-          <Link
-            href={RouteTo.SolveRandom}
-            className="flex min-h-[8rem] w-[50%] min-w-[18rem] max-w-[54rem] flex-col items-center justify-center rounded-xl bg-white shadow-md hover:cursor-pointer hover:shadow-lg hover:inner-border"
-          >
-            <div className="mt-6 flex aspect-1 w-[2.6rem] items-center justify-center rounded-full bg-[#3b82f6]/40">
-              <Image
-                src={MultipleIcon}
-                alt="multipleIcon"
-                width={20}
-                height={20}
-              />
-            </div>
-            <span className="mt-3 text-[1.1rem] font-bold">랜덤 문제 풀기</span>
-            <span className="mt-3 text-sm text-gray-600">
-              {`모든 카테고리`}
-            </span>
-            <span className="mt-1 text-sm text-gray-600">
-              {`4지 선다 or 주관식`}
-            </span>
-            <span className="mb-4 mt-3 text-xl font-bold text-[#3b82f6]">
-              127 <span className="text-sm font-bold text-[#3b82f6]">문제</span>
-            </span>
-          </Link>
-        </div>
-      </div>
+      <NoticeComponent />
+      <span className="text-right text-xl font-bold">최근 추가된 문제</span>
+      <RecentProblem />
       <div className="mt-6 flex flex-col gap-2 pt-2">
         <span className="text-center text-xl font-bold">
           카테고리별 문제 풀기
@@ -81,7 +58,7 @@ const SolveProblem = () => {
           관심 있는 카테고리를 선택하여 문제를 풀어보세요
         </span>
       </div>
-      <div className="grid w-full place-items-center gap-5 md:w-auto md:grid-flow-row md:grid-cols-2 md:grid-rows-5 md:gap-10 lg:grid-cols-3 lg:grid-rows-3 xl:grid-cols-4 xl:grid-rows-2">
+      <div className="grid w-full place-items-center gap-5 md:w-auto md:grid-flow-row md:grid-cols-2 md:grid-rows-3 md:gap-10 lg:grid-cols-3 lg:grid-rows-2 xl:grid-cols-4 xl:grid-rows-2">
         {TempCategories.map((category, index) => {
           return (
             <Link
@@ -122,6 +99,34 @@ const SolveProblem = () => {
             </Link>
           );
         })}
+      </div>
+      <div className="flex w-full flex-col justify-center">
+        <span className="text-center text-[1.6rem] font-bold">문제 풀기</span>
+        <div className="mt-6 flex w-full justify-center gap-10 px-10">
+          <Link
+            href={RouteTo.SolveRandom}
+            className="flex min-h-[8rem] w-[50%] min-w-[18rem] max-w-[54rem] flex-col items-center justify-center rounded-xl bg-white shadow-md hover:cursor-pointer hover:shadow-lg hover:inner-border"
+          >
+            <div className="mt-6 flex aspect-1 w-[2.6rem] items-center justify-center rounded-full bg-[#3b82f6]/40">
+              <Image
+                src={MultipleIcon}
+                alt="multipleIcon"
+                width={20}
+                height={20}
+              />
+            </div>
+            <span className="mt-3 text-[1.1rem] font-bold">랜덤 문제 풀기</span>
+            <span className="mt-3 text-sm text-gray-600">
+              {`모든 카테고리`}
+            </span>
+            <span className="mt-1 text-sm text-gray-600">
+              {`4지 선다 or 주관식`}
+            </span>
+            <span className="mb-4 mt-3 text-xl font-bold text-[#3b82f6]">
+              127 <span className="text-sm font-bold text-[#3b82f6]">문제</span>
+            </span>
+          </Link>
+        </div>
       </div>
     </div>
   );
