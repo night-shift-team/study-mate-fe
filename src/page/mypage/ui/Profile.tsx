@@ -67,12 +67,7 @@ const Profile = () => {
             <Camera className="h-8 w-8 text-gray-400" />
           </div>
         ) : (
-          <Image
-            src={imageUrl}
-            alt="Profile"
-            className="h-full w-full rounded-full object-cover"
-            onError={() => setImageUrl(DEFAULT_PROFILE_IMG)}
-          />
+          <></>
         )}
       </label>
       <p className="text-[1.5vh]">닉네임: {user?.nickname}</p>

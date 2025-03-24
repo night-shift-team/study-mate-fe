@@ -59,6 +59,12 @@ const RightHeaderComponents = () => {
               onClick={() => setIsOpen(true)}
             />
           </div>
+          <Link
+            href={RouteTo.Rank}
+            className="hidden h-fit w-fit items-center justify-center rounded-2xl hover:bg-gray-100 active:cursor-grabbing md:flex"
+          >
+            랭킹
+          </Link>
           <MobileSlider open={isOpen} setOpen={setIsOpen} />
           <Link
             href={RouteTo.Mypage}

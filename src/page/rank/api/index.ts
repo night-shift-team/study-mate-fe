@@ -1,0 +1,23 @@
+import { _apiFetch } from '@/shared/api/model/config';
+const API_Prefix = '/api/v1/users';
+
+export interface UserRankingRes {
+  myRanking: number;
+  otherUsers: {
+    userId: string;
+    loginId: string;
+    nickname: string;
+    profileImg: string;
+    userScore: number;
+    rankNo: number;
+  }[];
+  pageSize: number;
+  pageNumber: number;
+}
+
+export const getUserRankingApi = async (page: number, limit: number) => {
+  return await _apiFetch<UserRankingRes>(
+    'GET',
+    `${API_Prefix}/${page}/${limit}/rank`
+  );
+};
