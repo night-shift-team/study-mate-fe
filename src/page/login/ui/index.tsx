@@ -237,7 +237,7 @@ const Login = () => {
                   }}
                   className="flex h-[4rem] w-1/3 cursor-pointer flex-col justify-center md:h-[5rem]"
                 >
-                  <div className="flex justify-center rounded-md border-2 py-1">
+                  <div className="flex w-full justify-center rounded-md border-2 py-1">
                     <Image
                       src={item.img}
                       alt=""
