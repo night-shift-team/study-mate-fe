@@ -25,10 +25,12 @@ module.exports = {
       colors: {
         pointcolor: {
           beige: '#F9FBE7',
+          beigebrown: '#e8d7b9',
           yogurt: '#fdfbf3',
           sand: '#F0EDD4',
           apricot: '#ECCDB4',
           coral: '#FEA1A1',
+          deepcoral: '#f28b82',
         },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',

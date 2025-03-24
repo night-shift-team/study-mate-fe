@@ -22,6 +22,7 @@ import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import AuthHoc from '@/shared/auth/model/authHoc';
 import { useQuery } from '@tanstack/react-query';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
 
 type ChoiceAttrs = Pick<
   ProblemInfoMAQ,
@@ -72,7 +73,9 @@ const LevelTest = () => {
           JSON.stringify(problemListWithNo)
         );
       })
-      .catch();
+      .catch((e) => {
+        console.log(e);
+      });
   }, []);
 
   const handleAnswerSelect = (index: number) => {
@@ -133,83 +136,89 @@ const LevelTest = () => {
   };
 
   return (
-    <div className="flex h-full w-full items-center justify-center">
+    <div className="flex h-full w-full items-center justify-center px-[2%] md:px-[10%]">
       {isPageLoading ? (
         <Spinner size="xl" />
       ) : (
-        <div className="flex w-[90%] max-w-[700px] flex-col">
-          <div className="h-[15vh] w-full">
+        <div className="flex h-full w-full max-w-[1200px] items-center justify-center rounded-xl px-[2%] py-[2%] shadow-lg md:max-h-[80%] md:min-h-[50vh] md:border-2 md:border-pointcolor-sand">
+          <div className="flex h-full w-full flex-col gap-4 pb-4 md:pb-0">
             <div className="flex w-full items-center justify-between">
-              <span>문제. {currentQuestionNo + 1}</span>{' '}
-              <button className="rounded-lg bg-[#F0EDD4] p-2 hover:cursor-auto">
+              <span className="pl-2">문제 {currentQuestionNo + 1}</span>{' '}
+              <button className="rounded-lg bg-[#e8d7b9] p-2 hover:cursor-auto">
                 {currentQuestionNo + 1}/{levelTestLists.length ?? 1}
               </button>
             </div>
-            <div className="p-5">
-              {levelTestLists[currentQuestionNo].content}
+            <div className="h-full rounded-3xl bg-white p-2">
+              <MarkdownComponent
+                markdown={levelTestLists[currentQuestionNo].content}
+              />
             </div>
-          </div>
-          <div className="flex flex-col gap-4">
-            {Array.from(
-              {
-                length: Object.keys(levelTestLists[currentQuestionNo]).filter(
-                  (keyValue) => keyValue.startsWith('choice') === true
-                ).length,
-              },
-              (_, i) => i
-            ).map((index) => {
-              return (
-                <ChoiceItem
-                  key={index}
-                  text={
-                    (levelTestLists[currentQuestionNo] as ProblemInfoMAQ)[
-                      `choice${index + 1}` as keyof ChoiceAttrs
-                    ]
-                  }
-                  onClick={() => {
-                    if (isGetResultApiLoading) {
-                      return;
-                    } else {
-                      handleAnswerSelect(index + 1);
-                    }
-                  }}
-                  isSelected={selectedAnswer === index + 1}
-                  showResult={showResult}
-                />
-              );
-            })}
-          </div>
-          <div className="flex w-full justify-end gap-4">
-            <button
-              disabled={isGetResultApiLoading || currentQuestionNo <= 0}
-              className={`mt-4 flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all duration-200 ease-in-out ${
-                isGetResultApiLoading || currentQuestionNo <= 0
-                  ? 'cursor-not-allowed bg-gray-400 opacity-50'
-                  : 'bg-[#FEA1A1] hover:bg-[#fe8989] active:scale-95'
-              } text-white`}
-              onClick={handlePrevQuestion}
-            >
-              <FaArrowLeft />
-            </button>
-            <button
-              disabled={isGetResultApiLoading || selectedAnswer === null}
-              className={`mt-4 flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all duration-200 ease-in-out ${
-                isGetResultApiLoading || selectedAnswer === null
-                  ? 'cursor-not-allowed bg-gray-400 opacity-50'
-                  : 'bg-[#FEA1A1] hover:bg-[#fe8989] active:scale-95'
-              } text-white`}
-              onClick={handleNextQuestion}
-            >
-              {currentQuestionNo === levelTestLists.length - 1 ? (
-                isGetResultApiLoading ? (
-                  <Spinner color="white" size={'sm'} />
-                ) : (
-                  <PiPaperPlaneTilt size={25} />
-                )
-              ) : (
-                <FaArrowRight />
-              )}
-            </button>
+            <div className="flex h-auto w-full flex-col justify-end">
+              <div className="flex flex-col gap-4">
+                {Array.from(
+                  {
+                    length: Object.keys(
+                      levelTestLists[currentQuestionNo]
+                    ).filter(
+                      (keyValue) => keyValue.startsWith('choice') === true
+                    ).length,
+                  },
+                  (_, i) => i
+                ).map((index) => {
+                  return (
+                    <ChoiceItem
+                      key={index}
+                      text={
+                        (levelTestLists[currentQuestionNo] as ProblemInfoMAQ)[
+                          `choice${index + 1}` as keyof ChoiceAttrs
+                        ]
+                      }
+                      onClick={() => {
+                        if (isGetResultApiLoading) {
+                          return;
+                        } else {
+                          handleAnswerSelect(index + 1);
+                        }
+                      }}
+                      isSelected={selectedAnswer === index + 1}
+                      showResult={showResult}
+                    />
+                  );
+                })}
+              </div>
+              <div className="flex w-full justify-end gap-4">
+                <button
+                  disabled={isGetResultApiLoading || currentQuestionNo <= 0}
+                  className={`mt-4 flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all duration-200 ease-in-out ${
+                    isGetResultApiLoading || currentQuestionNo <= 0
+                      ? 'cursor-not-allowed bg-gray-400 opacity-50'
+                      : 'bg-pointcolor-deepcoral hover:bg-pointcolor-deepcoral active:scale-95'
+                  } text-white`}
+                  onClick={handlePrevQuestion}
+                >
+                  <FaArrowLeft />
+                </button>
+                <button
+                  disabled={isGetResultApiLoading || selectedAnswer === null}
+                  className={`mt-4 flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all duration-200 ease-in-out ${
+                    isGetResultApiLoading || selectedAnswer === null
+                      ? 'cursor-not-allowed bg-gray-400 opacity-50'
+                      : 'bg-pointcolor-deepcoral hover:bg-pointcolor-deepcoral active:scale-95'
+                  } text-white`}
+                  onClick={handleNextQuestion}
+                >
+                  {currentQuestionNo === levelTestLists.length - 1 ? (
+                    isGetResultApiLoading ? (
+                      <Spinner color="white" size={'sm'} />
+                    ) : (
+                      <PiPaperPlaneTilt size={25} />
+                    )
+                  ) : (
+                    <FaArrowRight />
+                  )}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}

@@ -21,12 +21,12 @@ export const ChoiceItem: React.FC<ChoiceItemProps> = ({
   isSelected,
 }) => {
   const getBackgroundClass = () => {
-    return isSelected ? 'bg-[#F0EDD4]' : 'bg-[#D9D9D9]';
+    return isSelected ? 'bg-[#e8d7b9]' : 'bg-[#fdfbf3]';
   };
 
   return (
     <div
-      className={`flex h-auto w-[100%] cursor-pointer items-center rounded-md border p-2 shadow-lg hover:bg-[#F0EDD4] ${getBackgroundClass()}`}
+      className={`flex h-auto w-[100%] cursor-pointer items-center rounded-md border border-[#e2d7c3] p-2 shadow-lg hover:bg-[#e8d7b9] ${getBackgroundClass()}`}
       onClick={onClick}
     >
       {text}
