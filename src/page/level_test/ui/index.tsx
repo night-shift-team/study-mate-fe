@@ -149,6 +149,9 @@ const LevelTest = () => {
                 {currentQuestionNo + 1}/{levelTestLists.length ?? 1}
               </button>
             </div>
+            <div className="pl-2 font-bold">
+              {levelTestLists[currentQuestionNo]?.questionTitle}
+            </div>
             <div className="h-full rounded-3xl bg-white p-2 shadow-md">
               <MarkdownComponent
                 markdown={levelTestLists[currentQuestionNo].content}
