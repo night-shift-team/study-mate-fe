@@ -99,34 +99,21 @@ const SolveProblem = () => {
             </Link>
           );
         })}
-      </div>
-      <div className="flex w-full flex-col justify-center">
-        <span className="text-center text-[1.6rem] font-bold">문제 풀기</span>
-        <div className="mt-6 flex w-full justify-center gap-10 px-10">
-          <Link
-            href={RouteTo.SolveRandom}
-            className="flex min-h-[8rem] w-[50%] min-w-[18rem] max-w-[54rem] flex-col items-center justify-center rounded-xl bg-white shadow-md hover:cursor-pointer hover:shadow-lg hover:inner-border"
-          >
-            <div className="mt-6 flex aspect-1 w-[2.6rem] items-center justify-center rounded-full bg-[#3b82f6]/40">
-              <Image
-                src={MultipleIcon}
-                alt="multipleIcon"
-                width={20}
-                height={20}
-              />
-            </div>
-            <span className="mt-3 text-[1.1rem] font-bold">랜덤 문제 풀기</span>
-            <span className="mt-3 text-sm text-gray-600">
-              {`모든 카테고리`}
-            </span>
-            <span className="mt-1 text-sm text-gray-600">
-              {`4지 선다 or 주관식`}
-            </span>
-            <span className="mb-4 mt-3 text-xl font-bold text-[#3b82f6]">
-              127 <span className="text-sm font-bold text-[#3b82f6]">문제</span>
-            </span>
-          </Link>
-        </div>
+        <Link
+          href={RouteTo.SolveRandom}
+          className="relative flex h-[6rem] w-[100%] min-w-[240px] flex-shrink-0 flex-col items-center justify-center rounded-xl bg-white px-4 pt-2.5 shadow-md transition-all duration-300 ease-in-out hover:translate-y-[-5px] hover:shadow-2xl md:h-[12rem] md:w-[16rem] md:p-4"
+        >
+          <span className="mt-3 text-[1.1rem] font-bold underline underline-offset-8">
+            랜덤 문제 풀기
+          </span>
+          <span className="mt-3 text-xs text-gray-600">{`모든 카테고리`}</span>
+          <span className="mt-1 text-xs text-gray-600">
+            {`4 선택지 또는 주관식`}
+          </span>
+          <span className="mb-4 mt-3 text-lg font-bold text-[#3b82f6]">
+            127 <span className="text-xs font-bold text-[#3b82f6]">문제</span>
+          </span>
+        </Link>
       </div>
     </div>
   );
