@@ -1,32 +1,21 @@
 'use client';
 
-import { Suspense, useEffect, useRef, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 import { DonutChart } from '@/feature/charts/DonutChart';
 import Item from '@/feature/level_result/Item';
-import { csQuizQuestions } from '@/entities/test';
 import Popup from '@/feature/level_result/popup';
-import PulseLoader from 'react-spinners/PulseLoader';
 import { GetLevelTestResultRes } from '@/page/level_test/api';
 import { userStore } from '@/state/userStore';
 import { UserInfo } from '@/shared/constants/userInfo';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import Button from '@/components/buttons';
-import { Router } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-
-const TEMP_PROBLEM_DETTAIL = {
-  questionId: 'e6c4a124-b55b-4e3e-a9c5-fe74f00d71b3',
-  questionTitle: 'Test Question Title_ALGORITHUM_MAQ-18',
-  content: 'Test Question Content_ALGORITHUM_MAQ-18',
-  difficulty: 19,
-  options:
-    '["Choice 1 for question 18", "Choice 2 for question 18", "Choice 3 for question 18", "Choice 4 for question 18"]',
-  category: 'ALGORITHUM_MAQ',
-  answer: 'TEMP_3',
-  answerExplanation: 'TEMP_Test Question Content ExplainationALGORITHUM_MAQ-18',
-};
+import {
+  getProblemDetailInfoApi,
+  ProblemDetailInfoRes,
+} from '@/page/adminProblem/api';
+import { ServerErrorResponse } from '@/shared/api/model/config';
 
 interface ResultData extends GetLevelTestResultRes {
   userAnswers: number[];
@@ -50,21 +39,13 @@ const ResultContent = () => {
 
   const router = useRouter();
   const [resultData, setResultData] = useState<ResultData | null>(null);
-  const userAnswers = useRef<
-    {
-      no: number;
-      id: string;
-      userAnswer: string;
-      answer: string;
-      explanation: string;
-    }[]
-  >(null);
 
   useEffect(() => {
     if (problemLists.length === 0 && resultData === null) {
       const problems = sessionStorage.getItem('levelTestListWithNo');
       if (problems) {
         try {
+          console.log(JSON.parse(problems));
           setProblemLists(JSON.parse(problems));
         } catch (e) {
           console.log(e);
@@ -74,6 +55,7 @@ const ResultContent = () => {
       const storedData = sessionStorage.getItem('levelTestResult');
       if (storedData) {
         try {
+          console.log(JSON.parse(storedData));
           setResultData(JSON.parse(storedData));
         } catch (e) {
           console.log(e);
@@ -82,16 +64,6 @@ const ResultContent = () => {
       return;
     }
     if (problemLists.length && resultData) {
-      const userAnswersWithProblemNoByASC = problemLists.map((problem) => {
-        return {
-          no: problem.no,
-          id: problem.id,
-          answer: TEMP_PROBLEM_DETTAIL.answer,
-          explanation: TEMP_PROBLEM_DETTAIL.answerExplanation,
-          userAnswer: resultData.userAnswers[problem.no - 1].toString() ?? '-1',
-        };
-      });
-      userAnswers.current = userAnswersWithProblemNoByASC;
       setUser({
         ...userStore.getState().user,
         userScore: resultData.yourInitScore,
@@ -118,34 +90,46 @@ const ResultContent = () => {
   const [popup, setPopup] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState<null | {
     index: number;
-    userAnswer: string;
+    id: string;
+    title: string;
+    content: string;
+    userAnswer: number;
     correctAnswer: string;
     explanation: string;
   }>(null);
 
-  const handleOpenPopup = (
-    index: number,
-    userAnswer: {
-      no: number;
-      id: string;
-      userAnswer: string;
-      answer: string;
-      explanation: string;
-    } | null
-  ) => {
-    const userData = userAnswers.current?.find((value) => value.no === index);
+  const handleOpenPopup = async (index: number, id: string) => {
+    const problemInfo = await getProblemDetailInfo(id);
+    if (!problemInfo) {
+      setPopup(false);
+      return;
+    }
     setSelectedQuestion({
-      index: index,
-      userAnswer: userAnswer?.userAnswer ?? '-1',
-      correctAnswer: userData?.answer ?? '',
-      explanation: TEMP_PROBLEM_DETTAIL.answerExplanation,
+      index,
+      id,
+      title: problemInfo.questionTitle,
+      content: problemInfo.content,
+      userAnswer: resultData?.userAnswers[index] ?? NaN,
+      correctAnswer: problemInfo.answer,
+      explanation: problemInfo.answerExplanation,
     });
-    setPopup(true);
   };
 
   const handleClosePopup = () => {
     setPopup(false);
     setSelectedQuestion(null);
+  };
+
+  const getProblemDetailInfo = async (id: string) => {
+    try {
+      const res = await getProblemDetailInfoApi(id);
+      if (res.ok) {
+        return res.payload as ProblemDetailInfoRes;
+      }
+      throw res.payload as ServerErrorResponse;
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   if (!resultData) {
@@ -181,14 +165,10 @@ const ResultContent = () => {
                       ? true
                       : false
                   }
-                  onClick={() =>
-                    handleOpenPopup(
-                      index,
-                      userAnswers.current?.find(
-                        (value) => value.id === problem.id
-                      ) ?? null
-                    )
-                  } // 유저 답변 전달
+                  onClick={async () => {
+                    setPopup(true);
+                    await handleOpenPopup(index, problem.id);
+                  }} // 유저 답변 전달
                 />
               );
             })}
@@ -203,12 +183,14 @@ const ResultContent = () => {
         홈으로
       </Button>
 
-      {popup && selectedQuestion && (
+      {popup && (
         <Popup
-          index={selectedQuestion.index}
-          userAnswer={parseInt(selectedQuestion.userAnswer)}
-          correctAnswer={selectedQuestion.correctAnswer}
-          explanation={selectedQuestion.explanation}
+          index={selectedQuestion?.index}
+          title={selectedQuestion?.title}
+          content={selectedQuestion?.content}
+          userAnswer={selectedQuestion?.userAnswer}
+          correctAnswer={selectedQuestion?.correctAnswer}
+          explanation={selectedQuestion?.explanation}
           onClose={handleClosePopup}
         />
       )}
