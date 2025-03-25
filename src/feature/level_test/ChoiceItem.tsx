@@ -41,11 +41,10 @@ export const ChoicedItemResult: React.FC<ChoiceItemResultProps> = ({
   problemAnswer,
 }) => {
   const getBackgroundClass = () => {
-    console.log(problemAnswer, index + 1);
-    if (problemAnswer !== userAnswer && userAnswer === (index + 1).toString()) {
+    if (problemAnswer !== userAnswer && userAnswer === String(index + 1)) {
       return 'bg-wrongRed';
     }
-    if (problemAnswer === (index + 1).toString()) {
+    if (problemAnswer === String(index + 1)) {
       return 'bg-correctGreen';
     }
     return 'bg-pointcolor-yogurt';
@@ -53,7 +52,7 @@ export const ChoicedItemResult: React.FC<ChoiceItemResultProps> = ({
 
   return (
     <div
-      className={`flex h-auto w-[100%] cursor-pointer items-center rounded-md border border-goldBorder p-2 shadow-md ss${getBackgroundClass()}`}
+      className={`flex h-auto w-[100%] cursor-pointer items-center rounded-md border border-goldBorder p-2 shadow-md ${getBackgroundClass()}`}
     >
       <span>{text}</span>
     </div>

@@ -26,7 +26,7 @@ export const EcodeMessage = (ecode: Ecode) => {
     case Ecode.E0405:
       return '이미 존재하는 문제입니다.';
     case Ecode.E0406:
-      return '존재하지 않는 문제입니다.';
+      return '더이상 문제가 없습니다.';
     default:
       return 'Unknown error';
   }
