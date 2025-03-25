@@ -99,7 +99,7 @@ const EditorContainer = ({
   }, [editor]);
 
   return (
-    <div className="h-full w-full overflow-hidden">
+    <div className="h-full w-full overflow-scroll scrollbar-hide">
       <RichTextPlugin
         contentEditable={
           <ContentEditable className="editor-input prose prose-lg min-w-full !border-none !p-4 focus:outline-none" />

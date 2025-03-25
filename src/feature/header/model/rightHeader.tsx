@@ -84,7 +84,17 @@ const RightHeaderComponents = () => {
         </div>
       );
     default:
-      return <></>;
+      return (
+        <Link
+          href={RouteTo.Login}
+          className="hidden h-fit w-fit items-center justify-center rounded-2xl hover:bg-gray-100 active:cursor-grabbing md:flex"
+          onClick={() => {
+            setUser(null);
+          }}
+        >
+          로그아웃
+        </Link>
+      );
   }
 };
 export default RightHeaderComponents;

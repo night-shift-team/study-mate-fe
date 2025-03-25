@@ -32,6 +32,7 @@ import { Preahvihear } from 'next/font/google';
 import { UserInfo } from '@/shared/constants/userInfo';
 import { PiPaperPlaneTilt } from 'react-icons/pi';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import { IoIosArrowForward } from 'react-icons/io';
 
 interface ProblemProps {
   category: 'random' | ProblemCategoryTitle;
@@ -53,6 +54,7 @@ const Problem = ({ category }: ProblemProps) => {
   const { user, setUser } = userStore();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isPageLoading, setIsPageLoading] = useState(true);
 
   const getRandomProblem = async () => {
     const randomType = getRandomProblemType();
@@ -89,7 +91,7 @@ const Problem = ({ category }: ProblemProps) => {
   ) => {
     try {
       if (!category) return;
-      setIsLoading(true);
+      setIsPageLoading(true);
       if (category === 'random') {
         const res = await getRandomProblem();
         console.log(res);
@@ -128,7 +130,7 @@ const Problem = ({ category }: ProblemProps) => {
         return;
       }
     } finally {
-      setIsLoading(false);
+      setIsPageLoading(false);
     }
   };
 
@@ -173,152 +175,183 @@ const Problem = ({ category }: ProblemProps) => {
   }, []);
 
   return (
-    <div className="flex h-full w-full justify-center">
+    <div className="flex h-full w-full items-center justify-center px-[2%] md:px-[10%]">
       <Toaster />
-      <div className="flex w-[90%] max-w-[1200px] flex-col rounded-2xl bg-white p-8 py-6">
-        <div className="w-full">
-          <div className="flex w-full items-center justify-between">
-            <span className="text-xl font-bold">
-              {category.at(0)
-                ? category.at(0)?.toUpperCase() + category.slice(1)
-                : ''}{' '}
-              문제
-            </span>{' '}
-            <span className="rounded-[5rem] bg-gray-100 px-4 py-2">
-              레벨 {currentQuestionWithType?.difficulty}
-            </span>
-          </div>
-          <div className="mt-1">{currentQuestionWithType?.questionTitle}</div>
-          <MarkdownComponent
-            markdown={currentQuestionWithType?.content ?? ''}
-          />
-        </div>
-
-        {problemAnswer ? (
-          <>
-            <div className="mt-4 flex flex-col gap-4">
-              {currentQuestionWithType?.problemType ===
-              ProblemCategoryType.MAQ ? (
-                Array.from({ length: 4 }, (_, i) => i).map((index) => {
-                  return (
-                    <ChoicedItemResult
-                      key={index}
-                      index={index}
-                      text={
-                        currentQuestionWithType[
-                          `choice${index + 1}` as Extract<
-                            keyof ProblemInfoMAQ,
-                            `choice${string}`
-                          >
-                        ]
-                      }
-                      userAnswer={selectedAnswer ?? ''}
-                      problemAnswer={(problemAnswer as SendMAQAnswerRes).answer}
-                    />
-                  );
-                })
-              ) : (
-                <>
-                  <textarea
-                    className="w-full rounded-lg border"
-                    value={selectedAnswer ?? ''}
-                    readOnly
-                  />
-                  <div
-                    className={`mt-12 flex w-full flex-col gap-2 rounded-xl p-4 inner-border-2 ${(problemAnswer as SendSAQAnswerRes).reflectedScore > 0 ? 'bg-green-200' : 'bg-red-200'}`}
-                  >
-                    <p className="text-sm text-gray-600">정답 : </p>
-                    <span>
-                      {(problemAnswer as SendSAQAnswerRes).modelAnswer}
-                    </span>
-                  </div>
-                </>
-              )}
-            </div>
-            <div
-              className={`flex w-full flex-col ${currentQuestionWithType?.problemType === ProblemCategoryType.MAQ ? 'mt-12' : 'mt-2'} gap-2 rounded-xl bg-white p-4 inner-border-2`}
-            >
-              <p className="text-sm text-gray-600">해설 : </p>
-              <span>{problemAnswer.answerExplanation}</span>
-            </div>
-            <div className="flex w-full justify-end">
-              {currentQuestionWithType ? (
-                <button
-                  disabled={problemAnswer === null}
-                  className={`mt-4 flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all duration-200 ease-in-out ${
-                    problemAnswer === null
-                      ? 'cursor-not-allowed bg-gray-400 opacity-50'
-                      : 'bg-[#FEA1A1] hover:bg-[#fe8989] active:scale-95'
-                  } text-white`}
-                  onClick={async () => {
-                    if (!currentQuestionWithType || !selectedAnswer) return;
-                    await handleNextButton();
-                  }}
-                >
-                  <FaArrowRight />
-                </button>
-              ) : null}
-            </div>
-          </>
+      <div className="flex h-full w-full max-w-[1200px] flex-col items-center justify-center rounded-xl px-[2%] py-[2%] md:max-h-[80%] md:min-h-[50vh] md:border md:border-pointcolor-sand md:shadow-lg">
+        {isPageLoading ? (
+          <Spinner />
         ) : (
           <>
-            <div className="mt-4 flex flex-col gap-4">
-              {currentQuestionWithType?.problemType === ProblemCategoryType.MAQ
-                ? Array.from({ length: 4 }, (_, i) => i).map((index) => {
-                    return (
-                      <ChoiceItem
-                        key={index}
-                        text={
-                          currentQuestionWithType[
-                            `choice${index + 1}` as Extract<
-                              keyof ProblemInfoMAQ,
-                              `choice${string}`
-                            >
-                          ]
-                        }
-                        isSelected={selectedAnswer === (index + 1).toString()}
-                        onClick={() => {
-                          if (isLoading) return;
-                          setSelectedAnswer((index + 1).toString());
-                        }}
-                      />
-                    );
-                  })
-                : null}
-              {currentQuestionWithType?.problemType ===
-              ProblemCategoryType.SAQ ? (
-                <textarea
-                  className="w-full rounded-lg border border-gray-300 p-2"
-                  placeholder="답을 입력해주세요"
-                  value={selectedAnswer ?? ''}
-                  onChange={(e) => {
-                    if (isLoading) return;
-                    setSelectedAnswer(e.target.value);
-                  }}
-                />
-              ) : null}
-            </div>
-            <div className="mt-2 flex w-full justify-end">
-              {currentQuestionWithType ? (
-                <button
-                  disabled={selectedAnswer === null}
-                  className={`mt-4 flex h-[50px] w-[50px] items-center justify-center rounded-full transition-all duration-200 ease-in-out ${
-                    selectedAnswer === null || isLoading
-                      ? 'cursor-not-allowed bg-gray-400 opacity-50'
-                      : 'bg-[#FEA1A1] hover:bg-[#fe8989] active:scale-95'
-                  } text-white`}
-                  onClick={async () => {
-                    if (!currentQuestionWithType || !selectedAnswer) return;
-                    await sendAnswerButton(
-                      currentQuestionWithType.id,
-                      selectedAnswer
-                    );
-                  }}
-                >
-                  {isLoading ? <Spinner /> : <PiPaperPlaneTilt size={25} />}
+            <div className="flex h-full w-full flex-col pb-2 md:gap-2 md:p-2">
+              <div className="flex w-full items-end justify-between">
+                <div className="space-x-1 text-xl">
+                  <span>
+                    {category.at(0)
+                      ? category.at(0)?.toUpperCase() + category.slice(1)
+                      : ''}
+                  </span>
+                  <span
+                    className={`rounded-lg border p-0.5 px-1.5 text-[0.65rem] text-gray-800 ${currentQuestionWithType?.problemType === ProblemCategoryType.MAQ ? 'bg-pointcolor-coral/40' : 'bg-pointcolor-apricot/40'}`}
+                  >
+                    {currentQuestionWithType?.problemType ===
+                    ProblemCategoryType.MAQ
+                      ? '객관식'
+                      : '주관식'}
+                  </span>
+                </div>
+                <button className="rounded-lg bg-pointcolor-beigebrown p-2 text-sm hover:cursor-auto">
+                  레벨 {currentQuestionWithType?.difficulty}
                 </button>
-              ) : null}
+              </div>
+              <div className="py-3 pl-2 font-bold">
+                {currentQuestionWithType?.questionTitle}
+              </div>
+              <div className="h-full rounded-3xl bg-white p-2 shadow-md">
+                <MarkdownComponent
+                  markdown={currentQuestionWithType?.content ?? ''}
+                />
+              </div>
             </div>
+
+            {problemAnswer ? (
+              <>
+                <div className="mt-4 flex w-full flex-col gap-2 md:gap-3">
+                  {currentQuestionWithType?.problemType ===
+                  ProblemCategoryType.MAQ ? (
+                    Array.from({ length: 4 }, (_, i) => i).map((index) => {
+                      return (
+                        <ChoicedItemResult
+                          key={index}
+                          index={index}
+                          text={
+                            currentQuestionWithType[
+                              `choice${index + 1}` as Extract<
+                                keyof ProblemInfoMAQ,
+                                `choice${string}`
+                              >
+                            ]
+                          }
+                          userAnswer={selectedAnswer ?? ''}
+                          problemAnswer={
+                            (problemAnswer as SendMAQAnswerRes).answer
+                          }
+                        />
+                      );
+                    })
+                  ) : (
+                    <>
+                      <textarea
+                        className="w-full rounded-lg border p-2"
+                        value={selectedAnswer ?? ''}
+                        readOnly
+                      />
+                      <div
+                        className={`mt-4 flex w-full flex-col gap-0.5 rounded-xl px-4 py-3 inner-border-2 ${(problemAnswer as SendSAQAnswerRes).reflectedScore > 0 ? 'bg-correctGreen' : 'bg-wrongRed'}`}
+                      >
+                        <p className="text-sm text-gray-600">정답 : </p>
+                        <span>
+                          {(problemAnswer as SendSAQAnswerRes).modelAnswer}
+                        </span>
+                      </div>
+                    </>
+                  )}
+                </div>
+                <div
+                  className={`flex w-full flex-col ${currentQuestionWithType?.problemType === ProblemCategoryType.MAQ ? 'mt-4' : 'mt-2'} gap-0.5 rounded-xl bg-white px-4 py-3 inner-border-2`}
+                >
+                  <p className="text-sm text-gray-600">해설 : </p>
+                  <span>{problemAnswer.answerExplanation}</span>
+                </div>
+                <div className="mt-2 flex w-full justify-end pb-4 pt-2 md:p-0">
+                  {currentQuestionWithType ? (
+                    <button
+                      disabled={problemAnswer === null}
+                      className={`mr-1 flex h-[42px] w-[42px] items-center justify-center rounded-full transition-all duration-200 ease-in-out md:mt-3 ${
+                        problemAnswer === null
+                          ? 'cursor-not-allowed bg-gray-400 opacity-50'
+                          : 'bg-pointcolor-deepcoral hover:bg-pointcolor-deepcoral active:scale-95'
+                      } text-white`}
+                      onClick={async () => {
+                        if (!currentQuestionWithType || !selectedAnswer) return;
+                        await handleNextButton();
+                      }}
+                    >
+                      <IoIosArrowForward
+                        color="white"
+                        className="h-[20px] w-[20px] md:h-[24px] md:w-[24px]"
+                      />
+                    </button>
+                  ) : null}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="mt-2 flex w-full flex-col gap-3">
+                  {currentQuestionWithType?.problemType ===
+                  ProblemCategoryType.MAQ
+                    ? Array.from({ length: 4 }, (_, i) => i).map((index) => {
+                        return (
+                          <ChoiceItem
+                            key={index}
+                            text={
+                              currentQuestionWithType[
+                                `choice${index + 1}` as Extract<
+                                  keyof ProblemInfoMAQ,
+                                  `choice${string}`
+                                >
+                              ]
+                            }
+                            isSelected={
+                              selectedAnswer === (index + 1).toString()
+                            }
+                            onClick={() => {
+                              if (isLoading) return;
+                              setSelectedAnswer((index + 1).toString());
+                            }}
+                          />
+                        );
+                      })
+                    : null}
+                  {currentQuestionWithType?.problemType ===
+                  ProblemCategoryType.SAQ ? (
+                    <textarea
+                      className="w-full rounded-lg border border-gray-300 p-2"
+                      placeholder="답을 입력해주세요"
+                      value={selectedAnswer ?? ''}
+                      onChange={(e) => {
+                        if (isLoading) return;
+                        setSelectedAnswer(e.target.value);
+                      }}
+                    />
+                  ) : null}
+                </div>
+                <div className="mt-2 flex w-full justify-end pb-4 pt-2 md:p-0">
+                  {currentQuestionWithType ? (
+                    <button
+                      disabled={selectedAnswer === null}
+                      className={`mr-1 flex h-[42px] w-[42px] items-center justify-center rounded-full transition-all duration-200 ease-in-out md:mt-3 ${
+                        selectedAnswer === null || isLoading
+                          ? 'cursor-not-allowed bg-gray-400 opacity-50'
+                          : 'bg-pointcolor-deepcoral hover:bg-pointcolor-deepcoral active:scale-95'
+                      } text-white`}
+                      onClick={async () => {
+                        if (!currentQuestionWithType || !selectedAnswer) return;
+                        await sendAnswerButton(
+                          currentQuestionWithType.id,
+                          selectedAnswer
+                        );
+                      }}
+                    >
+                      {isLoading ? (
+                        <Spinner size="xs" />
+                      ) : (
+                        <PiPaperPlaneTilt className="h-[18px] w-[18px]" />
+                      )}
+                    </button>
+                  ) : null}
+                </div>
+              </>
+            )}
           </>
         )}
       </div>

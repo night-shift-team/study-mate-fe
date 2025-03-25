@@ -21,12 +21,12 @@ export const ChoiceItem: React.FC<ChoiceItemProps> = ({
   isSelected,
 }) => {
   const getBackgroundClass = () => {
-    return isSelected ? 'bg-[#e8d7b9]' : 'bg-[#fdfbf3]';
+    return isSelected ? 'bg-pointcolor-beigebrown' : 'bg-pointcolor-yogurt';
   };
 
   return (
     <div
-      className={`flex h-auto w-[100%] cursor-pointer items-center rounded-md border border-[#e2d7c3] p-2 shadow-md hover:bg-[#e8d7b9] ${getBackgroundClass()}`}
+      className={`flex h-auto w-[100%] cursor-pointer items-center rounded-md border border-goldBorder p-2 shadow-md hover:bg-pointcolor-beigebrown ${getBackgroundClass()}`}
       onClick={onClick}
     >
       {text}
@@ -41,18 +41,19 @@ export const ChoicedItemResult: React.FC<ChoiceItemResultProps> = ({
   problemAnswer,
 }) => {
   const getBackgroundClass = () => {
+    console.log(problemAnswer, index + 1);
     if (problemAnswer !== userAnswer && userAnswer === (index + 1).toString()) {
-      return 'bg-red-200';
+      return 'bg-wrongRed';
     }
     if (problemAnswer === (index + 1).toString()) {
-      return 'bg-green-200';
+      return 'bg-correctGreen';
     }
-    return 'bg-gray-200';
+    return 'bg-pointcolor-yogurt';
   };
 
   return (
     <div
-      className={`flex h-auto w-[100%] cursor-pointer items-center rounded-md border p-2 shadow-lg ${getBackgroundClass()}`}
+      className={`flex h-auto w-[100%] cursor-pointer items-center rounded-md border border-goldBorder p-2 shadow-md ss${getBackgroundClass()}`}
     >
       <span>{text}</span>
     </div>

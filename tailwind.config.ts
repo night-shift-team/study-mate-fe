@@ -41,6 +41,9 @@ module.exports = {
           coral: '#FEA1A1',
           deepcoral: '#ec857e',
         },
+        correctGreen: '#d4edda',
+        wrongRed: '#f8d7da',
+        goldBorder: '#e2d7c3',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {

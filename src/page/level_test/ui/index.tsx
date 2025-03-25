@@ -145,7 +145,7 @@ const LevelTest = () => {
           <div className="flex h-full w-full flex-col gap-4 pb-4 md:pb-0">
             <div className="flex w-full items-center justify-between">
               <span className="pl-2">문제 {currentQuestionNo + 1}</span>{' '}
-              <button className="rounded-lg bg-[#e8d7b9] p-2 hover:cursor-auto">
+              <button className="rounded-lg bg-pointcolor-beigebrown p-2 hover:cursor-auto">
                 {currentQuestionNo + 1}/{levelTestLists.length ?? 1}
               </button>
             </div>
@@ -206,7 +206,7 @@ const LevelTest = () => {
                   disabled={isGetResultApiLoading || selectedAnswer === null}
                   className={`mt-4 flex h-[40px] w-[40px] items-center justify-center rounded-full transition-all duration-200 ease-in-out md:h-[45px] md:w-[45px] ${
                     isGetResultApiLoading || selectedAnswer === null
-                      ? 'cursor-not-allowed bg-black opacity-50'
+                      ? 'cursor-not-allowed bg-gray-400 opacity-50'
                       : 'bg-pointcolor-deepcoral hover:bg-pointcolor-deepcoral active:scale-95'
                   } text-white`}
                   onClick={handleNextQuestion}
