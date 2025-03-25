@@ -152,56 +152,52 @@ const ResultContent = () => {
     return <Spinner size="xl" />;
   }
   return (
-    <div className="flex w-full max-w-[700px] flex-col items-center justify-around gap-6 rounded-2xl bg-white p-3 shadow-[0_8px_30px_rgb(0,0,0,0.06)] sm:flex-row">
-      <div className="flex w-[100%] flex-col items-center space-y-4">
-        <div className="text-center">
-          <span className="text-sm font-medium text-gray-500">
-            당신의 테스트 결과
+    <div className="flex h-full w-full max-w-[1200px] flex-col items-center gap-6 overflow-y-scroll rounded-2xl bg-pointcolor-yogurt p-3 shadow-[0_8px_30px_rgb(0,0,0,0.06)] scrollbar-hide md:justify-center">
+      <div className="flex w-[100%] flex-col md:h-auto md:flex-row">
+        <div className="flex aspect-1 w-[100%] flex-col items-center space-y-4">
+          <div className="flex h-full w-full justify-center pt-6 md:p-[20%]">
+            <DonutChart
+              data={data}
+              level={calculateLevel(correctCount ?? 0, totalQuestions ?? 1)}
+              correctAnswer={correctCount}
+              wrongAnswer={totalQuestions}
+            />
+          </div>
+        </div>
+        <div className="flex w-full flex-col justify-center space-y-2">
+          <span className="flex justify-center text-lg font-extrabold text-gray-500 md:w-[30rem]">
+            문제풀이
           </span>
-          <h2 className="mt-2 text-3xl font-bold text-gray-800">
-            {calculateLevel(correctCount ?? 0, totalQuestions ?? 1)}
-          </h2>
-          <p className="mt-1 text-gray-600">
-            {correctCount}/{totalQuestions} 문제 정답
-          </p>
-        </div>
-        <div className="w-full">
-          <DonutChart data={data} />
-        </div>
-      </div>
-
-      <div className="flex w-[100%] flex-col space-y-4">
-        <span className="text-lg font-semibold text-gray-700">문제풀이</span>
-        <div className="scrollbar-none grid h-[40vh] grid-cols-1 gap-2 overflow-y-scroll rounded-lg border border-gray-200 bg-gray-200 p-3 shadow-inner sm:grid-cols-2">
-          {problemLists.map((problem, index) => {
-            return (
-              <Item
-                key={index}
-                index={index}
-                isCorrectAnswer={
-                  resultData?.correctQuestions.find(
-                    (value) => value === problem.id
-                  )
-                    ? true
-                    : false
-                }
-                onClick={() =>
-                  handleOpenPopup(
-                    index,
-                    userAnswers.current?.find(
-                      (value) => value.id === problem.id
-                    ) ?? null
-                  )
-                } // 유저 답변 전달
-              />
-            );
-          })}
+          <div className="grid grid-cols-2 gap-0.5 rounded-lg border-pointcolor-beigebrown p-0.5 md:h-[36vh] md:w-[30rem] md:grid-cols-3">
+            {problemLists.map((problem, index) => {
+              return (
+                <Item
+                  key={index}
+                  index={index}
+                  isCorrectAnswer={
+                    resultData?.correctQuestions.find(
+                      (value) => value === problem.id
+                    )
+                      ? true
+                      : false
+                  }
+                  onClick={() =>
+                    handleOpenPopup(
+                      index,
+                      userAnswers.current?.find(
+                        (value) => value.id === problem.id
+                      ) ?? null
+                    )
+                  } // 유저 답변 전달
+                />
+              );
+            })}
+          </div>
         </div>
       </div>
-
       <Button
-        size="sm"
-        className="underline-offset-[3px] hover:bg-black/10 hover:underline"
+        size="lg"
+        className="mb-2 flex w-full underline-offset-[3px] hover:bg-black/10 hover:underline md:mb-0 md:w-[20rem]"
         onClick={() => router.push(RouteTo.Home)}
       >
         홈으로

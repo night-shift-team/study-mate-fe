@@ -26,7 +26,7 @@ export const ChoiceItem: React.FC<ChoiceItemProps> = ({
 
   return (
     <div
-      className={`flex h-auto w-[100%] cursor-pointer items-center rounded-md border border-[#e2d7c3] p-2 shadow-lg hover:bg-[#e8d7b9] ${getBackgroundClass()}`}
+      className={`flex h-auto w-[100%] cursor-pointer items-center rounded-md border border-[#e2d7c3] p-2 shadow-md hover:bg-[#e8d7b9] ${getBackgroundClass()}`}
       onClick={onClick}
     >
       {text}

@@ -141,7 +141,7 @@ const LevelTest = () => {
       {isPageLoading ? (
         <Spinner size="xl" />
       ) : (
-        <div className="flex h-full w-full max-w-[1200px] items-center justify-center rounded-xl px-[2%] py-[2%] md:max-h-[80%] md:min-h-[50vh] md:border-2 md:border-pointcolor-sand md:shadow-lg">
+        <div className="flex h-full w-full max-w-[1200px] items-center justify-center rounded-xl px-[2%] py-[2%] md:max-h-[80%] md:min-h-[50vh] md:border md:border-pointcolor-sand md:shadow-lg">
           <div className="flex h-full w-full flex-col gap-4 pb-4 md:pb-0">
             <div className="flex w-full items-center justify-between">
               <span className="pl-2">문제 {currentQuestionNo + 1}</span>{' '}
