@@ -16,9 +16,27 @@ module.exports = {
           '0%': { opacity: '0', transform: 'translateY(10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
+        'slide-up': {
+          '0%': {
+            top: '100%' /* 화면 아래에서 시작 */,
+          },
+          '10%': {
+            top: '0%' /* 화면 중앙에 위치 */,
+          },
+          '33%': {
+            top: '0%' /* 잠시 멈춤 */,
+          },
+          '43%': {
+            top: '-100%' /* 화면 위로 사라짐 */,
+          },
+          '100%': {
+            top: '-100%' /* 반복 */,
+          },
+        },
       },
       animation: {
         'fade-up': 'fade-up 0.3s ease-in-out',
+        'slide-up': 'slide-up 300ms linear infinite',
       },
       boxShadow: {
         soft: '0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.06)',

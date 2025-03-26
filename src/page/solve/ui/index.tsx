@@ -20,6 +20,7 @@ import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { ProblemCategoryTitle } from '@/shared/constants/problemInfo';
 import { NoticeComponent } from './notice';
 import { RecentProblem } from './recentProblem';
+import NoticeSummary from './noticeSummary';
 
 const TempCategories: { title: ProblemCategoryTitle; count: number }[] = [
   {
@@ -46,7 +47,8 @@ const TempCategories: { title: ProblemCategoryTitle; count: number }[] = [
 
 const SolveProblem = () => {
   return (
-    <div className="flex h-full w-full flex-shrink-0 flex-col items-center gap-5 overflow-auto px-[2.5rem] py-[2rem]">
+    <div className="flex h-full w-full flex-shrink-0 flex-col items-center gap-5 overflow-auto px-[2.5rem] pb-[2rem]">
+      <NoticeSummary />
       <NoticeComponent />
       <span className="text-right text-xl font-bold">최근 추가된 문제</span>
       <RecentProblem />
