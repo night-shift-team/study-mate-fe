@@ -19,7 +19,7 @@ const noticeData: NoticeType[] = [
   },
 ];
 
-const NoticeSummary = () => {
+const NoticeBanner = () => {
   const [currentNotice, setCurrentNotice] = useState<NoticeType>(noticeData[0]);
   const [nextNotice, setNextNotice] = useState<NoticeType>(noticeData[1]);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -44,32 +44,36 @@ const NoticeSummary = () => {
   }, []);
 
   return (
-    <div className="relative flex h-10 w-full flex-shrink-0 bg-gray-800/80 px-4 text-white">
+    <div className="relative flex h-10 w-full flex-shrink-0 overflow-hidden bg-gray-800/80 px-4 font-doodle text-white">
       {/* 현재 공지사항 */}
       <div
-        className={`absolute flex h-full w-full items-center gap-1 ${
+        className={`absolute flex h-full w-full items-center gap-1 text-ellipsis ${
           isAnimating
             ? '-translate-y-full transition-transform duration-300'
             : 'translate-y-0'
         }`}
       >
         <span>[{currentNotice.type}]</span>
-        <span>{currentNotice.title}</span>
+        <span className="underline-offset-4 hover:cursor-pointer hover:underline">
+          {currentNotice.title}
+        </span>
       </div>
 
       {/* 다음 공지사항 */}
       <div
-        className={`absolute flex h-full w-full items-center gap-1 ${
+        className={`absolute flex h-full w-full items-center gap-1 text-ellipsis ${
           isAnimating
             ? 'translate-y-0 transition-transform duration-300'
             : 'translate-y-full'
         }`}
       >
         <span>[{nextNotice.type}]</span>
-        <span>{nextNotice.title}</span>
+        <span className="underline-offset-4 hover:cursor-pointer hover:underline">
+          {nextNotice.title}
+        </span>
       </div>
     </div>
   );
 };
 
-export default NoticeSummary;
+export default NoticeBanner;
