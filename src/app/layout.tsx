@@ -31,11 +31,11 @@ export default function RootLayout({
         className={`flex h-full w-full font-spoqa antialiased`}
       >
         <Provider>
-          <div className="base h-full w-full bg-pointcolor-yogurt">
-            <div className="fixed z-[100] flex h-[4rem] w-full px-0 md:px-[4vh]">
+          <div className="h-full w-full overflow-scroll bg-pointcolor-yogurt pb-[6vh]">
+            <div className="z-[10] flex h-[4rem] w-full px-0 md:px-[4vh]">
               <Header />
             </div>
-            <div className="mt-[4rem] flex h-[calc(100%-4rem)] w-full justify-center">
+            <div className="mt-[4rem] flex w-full justify-center">
               {children}
             </div>
           </div>

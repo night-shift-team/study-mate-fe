@@ -51,27 +51,32 @@ const RightHeaderComponents = () => {
       );
     case RouteTo.Solve:
     case RouteTo.LevelTestResult:
+    case RouteTo.Mypage:
+    case RouteTo.Rank:
       return (
-        <div className="flex gap-2">
+        <div className="flex gap-10">
           <div className="md:hidden">
             <IoMenu
               className="mr-2 cursor-pointer text-2xl text-[rgb(254,202,202)]"
               onClick={() => setIsOpen(true)}
             />
           </div>
-          <Link
-            href={RouteTo.Rank}
-            className="hidden h-fit w-fit items-center justify-center rounded-2xl hover:bg-gray-100 active:cursor-grabbing md:flex"
-          >
-            랭킹
-          </Link>
-          <MobileSlider open={isOpen} setOpen={setIsOpen} />
-          <Link
-            href={RouteTo.Mypage}
-            className="hidden h-fit w-fit items-center justify-center rounded-2xl hover:bg-gray-100 active:cursor-grabbing md:flex"
-          >
-            마이페이지
-          </Link>
+          <div className="flex gap-4">
+            <Link
+              href={RouteTo.Rank}
+              className="hidden h-fit w-fit items-center justify-center rounded-2xl hover:bg-gray-100 active:cursor-grabbing md:flex"
+            >
+              랭킹페이지
+            </Link>
+
+            <Link
+              href={RouteTo.Mypage}
+              className="hidden h-fit w-fit items-center justify-center rounded-2xl hover:bg-gray-100 active:cursor-grabbing md:flex"
+            >
+              마이페이지
+            </Link>
+          </div>
+
           <Link
             href={RouteTo.Login}
             className="hidden h-fit w-fit items-center justify-center rounded-2xl hover:bg-gray-100 active:cursor-grabbing md:flex"
@@ -81,6 +86,7 @@ const RightHeaderComponents = () => {
           >
             로그아웃
           </Link>
+          <MobileSlider open={isOpen} setOpen={setIsOpen} />
         </div>
       );
     default:

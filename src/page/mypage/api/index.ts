@@ -81,3 +81,13 @@ export const getSolveStatsApi = async () => {
     `/api/v1/history/solve-stats`
   );
 };
+
+export const changeNicknameApi = async (nickname: string) => {
+  return await _apiFetch<{ nickname: string }>(
+    'PATCH',
+    `/api/v1/users/nickname`,
+    {
+      nickname: nickname.trim(), // 혹시라도 공백이 있다면 제거
+    }
+  );
+};
