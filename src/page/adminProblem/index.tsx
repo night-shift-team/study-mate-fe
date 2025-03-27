@@ -172,10 +172,10 @@ const ManageProlemPage = () => {
               setIsLoading={setIsLoading}
             />
           </div>
-          <div className="mt-2 flex min-h-[33rem] w-full flex-shrink-0 flex-col overflow-auto scrollbar-hide">
+          <div className="mt-2 flex min-h-[33rem] w-full flex-shrink-0 flex-col items-center justify-center overflow-auto scrollbar-hide">
             {isLoading ? (
               <Spinner />
-            ) : (
+            ) : problemList.length ? (
               problemList.map((problem, index) => {
                 return (
                   <div
@@ -213,6 +213,8 @@ const ManageProlemPage = () => {
                   </div>
                 );
               })
+            ) : (
+              'No data'
             )}
           </div>
           <div className="flex w-full justify-center py-4">
