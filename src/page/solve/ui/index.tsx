@@ -47,7 +47,7 @@ const TempCategories: { title: ProblemCategoryTitle; count: number }[] = [
 
 const SolveProblem = () => {
   return (
-    <div className="flex h-full w-full flex-shrink-0 flex-col items-center gap-5 overflow-auto px-[2.5rem] pb-[2rem]">
+    <div className="flex h-full w-full flex-shrink-0 flex-col items-center gap-5 overflow-y-auto px-[2.5rem] pb-[2rem] scrollbar-hide">
       <div className="flex w-full flex-col gap-1">
         <NoticeBanner />
 

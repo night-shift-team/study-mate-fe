@@ -67,7 +67,7 @@ export const RecentProblem = () => {
           {[...TempCategories, ...TempCategories].map((item, index) => (
             <Link key={index} href={item.link}>
               <li className="mx-4">
-                <div className="w-[30vh] rounded-lg bg-white p-1 px-1.5 inner-border inner-border-pointcolor-beigebrown md:pr-4">
+                <div className="w-[20rem] rounded-lg bg-white p-1 px-1.5 inner-border inner-border-pointcolor-beigebrown md:pr-4">
                   <div className="flex items-center justify-center gap-1">
                     <div className="flex aspect-1 h-[1.3rem] items-center justify-center rounded-full bg-red-200 md:h-[1.5rem]">
                       {getCategoriesIcon(item.title)}

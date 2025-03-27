@@ -12,12 +12,15 @@ const Header = () => {
   const path = usePathname();
   return (
     <div className="relative flex h-full w-full items-center justify-between border-b bg-pointcolor-yogurt/10 px-0 shadow-sm md:px-[4rem] md:pl-2">
+      {/* 데스크탑 좌측 로고 */}
       <Link
         href={path.includes('/admin') ? RouteTo.AdminDashboard : RouteTo.Home}
         className="relative hidden h-full w-[6.5rem] pl-4 md:ml-8 md:flex md:w-[8rem]"
       >
         <Image src={Logo} alt="" fill objectFit="contain" priority />
       </Link>
+
+      {/* 모바일 좌측 뒤로가기 버튼 */}
       <Link
         href="#"
         onClick={(e) => {
@@ -28,15 +31,19 @@ const Header = () => {
       >
         <FaArrowLeft />
       </Link>
-      <Link
-        href={path.includes('/admin') ? RouteTo.AdminDashboard : RouteTo.Home}
-        className="absolute flex h-full w-full items-center justify-center md:hidden"
-      >
-        <div className="relative flex h-full w-[6.5rem] p-0">
+
+      {/* 모바일 가운데 로고 */}
+      <div className="absolute flex h-full w-full items-center justify-center md:hidden">
+        <Link
+          href={path.includes('/admin') ? RouteTo.AdminDashboard : RouteTo.Home}
+          className="relative flex h-full w-[6.5rem] p-0"
+        >
           <Image src={Logo} alt="" fill objectFit="contain" priority />
-        </div>
-      </Link>
-      <div className="flex h-full w-[20%] items-center justify-end pr-4 md:w-[30%]">
+        </Link>
+      </div>
+
+      {/* 우측 메뉴 */}
+      <div className="z-[1] flex h-full w-[20%] items-center justify-end pr-4 md:w-[30%]">
         <RightHeaderComponents />
       </div>
     </div>
