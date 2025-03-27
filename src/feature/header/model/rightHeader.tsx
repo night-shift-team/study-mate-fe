@@ -58,14 +58,14 @@ const RightHeaderComponents = () => {
     case RouteTo.Mypage:
     case RouteTo.Rank:
       return (
-        <div className="flex gap-10">
+        <div className="flex">
           <div className="md:hidden">
             <IoMenu
               className="mr-2 cursor-pointer text-2xl text-[rgb(254,202,202)]"
               onClick={() => setIsOpen(true)}
             />
           </div>
-          <div className="flex gap-4">
+          <div className="mr-4 flex gap-4">
             <Link
               href={RouteTo.Rank}
               className="hidden h-fit w-fit items-center justify-center rounded-2xl hover:bg-gray-100 active:cursor-grabbing md:flex"
@@ -90,6 +90,7 @@ const RightHeaderComponents = () => {
           >
             로그아웃
           </Link>
+          <div className="z-[999]"></div>
           <MobileSlider open={isOpen} setOpen={setIsOpen} />
         </div>
       );

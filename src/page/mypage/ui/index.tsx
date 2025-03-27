@@ -75,9 +75,9 @@ const Mypage = () => {
   const [tap, setTap] = useState('1');
 
   return (
-    <div className="h-[100vh] w-[100%] md:w-[85%]">
+    <div className="z-1 h-[100vh] w-[100%] md:w-[85%]">
       <div className="flex flex-col items-center">
-        <div className="z-10 flex h-[25vh] w-full flex-col items-center justify-between gap-5 bg-[#FEA1A1] px-6 py-6 md:flex-row md:rounded-t-3xl">
+        <div className="z-1 flex h-[25vh] w-full flex-col items-center justify-between gap-5 bg-[#FEA1A1] px-6 py-6 md:flex-row md:rounded-t-3xl">
           <Profile />
 
           <div className="flex w-[100%] justify-end gap-4 md:w-[70%]">
@@ -91,8 +91,8 @@ const Mypage = () => {
             ))}
           </div>
         </div>
-        <div className="flex w-full flex-col gap-4 bg-pointcolor-yogurt px-4 py-6 md:px-8">
-          <div className="flex flex-col items-center md:flex-row md:justify-between">
+        <div className="flex w-full flex-col gap-4 px-4 py-6 md:px-8">
+          <div className="md:justify-betwee flex flex-col items-center gap-7 md:flex-row">
             <button className="w-[100px] text-[1rem] font-bold text-[#ECCDB4]">
               활동기록
             </button>

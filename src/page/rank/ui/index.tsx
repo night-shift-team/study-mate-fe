@@ -52,14 +52,15 @@ export const RankPageComponent = () => {
   );
 
   return (
-    <div className="mx-auto w-full max-w-4xl rounded-2xl bg-white p-2 shadow-lg md:p-4">
-      <div></div>
-      <h3 className="mb-4 text-lg font-semibold text-gray-900 md:text-lg">
-        나의 랭킹: <span className="">{myRanking ?? '-'}등</span>
-      </h3>
-      <h3 className="mb-3 text-sm font-medium text-gray-700 md:text-sm">
-        유저 랭킹
-      </h3>
+    <div className="mx-auto flex h-full w-full max-w-4xl flex-col justify-between gap-2 rounded-2xl bg-white p-3 md:shadow-lg">
+      <div className="">
+        <h3 className="mb-4 text-lg font-semibold text-gray-900 md:text-lg">
+          나의 랭킹: <span className="">{myRanking ?? '-'}등</span>
+        </h3>
+        <h3 className="mb-3 text-sm font-medium text-gray-700 md:text-sm">
+          유저 랭킹
+        </h3>
+      </div>
 
       {/* 로딩 중일 때 메시지 표시 */}
       {isLoading ? (
@@ -69,7 +70,7 @@ export const RankPageComponent = () => {
       ) : (
         <>
           {/* 반응형 테이블 컨테이너 */}
-          <div className="max-h-[70vh] overflow-x-auto overflow-y-auto rounded-lg border border-gray-200">
+          <div className="h-[80vh] overflow-y-auto rounded-lg border border-gray-200">
             <table className="w-full min-w-[500px] border-collapse">
               <thead className="bg-gray-100">
                 <tr className="text-left text-sm text-gray-600 md:text-base">
@@ -119,7 +120,7 @@ export const RankPageComponent = () => {
           </div>
 
           {/* 페이지네이션 */}
-          <div className="mt-4 flex w-full justify-center">
+          <div className="flex w-full justify-center">
             <Pagination
               count={totalPages}
               page={currentPage}

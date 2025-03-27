@@ -83,7 +83,7 @@ const Profile = () => {
 
       {isModalOpen && (
         <div className="z- fixed inset-0 flex items-center justify-center bg-black bg-opacity-70">
-          <div className="w-[90%] rounded bg-white p-5 shadow-lg">
+          <div className="w-[90%] rounded bg-white p-5 shadow-lg md:w-[50%]">
             <h2 className="text-lg font-semibold">닉네임 변경</h2>
             <input
               type="text"

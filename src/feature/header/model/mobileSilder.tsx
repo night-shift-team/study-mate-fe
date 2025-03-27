@@ -11,9 +11,9 @@ interface MobileSliderProps {
 const MobileSlider: React.FC<MobileSliderProps> = ({ open, setOpen }) => {
   return (
     <div
-      className={`fixed right-0 top-0 h-full w-64 transform bg-white shadow-lg ${
+      className={`fixed right-0 top-0 z-10 z-50 h-full w-64 transform bg-white shadow-lg ${
         open ? 'translate-x-0' : 'translate-x-full'
-      } z-50 transition-transform duration-300 ease-in-out`}
+      } transition-transform duration-300 ease-in-out`}
     >
       {/* 상단 헤더 */}
       <div className="flex items-center justify-between border-b bg-[rgb(254,202,202)] p-4 text-white">
