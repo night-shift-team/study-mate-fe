@@ -16,10 +16,6 @@ const Mypage = () => {
   const { user } = userStore();
   const [myRanking, setMyRanking] = useState<number | null>(null);
 
-  // useEffect(() => {
-  //   console.log('현재 로그인한 유저 정보:', user);
-  // }, [user]);
-
   useEffect(() => {
     userRanking();
     userQuestionHistory();
@@ -78,47 +74,43 @@ const Mypage = () => {
 
   const [tap, setTap] = useState('1');
 
-  //       <div className="relative flex h-[30vh] w-full flex-col items-center justify-center bg-[#FEA1A1] px-4 py-4 md:rounded-t-3xl">
-
   return (
-    <div className="flex h-screen w-screen flex-col items-center md:px-[5%] md:pt-10">
-      <div className="flex h-[30vh] w-full flex-col items-center justify-between bg-[#FEA1A1] px-4 py-4 md:flex-row md:rounded-t-3xl">
-        <Profile />
+    <div className="z-1 h-[100vh] w-[100%] md:w-[85%]">
+      <div className="flex flex-col items-center">
+        <div className="z-1 flex h-[25vh] w-full flex-col items-center justify-between gap-5 bg-[#FEA1A1] px-6 py-6 md:flex-row md:rounded-t-3xl">
+          <Profile />
 
-        <div className="flex w-[70%] gap-4">
-          {cardData.map((item, index) => (
-            <Card
-              key={index}
-              count={item.count}
-              label={item.label}
-              img={item.img}
-            />
-          ))}
-        </div>
-      </div>
-      <div className="flex h-[70vh] w-full flex-col gap-4 bg-pointcolor-yogurt px-4 py-6 md:px-8">
-        <div className="flex flex-col items-center gap-4 md:flex-row md:justify-between">
-          <button className="text-[2vh] font-bold text-[#ECCDB4] md:text-[1.5vw]">
-            활동기록
-          </button>
-          <GrassChart />
-        </div>
-
-        {/* 탭 및 체크 리스트 */}
-        <div className="flex flex-col gap-4 md:flex-row">
-          {/* 탭 버튼 */}
-          <div className="flex justify-center gap-4 md:flex-col">
-            <button
-              onClick={() => setTap('1')}
-              className={`text-[2vh] font-bold ${
-                tap === '1' ? 'text-[#ECCDB4]' : 'text-gray-400'
-              } md:text-[1.2vw]`}
-            >
-              풀이한 문제
-            </button>
+          <div className="flex w-[100%] justify-end gap-4 md:w-[70%]">
+            {cardData.map((item, index) => (
+              <Card
+                key={index}
+                count={item.count}
+                label={item.label}
+                img={item.img}
+              />
+            ))}
           </div>
-          <div className="flex-1">
-            <CheckList title="1" questionHistory={questionHistory} />
+        </div>
+        <div className="flex w-full flex-col gap-4 px-4 py-6 md:px-8">
+          <div className="md:justify-betwee flex flex-col items-center gap-7 md:flex-row">
+            <button className="w-[100px] text-[1rem] font-bold text-[#ECCDB4]">
+              활동기록
+            </button>
+            <GrassChart />
+          </div>
+
+          <div className="flex flex-col gap-4 md:flex-row">
+            <div className="flex justify-center md:flex-col">
+              <button
+                onClick={() => setTap('1')}
+                className="w-[100px] text-nowrap text-[1rem] font-bold text-[#ECCDB4]"
+              >
+                풀이한 문제
+              </button>
+            </div>
+            <div className="flex-1">
+              <CheckList title="1" questionHistory={questionHistory} />
+            </div>
           </div>
         </div>
       </div>

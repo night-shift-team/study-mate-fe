@@ -27,7 +27,6 @@ const Popup: React.FC<PopupProps> = ({
   return (
     <div className="z-100 fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm transition-opacity duration-300">
       <div className="w-[90%] max-w-lg scale-100 transform rounded-2xl bg-white p-6 shadow-2xl transition-transform duration-300">
-        {/* 헤더 */}
         <div className="mb-4 flex items-center justify-between border-b pb-4">
           <span className="text-[2vh] font-semibold text-gray-800">
             title : {questionTitle}
@@ -42,12 +41,6 @@ const Popup: React.FC<PopupProps> = ({
           />
         </div>
         <MarkdownComponent markdown={markdown} />
-        {/* 콘텐츠 */}
-        {/* <div className="space-y-4">
-        <p className="text-gray-700">문제 : {questionDetail.content}</p>
-          <p className="text-gray-700">정답 : {questionDetail.answer}</p>
-          <p className="text-gray-700">해설 : {questionDetail.answerExplanation}</p>
-        </div> */}
       </div>
     </div>
   );
