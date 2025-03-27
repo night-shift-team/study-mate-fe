@@ -1,4 +1,4 @@
-import { CurrentFilter, Problem } from '@/page/adminProblem';
+import { CurrentFilter, PAGE_LIMIT, Problem } from '@/page/adminProblem';
 import { ProblemCategoryType } from '@/shared/constants/problemInfo';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { IoSearch } from 'react-icons/io5';
@@ -11,6 +11,7 @@ import {
   searchAdminMAQListApi,
   searchAdminSAQListApi,
 } from '@/page/adminProblem/api';
+import { getProblemListBySearch } from '../model/getProblemListBySearch';
 
 interface ProblemPaginationProps {
   page: number;
@@ -72,40 +73,36 @@ export const ProblemTypeSelectionComponent = ({
 export const ProblemSearchComponent = ({
   problemType,
   setProblemList,
+  setCurrentPage,
+  setTotalProblemCount,
+  setProblemListStatus,
+  searchText,
+  setSearchText,
+  setIsLoading,
 }: {
   problemType: ProblemCategoryType;
   setProblemList: Dispatch<SetStateAction<Problem[]>>;
+  setCurrentPage: Dispatch<SetStateAction<number>>;
+  setTotalProblemCount: Dispatch<SetStateAction<number>>;
+  setProblemListStatus: Dispatch<SetStateAction<'latest' | 'search'>>;
+  searchText: string;
+  setSearchText: Dispatch<SetStateAction<string>>;
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const [searchText, setSearchText] = useState('');
-
-  const getProblemListBySearch = async (searchText: string) => {
-    try {
-      if (problemType === ProblemCategoryType.MAQ) {
-        const res = await searchAdminMAQListApi(0, 999, searchText);
-        if (res.ok) {
-          console.log(res.payload);
-          setProblemList((res.payload as GetAdminMAQListRes).content);
-        }
-      }
-      if (problemType === ProblemCategoryType.SAQ) {
-        const res = await searchAdminSAQListApi(0, 999, searchText);
-        if (res.ok) {
-          console.log(res.payload);
-          setProblemList((res.payload as GetAdminSAQListRes).content);
-        }
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   const handleSearchTextEnter = async (
     e: React.KeyboardEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
   ) => {
     if (e.type === 'click' || ('key' in e && e.key === 'Enter')) {
-      await getProblemListBySearch(searchText);
-      //TODO: 조회 후 로직 처리 필요
-      console.log(searchText);
+      setIsLoading(true);
+      const data = await getProblemListBySearch(problemType, searchText);
+      if (data) {
+        setTotalProblemCount(data.totalPages);
+        setCurrentPage(1);
+        setProblemList(data.content);
+        setProblemListStatus('search');
+      }
+      setIsLoading(false);
+      return;
     }
   };
 

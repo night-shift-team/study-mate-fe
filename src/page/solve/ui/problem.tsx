@@ -177,11 +177,11 @@ const Problem = ({ category }: ProblemProps) => {
   return (
     <div className="flex h-full w-full items-center justify-center px-[2%] md:px-[10%]">
       <Toaster />
-      <div className="flex h-full w-full max-w-[1200px] flex-col items-center justify-center rounded-xl px-[2%] py-[2%] md:max-h-[80%] md:min-h-[50vh] md:border md:border-pointcolor-sand md:shadow-lg">
-        {isPageLoading ? (
-          <Spinner />
-        ) : (
-          <>
+      {isPageLoading ? (
+        <Spinner />
+      ) : (
+        <div className="flex h-full w-full max-w-[1200px] flex-col items-center justify-center rounded-xl px-[2%] py-[2%] md:max-h-[80%] md:min-h-[50vh] md:border md:border-pointcolor-sand md:shadow-lg">
+          <div className="flex h-full w-full flex-col overflow-y-auto scrollbar-hide">
             <div className="flex h-full w-full flex-col pb-2 md:gap-2 md:p-2">
               <div className="flex w-full items-end justify-between">
                 <div className="space-x-1 text-xl">
@@ -206,7 +206,7 @@ const Problem = ({ category }: ProblemProps) => {
               <div className="py-3 pl-2 font-bold">
                 {currentQuestionWithType?.questionTitle}
               </div>
-              <div className="h-full rounded-3xl bg-white p-2 shadow-md">
+              <div className="h-full w-full rounded-3xl bg-white p-2 shadow-md">
                 <MarkdownComponent
                   markdown={currentQuestionWithType?.content ?? ''}
                 />
@@ -214,7 +214,7 @@ const Problem = ({ category }: ProblemProps) => {
             </div>
 
             {problemAnswer ? (
-              <>
+              <div className="flex w-full flex-col">
                 <div className="mt-4 flex w-full flex-col gap-2 md:gap-3">
                   {currentQuestionWithType?.problemType ===
                   ProblemCategoryType.MAQ ? (
@@ -283,9 +283,9 @@ const Problem = ({ category }: ProblemProps) => {
                     </button>
                   ) : null}
                 </div>
-              </>
+              </div>
             ) : (
-              <>
+              <div className="flex w-full flex-col">
                 <div className="mt-2 flex w-full flex-col gap-3">
                   {currentQuestionWithType?.problemType ===
                   ProblemCategoryType.MAQ
@@ -350,11 +350,11 @@ const Problem = ({ category }: ProblemProps) => {
                     </button>
                   ) : null}
                 </div>
-              </>
+              </div>
             )}
-          </>
-        )}
-      </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

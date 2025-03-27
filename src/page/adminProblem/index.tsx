@@ -23,12 +23,13 @@ import {
   ProblemSearchComponent,
   ProblemTypeSelectionComponent,
 } from '@/feature/adminProblem/ui/manageProblemComponents';
+import { getProblemListBySearch } from '@/feature/adminProblem/model/getProblemListBySearch';
 
 export type CurrentFilter = '최신 순' | '오래된 순';
 export type Problem = GetAdminMAQ | GetAdminSAQ;
+export const PAGE_LIMIT = 10;
 
 const ManageProlemPage = () => {
-  const PAGE_LIMIT = 10;
   const [problemList, setProblemList] = useState<Problem[]>([]);
   const [totalProblemCount, setTotalProblemCount] = useState(0);
   const [selectedProblem, setSelectedProblem] = useState<Problem | null>(null);
@@ -40,6 +41,11 @@ const ManageProlemPage = () => {
   const [currentFilter, setCurrentFilter] = useState<CurrentFilter>('최신 순');
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [problemListStatus, setProblemListStatus] = useState<
+    'latest' | 'search'
+  >('latest');
+  const [searchText, setSearchText] = useState('');
+  const [shouldFetch, setShouldFetch] = useState(false);
 
   const getProblemList = async (
     problemType: ProblemCategoryType,
@@ -52,7 +58,6 @@ const ManageProlemPage = () => {
         const res = await getAdminMAQListApi(page - 1, limit);
         if (res.ok) {
           setProblemList((res.payload as GetAdminMAQListRes).content);
-          setSelectedProblem((res.payload as GetAdminMAQListRes).content[0]);
           prevProblemList.current = (res.payload as GetAdminMAQListRes).content;
           setTotalProblemCount((res.payload as GetAdminMAQListRes).totalPages);
           return;
@@ -63,7 +68,6 @@ const ManageProlemPage = () => {
         const res = await getAdminSAQListApi(page - 1, limit);
         if (res.ok) {
           setProblemList((res.payload as GetAdminSAQListRes).content);
-          setSelectedProblem((res.payload as GetAdminSAQListRes).content[0]);
           prevProblemList.current = (res.payload as GetAdminSAQListRes).content;
           setTotalProblemCount((res.payload as GetAdminSAQListRes).totalPages);
           return;
@@ -84,18 +88,60 @@ const ManageProlemPage = () => {
   };
 
   useEffect(() => {
-    getProblemList(problemType, currentPage, PAGE_LIMIT);
-  }, [problemType, currentPage]);
+    if (shouldFetch) {
+      console.log(currentPage);
+      setIsLoading(true);
+      if (problemListStatus === 'latest') {
+        getProblemList(problemType, currentPage, PAGE_LIMIT).finally(() => {
+          setIsLoading(false);
+          setShouldFetch(false);
+          setSelectedProblem(null);
+        });
+      }
+      if (problemListStatus === 'search') {
+        getProblemListBySearch(problemType, searchText, currentPage).finally(
+          () => {
+            setIsLoading(false);
+            setShouldFetch(false);
+            setSelectedProblem(null);
+          }
+        );
+      }
+    }
+  }, [shouldFetch, problemType]);
 
   useEffect(() => {
+    setIsLoading(true);
+    if (problemListStatus === 'latest') {
+      getProblemList(problemType, currentPage, PAGE_LIMIT).finally(() => {
+        setIsLoading(false);
+        setSelectedProblem(null);
+      });
+    }
+    if (problemListStatus === 'search') {
+      getProblemListBySearch(problemType, searchText, currentPage).finally(
+        () => {
+          setIsLoading(false);
+          setSelectedProblem(null);
+        }
+      );
+    }
+  }, [currentPage]);
+
+  useEffect(() => {
+    // 문제 타입 변경 시 초기값으로 설정
     setCurrentPage(1);
+    setProblemListStatus('latest');
+    setShouldFetch(true);
   }, [problemType]);
 
+  console.log(problemList);
+
   return (
-    <div className="relative flex h-full w-full flex-col p-4 md:px-10 md:pb-10">
+    <div className="relative flex h-full w-full flex-col overflow-y-auto p-4 scrollbar-hide md:px-10 md:pb-10">
       <Link
         href={RouteTo.AdminManagementProblemCreate}
-        className="flex h-12 w-full items-center justify-center whitespace-nowrap rounded-xl border bg-gray-200 p-2 text-sm hover:cursor-pointer hover:border-2 hover:border-blue-400 hover:bg-blue-200"
+        className="flex h-12 w-full items-center justify-center whitespace-nowrap rounded-xl border bg-pointcolor-sand p-2 text-sm shadow-sm hover:cursor-pointer hover:inner-border hover:inner-border-pointcolor-beigebrown"
       >
         <span>문제 생성</span>
       </Link>
@@ -118,9 +164,15 @@ const ManageProlemPage = () => {
             <ProblemSearchComponent
               problemType={problemType}
               setProblemList={setProblemList}
+              setCurrentPage={setCurrentPage}
+              setTotalProblemCount={setTotalProblemCount}
+              setProblemListStatus={setProblemListStatus}
+              searchText={searchText}
+              setSearchText={setSearchText}
+              setIsLoading={setIsLoading}
             />
           </div>
-          <div className="mt-2 flex min-h-[35rem] w-full flex-shrink-0 flex-col overflow-auto scrollbar-hide">
+          <div className="mt-2 flex min-h-[33rem] w-full flex-shrink-0 flex-col overflow-auto scrollbar-hide">
             {isLoading ? (
               <Spinner />
             ) : (
@@ -128,7 +180,7 @@ const ManageProlemPage = () => {
                 return (
                   <div
                     key={index}
-                    className="box-shadow-sm mt-2 flex h-[2.5rem] w-full flex-shrink-0 items-center justify-between rounded-xl border bg-gray-300 p-1.5 px-3 shadow-sm transition-shadow duration-300 ease-in-out hover:shadow-md md:mt-3 md:h-[2.8rem]"
+                    className="box-shadow-sm mt-2 flex h-[2.5rem] w-full flex-shrink-0 items-center justify-between rounded-xl border bg-white p-1.5 px-3 shadow-sm transition-shadow duration-300 ease-in-out hover:shadow-md md:h-[2.8rem]"
                     onClick={(e) => {
                       setSelectedProblem(problem);
                     }}
@@ -139,7 +191,7 @@ const ManageProlemPage = () => {
                     <div className="flex h-full w-20 flex-shrink-0 gap-1 text-xs">
                       <Link
                         href={RouteTo.AdminManagementProblemUpdate}
-                        className="flex h-full w-1/2 items-center justify-center rounded-md border border-black hover:cursor-pointer hover:bg-gray-200"
+                        className="flex h-full w-1/2 items-center justify-center rounded-md border hover:cursor-pointer hover:bg-gray-200"
                         onClick={(e) => {
                           e.stopPropagation();
                           storeSelectedProblem(problem);
@@ -147,23 +199,23 @@ const ManageProlemPage = () => {
                       >
                         수정
                       </Link>
-                      <Link
-                        href={'#'}
-                        className="flex h-full w-1/2 items-center justify-center rounded-md border border-black hover:cursor-pointer hover:bg-gray-200"
+                      <button
+                        disabled={true}
+                        className="flex h-full w-1/2 items-center justify-center rounded-md border bg-gray-200 hover:bg-gray-200"
                         onClick={(e) => {
                           e.stopPropagation();
                           storeSelectedProblem(problem);
                         }}
                       >
                         삭제
-                      </Link>
+                      </button>
                     </div>
                   </div>
                 );
               })
             )}
           </div>
-          <div className="mt-4 flex w-full justify-center">
+          <div className="flex w-full justify-center py-4">
             <ProblemPagination
               page={currentPage}
               setPage={setCurrentPage}
@@ -171,12 +223,12 @@ const ManageProlemPage = () => {
             />
           </div>
         </div>
-        <div className="flex h-full w-full flex-col pt-20 md:w-[40%]">
+        <div className="flex h-full w-full flex-col py-10 md:w-[40%] md:pt-20">
           <span className="flex w-full justify-center text-[1.4rem]">
             {' '}
             Preview
           </span>
-          <div className="relative mt-4 flex max-h-[42rem] min-h-[35rem] w-full flex-col rounded-2xl bg-gray-200 p-6 md:h-full">
+          <div className="relative mt-4 flex max-h-[39rem] min-h-[35rem] w-full flex-col rounded-2xl border bg-white p-6 md:h-full">
             <span className="text-lg font-bold">Title</span>
             <span className="mt-2 overflow-hidden text-ellipsis whitespace-nowrap text-xs">
               {isLoading
@@ -186,7 +238,7 @@ const ManageProlemPage = () => {
                   : (problemList[0]?.questionTitle ?? '')}
             </span>
             <span className="mt-4 text-lg font-bold">Contents</span>
-            <div className="h-[75%] min-h-[10rem] w-full border border-black bg-white">
+            <div className="mt-1 h-[75%] min-h-[10rem] w-full rounded-3xl border bg-white">
               {isLoading ? null : (
                 <MarkdownComponent
                   markdown={

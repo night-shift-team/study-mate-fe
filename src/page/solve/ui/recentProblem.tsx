@@ -49,7 +49,10 @@ export const RecentProblem = () => {
   };
 
   return (
-    <div className="w-full rounded-lg bg-black bg-opacity-20 p-4">
+    <div className="flex w-full rounded-lg bg-opacity-20">
+      <div className="flex items-center whitespace-nowrap bg-black bg-opacity-100 p-1 font-doodle text-xs font-bold tracking-wider text-white md:text-sm">
+        📢 New
+      </div>
       <div
         className="slide_container"
         onMouseEnter={onStop}
@@ -64,21 +67,18 @@ export const RecentProblem = () => {
           {[...TempCategories, ...TempCategories].map((item, index) => (
             <Link key={index} href={item.link}>
               <li className="mx-4">
-                <div className="w-[40vh] rounded-lg bg-white p-2">
-                  <div className="flex gap-2">
-                    <div className="aspect-square flex h-[2rem] items-center justify-center rounded-full bg-red-200 md:h-[2.5rem] md:w-[3rem]">
+                <div className="w-[20rem] rounded-lg bg-white p-1 px-1.5 inner-border inner-border-pointcolor-beigebrown md:pr-4">
+                  <div className="flex items-center justify-center gap-1">
+                    <div className="flex aspect-1 h-[1.3rem] items-center justify-center rounded-full bg-red-200 md:h-[1.5rem]">
                       {getCategoriesIcon(item.title)}
                     </div>
-                    <div className="flex w-full flex-col justify-between">
-                      <div className="flex justify-between">
-                        <h3 className="text-[0.7rem] font-bold">
-                          {item.title}
-                        </h3>
-                        <span className="text-[0.7rem]">
-                          난이도 : {item.difficulty}
-                        </span>
+                    <div className="flex w-full justify-between text-[0.55rem] md:text-[0.7rem]">
+                      <div className="flex gap-1">
+                        <h3 className="font-bold">[{item.title}]</h3>
+                        <span>{item.content}</span>
                       </div>
-                      <p className="text-[0.7rem]">{item.content}</p>
+
+                      <span>난이도 : {item.difficulty}</span>
                     </div>
                   </div>
                 </div>

@@ -20,25 +20,21 @@ export interface GetAdminSAQListRes {
   totalPages: number;
 }
 
-export interface GetAdminMAQ {
+export interface SearchAdminProblemCommonProps {
   id: string;
   questionTitle: string;
   content: string;
   difficulty: number;
   category: ProblemCategory;
-  choice1: string;
-  choice2: string;
-  choice3: string;
-  choice4: string;
+}
+export interface GetAdminMAQ extends SearchAdminProblemCommonProps {
+  choice1?: string;
+  choice2?: string;
+  choice3?: string;
+  choice4?: string;
 }
 
-export interface GetAdminSAQ {
-  id: string;
-  questionTitle: string;
-  content: string;
-  difficulty: number;
-  category: ProblemCategory;
-}
+export type GetAdminSAQ = SearchAdminProblemCommonProps;
 
 export interface CreateAdminMAQReq {
   questionTitle: string;

@@ -45,7 +45,7 @@ export const Answer = () => {
       <span className="mt-2 text-center text-lg font-bold text-[#FEA1A1]">
         {updateProblemInfo?.category.split('_')[1] === ProblemCategoryType.SAQ
           ? 'Keyword'
-          : 'Answer'}
+          : 'Selection'}
       </span>
       <div className="flex w-full flex-col gap-1 px-2 text-[0.7rem]">
         {updateProblemInfo?.category.split('_')[1] ===
@@ -168,7 +168,7 @@ export const ModelAnswer = () => {
   return (
     <div className="flex w-full flex-col gap-2 rounded-2xl border bg-white p-2">
       <span className="mt-2 w-full text-center text-lg font-bold text-[#FEA1A1]">
-        Model Answer
+        Answer
       </span>
       <textarea
         className="w-full break-words p-1.5 text-sm"

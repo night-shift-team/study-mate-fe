@@ -6,6 +6,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { IoMenu } from 'react-icons/io5';
 import MobileSlider from './mobileSilder';
+import { MdLogout } from 'react-icons/md';
+import { LuLayoutDashboard } from 'react-icons/lu';
 
 const RightHeaderComponents = () => {
   const routePath = usePathname();
@@ -32,20 +34,22 @@ const RightHeaderComponents = () => {
         <div className="flex gap-2">
           <button
             type="button"
-            className="rounded-2xl px-2 hover:bg-gray-100 active:cursor-grabbing"
+            title="관리자 대시보드"
+            className="rounded-2xl p-2 hover:bg-gray-100 hover:shadow-sm active:cursor-grabbing"
             onClick={() => router.push(RouteTo.AdminDashboard)}
           >
-            <span className="text-sm">대시보드</span>
+            <LuLayoutDashboard />
           </button>
 
           <button
-            className="rounded-2xl px-[0.5rem] py-[0.2rem] hover:bg-gray-100 active:cursor-grabbing"
+            title="로그아웃"
+            className="rounded-2xl p-2 hover:bg-gray-100 hover:shadow-sm active:cursor-grabbing"
             onClick={() => {
               setUser(null);
               router.push(RouteTo.Home);
             }}
           >
-            <span className="text-sm">로그아웃</span>
+            <MdLogout />
           </button>
         </div>
       );
