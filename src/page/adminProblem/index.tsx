@@ -23,12 +23,13 @@ import {
   ProblemSearchComponent,
   ProblemTypeSelectionComponent,
 } from '@/feature/adminProblem/ui/manageProblemComponents';
+import { getProblemListBySearch } from '@/feature/adminProblem/model/getProblemListBySearch';
 
 export type CurrentFilter = '최신 순' | '오래된 순';
 export type Problem = GetAdminMAQ | GetAdminSAQ;
+export const PAGE_LIMIT = 10;
 
 const ManageProlemPage = () => {
-  const PAGE_LIMIT = 10;
   const [problemList, setProblemList] = useState<Problem[]>([]);
   const [totalProblemCount, setTotalProblemCount] = useState(0);
   const [selectedProblem, setSelectedProblem] = useState<Problem | null>(null);
@@ -40,6 +41,11 @@ const ManageProlemPage = () => {
   const [currentFilter, setCurrentFilter] = useState<CurrentFilter>('최신 순');
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [problemListStatus, setProblemListStatus] = useState<
+    'latest' | 'search'
+  >('latest');
+  const [searchText, setSearchText] = useState('');
+  const [shouldFetch, setShouldFetch] = useState(false);
 
   const getProblemList = async (
     problemType: ProblemCategoryType,
@@ -52,7 +58,6 @@ const ManageProlemPage = () => {
         const res = await getAdminMAQListApi(page - 1, limit);
         if (res.ok) {
           setProblemList((res.payload as GetAdminMAQListRes).content);
-          setSelectedProblem((res.payload as GetAdminMAQListRes).content[0]);
           prevProblemList.current = (res.payload as GetAdminMAQListRes).content;
           setTotalProblemCount((res.payload as GetAdminMAQListRes).totalPages);
           return;
@@ -63,7 +68,6 @@ const ManageProlemPage = () => {
         const res = await getAdminSAQListApi(page - 1, limit);
         if (res.ok) {
           setProblemList((res.payload as GetAdminSAQListRes).content);
-          setSelectedProblem((res.payload as GetAdminSAQListRes).content[0]);
           prevProblemList.current = (res.payload as GetAdminSAQListRes).content;
           setTotalProblemCount((res.payload as GetAdminSAQListRes).totalPages);
           return;
@@ -84,12 +88,54 @@ const ManageProlemPage = () => {
   };
 
   useEffect(() => {
-    getProblemList(problemType, currentPage, PAGE_LIMIT);
-  }, [problemType, currentPage]);
+    if (shouldFetch) {
+      console.log(currentPage);
+      setIsLoading(true);
+      if (problemListStatus === 'latest') {
+        getProblemList(problemType, currentPage, PAGE_LIMIT).finally(() => {
+          setIsLoading(false);
+          setShouldFetch(false);
+          setSelectedProblem(null);
+        });
+      }
+      if (problemListStatus === 'search') {
+        getProblemListBySearch(problemType, searchText, currentPage).finally(
+          () => {
+            setIsLoading(false);
+            setShouldFetch(false);
+            setSelectedProblem(null);
+          }
+        );
+      }
+    }
+  }, [shouldFetch, problemType]);
 
   useEffect(() => {
+    setIsLoading(true);
+    if (problemListStatus === 'latest') {
+      getProblemList(problemType, currentPage, PAGE_LIMIT).finally(() => {
+        setIsLoading(false);
+        setSelectedProblem(null);
+      });
+    }
+    if (problemListStatus === 'search') {
+      getProblemListBySearch(problemType, searchText, currentPage).finally(
+        () => {
+          setIsLoading(false);
+          setSelectedProblem(null);
+        }
+      );
+    }
+  }, [currentPage]);
+
+  useEffect(() => {
+    // 문제 타입 변경 시 초기값으로 설정
     setCurrentPage(1);
+    setProblemListStatus('latest');
+    setShouldFetch(true);
   }, [problemType]);
+
+  console.log(problemList);
 
   return (
     <div className="relative flex h-full w-full flex-col overflow-y-auto p-4 scrollbar-hide md:px-10 md:pb-10">
@@ -118,9 +164,15 @@ const ManageProlemPage = () => {
             <ProblemSearchComponent
               problemType={problemType}
               setProblemList={setProblemList}
+              setCurrentPage={setCurrentPage}
+              setTotalProblemCount={setTotalProblemCount}
+              setProblemListStatus={setProblemListStatus}
+              searchText={searchText}
+              setSearchText={setSearchText}
+              setIsLoading={setIsLoading}
             />
           </div>
-          <div className="mt-2 flex min-h-[10rem] w-full flex-shrink-0 flex-col overflow-auto scrollbar-hide">
+          <div className="mt-2 flex min-h-[33rem] w-full flex-shrink-0 flex-col overflow-auto scrollbar-hide">
             {isLoading ? (
               <Spinner />
             ) : (
@@ -163,7 +215,7 @@ const ManageProlemPage = () => {
               })
             )}
           </div>
-          <div className="mt-4 flex w-full justify-center">
+          <div className="flex w-full justify-center py-4">
             <ProblemPagination
               page={currentPage}
               setPage={setCurrentPage}
