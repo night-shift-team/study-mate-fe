@@ -3,6 +3,7 @@ import { CircleX } from 'lucide-react';
 import { getQuestionDetailApi, QuestionDetailRes } from '@/page/mypage/api';
 import { useEffect, useState } from 'react';
 import Popup from './popup';
+import { PopupProblem } from '@/shared/popUp/ui/popupV2';
 
 interface ItemProps {
   index: number;
@@ -88,10 +89,14 @@ export const QuestionItem: React.FC<ItemProps> = ({
         )}
       </div>
       {isPopupOpen && questionDetail && (
-        <Popup
+        <PopupProblem
+          size="md"
           questionTitle={questionTitle}
-          onClick={handleClosePopup}
-          questionDetail={questionDetail}
+          difficulty={questionDetail.difficulty}
+          content={questionDetail.content}
+          answer={questionDetail.answer}
+          explanation={questionDetail.explanation}
+          onClose={handleClosePopup}
         />
       )}
     </>

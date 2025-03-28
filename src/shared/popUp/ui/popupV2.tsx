@@ -28,6 +28,7 @@ const getSize = (size: Size): string => {
 interface PopupWithProblemProps {
   size?: Size;
   questionTitle: string;
+  difficulty: string;
   content: string;
   answer: string;
   explanation: string;
@@ -38,6 +39,7 @@ interface PopupWithProblemProps {
 export const PopupProblem: React.FC<PopupWithProblemProps> = ({
   size,
   onClose,
+  difficulty,
   questionTitle,
   content,
   answer,
@@ -53,10 +55,11 @@ export const PopupProblem: React.FC<PopupWithProblemProps> = ({
             {questionTitle}
           </span>
         </div>
-        <div className="flex w-[20%] justify-end gap-4 text-sm font-semibold text-gray-800">
+        <div className="items-centers flex w-[20%] justify-end gap-3 text-sm font-semibold text-gray-800">
+          <span>난이도 : {difficulty}</span>
           <IoMdClose
             onClick={onClose}
-            className="absolute right-5 top-5 cursor-pointer text-gray-500 transition-colors hover:text-gray-800"
+            className="cursor-pointer pb-1 text-gray-500 transition-colors hover:text-gray-800"
             style={{ fontSize: '24px' }}
           />
         </div>
@@ -64,12 +67,14 @@ export const PopupProblem: React.FC<PopupWithProblemProps> = ({
       {/* 컨텐츠 */}
       <div className="flex w-full flex-col gap-2 px-2">
         <MarkdownComponent markdown={content} />
-        <p className="mt-2 flex w-full whitespace-pre-wrap font-bold">
-          유저 선택 :{' '}
-          <span className="font-medium text-pointcolor-deepcoral">
-            {userAnswer}
-          </span>
-        </p>
+        {userAnswer && (
+          <p className="mt-2 flex w-full whitespace-pre-wrap font-bold">
+            유저 선택 :{' '}
+            <span className="font-medium text-pointcolor-deepcoral">
+              {userAnswer}
+            </span>
+          </p>
+        )}
         <p className="flex w-full whitespace-pre-wrap font-bold">
           정답 : <span className="font-medium text-green-700">{answer}</span>
         </p>
@@ -181,7 +186,7 @@ const PopupContainer = ({
 };
 const PopupHeader = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="mb-4 flex w-full items-center justify-between border-b px-5 pb-2">
+    <div className="mb-4 flex w-full items-center justify-between border-b pb-2">
       {children}
     </div>
   );
