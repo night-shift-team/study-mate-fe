@@ -41,11 +41,11 @@ export const RecentProblem = () => {
   const [speed, setSpeed] = useState(15); // 기본 속도 설정
 
   const onStop = () => {
-    setSpeed(20); // 마우스가 올라가면 속도 줄이기
+    setSpeed(20);
   };
 
   const onRun = () => {
-    setSpeed(15); // 기본 속도
+    setSpeed(15);
   };
 
   return (

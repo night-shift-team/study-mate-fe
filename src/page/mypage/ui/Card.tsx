@@ -8,14 +8,14 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ count, label, img }) => {
   return (
-    <div className="flex h-[8vh] w-[100%] flex-col items-center justify-center rounded-xl bg-white p-2 shadow-md md:h-[15vh] md:gap-4 md:rounded-3xl">
+    <div className="flex h-[8vh] w-[10rem] flex-col items-center justify-center rounded-xl bg-white p-2 shadow-md md:h-[12vh] md:gap-4 md:rounded-3xl">
       <div className="flex items-center gap-2">
-        <span className="flexitems-center justify-center text-[2vh] text-[#FEA1A1]">
+        <span className="flexitems-center justify-center text-[2.5vh] text-[#FEA1A1]">
           {img}
         </span>
-        <span className="text-[2vh] text-gray-600 md:text-base">{label}</span>
+        <span className="text-[1.5vh] text-gray-600 md:text-base">{label}</span>
       </div>
-      <span className="text-[2.5vh] font-bold md:text-2xl">{count}</span>
+      <span className="text-[2.3vh] font-bold">{count}</span>
     </div>
   );
 };

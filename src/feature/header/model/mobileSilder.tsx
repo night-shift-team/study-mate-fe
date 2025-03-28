@@ -11,9 +11,9 @@ interface MobileSliderProps {
 const MobileSlider: React.FC<MobileSliderProps> = ({ open, setOpen }) => {
   return (
     <div
-      className={`fixed right-0 top-0 h-full w-64 transform bg-white shadow-lg ${
+      className={`fixed right-0 top-0 z-10 z-50 h-full w-64 transform bg-white shadow-lg ${
         open ? 'translate-x-0' : 'translate-x-full'
-      } z-50 transition-transform duration-300 ease-in-out`}
+      } transition-transform duration-300 ease-in-out`}
     >
       {/* 상단 헤더 */}
       <div className="flex items-center justify-between border-b bg-[rgb(254,202,202)] p-4 text-white">
@@ -25,14 +25,23 @@ const MobileSlider: React.FC<MobileSliderProps> = ({ open, setOpen }) => {
       </div>
 
       {/* 메뉴 내용 */}
-      <div className="flex flex-col items-center justify-center gap-6 p-6">
-        <Link
-          href={RouteTo.Mypage}
-          className="text-lg font-medium text-gray-700"
-          onClick={() => setOpen(false)}
-        >
-          마이페이지
-        </Link>
+      <div className="flex h-[85%] flex-col items-center justify-between gap-6 p-6">
+        <div className="flex flex-col gap-4">
+          <Link
+            href={RouteTo.Mypage}
+            className="text-lg font-medium text-gray-700"
+            onClick={() => setOpen(false)}
+          >
+            마이페이지
+          </Link>
+          <Link
+            href={RouteTo.Rank}
+            className="text-lg font-medium text-gray-700"
+            onClick={() => setOpen(false)}
+          >
+            랭킹페이지
+          </Link>
+        </div>
 
         <button
           className="text-lg font-medium text-gray-700"

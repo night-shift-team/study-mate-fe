@@ -79,7 +79,7 @@ const GrassChart = () => {
   const monthLabels = getMonthLabels(oneYearAgo);
 
   return (
-    <div className="w-full overflow-x-auto rounded-xl bg-white p-4 scrollbar-hide">
+    <div className="w-[100%] overflow-x-auto rounded-xl bg-white p-2 scrollbar-hide">
       <div className="min-w-[780px]">
         <div className="flex">
           {/* 왼쪽 여백 */}
