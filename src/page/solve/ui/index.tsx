@@ -3,7 +3,7 @@ import AuthHoc from '@/shared/auth/model/authHoc';
 import Link from 'next/link';
 import { CategoryGridContents } from './categoryGridContents';
 import { userStore } from '@/state/userStore';
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { count } from 'console';
 import {
   FaArrowRight,
@@ -21,6 +21,11 @@ import { ProblemCategoryTitle } from '@/shared/constants/problemInfo';
 import { NoticeComponent } from './notice';
 import { RecentProblem } from './recentProblem';
 import NoticeBanner from './noticeBanner';
+import {
+  PopupConfirm,
+  PopupNotice,
+  PopupProblem,
+} from '@/shared/popUp/ui/popupV2';
 
 const TempCategories: { title: ProblemCategoryTitle; count: number }[] = [
   {
@@ -46,8 +51,37 @@ const TempCategories: { title: ProblemCategoryTitle; count: number }[] = [
 ];
 
 const SolveProblem = () => {
+  const [popupOpen, setPopupOpen] = useState(true);
   return (
     <div className="flex h-full w-full flex-shrink-0 flex-col items-center gap-5 overflow-y-auto px-[2.5rem] pb-[2rem] scrollbar-hide">
+      {popupOpen ? (
+        <>
+          <PopupProblem
+            size="md"
+            questionTitle="문제 제목"
+            content="### hello"
+            answer="answer"
+            explanation="explanation"
+            userAnswer="userAnswer"
+            onClose={() => setPopupOpen(false)}
+          />
+          {/* <PopupNotice
+          size='lg'
+          title='공지사항'
+          content='### hello \\n ### hello'
+          onClose={()=>setPopupOpen(false)}
+        /> */}
+          {/* <PopupConfirm
+          size='sm'
+          title='문제 제목'
+          content='### hello'
+          onConfirm={()=>setPopupOpen(false)}
+          onCancel={()=>setPopupOpen(false)}
+         /> */}
+        </>
+      ) : (
+        <></>
+      )}
       <div className="flex w-full flex-col gap-1">
         <NoticeBanner />
 
