@@ -52,7 +52,7 @@ export const RankPageComponent = () => {
   );
 
   return (
-    <div className="mx-auto flex h-full w-full max-w-4xl flex-col justify-between gap-2 rounded-2xl bg-white p-3 md:shadow-lg">
+    <div className="flex h-full w-full max-w-4xl flex-col justify-between gap-2 rounded-2xl bg-white p-3 md:shadow-lg">
       <div className="">
         <h3 className="mb-4 text-lg font-semibold text-gray-900 md:text-lg">
           나의 랭킹: <span className="">{myRanking ?? '-'}등</span>

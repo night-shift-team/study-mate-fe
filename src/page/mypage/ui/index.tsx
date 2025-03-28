@@ -75,7 +75,7 @@ const Mypage = () => {
   const [tap, setTap] = useState('1');
 
   return (
-    <div className="z-1 h-[100vh] w-[100%] md:w-[85%]">
+    <div className="z-1 h-full w-full overflow-y-auto scrollbar-hide md:w-[85%]">
       <div className="flex flex-col items-center">
         <div className="z-1 flex h-[25vh] w-full flex-col items-center justify-between gap-5 bg-[#FEA1A1] px-6 py-6 md:flex-row md:rounded-t-3xl">
           <Profile />
