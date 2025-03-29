@@ -5,7 +5,6 @@ import { ok } from 'assert';
 import { getAccessToken } from './refreshTokenApi';
 import { AuthTokenRes } from '@/shared/user/api';
 import { userStore } from '@/state/userStore';
-import { useRouter } from 'next/navigation';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 
 type HTTPRequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
@@ -99,7 +98,7 @@ export const _apiFetch = async <T = any>(
 // 인터셉터 리스너 설정
 interceptor.on('request', async ({ request }) => {
   if (request.url.includes('/api/')) {
-    if (!currentToken) {
+    if (!currentToken && typeof window !== 'undefined') {
       try {
         const accessToken = await getAccessToken();
         currentToken = accessToken as string;
@@ -119,10 +118,10 @@ interceptor.on('response', async ({ response, request }) => {
 
   const data = await response.json();
   const errCode = data.ecode ? data.ecode : data.status;
-  console.warn(errCode);
+  // console.warn(errCode);
 
   const isDisabaleToken = errCode === Ecode.E0002 || errCode === Ecode.E0005;
-  if (isDisabaleToken) {
+  if (isDisabaleToken && typeof window !== 'undefined') {
     try {
       console.warn(EcodeMessage(errCode));
       localStorage.removeItem('accessToken');
@@ -148,8 +147,9 @@ interceptor.on('response', async ({ response, request }) => {
       const setUser = userStore.getState().setUser;
       setUser(null);
       console.log(e);
-      const router = useRouter();
-      router.push(RouteTo.Home);
+      if (window) {
+        window.location.href = RouteTo.Home;
+      }
     }
   }
 });
