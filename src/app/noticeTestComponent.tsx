@@ -193,8 +193,8 @@ export default function PushNotificationButtonV2() {
   }, []);
 
   return (
-    <div className="flex h-[40rem] w-[20rem] flex-col items-center gap-[2rem] p-4 pt-[5rem]">
-      <div className="h-[8rem] w-full max-w-md">
+    <div className="flex min-h-[30rem] w-[20rem] flex-col items-center gap-[2rem] overflow-scroll p-4 pt-[2rem] scrollbar-hide md:min-h-[40rem] md:pt-[5rem]">
+      <div className="h-[6rem] w-full max-w-md">
         <button
           onClick={async () => await subscribeToNotifications()}
           className="mb-4 w-full rounded bg-blue-500 px-4 py-2 text-white"

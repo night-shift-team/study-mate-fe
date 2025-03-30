@@ -62,7 +62,7 @@ export async function getNotifications(): Promise<Notification[]> {
     const tx = db.transaction('notifications', 'readonly');
     const store = tx.objectStore('notifications');
     const index = store.index('timestamp');
-
+    console.log(tx, index);
     // 최신 알림부터 가져오기
     return new Promise((resolve, reject) => {
       const request = index.getAll(null, 50);

@@ -36,7 +36,7 @@ export default function InstallButton() {
   return (
     <button
       onClick={installApp}
-      className="rounded bg-green-500 px-4 py-2 text-white"
+      className="rounded-xl border bg-pointcolor-coral px-2 py-1 text-[0.7rem] text-white md:h-[2.5rem] md:w-[10rem] md:px-4 md:py-2 md:text-base"
     >
       앱 설치하기
     </button>

@@ -133,11 +133,13 @@ const Login = () => {
   }, []);
 
   return (
-    <div className="relative z-[1000] flex h-full w-full flex-col items-center justify-center overflow-hidden overflow-y-auto scrollbar-hide md:flex-row md:pb-[4rem]">
+    <div className="relative z-[1000] flex h-full w-full flex-col items-center overflow-hidden overflow-y-auto scrollbar-hide md:flex-row md:justify-center md:pb-[4rem]">
       <Toaster />
+      <div className="absolute right-0 md:left-[50%] md:right-auto md:top-5 md:-translate-x-[50%]">
+        <InstallButton />
+      </div>
       <div className="md:inner-border-left flex w-full max-w-[900px] flex-col justify-evenly bg-white/60 px-8 py-3 shadow-xl md:flex-row md:justify-around md:gap-6 md:rounded-[1rem] md:border md:p-8">
         <div className="flex flex-col justify-center md:items-center">
-          <InstallButton />
           {/* <PushNotificationButton /> */}
           <Image
             src={Logo}
