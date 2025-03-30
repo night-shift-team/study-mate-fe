@@ -11,6 +11,10 @@ import Logo from '@/assets/logo.png';
 import UnderConstruction from '@/assets/under_construction.png';
 import { RemainTimeSV2 } from '@/feature/maintenance/ui/noticeEndtimer';
 
+export const metadata = {
+  manifest: '/manifest.json',
+};
+
 const MaintenanceCheck = ({ children }: { children: React.ReactNode }) => {
   const MaintenanceContent = async () => {
     try {
