@@ -30,6 +30,7 @@ import { requestSignIn } from '../model/requestSignIn';
 import { getUserInfo } from '../model/getUserInfo';
 import InstallButton from '@/app/install-button';
 import PushNotificationButton from '@/app/push-notification';
+import PushNotificationButtonV2 from '@/app/noticeTestComponent';
 
 const Login = () => {
   const router = useRouter();
@@ -132,12 +133,12 @@ const Login = () => {
   }, []);
 
   return (
-    <div className="relative z-[1000] flex h-full w-full justify-center overflow-hidden md:items-center md:pb-[4rem]">
+    <div className="relative z-[1000] flex h-full w-full flex-col items-center justify-center overflow-hidden md:flex-row md:pb-[4rem]">
       <Toaster />
       <div className="md:inner-border-left flex w-full max-w-[900px] flex-col justify-evenly bg-white/60 px-8 py-3 shadow-xl md:flex-row md:justify-around md:gap-6 md:rounded-[1rem] md:border md:p-8">
         <div className="flex flex-col justify-center md:items-center">
           <InstallButton />
-          <PushNotificationButton />
+          {/* <PushNotificationButton /> */}
           <Image
             src={Logo}
             alt=""
@@ -267,6 +268,7 @@ const Login = () => {
           </div>
         </div>
       </div>
+      <PushNotificationButtonV2 />
     </div>
   );
 };

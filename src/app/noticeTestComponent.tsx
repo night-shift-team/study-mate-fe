@@ -2,6 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { sendPushNotification, subscribeToPushNotifications } from './actions';
+import {
+  saveNotification,
+  getNotifications,
+  markNotificationAsRead,
+  Notification,
+} from './db';
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
@@ -16,8 +22,18 @@ function urlBase64ToUint8Array(base64String: string) {
   return outputArray;
 }
 
-export default function PushNotificationButton() {
+export default function PushNotificationButtonV2() {
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // 알림 목록 로드
+  async function loadNotifications() {
+    setIsLoading(true);
+    const notifs = await getNotifications();
+    setNotifications(notifs);
+    setIsLoading(false);
+  }
 
   // 구독 상태 확인 함수
   async function checkSubscriptionStatus() {
@@ -104,11 +120,28 @@ export default function PushNotificationButton() {
       const serializedSubscription = JSON.parse(JSON.stringify(subscription));
       const result = await sendPushNotification('test', serializedSubscription);
       console.log('알림 전송 결과:', result);
+
+      // 알림 결과가 성공이면 IndexedDB에도 저장
+      if (result.success && result.notification) {
+        await saveNotification({
+          ...result.notification,
+          timestamp: new Date().toISOString(),
+        });
+        // 알림 목록 다시 로드
+        loadNotifications();
+      }
+
       return result;
     } catch (e) {
       console.error('알림 전송 오류:', e);
       return { success: false, error: String(e) };
     }
+  };
+
+  // 알림을 읽음으로 표시
+  const markAsRead = async (id: number) => {
+    await markNotificationAsRead(id);
+    loadNotifications();
   };
 
   useEffect(() => {
@@ -127,22 +160,69 @@ export default function PushNotificationButton() {
           console.error('서비스 워커 등록 오류:', error);
         });
     }
+
+    // 알림 목록 로드
+    loadNotifications();
+
+    // 서비스 워커로부터 메시지 수신 처리
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.addEventListener('message', async (event) => {
+        if (event.data && event.data.type === 'NEW_NOTIFICATION') {
+          // 새 알림이 도착하면 저장하고 목록 업데이트
+          await saveNotification(event.data.notification);
+          loadNotifications();
+        }
+      });
+    }
   }, []);
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center">
-      <button
-        onClick={async () => await subscribeToNotifications()}
-        className="mb-4 rounded bg-blue-500 px-4 py-2 text-white"
-      >
-        {isSubscribed ? '알림 구독 중' : '알림 구독하기'}
-      </button>
-      <button
-        onClick={async () => await sendNotification()}
-        className="rounded bg-green-500 px-4 py-2 text-white"
-      >
-        알림 보내기
-      </button>
+    <div className="flex h-[40rem] w-[20rem] flex-col items-center gap-[2rem] overflow-scroll p-4 pt-[5rem] scrollbar-hide">
+      <div className="h-[8rem] w-full max-w-md">
+        <button
+          onClick={async () => await subscribeToNotifications()}
+          className="mb-4 w-full rounded bg-blue-500 px-4 py-2 text-white"
+        >
+          {isSubscribed ? '알림 구독 중' : '알림 구독하기'}
+        </button>
+        <button
+          onClick={async () => await sendNotification()}
+          className="w-full rounded bg-green-500 px-4 py-2 text-white"
+        >
+          알림 보내기
+        </button>
+      </div>
+
+      <div className="h-[3rem] w-full max-w-md rounded-lg border p-4 shadow-sm">
+        <h2 className="text-xl font-bold">알림 목록</h2>
+        {isLoading ? (
+          <p className="py-4 text-center">로딩 중...</p>
+        ) : notifications.length > 0 ? (
+          <ul className="divide-y">
+            {notifications.map((notification) => (
+              <li
+                key={notification.id}
+                className={`cursor-pointer px-2 py-3 hover:bg-gray-50 ${notification.read ? 'opacity-60' : 'font-semibold'}`}
+                onClick={() =>
+                  notification.id !== undefined && markAsRead(notification.id)
+                }
+              >
+                <div className="flex justify-between">
+                  <h3 className="text-md">{notification.title}</h3>
+                  <span className="text-xs text-gray-500">
+                    {new Date(notification.timestamp).toLocaleString()}
+                  </span>
+                </div>
+                <p className="mt-1 text-sm text-gray-600">
+                  {notification.body}
+                </p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="py-4 text-center text-gray-500">알림이 없습니다</p>
+        )}
+      </div>
     </div>
   );
 }
