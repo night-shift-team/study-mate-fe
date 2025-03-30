@@ -19,7 +19,7 @@ const MaintenanceCheck = ({ children }: { children: React.ReactNode }) => {
         const data = res.payload as GetValidnoticeListRes;
         console.log(data);
         const isMaintenance = data.isMaintenanceNoticeExist;
-        if (isMaintenance) {
+        if (!isMaintenance) {
           return (
             <div className="flex h-full w-full flex-col items-center justify-center">
               <div className="flex w-full justify-center">
@@ -39,10 +39,10 @@ const MaintenanceCheck = ({ children }: { children: React.ReactNode }) => {
                   <p>{data.displayNotices[0].noticeTitle}</p>
                   <p>{data.maintenaceNotices[0].maintenanceEndTime}</p>
                   <RemainTimeSV2
-                    dateProps={
+                    endDate={
                       data.maintenaceNotices[0]?.maintenanceEndTime
                         ? new Date(data.maintenaceNotices[0].maintenanceEndTime)
-                        : new Date()
+                        : new Date(Date.now())
                     }
                   />
                 </div>
