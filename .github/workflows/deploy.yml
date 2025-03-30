@@ -32,6 +32,8 @@ jobs:
           echo "NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID=${{ secrets.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID }}" >> .env
           echo "NEXT_PUBLIC_GOOGLE_AUTH_REDIRECT_URI=${{ secrets.NEXT_PUBLIC_GOOGLE_AUTH_REDIRECT_URI }}" >> .env
           echo "NEXT_PUBLIC_GOOGLE_AUTH_SCOPE=${{ secrets.NEXT_PUBLIC_GOOGLE_AUTH_SCOPE }}" >> .env
+          echo "NEXT_PUBLIC_VAPID_PUBLIC_KEY=${{ secrets.NEXT_PUBLIC_VAPID_PUBLIC_KEY }}" >> .env
+          echo "VAPID_PRIVATE_KEY=${{ secrets.VAPID_PRIVATE_KEY }}" >> .env
 
       - name: Build project
         run: pnpm build
