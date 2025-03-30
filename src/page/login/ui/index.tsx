@@ -29,6 +29,7 @@ import { setTokens } from '../model/setTokens';
 import { requestSignIn } from '../model/requestSignIn';
 import { getUserInfo } from '../model/getUserInfo';
 import InstallButton from '@/app/install-button';
+import PushNotificationButton from '@/app/push-notification';
 
 const Login = () => {
   const router = useRouter();
@@ -136,7 +137,7 @@ const Login = () => {
       <div className="md:inner-border-left flex w-full max-w-[900px] flex-col justify-evenly bg-white/60 px-8 py-3 shadow-xl md:flex-row md:justify-around md:gap-6 md:rounded-[1rem] md:border md:p-8">
         <div className="flex flex-col justify-center md:items-center">
           <InstallButton />
-
+          <PushNotificationButton />
           <Image
             src={Logo}
             alt=""

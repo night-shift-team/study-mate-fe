@@ -12,7 +12,7 @@ import UnderConstruction from '@/assets/under_construction.png';
 import { RemainTimeSV2 } from '@/feature/maintenance/ui/noticeEndtimer';
 
 export const metadata = {
-  manifest: '/manifest.json',
+  manifest: '/manifest.ts',
 };
 
 const MaintenanceCheck = ({ children }: { children: React.ReactNode }) => {
