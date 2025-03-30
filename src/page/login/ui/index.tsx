@@ -133,12 +133,12 @@ const Login = () => {
   }, []);
 
   return (
-    <div className="relative z-[1000] flex h-full w-full flex-col items-center overflow-hidden overflow-y-auto scrollbar-hide md:flex-row md:justify-center md:pb-[4rem]">
+    <div className="relative z-[1000] flex h-full w-full flex-col items-center overflow-hidden overflow-y-auto bg-white/60 scrollbar-hide md:flex-row md:justify-center md:bg-transparent md:pb-[4rem]">
       <Toaster />
       <div className="absolute right-0 md:left-[50%] md:right-auto md:top-5 md:-translate-x-[50%]">
         <InstallButton />
       </div>
-      <div className="md:inner-border-left flex w-full max-w-[900px] flex-col justify-evenly bg-white/60 px-8 py-3 shadow-xl md:flex-row md:justify-around md:gap-6 md:rounded-[1rem] md:border md:p-8">
+      <div className="md:inner-border-left nd:shadow-xl flex h-full w-full max-w-[900px] flex-col justify-evenly bg-white/60 px-8 py-3 md:h-auto md:flex-row md:justify-around md:gap-6 md:rounded-[1rem] md:border md:p-8">
         <div className="flex flex-col justify-center md:items-center">
           {/* <PushNotificationButton /> */}
           <Image
@@ -244,7 +244,7 @@ const Login = () => {
                   }}
                   className="flex h-[4rem] w-1/3 cursor-pointer flex-col justify-center md:h-[5rem]"
                 >
-                  <div className="flex w-full justify-center rounded-md border-2 py-1">
+                  <div className="flex w-full justify-center rounded-md border py-1">
                     <Image
                       src={item.img}
                       alt=""
@@ -270,7 +270,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-      <PushNotificationButtonV2 />
+      {/* <PushNotificationButtonV2 /> */}
     </div>
   );
 };
