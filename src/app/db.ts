@@ -118,3 +118,38 @@ export async function markNotificationAsRead(id: number): Promise<boolean> {
     return false;
   }
 }
+
+export async function setBadgeCount(count: number): Promise<boolean> {
+  if (!('setAppBadge' in navigator)) {
+    console.log('배지 API가 지원되지 않습니다.');
+    return false;
+  }
+
+  try {
+    if (count > 0) {
+      await navigator.setAppBadge(count);
+    } else {
+      await navigator.clearAppBadge();
+    }
+    return true;
+  } catch (error) {
+    console.error('배지 설정 오류:', error);
+    return false;
+  }
+}
+
+// 배지 카운트 업데이트 함수
+export async function updateBadgeCount(): Promise<void> {
+  try {
+    const notifications = await getNotifications();
+    const unreadCount = notifications.filter((n) => !n.read).length;
+
+    if (unreadCount > 0) {
+      await setBadgeCount(unreadCount);
+    } else {
+      await navigator.clearAppBadge();
+    }
+  } catch (error) {
+    console.error('배지 업데이트 오류:', error);
+  }
+}

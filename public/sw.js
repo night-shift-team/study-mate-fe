@@ -25,6 +25,7 @@ self.addEventListener('push', function (event) {
     event.waitUntil(
       (async () => {
         // 클라이언트에 메시지 보내기
+
         const clients = await self.clients.matchAll({ type: 'window' });
         clients.forEach((client) => {
           client.postMessage({
@@ -35,6 +36,13 @@ self.addEventListener('push', function (event) {
               timestamp: new Date().toISOString(),
               id: options.data.notificationId,
             },
+          });
+        });
+
+        // 클라이언트에 배지 업데이트 메시지 보내기
+        clients.forEach((client) => {
+          client.postMessage({
+            type: 'UPDATE_BADGE',
           });
         });
 

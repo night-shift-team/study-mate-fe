@@ -7,6 +7,7 @@ import {
   getNotifications,
   markNotificationAsRead,
   Notification,
+  updateBadgeCount,
 } from './db';
 
 function urlBase64ToUint8Array(base64String: string) {
@@ -141,7 +142,8 @@ export default function PushNotificationButtonV2() {
   // 알림을 읽음으로 표시
   const markAsRead = async (id: number) => {
     await markNotificationAsRead(id);
-    loadNotifications();
+    await loadNotifications();
+    await updateBadgeCount(); // 배지 카운트 업데이트
   };
 
   useEffect(() => {
@@ -174,10 +176,24 @@ export default function PushNotificationButtonV2() {
         }
       });
     }
+
+    // 서비스 워커로부터 메시지 수신 처리
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.addEventListener('message', async (event) => {
+        if (event.data) {
+          if (event.data.type === 'NEW_NOTIFICATION') {
+            // ... 기존 코드 ...
+          } else if (event.data.type === 'UPDATE_BADGE') {
+            await updateBadgeCount();
+          }
+        }
+      });
+    }
+    updateBadgeCount();
   }, []);
 
   return (
-    <div className="flex h-[40rem] w-[20rem] flex-col items-center gap-[2rem] overflow-scroll p-4 pt-[5rem] scrollbar-hide">
+    <div className="flex h-[40rem] w-[20rem] flex-col items-center gap-[2rem] p-4 pt-[5rem]">
       <div className="h-[8rem] w-full max-w-md">
         <button
           onClick={async () => await subscribeToNotifications()}
