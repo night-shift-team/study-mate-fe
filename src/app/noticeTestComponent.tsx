@@ -27,6 +27,7 @@ export default function PushNotificationButtonV2() {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSending, setIsSending] = useState(false);
 
   // 알림 목록 로드
   async function loadNotifications() {
@@ -34,6 +35,7 @@ export default function PushNotificationButtonV2() {
     const notifs = await getNotifications();
     setNotifications(notifs);
     setIsLoading(false);
+    await updateBadgeCount();
   }
 
   // 구독 상태 확인 함수
@@ -48,7 +50,7 @@ export default function PushNotificationButtonV2() {
       const subscription = await registration.pushManager.getSubscription();
 
       if (subscription) {
-        console.log('이미 구독 중입니다:', subscription);
+        console.log('already subscribed:');
         setIsSubscribed(true);
         return true;
       } else {
@@ -67,7 +69,6 @@ export default function PushNotificationButtonV2() {
       // 이미 구독 중인지 확인
       const isAlreadySubscribed = await checkSubscriptionStatus();
       if (isAlreadySubscribed) {
-        console.log('이미 구독 중입니다. 새로운 구독을 생성하지 않습니다.');
         return;
       }
 
@@ -102,7 +103,10 @@ export default function PushNotificationButtonV2() {
 
   // 알림 푸시
   const sendNotification = async () => {
-    console.log('isSubscribed', isSubscribed);
+    if (isSending) return; // 이미 전송 중이면 중복 요청 방지
+
+    setIsSending(true);
+
     try {
       if (!isSubscribed) {
         console.log('알림을 보내기 전에 먼저 구독해야 합니다.');
@@ -120,12 +124,13 @@ export default function PushNotificationButtonV2() {
       // 구독 정보를 직렬화하여 서버에 전송
       const serializedSubscription = JSON.parse(JSON.stringify(subscription));
       const result = await sendPushNotification('test', serializedSubscription);
-      console.log('알림 전송 결과:', result);
 
       return result;
     } catch (e) {
       console.error('알림 전송 오류:', e);
       return { success: false, error: String(e) };
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -133,7 +138,6 @@ export default function PushNotificationButtonV2() {
   const markAsRead = async (id: number) => {
     await markNotificationAsRead(id);
     await loadNotifications();
-    await updateBadgeCount(); // 배지 카운트 업데이트
   };
 
   useEffect(() => {
@@ -144,7 +148,7 @@ export default function PushNotificationButtonV2() {
           scope: '/',
         })
         .then((registration) => {
-          console.log('서비스 워커가 등록되었습니다:', registration);
+          console.log('service worker registered:');
           // 구독 상태 확인
           checkSubscriptionStatus();
         })
@@ -157,29 +161,40 @@ export default function PushNotificationButtonV2() {
     loadNotifications();
 
     // 서비스 워커로부터 메시지 수신 처리
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.addEventListener('message', async (event) => {
-        if (event.data && event.data.type === 'NEW_NOTIFICATION') {
-          // 새 알림이 도착하면 저장하고 목록 업데이트
-          await saveNotification(event.data.notification);
-          loadNotifications();
-        }
-      });
-    }
-
-    // 서비스 워커로부터 메시지 수신 처리
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.addEventListener('message', async (event) => {
-        if (event.data) {
-          if (event.data.type === 'NEW_NOTIFICATION') {
-            // ... 기존 코드 ...
-          } else if (event.data.type === 'UPDATE_BADGE') {
-            await updateBadgeCount();
+    const handleMessage = async (event: MessageEvent) => {
+      if (event.data) {
+        if (event.data.type === 'NEW_NOTIFICATION') {
+          // 새 알림이 도착하면 목록 업데이트
+          await loadNotifications();
+        } else if (event.data.type === 'UPDATE_BADGE') {
+          await updateBadgeCount();
+        } else if (event.data.type === 'NOTIFICATION_CLICKED') {
+          // 알림이 클릭되면 읽음 표시
+          if (event.data.notificationId) {
+            // 알림 ID로 해당 알림 찾기
+            const notifications = await getNotifications();
+            const notification = notifications.find(
+              (n) => n.id === event.data.notificationId
+            );
+            if (notification && notification.id) {
+              await markAsRead(notification.id);
+              await loadNotifications(); // 목록 갱신
+            }
           }
         }
-      });
+      }
+    };
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.addEventListener('message', handleMessage);
     }
-    updateBadgeCount();
+
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.removeEventListener('message', handleMessage);
+      }
+    };
   }, []);
 
   return (

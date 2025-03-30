@@ -31,7 +31,7 @@ export default function PushNotificationButton() {
       const subscription = await registration.pushManager.getSubscription();
 
       if (subscription) {
-        console.log('이미 구독 중입니다:', subscription);
+        console.log('already subscribed:');
         setIsSubscribed(true);
         return true;
       } else {
@@ -85,7 +85,6 @@ export default function PushNotificationButton() {
 
   // 알림 푸시
   const sendNotification = async () => {
-    console.log('isSubscribed', isSubscribed);
     try {
       if (!isSubscribed) {
         console.log('알림을 보내기 전에 먼저 구독해야 합니다.');
@@ -103,7 +102,6 @@ export default function PushNotificationButton() {
       // 구독 정보를 직렬화하여 서버에 전송
       const serializedSubscription = JSON.parse(JSON.stringify(subscription));
       const result = await sendPushNotification('test', serializedSubscription);
-      console.log('알림 전송 결과:', result);
       return result;
     } catch (e) {
       console.error('알림 전송 오류:', e);
@@ -119,7 +117,7 @@ export default function PushNotificationButton() {
           scope: '/',
         })
         .then((registration) => {
-          console.log('서비스 워커가 등록되었습니다:', registration);
+          console.log('service worker registered:');
           // 구독 상태 확인
           checkSubscriptionStatus();
         })

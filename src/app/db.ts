@@ -42,16 +42,19 @@ export async function saveNotification(
     const tx = db.transaction('notifications', 'readwrite');
     const store = tx.objectStore('notifications');
 
-    await store.add({
-      title: notification.title,
-      body: notification.body,
-      timestamp: notification.timestamp || new Date().toISOString(),
-      read: false,
-    });
+    return new Promise((resolve, reject) => {
+      const request = store.add({
+        title: notification.title,
+        body: notification.body,
+        timestamp: notification.timestamp || new Date().toISOString(),
+        read: false,
+      });
 
-    return true;
+      request.onsuccess = () => resolve(true);
+      request.onerror = () => reject(new Error('알림 저장 실패'));
+    });
   } catch (error) {
-    console.error('알림 저장 오류:', error);
+    console.warn('알림 저장 오류:', error);
     return false;
   }
 }
@@ -62,7 +65,7 @@ export async function getNotifications(): Promise<Notification[]> {
     const tx = db.transaction('notifications', 'readonly');
     const store = tx.objectStore('notifications');
     const index = store.index('timestamp');
-    console.log(tx, index);
+
     // 최신 알림부터 가져오기
     return new Promise((resolve, reject) => {
       const request = index.getAll(null, 50);
@@ -76,7 +79,7 @@ export async function getNotifications(): Promise<Notification[]> {
       };
     });
   } catch (error) {
-    console.error('알림 가져오기 오류:', error);
+    console.warn('알림 가져오기 오류:', error);
     return [];
   }
 }
@@ -114,7 +117,7 @@ export async function markNotificationAsRead(id: number): Promise<boolean> {
       };
     });
   } catch (error) {
-    console.error('알림 읽음 표시 오류:', error);
+    console.warn('알림 읽음 표시 오류:', error);
     return false;
   }
 }
@@ -133,7 +136,7 @@ export async function setBadgeCount(count: number): Promise<boolean> {
     }
     return true;
   } catch (error) {
-    console.error('배지 설정 오류:', error);
+    console.warn('배지 설정 오류:', error);
     return false;
   }
 }
@@ -150,6 +153,6 @@ export async function updateBadgeCount(): Promise<void> {
       await navigator.clearAppBadge();
     }
   } catch (error) {
-    console.error('배지 업데이트 오류:', error);
+    console.warn('배지 업데이트 오류:', error);
   }
 }

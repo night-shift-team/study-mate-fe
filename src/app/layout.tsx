@@ -21,7 +21,6 @@ const MaintenanceCheck = ({ children }: { children: React.ReactNode }) => {
       const res = await getValidNoticeListApi();
       if (res.ok && res.payload) {
         const data = res.payload as GetValidnoticeListRes;
-        console.log(data);
         const isMaintenance = data.isMaintenanceNoticeExist;
         if (!isMaintenance) {
           return (
