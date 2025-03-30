@@ -89,6 +89,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="h-screen w-screen">
+      <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
       <body
         id="root-container"
         className={`flex h-full w-full font-spoqa antialiased`}
