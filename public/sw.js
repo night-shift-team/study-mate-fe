@@ -16,6 +16,7 @@ self.addEventListener('push', function (event) {
       body: data.body,
       icon: '/file.svg',
       badge: '/globe.svg',
+      tag: 'notification-tag', // 고유 태그 추가
       data: {
         notificationId: Date.now(),
       },
@@ -24,8 +25,13 @@ self.addEventListener('push', function (event) {
     // IndexedDB에 알림 저장
     event.waitUntil(
       (async () => {
-        // 클라이언트에 메시지 보내기
+        await saveNotification({
+          title: data.title,
+          body: data.body,
+          timestamp: new Date().toISOString(),
+        });
 
+        // 클라이언트에 메시지 보내기
         const clients = await self.clients.matchAll({ type: 'window' });
         clients.forEach((client) => {
           client.postMessage({
@@ -36,13 +42,6 @@ self.addEventListener('push', function (event) {
               timestamp: new Date().toISOString(),
               id: options.data.notificationId,
             },
-          });
-        });
-
-        // 클라이언트에 배지 업데이트 메시지 보내기
-        clients.forEach((client) => {
-          client.postMessage({
-            type: 'UPDATE_BADGE',
           });
         });
 

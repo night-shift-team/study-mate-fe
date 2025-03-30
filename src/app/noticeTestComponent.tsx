@@ -122,16 +122,6 @@ export default function PushNotificationButtonV2() {
       const result = await sendPushNotification('test', serializedSubscription);
       console.log('알림 전송 결과:', result);
 
-      // 알림 결과가 성공이면 IndexedDB에도 저장
-      if (result.success && result.notification) {
-        await saveNotification({
-          ...result.notification,
-          timestamp: new Date().toISOString(),
-        });
-        // 알림 목록 다시 로드
-        loadNotifications();
-      }
-
       return result;
     } catch (e) {
       console.error('알림 전송 오류:', e);
