@@ -2,6 +2,7 @@ import React from 'react';
 import { IoClose } from 'react-icons/io5';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import { userStore } from '@/state/userStore';
 
 interface MobileSliderProps {
   open: boolean;
@@ -9,9 +10,10 @@ interface MobileSliderProps {
 }
 
 const MobileSlider: React.FC<MobileSliderProps> = ({ open, setOpen }) => {
+  const { setUser } = userStore();
   return (
     <div
-      className={`fixed right-0 top-0 z-10 z-50 h-full w-64 transform bg-white shadow-lg ${
+      className={`fixed right-0 top-0 z-50 h-full w-64 transform bg-white shadow-lg ${
         open ? 'translate-x-0' : 'translate-x-full'
       } transition-transform duration-300 ease-in-out`}
     >
@@ -46,9 +48,9 @@ const MobileSlider: React.FC<MobileSliderProps> = ({ open, setOpen }) => {
         <button
           className="text-lg font-medium text-gray-700"
           onClick={() => {
-            localStorage.removeItem('accessToken');
+            setUser(null);
             setOpen(false);
-            window.location.href = RouteTo.Home;
+            window.location.href = RouteTo.Login;
           }}
         >
           로그아웃
