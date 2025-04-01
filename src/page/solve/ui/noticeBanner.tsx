@@ -44,7 +44,7 @@ const NoticeBanner = () => {
   }, []);
 
   return (
-    <div className="relative flex h-10 w-full flex-shrink-0 overflow-hidden bg-gray-800/80 px-4 font-doodle text-white">
+    <div className="relative flex h-10 w-full flex-shrink-0 overflow-hidden bg-gray-800/80 px-[1rem] font-doodle text-white md:px-[2.5rem]">
       {/* 현재 공지사항 */}
       <div
         className={`absolute flex h-full w-full items-center gap-1 text-ellipsis ${

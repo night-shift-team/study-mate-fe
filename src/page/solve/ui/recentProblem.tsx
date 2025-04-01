@@ -49,10 +49,10 @@ export const RecentProblem = () => {
   };
 
   return (
-    <div className="flex w-full rounded-lg bg-opacity-20">
-      <div className="flex items-center whitespace-nowrap bg-black bg-opacity-100 p-1 font-doodle text-xs font-bold tracking-wider text-white md:text-sm">
+    <div className="flex w-full rounded-lg bg-opacity-20 px-[0.3rem]">
+      {/* <div className="flex items-center whitespace-nowrap bg-black bg-opacity-100 p-1 font-doodle text-xs font-bold tracking-wider text-white md:text-sm">
         📢 New
-      </div>
+      </div> */}
       <div
         className="slide_container"
         onMouseEnter={onStop}
