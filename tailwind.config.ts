@@ -132,9 +132,4 @@ module.exports = {
     require('@tailwindcss/typography'),
     require('tailwindcss-inner-border'),
   ],
-  safelist: [
-    {
-      pattern: /animate-\[.+\]/,
-    },
-  ],
 } satisfies Config;
