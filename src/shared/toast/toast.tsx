@@ -5,23 +5,35 @@ const useToast = (
   setOpen: Dispatch<SetStateAction<boolean>>
 ) => {
   const [changeDescription, setChangeDescription] = useState('');
-  const [toastAnimationLocate, setToastAnimationLocate] = useState(
-    '-translate-y-[110%] opacity-0'
+  const [animationClass, setAnimationClass] = useState(
+    'opacity-0 -translate-y-full'
   );
 
   useLayoutEffect(() => {
+    let timeoutId1: NodeJS.Timeout;
+    let timeoutId2: NodeJS.Timeout;
+
     if (open) {
-      setToastAnimationLocate('translate-y-[100%] opacity-100');
-      setTimeout(() => {
-        setToastAnimationLocate('translate-y-[100%] -right-[100%]');
+      // 토스트 표시 (애니메이션 인)
+      setAnimationClass('animate-toast-in');
+
+      // 일정 시간 후 애니메이션 아웃
+      timeoutId1 = setTimeout(() => {
+        setAnimationClass('animate-toast-out');
       }, 2000);
-      setTimeout(() => {
-        setOpen((prev) => !prev);
+
+      // 애니메이션 완료 후 상태 초기화
+      timeoutId2 = setTimeout(() => {
+        setOpen(false);
+        setAnimationClass('opacity-0 -translate-y-full');
       }, 2500);
-    } else {
-      setToastAnimationLocate('-translate-y-[110%] opacity-0');
     }
-  }, [open]);
+
+    return () => {
+      clearTimeout(timeoutId1);
+      clearTimeout(timeoutId2);
+    };
+  }, [open, setOpen]);
 
   const setToastDescription = async (description: string) => {
     setChangeDescription(description);
@@ -30,7 +42,7 @@ const useToast = (
   const Toaster = ({ description }: { description?: string }) => {
     return (
       <div
-        className={`absolute z-[1] ${toastAnimationLocate} top-0 flex h-[3rem] items-center justify-center rounded-xl border border-[#ebe5d6] bg-[#F0EDD4] px-4 text-[2.2vh] shadow-light transition-all duration-300 ease-in-out`}
+        className={`py-6text-base absolute top-1 z-50 flex h-[2.7rem] w-[95%] min-w-[10rem] items-center rounded-sm border border-[#ebe5d6] bg-[#F0EDD4] px-4 shadow-light md:top-5 md:h-[2.9rem] md:w-auto md:justify-center ${animationClass}`}
       >
         {description ?? changeDescription}
       </div>
@@ -39,4 +51,5 @@ const useToast = (
 
   return { Toaster, setToastDescription };
 };
+
 export default useToast;

@@ -132,6 +132,10 @@ const Login = () => {
     };
   }, []);
 
+  const testToast = () => {
+    // setToastDescription('');
+    // setToastOpen(true);
+  };
   return (
     <div className="relative z-[1000] flex h-full w-full flex-col items-center overflow-hidden overflow-y-auto bg-white/60 scrollbar-hide md:flex-row md:justify-center md:bg-transparent md:pb-[4rem]">
       <Toaster />
@@ -192,13 +196,22 @@ const Login = () => {
               />
               <div className="mt-4 flex w-full justify-between">
                 <div>
-                  <input type="checkbox" disabled={true} className="mr-2" />
+                  <input
+                    type="checkbox"
+                    disabled={true}
+                    className="mr-2"
+                    checked
+                  />
                   <span className="text-[0.8rem]">로그인 상태 유지</span>
                 </div>
                 <div>
                   <button
-                    disabled={true}
+                    // disabled={true}
                     className="text-[0.8rem] font-bold text-[#5761eb] hover:cursor-pointer hover:underline hover:underline-offset-4"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      testToast();
+                    }}
                   >
                     비밀번호 찾기
                   </button>
@@ -240,7 +253,9 @@ const Login = () => {
                   key={item.id}
                   disabled={loginLoading}
                   onClick={() => {
-                    openNewWindowWithoutDuplicate(windowReference, item.link);
+                    setToastDescription('준비 중 입니다');
+                    setToastOpen(true);
+                    // openNewWindowWithoutDuplicate(windowReference, item.link);
                   }}
                   className="flex h-[4rem] w-1/3 cursor-pointer flex-col justify-center md:h-[5rem]"
                 >

@@ -37,11 +37,21 @@ module.exports = {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
+        'toast-in': {
+          '0%': { opacity: '0', transform: 'translateY(-100%)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'toast-out': {
+          '0%': { opacity: '1', transform: 'translateY(0)' },
+          '100%': { opacity: '0', transform: 'translateX(300%)' },
+        },
       },
       animation: {
         'fade-in': 'fade-in 1s ease-in-out',
         'fade-up': 'fade-up 0.3s ease-in-out',
         'slide-up': 'slide-up 300ms linear infinite',
+        'toast-in': 'toast-in 0.2s ease-out forwards',
+        'toast-out': 'toast-out 0.5s ease-in-out forwards',
       },
       boxShadow: {
         soft: '0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.06)',
@@ -121,5 +131,10 @@ module.exports = {
     require('@tailwindcss/aspect-ratio'),
     require('@tailwindcss/typography'),
     require('tailwindcss-inner-border'),
+  ],
+  safelist: [
+    {
+      pattern: /animate-\[.+\]/,
+    },
   ],
 } satisfies Config;
