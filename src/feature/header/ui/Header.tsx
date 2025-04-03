@@ -49,7 +49,7 @@ const Header = () => {
       )}
 
       {/* 우측 메뉴 */}
-      <div className="z-[1] flex h-full w-full items-center justify-end pr-4 md:w-[30%]">
+      <div className="flex h-full w-full items-center justify-end pr-4 md:w-[30%]">
         <RightHeaderComponents />
       </div>
     </div>

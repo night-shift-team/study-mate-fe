@@ -37,7 +37,7 @@ const RightHeaderComponents = () => {
         return null;
       default:
         return (
-          <div className="flex gap-2">
+          <div className="z-[1] flex gap-2">
             <HeaderSmallIcon
               title="관리자 대시보드"
               onClick={() => router.push(RouteTo.AdminDashboard)}
@@ -62,18 +62,20 @@ const RightHeaderComponents = () => {
         return null;
       case RouteTo.LevelTest:
         return (
-          <HeaderSmallIcon
-            title="로그아웃"
-            onClick={() => {
-              setUser(null);
-              router.push(RouteTo.Home);
-            }}
-            component={<MdLogout />}
-          />
+          <div className="z-[1] flex">
+            <HeaderSmallIcon
+              title="로그아웃"
+              onClick={() => {
+                setUser(null);
+                router.push(RouteTo.Home);
+              }}
+              component={<MdLogout />}
+            />
+          </div>
         );
       default:
         return (
-          <div className="flex">
+          <div className="z-[1] flex">
             <div className="md:hidden">
               <IoMenu
                 className="mr-2 cursor-pointer text-2xl text-[rgb(254,202,202)]"
