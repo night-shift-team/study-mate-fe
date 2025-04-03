@@ -1,47 +1,112 @@
-import { useEffect, useState } from 'react';
+import {
+  getAllNoticeListApi,
+  getAllNoticeListRes,
+  Notice,
+  NoticeCategory,
+} from '@/feature/notice/api';
+import { useEffect, useLayoutEffect, useState } from 'react';
 
-type NoticeType = {
-  type: 'notice' | 'event';
-  title: string;
-  link: string;
+const tempNotice: Notice = {
+  noticeId: 1,
+  noticeTitle: '환영합니다',
+  noticeContent: '환영합니다',
+  noticeCategory: NoticeCategory.GENERAL,
+  noticePurpose: '환영합니다',
+  pulbisherName: '환영합니다',
+  displayStartTime: '2023-08-01T00:00:00',
+  displayEndTime: '2023-08-01T00:00:00',
+  maintenanceStartTime: '2023-08-01T00:00:00',
+  maintenanceEndTime: '2023-08-01T00:00:00',
 };
 
-const noticeData: NoticeType[] = [
-  {
-    type: 'notice',
-    title: '공지사항',
-    link: '/notice',
-  },
-  {
-    type: 'event',
-    title: '이벤트 내용 입니다.',
-    link: '/event',
-  },
-];
-
 const NoticeBanner = () => {
-  const [currentNotice, setCurrentNotice] = useState<NoticeType>(noticeData[0]);
-  const [nextNotice, setNextNotice] = useState<NoticeType>(noticeData[1]);
+  // const [noticeList, setNoticeList] = useState<Notice[]>([]);
+  const [currentNotice, setCurrentNotice] = useState<Notice | null>(null);
+  const [nextNotice, setNextNotice] = useState<Notice | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  useEffect(() => {
-    let i = 0;
+  const getNoticeList = async (noticeList: Notice[]) => {
+    try {
+      const res = await getAllNoticeListApi(0, 99999);
+      if (res.ok) {
+        noticeList.push(...(res.payload as getAllNoticeListRes).content);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
-    const noticeInterval = setInterval(() => {
-      // 애니메이션 시작
-      setIsAnimating(true);
+  const updateNoticeList = async (
+    noticeListString: string | null,
+    noticeListObject: Notice[]
+  ) => {
+    // 세션스토리지에 없으면
+    if (!noticeListString) {
+      // api로 한번 확인하고 있으면 업데이트함
+      await getNoticeList(noticeListObject);
+      if (noticeListObject.length) {
+        setCurrentNotice(noticeListObject[0] ?? tempNotice);
+        setNextNotice(noticeListObject[1] ?? noticeListObject[0] ?? tempNotice);
 
-      // 애니메이션 종료 후 데이터 변경
-      setTimeout(() => {
-        i = (i + 1) % noticeData.length; //* i를 순환하도록 설정
-        setCurrentNotice(noticeData[i]);
-        setNextNotice(noticeData[(i + 1) % noticeData.length]); // 다음 공지사항 설정
-        setIsAnimating(false); // 애니메이션 종료
-      }, 300); // 애니메이션 지속 시간 (300ms)
-    }, 5000);
+        // 없으면 임시데이터 추가
+      } else {
+        setCurrentNotice(tempNotice);
+        setNextNotice(tempNotice);
+      }
 
-    return () => clearInterval(noticeInterval);
+      // 세션스토리지에 있으면 파싱해서 데이터 추가
+    } else {
+      const noticeData: Notice[] = JSON.parse(noticeListString);
+      noticeListObject.push(...noticeData);
+      setCurrentNotice(noticeData[0] ?? tempNotice);
+      setNextNotice(noticeData[1] ?? noticeData[0] ?? tempNotice);
+    }
+  };
+  useLayoutEffect(() => {
+    const noticeListString: string | null =
+      sessionStorage.getItem('validNoticeList');
+    const noticeListObject = [] as Notice[];
+
+    updateNoticeList(noticeListString, noticeListObject).then(() => {
+      let i = 0;
+      setCurrentNotice(noticeListObject[i]);
+      setNextNotice(noticeListObject[(i + 1) % noticeListObject.length]); // 다음 공지사항 설정
+      // 1. isAnimating true -> 처음 공지사항 그대로 위로 올라가고 넥스트도 그대로 위로 올라감 -> isAnimating false
+      // 2. 500초 후, 처음 공지사항으로 바꾸고 다음 공지사항을 그 다음 걸로 바꿈
+
+      const noticeInterval = setInterval(() => {
+        // 애니메이션 준비
+        setIsAnimating(true);
+        if (!noticeListObject) return;
+
+        setTimeout(() => {
+          i = (i + 1) % noticeListObject.length; //* i를 순환하도록 설정
+          setCurrentNotice(noticeListObject[i]);
+          setNextNotice(noticeListObject[(i + 1) % noticeListObject.length]); // 다음 공지사항 설정
+          setIsAnimating(false); // 애니메이션 종료
+        }, 1000);
+      }, 5000);
+
+      return () => clearInterval(noticeInterval);
+    });
   }, []);
+
+  const noticeCategoryDisplayString = (
+    category: NoticeCategory | undefined
+  ) => {
+    switch (category) {
+      case NoticeCategory.GENERAL:
+        return '공지';
+      case NoticeCategory.URGENT:
+        return '긴급';
+      case NoticeCategory.EVENT:
+        return '이벤트';
+      case NoticeCategory.MAINTENANCE:
+        return;
+      default:
+        return '';
+    }
+  };
 
   return (
     <div className="relative flex h-10 w-full flex-shrink-0 overflow-hidden bg-gray-800/80 px-[1rem] font-doodle text-white md:px-[2.5rem]">
@@ -53,9 +118,11 @@ const NoticeBanner = () => {
             : 'translate-y-0'
         }`}
       >
-        <span>[{currentNotice.type}]</span>
+        <span>
+          [{noticeCategoryDisplayString(currentNotice?.noticeCategory)}]
+        </span>
         <span className="underline-offset-4 hover:cursor-pointer hover:underline">
-          {currentNotice.title}
+          {currentNotice?.noticeTitle}
         </span>
       </div>
 
@@ -67,9 +134,11 @@ const NoticeBanner = () => {
             : 'translate-y-full'
         }`}
       >
-        <span>[{nextNotice.type}]</span>
+        <span>
+          [{noticeCategoryDisplayString(currentNotice?.noticeCategory)}]
+        </span>
         <span className="underline-offset-4 hover:cursor-pointer hover:underline">
-          {nextNotice.title}
+          {nextNotice?.noticeTitle}
         </span>
       </div>
     </div>

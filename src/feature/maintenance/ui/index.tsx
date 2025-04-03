@@ -19,7 +19,7 @@ export const MaintenanceCheck = ({
       if (res.ok && res.payload) {
         const data = res.payload as GetValidnoticeListRes;
         const isMaintenance = data.isMaintenanceNoticeExist;
-        if (!isMaintenance) {
+        if (isMaintenance) {
           return (
             <div className="flex h-full w-full flex-col items-center justify-center">
               <div className="flex w-full justify-center">
@@ -36,12 +36,14 @@ export const MaintenanceCheck = ({
               </span>
               {data.maintenaceNotices[0] ? (
                 <div className="flex w-full flex-col items-center justify-center p-2">
-                  <p>{data.displayNotices[0].noticeTitle}</p>
-                  <p>{data.maintenaceNotices[0].maintenanceEndTime}</p>
+                  <p>{data.displayNotices[0]?.noticeTitle ?? ''}</p>
+                  <p>{data.maintenaceNotices[0]?.maintenanceEndTime ?? ''}</p>
                   <RemainTimeSV2
                     endDate={
                       data.maintenaceNotices[0]?.maintenanceEndTime
-                        ? new Date(data.maintenaceNotices[0].maintenanceEndTime)
+                        ? new Date(
+                            data.maintenaceNotices[0]?.maintenanceEndTime ?? ''
+                          )
                         : new Date(Date.now())
                     }
                   />
@@ -51,6 +53,14 @@ export const MaintenanceCheck = ({
               )}
             </div>
           );
+        } else {
+          // sessionStorage에 유효한 공지사항 저장
+          if (data.isMaintenanceNoticeExist) {
+            sessionStorage.setItem(
+              'validNoticeList',
+              JSON.stringify(data.displayNotices)
+            );
+          }
         }
       }
       return <>{children}</>;

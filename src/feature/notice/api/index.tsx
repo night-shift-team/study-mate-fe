@@ -2,11 +2,17 @@ import { _apiFetch } from '@/shared/api/model/config';
 
 const API_Prefix = '/api/v1/notice';
 
+export enum NoticeCategory {
+  GENERAL = 'GENERAL', // 일반공지
+  URGENT = 'URGENT', // 긴급공지
+  EVENT = 'EVENT', // 이벤트
+  MAINTENANCE = 'MAINTENANCE', // 점검
+}
 export interface Notice {
   noticeId: number;
   noticeTitle: string;
   noticeContent: string;
-  noticeCategory: string;
+  noticeCategory: NoticeCategory;
   noticePurpose: string;
   pulbisherName: string;
   displayStartTime: string; // ISO 8601 형식의 날짜 문자열
