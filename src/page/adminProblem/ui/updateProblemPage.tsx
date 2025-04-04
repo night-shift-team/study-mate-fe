@@ -28,7 +28,7 @@ import { Problem } from '..';
 import { updateAttrBox } from '../model/updateAttrBoxContents';
 import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
 import { ServerErrorResponse } from '@/shared/api/model/config';
-import useToast from '@/shared/toast/toast';
+import useToast, { ToastType } from '@/shared/toast/toast';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 
 enum ProblemAttributeTitle {
@@ -45,7 +45,10 @@ const UpdateProblemPage = () => {
     useState<ProblemDetailInfoRes | null>(null);
 
   const [toastOpen, setToastOpen] = useState(false);
-  const { Toaster, setToastDescription } = useToast(toastOpen, setToastOpen);
+  const { Toaster, setToastDescription, setToastIcon } = useToast(
+    toastOpen,
+    setToastOpen
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   useLayoutEffect(() => {
@@ -97,6 +100,7 @@ const UpdateProblemPage = () => {
         const res = await updateAdminMAQApi(problemDetailInfo.questionId, body);
         if (res.ok) {
           console.log(`${problemDetailInfo.questionId} updated`, res.payload);
+          setToastIcon(ToastType.success);
           setToastDescription('문제 수정이 완료되었습니다.');
           setToastOpen(true);
           return;
@@ -113,6 +117,7 @@ const UpdateProblemPage = () => {
         const res = await updateAdminSAQApi(problemDetailInfo.questionId, body);
         if (res.ok) {
           console.log(`${problemDetailInfo.questionId} updated`, res.payload);
+          setToastIcon(ToastType.success);
           setToastDescription('문제 수정이 완료되었습니다.');
           setToastOpen(true);
           return;
@@ -122,6 +127,7 @@ const UpdateProblemPage = () => {
       return;
     } catch (e) {
       console.log(e);
+      setToastIcon(ToastType.error);
       setToastDescription('문제 수정에 실패했습니다.');
       setToastOpen(true);
     } finally {

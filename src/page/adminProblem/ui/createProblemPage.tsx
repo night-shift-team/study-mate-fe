@@ -25,7 +25,7 @@ import {
 import { updateAttrBox } from '../model/updateAttrBoxContents';
 import { ServerErrorResponse } from '@/shared/api/model/config';
 import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
-import useToast from '@/shared/toast/toast';
+import useToast, { ToastType } from '@/shared/toast/toast';
 import { useRouter } from 'next/navigation';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
@@ -52,7 +52,10 @@ const CreateProblemPage = () => {
     });
 
   const [toastOpen, setToastOpen] = useState(false);
-  const { Toaster, setToastDescription } = useToast(toastOpen, setToastOpen);
+  const { Toaster, setToastDescription, setToastIcon } = useToast(
+    toastOpen,
+    setToastOpen
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -107,6 +110,7 @@ const CreateProblemPage = () => {
             `${problemDetailInfo.questionTitle} created`,
             res.payload
           );
+          setToastIcon(ToastType.success);
           setToastDescription('문제 생성이 완료되었습니다.');
           setToastOpen(true);
           setTimeout(() => {
@@ -115,6 +119,7 @@ const CreateProblemPage = () => {
           return;
         }
         if ((res.payload as ServerErrorResponse).ecode === Ecode.E0405) {
+          setToastIcon(ToastType.error);
           setToastDescription(EcodeMessage(Ecode.E0405));
           setToastOpen(true);
           return;
@@ -135,6 +140,7 @@ const CreateProblemPage = () => {
             `${problemDetailInfo.questionTitle} created`,
             res.payload
           );
+          setToastIcon(ToastType.success);
           setToastDescription('문제 생성이 완료되었습니다.');
           setToastOpen(true);
           setTimeout(() => {
@@ -143,6 +149,7 @@ const CreateProblemPage = () => {
           return;
         }
         if ((res.payload as ServerErrorResponse).ecode === Ecode.E0405) {
+          setToastIcon(ToastType.error);
           setToastDescription(EcodeMessage(Ecode.E0405));
           setToastOpen(true);
           return;
@@ -152,6 +159,7 @@ const CreateProblemPage = () => {
       return;
     } catch (e) {
       console.log(e);
+      setToastIcon(ToastType.error);
       setToastDescription('문제 생성에 실패했습니다.');
       setToastOpen(true);
     } finally {

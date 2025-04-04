@@ -11,7 +11,7 @@ import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { DialogPopup } from '@/shared/popUp/ui/dialogPopup';
 import { useRouter } from 'next/navigation';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import useToast from '@/shared/toast/toast';
+import useToast, { ToastType } from '@/shared/toast/toast';
 
 export interface SignUpFormData {
   name: string;
@@ -29,7 +29,10 @@ const SignUp = () => {
   } as SignUpFormData);
 
   const [toastOpen, setToastOpen] = useState(false);
-  const { Toaster, setToastDescription } = useToast(toastOpen, setToastOpen);
+  const { Toaster, setToastDescription, setToastIcon } = useToast(
+    toastOpen,
+    setToastOpen
+  );
 
   const [isLoading, setIsLoading] = useState(false);
   const [popupOpen, setPopupOpen] = useState(false);
@@ -71,16 +74,19 @@ const SignUp = () => {
     setIsLoading(true);
     try {
       if (formData.password !== formData.confirmPassword) {
+        setToastIcon(ToastType.warning);
         setToastDescription('비밀번호가 일치하지 않습니다.');
         setToastOpen(true);
         return;
       }
       if (await checkNicknameDuplicate(formData.name)) {
+        setToastIcon(ToastType.warning);
         setToastDescription('이미 사용중인 닉네임입니다.');
         setToastOpen(true);
         return;
       }
       if (await checkEmailDuplicate(formData.email)) {
+        setToastIcon(ToastType.warning);
         setToastDescription('이미 사용중인 이메일입니다.');
         setToastOpen(true);
         return;

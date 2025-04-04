@@ -25,7 +25,7 @@ const AdminLoginForm = ({
 }: {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  setToastText: (description: string) => Promise<void>;
+  setToastText: (description: string) => void;
 }) => {
   const router = useRouter();
   //TODO: 로그인 후 롤 체크 후 사용자면 홈, 관리자면 관리 홈으로 이동

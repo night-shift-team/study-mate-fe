@@ -71,21 +71,7 @@ body {
   }
 }
 
-@font-face {
-  font-family: 'Spoqa Han Sans Neo';
-  font-weight: 400;
-  font-style: normal;
-  src:
-    url('https://cdn.jsdelivr.net/gh/spoqa/spoqa-han-sans@latest/Subset/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.woff2')
-      format('woff2'),
-    url('https://cdn.jsdelivr.net/gh/spoqa/spoqa-han-sans@latest/Subset/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.woff')
-      format('woff');
-}
-
 @layer utilities {
-  .font-spoqa {
-    font-family: 'Spoqa Han Sans Neo', sans-serif;
-  }
   .box-shadow-sm {
     box-shadow:
       0 2px 6px -1px rgba(0, 0, 0, 0.1),
@@ -124,9 +110,16 @@ body {
   }
 
   @font-face {
+    font-family: 'SpoqaHanSansNeo';
+    src: url('../assets/font/SpoqaHanSansNeo-Regular.woff2') format('woff2');
+  }
+
+  @font-face {
     font-family: 'CustomFontDoodle';
-    src: url('../assets/beachday.regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+    src: url('../assets/font/beachday.regular.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Jalnan';
+    src: url('../assets/font/Jalnan2TTF.ttf') format('truetype');
   }
 }

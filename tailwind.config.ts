@@ -61,8 +61,9 @@ module.exports = {
         'inner-right': 'inset 2px 0 0 #000', // 오른쪽 내부 테두리
       },
       fontFamily: {
-        spoqa: ['Spoqa Han Sans Neo', 'sans-serif'],
+        spoqa: ['SpoqaHanSansNeo', 'sans-serif'],
         doodle: ['CustomFontDoodle', 'sans-serif'],
+        jalnan: ['Jalnan', 'sans-serif'],
       },
       colors: {
         pointcolor: {

@@ -25,7 +25,7 @@ import {
 import { ServerErrorResponse } from '@/shared/api/model/config';
 import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
 import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
-import useToast from '@/shared/toast/toast';
+import useToast, { ToastType } from '@/shared/toast/toast';
 import { devNull } from 'os';
 import { userStore } from '@/state/userStore';
 import { Preahvihear } from 'next/font/google';
@@ -50,7 +50,10 @@ const Problem = ({ category }: ProblemProps) => {
   >(null);
 
   const [toastOpen, setToastOpen] = useState(false);
-  const { Toaster, setToastDescription } = useToast(toastOpen, setToastOpen);
+  const { Toaster, setToastDescription, setToastIcon } = useToast(
+    toastOpen,
+    setToastOpen
+  );
   const { user, setUser } = userStore();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -122,6 +125,7 @@ const Problem = ({ category }: ProblemProps) => {
     } catch (e) {
       console.log(e);
       if ((e as ServerErrorResponse).ecode === Ecode.E0406) {
+        setToastIcon(ToastType.error);
         setToastDescription(EcodeMessage(Ecode.E0406));
         setToastOpen(true);
         setSelectedAnswer(null);

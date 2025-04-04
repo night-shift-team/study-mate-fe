@@ -20,7 +20,7 @@ import {
 import { localLoginApi, LocalLoginRes, userInfoApi, UserInfoRes } from '../api';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { resetFocus } from '@/shared/dom/model/focus';
-import useToast from '@/shared/toast/toast';
+import useToast, { ToastType } from '@/shared/toast/toast';
 import {
   checkEmailValidate,
   checkPasswordValidate,
@@ -44,7 +44,10 @@ const Login = () => {
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
 
-  const { Toaster, setToastDescription } = useToast(toastOpen, setToastOpen);
+  const { Toaster, setToastIcon, setToastDescription } = useToast(
+    toastOpen,
+    setToastOpen
+  );
   // 인증 response 리스너
   addSocialLoginRedirectDataListener(setLoginLoading);
 
@@ -88,6 +91,7 @@ const Login = () => {
         }
       } else {
         console.error('로그인 에러:', error);
+        setToastIcon(ToastType.error);
         setToastDescription('Login Failed');
         setToastOpen(true);
       }
@@ -133,8 +137,9 @@ const Login = () => {
   }, []);
 
   const testToast = () => {
-    // setToastDescription('');
-    // setToastOpen(true);
+    setToastIcon(ToastType.info);
+    setToastDescription('준비 중 입니다');
+    setToastOpen(true);
   };
   return (
     <div className="relative z-[1000] flex h-full w-full flex-col items-center overflow-hidden overflow-y-auto bg-white/60 scrollbar-hide md:flex-row md:justify-center md:bg-transparent md:pb-[4rem]">
@@ -253,6 +258,7 @@ const Login = () => {
                   key={item.id}
                   disabled={loginLoading}
                   onClick={() => {
+                    setToastIcon(ToastType.info);
                     setToastDescription('준비 중 입니다');
                     setToastOpen(true);
                     // openNewWindowWithoutDuplicate(windowReference, item.link);

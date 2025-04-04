@@ -11,7 +11,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { UserInfo } from '@/shared/constants/userInfo';
 
 export const getUserInfo = async (
-  setToastText: (description: string) => Promise<void>,
+  setToastText: (description: string) => void,
   setToastOpen: Dispatch<SetStateAction<boolean>>,
   setUser: (newUser: UserInfo | null) => void,
   router: AppRouterInstance,

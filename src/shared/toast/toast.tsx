@@ -1,10 +1,20 @@
 import { Dispatch, SetStateAction, useLayoutEffect, useState } from 'react';
+import { CircleCheckBig, TriangleAlert, CircleX, Info } from 'lucide-react';
+
+export enum ToastType {
+  success = 'success',
+  error = 'error',
+  warning = 'warning',
+  info = 'info',
+}
+type ToastStatus = ToastType;
 
 const useToast = (
   open: boolean,
   setOpen: Dispatch<SetStateAction<boolean>>
 ) => {
   const [changeDescription, setChangeDescription] = useState('');
+  const [toastType, setToastType] = useState<ToastType>();
   const [animationClass, setAnimationClass] = useState(
     'opacity-0 -translate-y-full'
   );
@@ -35,21 +45,60 @@ const useToast = (
     };
   }, [open, setOpen]);
 
-  const setToastDescription = async (description: string) => {
+  const setToastDescription = (description: string) => {
     setChangeDescription(description);
   };
+  const setToastIcon = (status: ToastStatus) => {
+    setToastType(status);
+  };
 
-  const Toaster = ({ description }: { description?: string }) => {
+  const getToastStatusIcon = (status?: ToastStatus) => {
+    switch (status) {
+      case ToastType.success:
+        return <CircleCheckBig size={18} color="#22c55e" />;
+      case ToastType.error:
+        return <CircleX size={18} color="#ef4444" />;
+      case ToastType.warning:
+        return <TriangleAlert size={18} color="#eab308" />;
+      case ToastType.info:
+        return <Info size={18} color="#3b82f6" />;
+      default:
+        return null;
+    }
+  };
+  const getToastBackgroundColor = (status?: ToastStatus) => {
+    switch (status) {
+      case ToastType.success:
+        return 'bg-[#edf7ed]';
+      case ToastType.error:
+        return 'bg-[#fdeded]';
+      case ToastType.warning:
+        return 'bg-[#fff4e5]';
+      case ToastType.info:
+        return 'bg-[#e5f6fd]';
+      default:
+        return 'bg-white';
+    }
+  };
+
+  const Toaster = ({
+    status,
+    description,
+  }: {
+    status?: ToastStatus;
+    description?: string;
+  }) => {
     return (
       <div
-        className={`py-6text-base absolute top-1 z-50 flex h-[2.7rem] w-[95%] min-w-[10rem] items-center rounded-sm border border-[#ebe5d6] bg-[#F0EDD4] px-4 shadow-light md:top-5 md:h-[2.9rem] md:w-auto md:justify-center ${animationClass}`}
+        className={`absolute top-1 z-50 flex h-[2.7rem] min-w-[5rem] max-w-[95%] items-center gap-1 rounded-xl py-[1.35rem] text-[0.9rem] ${getToastBackgroundColor(status ?? toastType)} rounded-sm border px-4 shadow-light md:top-5 md:h-[2.9rem] md:w-auto md:justify-center ${animationClass}`}
       >
+        {status ? getToastStatusIcon(status) : getToastStatusIcon(toastType)}
         {description ?? changeDescription}
       </div>
     );
   };
 
-  return { Toaster, setToastDescription };
+  return { Toaster, setToastDescription, setToastIcon };
 };
 
 export default useToast;
