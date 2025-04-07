@@ -9,10 +9,13 @@ import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { Dispatch, SetStateAction } from 'react';
 import { UserInfo } from '@/shared/constants/userInfo';
+import { LoginToastText } from './loginToastText';
+import { ToastType } from '@/shared/toast/toast';
 
 export const getUserInfo = async (
   setToastText: (description: string) => void,
   setToastOpen: Dispatch<SetStateAction<boolean>>,
+  setToastIcon: (status: ToastType) => void,
   setUser: (newUser: UserInfo | null) => void,
   router: AppRouterInstance,
   isAdmin?: boolean
@@ -26,7 +29,8 @@ export const getUserInfo = async (
         EcodeMessage(Ecode.E0106);
         localStorage.removeItem('accessToken');
         localStorage.removeItem(UserStoreStorage.userStore);
-        setToastText('Login Failed');
+        setToastText(LoginToastText.LOGIN_FAILED);
+        setToastIcon(ToastType.success);
         setToastOpen(true);
         return;
       }
@@ -34,7 +38,8 @@ export const getUserInfo = async (
     } else {
       const userData = res.payload as UserInfoRes;
       setUser(userData);
-      setToastText('Login Success');
+      setToastText(LoginToastText.LOGIN_SUCCESS);
+      setToastIcon(ToastType.success);
       setToastOpen(true);
       setTimeout(() => {
         if (isAdmin && userData.role >= 7) {

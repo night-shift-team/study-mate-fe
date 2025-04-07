@@ -17,6 +17,7 @@ import { requestSignIn } from '@/page/login/model/requestSignIn';
 import { getUserInfo } from '@/page/login/model/getUserInfo';
 import { userStore } from '@/state/userStore';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import { LoginToastText } from '@/page/login/model/loginToastText';
 
 const AdminLoginForm = ({
   open,
@@ -62,7 +63,7 @@ const AdminLoginForm = ({
         return;
       }
       console.error('로그인 에러:', error);
-      setToastText('Login Failed');
+      setToastText(LoginToastText.LOGIN_FAILED);
       setOpen(true);
     } finally {
       setIsLoading(false);

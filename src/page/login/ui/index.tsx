@@ -94,7 +94,13 @@ const Login = () => {
       const tokens = await requestSignIn(formData.email, formData.password);
       setTokens(tokens);
       setAccessTokenToHeader(localStorage.getItem('accessToken'));
-      await getUserInfo(setToastDescription, setToastOpen, setUser, router);
+      await getUserInfo(
+        setToastDescription,
+        setToastOpen,
+        setToastIcon,
+        setUser,
+        router
+      );
     } catch (error) {
       if ((error as ServerErrorResponse).ecode !== undefined) {
         switch ((error as ServerErrorResponse).ecode) {
