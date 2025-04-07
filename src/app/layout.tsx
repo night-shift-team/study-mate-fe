@@ -1,8 +1,9 @@
 import './globals.css';
 import Header from '@/feature/header/ui/Header';
 import { Provider } from '@/components/ui/provider';
-import React, { JSX, Suspense } from 'react';
+import React from 'react';
 import { MaintenanceCheck } from '@/feature/maintenance/ui';
+import TooltipWrapper from '@/feature/tooltip/tooltipWrapper';
 
 export const metadata = {
   manifest: '/manifest.ts',
@@ -23,6 +24,7 @@ export default async function RootLayout({
         <MaintenanceCheck>
           <Provider>
             <div className="base h-full w-full">
+              <TooltipWrapper />
               <div className="fixed z-[100] flex h-[3rem] w-full md:h-[3.5rem]">
                 <Header />
               </div>

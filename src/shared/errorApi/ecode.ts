@@ -20,7 +20,7 @@ export const EcodeMessage = (ecode: Ecode) => {
     case Ecode.E0103:
       return '유효한 이메일이 아닙니다.';
     case Ecode.E0104:
-      return 'password가 일치하지 않습니다.';
+      return '패스워드가 일치하지 않습니다.';
     case Ecode.E0106:
       return '구글 인증에 실패하였습니다.';
     case Ecode.E0405:

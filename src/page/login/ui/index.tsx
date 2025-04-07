@@ -2,35 +2,28 @@
 
 import Logo from '@/assets/studyMate_logo.png';
 import Image from 'next/image';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { LoginButton } from '@/entities';
 import Link from 'next/link';
-import { openNewWindowWithoutDuplicate } from '@/shared/window/model/openWindow';
 import { addSocialLoginRedirectDataListener } from '../model/addSocialLoginResponseListener';
 import { useRouter } from 'next/navigation';
-import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
-import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import { UserStoreStorage, userStore } from '@/state/userStore';
+import { Ecode } from '@/shared/errorApi/ecode';
+import { userStore } from '@/state/userStore';
 import AuthHoc from '@/shared/auth/model/authHoc';
 import {
-  handleFetchErrors,
   ServerErrorResponse,
   setAccessTokenToHeader,
 } from '@/shared/api/model/config';
-import { localLoginApi, LocalLoginRes, userInfoApi, UserInfoRes } from '../api';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { resetFocus } from '@/shared/dom/model/focus';
 import useToast, { ToastType } from '@/shared/toast/toast';
-import {
-  checkEmailValidate,
-  checkPasswordValidate,
-} from '../model/checkInputValidate';
+
 import { setTokens } from '../model/setTokens';
 import { requestSignIn } from '../model/requestSignIn';
 import { getUserInfo } from '../model/getUserInfo';
 import InstallButton from '@/app/install-button';
-import PushNotificationButton from '@/app/push-notification';
-import PushNotificationButtonV2 from '@/app/noticeTestComponent';
+import useTooltip from '@/feature/tooltip/tooltipController';
+import { TooltipContents } from '@/state/tooltip/tooltipContents';
 
 const Login = () => {
   const router = useRouter();
@@ -50,15 +43,16 @@ const Login = () => {
   );
   // 인증 response 리스너
   addSocialLoginRedirectDataListener(setLoginLoading);
+  const { showTooltip, hideTooltip, updateTooltip } = useTooltip();
 
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
 
+  const [emailError, setEmailError] = useState<string | null>(null);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    checkPasswordValidate(passwordInputRef, true);
-    checkEmailValidate(emailInputRef, true);
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -68,6 +62,32 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // 이메일 유효성 검사
+    if (!emailInputRef.current?.value.includes('@')) {
+      if (emailInputRef.current) {
+        showTooltip(emailInputRef.current);
+        return;
+      }
+    }
+    // if (emailInputRef.current?.value.includes('@') && (emailInputRef.current?.value.split('@')[1].length < 2 || !emailInputRef.current?.value.split('@')[1].includes('.'))) {
+    //   if (emailInputRef.current) {
+    //     updateTooltip(emailInputRef.current, '올바른 이메일 형식을 입력해주세요');
+    //     showTooltip(emailInputRef.current);
+    //     return;
+    //   }
+    // }
+
+    // 비밀번호 유효성 검사
+    if (!passwordInputRef.current?.value) {
+      if (passwordInputRef.current) showTooltip(passwordInputRef.current);
+      return;
+    }
+
+    // 모든 유효성 검사를 통과한 경우
+    hideTooltip(emailInputRef.current!);
+    hideTooltip(passwordInputRef.current!);
+
     try {
       // 여기에 실제 로그인 API 호출 로직 구현
       setLoginLoading(true);
@@ -79,12 +99,24 @@ const Login = () => {
       if ((error as ServerErrorResponse).ecode !== undefined) {
         switch ((error as ServerErrorResponse).ecode) {
           case Ecode.E0103:
-            emailInputRef.current?.focus();
-            checkEmailValidate(emailInputRef, false);
+            if (emailInputRef.current) {
+              emailInputRef.current.focus();
+              updateTooltip(
+                emailInputRef.current,
+                TooltipContents.InvalidEmail
+              );
+              showTooltip(emailInputRef.current);
+            }
             break;
           case Ecode.E0104:
-            passwordInputRef.current?.focus();
-            checkPasswordValidate(passwordInputRef, false);
+            if (passwordInputRef.current) {
+              passwordInputRef.current.focus();
+              updateTooltip(
+                passwordInputRef.current,
+                TooltipContents.InvalidPassword
+              );
+              showTooltip(passwordInputRef.current);
+            }
             break;
           default:
             break;
@@ -141,6 +173,7 @@ const Login = () => {
     setToastDescription('준비 중 입니다');
     setToastOpen(true);
   };
+
   return (
     <div className="relative z-[1000] flex h-full w-full flex-col items-center overflow-hidden overflow-y-auto bg-white/60 scrollbar-hide md:flex-row md:justify-center md:bg-transparent md:pb-[4rem]">
       <Toaster />
@@ -173,18 +206,22 @@ const Login = () => {
             id={'loginForm'}
             onSubmit={handleSubmit}
             className="flex flex-col gap-2 md:gap-4"
+            noValidate
           >
             <div className="flex w-[100%] flex-col">
               <span className="text-[0.8rem]">Email</span>
+
               <input
                 ref={emailInputRef}
                 type="email"
                 name="email"
                 value={formData.email}
-                onChange={handleChange}
+                onChange={(e) => {
+                  e.preventDefault();
+                  handleChange(e);
+                }}
                 placeholder="이메일"
                 className="rounded-lg border border-gray-300 px-4 py-2 text-sm"
-                required
               />
               <span className="mt-2 text-[0.8rem]">Password</span>
               <input
@@ -193,12 +230,13 @@ const Login = () => {
                 name="password"
                 value={formData.password}
                 onChange={(e) => {
+                  e.preventDefault();
                   handleChange(e);
                 }}
                 placeholder="비밀번호"
                 className="rounded-lg border border-gray-300 px-4 py-2 text-sm"
-                required
               />
+
               <div className="mt-4 flex w-full justify-between">
                 <div>
                   <input
@@ -227,18 +265,10 @@ const Login = () => {
               id="loginButton"
               type="submit"
               disabled={loginLoading}
-              className={`flex h-[2.5rem] w-full items-center justify-center rounded-lg bg-gray-600 py-1 text-white transition-colors md:py-2 ${loginLoading ? 'hover:bg-gray-400' : 'hover:bg-[#F0EDD4] hover:text-black'}`}
+              className={`flex h-[2.5rem] w-full items-center justify-center rounded-lg bg-gray-600 py-1 text-white transition-colors md:py-2 ${loginLoading ? 'hover:bg-gray-400' : 'hover:bg-opacity-80'}`}
             >
               {loginLoading ? <Spinner /> : '로그인'}
             </button>{' '}
-            {/* <Link
-              href={loginLoading ? '#' : '/leveltest'}
-              onClick={(e) => (loginLoading ? e.preventDefault() : null)}
-            >
-              <div className="cursor-pointer text-center text-sm text-gray-500 hover:text-gray-700">
-                [로그인 없이 레벨 테스트 진행하기]
-              </div>
-            </Link> */}
           </form>
 
           <div className="flex w-full flex-col justify-center">

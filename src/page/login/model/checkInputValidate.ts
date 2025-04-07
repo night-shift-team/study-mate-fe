@@ -5,13 +5,11 @@ export const checkEmailValidate = (
   isValid: boolean
 ) => {
   if (!isValid && emailInputRef.current) {
-    emailInputRef.current.setCustomValidity('이메일 정보가 일치하지 않습니다.');
-    emailInputRef.current.reportValidity();
-    return;
+    return false;
   } else if (isValid && emailInputRef.current) {
-    emailInputRef.current.setCustomValidity('');
-    return;
+    return true;
   }
+  return false;
 };
 
 export const checkPasswordValidate = (
@@ -19,13 +17,9 @@ export const checkPasswordValidate = (
   isValid: boolean
 ) => {
   if (!isValid && passwordInputRef.current) {
-    passwordInputRef.current.setCustomValidity(
-      '패스워드 정보가 일치하지 않습니다.'
-    );
-    passwordInputRef.current.reportValidity();
-    return;
+    return false;
   } else if (isValid && passwordInputRef.current) {
-    passwordInputRef.current.setCustomValidity('');
-    return;
+    return true;
   }
+  return false;
 };
