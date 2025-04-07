@@ -12,7 +12,7 @@ const Header = () => {
   const path = usePathname();
   console.log(path);
   return (
-    <div className="relative flex h-full w-full items-center justify-between border-b bg-pointcolor-yogurt/10 px-0 shadow-sm md:px-[4rem] md:pl-2">
+    <div className="relative flex h-full w-full items-center justify-between border-b bg-pointcolor-yogurt/10 px-0 shadow-sm md:px-4">
       {/* 데스크탑 좌측 로고 */}
       <Link
         href={RouteTo.Home}
