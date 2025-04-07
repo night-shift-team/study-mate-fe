@@ -18,15 +18,18 @@ import { getUserInfo } from '@/page/login/model/getUserInfo';
 import { userStore } from '@/state/userStore';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { LoginToastText } from '@/page/login/model/loginToastText';
+import { ToastType } from '@/shared/toast/toast';
 
 const AdminLoginForm = ({
   open,
   setOpen,
   setToastText,
+  setToastIcon,
 }: {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   setToastText: (description: string) => void;
+  setToastIcon: (status: ToastType) => void;
 }) => {
   const router = useRouter();
   //TODO: 로그인 후 롤 체크 후 사용자면 홈, 관리자면 관리 홈으로 이동
@@ -50,7 +53,14 @@ const AdminLoginForm = ({
         refreshToken: res.refreshToken,
       });
       setAccessTokenToHeader(localStorage.getItem('accessToken'));
-      await getUserInfo(setToastText, setOpen, setUser, router, true);
+      await getUserInfo(
+        setToastText,
+        setOpen,
+        setToastIcon,
+        setUser,
+        router,
+        true
+      );
     } catch (error) {
       if ((error as ServerErrorResponse).ecode === Ecode.E0103) {
         emailRef.current?.focus();

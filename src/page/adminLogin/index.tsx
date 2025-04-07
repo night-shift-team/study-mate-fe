@@ -8,7 +8,10 @@ import AuthHoc from '@/shared/auth/model/authHoc';
 
 const AdminPage = () => {
   const [toastOpen, setToastOpen] = useState(false);
-  const { Toaster, setToastDescription } = useToast(toastOpen, setToastOpen);
+  const { Toaster, setToastDescription, setToastIcon } = useToast(
+    toastOpen,
+    setToastOpen
+  );
   //TODO: 로그인 상태 일 시 로그아웃
   console.log(toastOpen);
   return (
@@ -34,6 +37,7 @@ const AdminPage = () => {
           open={toastOpen}
           setOpen={setToastOpen}
           setToastText={setToastDescription}
+          setToastIcon={setToastIcon}
         />
       </div>
     </div>
