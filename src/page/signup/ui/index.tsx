@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   checkDuplicateEmailApi,
   checkDuplicateNicknameApi,
@@ -12,6 +12,8 @@ import { DialogPopup } from '@/shared/popUp/ui/dialogPopup';
 import { useRouter } from 'next/navigation';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import useToast, { ToastType } from '@/shared/toast/toast';
+import useTooltip from '@/feature/tooltip/tooltipController';
+import { TooltipContents } from '@/state/tooltip/tooltipContents';
 
 export interface SignUpFormData {
   name: string;
@@ -33,9 +35,15 @@ const SignUp = () => {
     toastOpen,
     setToastOpen
   );
+  const { showTooltip, updateTooltip, hideTooltip } = useTooltip();
 
   const [isLoading, setIsLoading] = useState(false);
   const [popupOpen, setPopupOpen] = useState(false);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const confirmPasswordRef = useRef<HTMLInputElement>(null);
+
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,6 +52,7 @@ const SignUp = () => {
       ...prev,
       [name]: value,
     }));
+    hideTooltip(e.target);
   };
 
   const checkNicknameDuplicate = async (nickname: string) => {
@@ -70,15 +79,51 @@ const SignUp = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    //TODO: 알람 대신 토스트 또는 텍스트로 변경 필요
     setIsLoading(true);
+
     try {
-      if (formData.password !== formData.confirmPassword) {
-        setToastIcon(ToastType.warning);
-        setToastDescription('비밀번호가 일치하지 않습니다.');
-        setToastOpen(true);
+      // 프론트 검증
+      if (nameRef.current && !formData.name.length) {
+        showTooltip(nameRef.current);
+        nameRef.current.focus();
         return;
       }
+      if (emailRef.current && !formData.email.length) {
+        showTooltip(emailRef.current);
+        emailRef.current.focus();
+        return;
+      }
+      if (emailRef.current && !emailRef.current?.value.includes('@')) {
+        updateTooltip(emailRef.current, TooltipContents.NotEmailForm);
+        showTooltip(emailRef.current);
+        emailRef.current.focus();
+        return;
+      }
+      if (passwordRef.current && !formData.password.length) {
+        showTooltip(passwordRef.current);
+        passwordRef.current.focus();
+        return;
+      }
+      if (confirmPasswordRef.current && !formData.confirmPassword.length) {
+        showTooltip(confirmPasswordRef.current);
+        confirmPasswordRef.current.focus();
+        return;
+      }
+      if (
+        passwordRef.current &&
+        confirmPasswordRef.current &&
+        formData.password !== formData.confirmPassword
+      ) {
+        updateTooltip(
+          confirmPasswordRef.current,
+          TooltipContents.InvalidConfirmPassword
+        );
+        showTooltip(confirmPasswordRef.current);
+        confirmPasswordRef.current.focus();
+        return;
+      }
+
+      // 서버 검증
       if (await checkNicknameDuplicate(formData.name)) {
         setToastIcon(ToastType.warning);
         setToastDescription('이미 사용중인 닉네임입니다.');
@@ -92,6 +137,7 @@ const SignUp = () => {
         return;
       }
 
+      // 회원 가입 요청
       const res = await signUpApi(formData);
       console.log(res);
       setPopupOpen(true);
@@ -117,60 +163,72 @@ const SignUp = () => {
           disableX={true}
         />
       )}
-      <div className="flex w-full max-w-[550px] flex-col justify-center gap-8 rounded-lg bg-white p-4 shadow-lg md:p-8">
+      <div className="flex w-full max-w-[550px] flex-col justify-center gap-8 rounded-[1rem] bg-white p-4 shadow-lg md:p-8">
         <div className="flex flex-col items-center gap-6">
-          <h1 className="text-xl font-semibold">이메일 회원가입</h1>
-          <form onSubmit={handleSubmit} className="w-full max-w-[400px]">
+          <h1 className="mt-5 text-xl font-semibold">이메일 회원가입</h1>
+          <form
+            onSubmit={handleSubmit}
+            className="w-full max-w-[400px]"
+            noValidate
+          >
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-2">
-                <label className="text-sm text-gray-600">이름</label>
+                <label className="flex items-center gap-1 pl-1 text-sm text-gray-600">
+                  이름 <span className="text-red-500">&#9913;</span>
+                </label>
                 <input
+                  ref={nameRef}
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="이름을 입력하세요"
                   className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FEA1A1]"
-                  required
                 />
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="text-sm text-gray-600">이메일</label>
+                <label className="flex items-center gap-1 pl-1 text-sm text-gray-600">
+                  이메일 <span className="text-red-500">&#9913;</span>
+                </label>
                 <input
+                  ref={emailRef}
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="이메일을 입력하세요"
                   className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FEA1A1]"
-                  required
                 />
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="text-sm text-gray-600">비밀번호</label>
+                <label className="flex items-center gap-1 pl-1 text-sm text-gray-600">
+                  비밀번호 <span className="text-red-500">&#9913;</span>
+                </label>
                 <input
+                  ref={passwordRef}
                   type="password"
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="비밀번호를 입력하세요"
                   className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FEA1A1]"
-                  required
                 />
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="text-sm text-gray-600">비밀번호 확인</label>
+                <label className="flex items-center gap-1 pl-1 text-sm text-gray-600">
+                  비밀번호 확인 <span className="text-red-500">&#9913;</span>
+                </label>
                 <input
+                  ref={confirmPasswordRef}
                   type="password"
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   placeholder="비밀번호를 확인해주세요"
                   className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FEA1A1]"
-                  required
                 />
               </div>
 
@@ -185,7 +243,7 @@ const SignUp = () => {
               ) : (
                 <button
                   type="submit"
-                  className="mt-4 h-[42px] rounded-lg bg-gray-400 py-2 text-white transition-colors hover:bg-[#F0EDD4]"
+                  className="mt-4 h-[42px] rounded-lg bg-pointcolor-sand/80 py-2 text-gray-600 transition-colors inner-border-pointcolor-beigebrown hover:bg-[#F0EDD4] hover:text-black hover:inner-border-[1.2px]"
                 >
                   회원가입
                 </button>

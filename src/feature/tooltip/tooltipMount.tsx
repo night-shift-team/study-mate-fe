@@ -31,7 +31,7 @@ const TooltipMount = () => {
       { name: 'password', content: TooltipContents.TypingPassword },
       { name: 'name', content: TooltipContents.TypingName }, // 추가
       {
-        name: 'confirmpassword',
+        name: 'confirmPassword',
         content: TooltipContents.TypingConfirmPassword,
       }, // 추가
     ];

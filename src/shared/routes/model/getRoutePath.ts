@@ -1,6 +1,7 @@
 export enum RouteTo {
   Home = '/',
   Login = '/login',
+  Signup = '/signup',
   Solve = '/solve',
   Mypage = '/mypage',
   Rank = '/rank',

@@ -64,23 +64,26 @@ const Login = () => {
     e.preventDefault();
 
     // 이메일 유효성 검사
-    if (!emailInputRef.current?.value.includes('@')) {
-      if (emailInputRef.current) {
-        showTooltip(emailInputRef.current);
-        return;
-      }
+
+    if (emailInputRef.current && !emailInputRef.current.value) {
+      updateTooltip(emailInputRef.current, TooltipContents.TypingEmail);
+      showTooltip(emailInputRef.current);
+      emailInputRef.current.focus();
+      return;
     }
-    // if (emailInputRef.current?.value.includes('@') && (emailInputRef.current?.value.split('@')[1].length < 2 || !emailInputRef.current?.value.split('@')[1].includes('.'))) {
-    //   if (emailInputRef.current) {
-    //     updateTooltip(emailInputRef.current, '올바른 이메일 형식을 입력해주세요');
-    //     showTooltip(emailInputRef.current);
-    //     return;
-    //   }
-    // }
+
+    if (emailInputRef.current && !emailInputRef.current.value.includes('@')) {
+      updateTooltip(emailInputRef.current, TooltipContents.NotEmailForm);
+      showTooltip(emailInputRef.current);
+      emailInputRef.current.focus();
+      return;
+    }
 
     // 비밀번호 유효성 검사
-    if (!passwordInputRef.current?.value) {
-      if (passwordInputRef.current) showTooltip(passwordInputRef.current);
+    if (passwordInputRef.current && !passwordInputRef.current.value) {
+      updateTooltip(passwordInputRef.current, TooltipContents.TypingPassword);
+      showTooltip(passwordInputRef.current);
+      passwordInputRef.current.focus();
       return;
     }
 
@@ -112,6 +115,7 @@ const Login = () => {
                 TooltipContents.InvalidEmail
               );
               showTooltip(emailInputRef.current);
+              emailInputRef.current.focus();
             }
             break;
           case Ecode.E0104:
@@ -122,6 +126,7 @@ const Login = () => {
                 TooltipContents.InvalidPassword
               );
               showTooltip(passwordInputRef.current);
+              passwordInputRef.current.focus();
             }
             break;
           default:
@@ -225,6 +230,9 @@ const Login = () => {
                 onChange={(e) => {
                   e.preventDefault();
                   handleChange(e);
+                  if (emailInputRef.current) {
+                    hideTooltip(emailInputRef.current);
+                  }
                 }}
                 placeholder="이메일"
                 className="rounded-lg border border-gray-300 px-4 py-2 text-sm"
@@ -238,6 +246,9 @@ const Login = () => {
                 onChange={(e) => {
                   e.preventDefault();
                   handleChange(e);
+                  if (passwordInputRef.current) {
+                    hideTooltip(passwordInputRef.current);
+                  }
                 }}
                 placeholder="비밀번호"
                 className="rounded-lg border border-gray-300 px-4 py-2 text-sm"
@@ -271,7 +282,7 @@ const Login = () => {
               id="loginButton"
               type="submit"
               disabled={loginLoading}
-              className={`text-balck flex h-[2.5rem] w-full items-center justify-center rounded-lg bg-pointcolor-sand/80 py-1 transition-colors inner-border-pointcolor-beigebrown md:py-2 ${loginLoading ? 'hover:none' : 'hover:inner-border-[1.2px]'}`}
+              className={`text-balck flex h-[2.5rem] w-full items-center justify-center rounded-lg bg-pointcolor-sand/80 py-1 text-gray-600 transition-colors inner-border-pointcolor-beigebrown hover:text-black md:py-2 ${loginLoading ? 'hover:none' : 'hover:inner-border-[1.2px]'}`}
             >
               {loginLoading ? <Spinner color="#6b7280" /> : '로그인'}
             </button>{' '}

@@ -59,6 +59,7 @@ const RightHeaderComponents = () => {
     switch (routePath) {
       case RouteTo.Home:
       case RouteTo.Login:
+      case RouteTo.Signup:
         return null;
       case RouteTo.LevelTest:
         return (
