@@ -72,12 +72,21 @@ export const _apiFetch = async <T = any>(
   };
   try {
     const response = await fetch(endPoint, options);
+    const contentType = response.headers.get('content-type');
+    let payload: T | ServerErrorResponse;
+
+    if (contentType?.includes('application/json')) {
+      // JSON 응답 처리
+      payload = await response.json();
+    } else {
+      // 텍스트 응답 처리
+      payload = (await response.text()) as T;
+    }
     const responseWithData = {
       ok: response.ok,
-      payload: response.headers.get('content-type')?.includes('json')
-        ? await response.json()
-        : await response.text(),
+      payload: payload,
     };
+
     if (!response.ok) {
       handleServerErrors(responseWithData.payload as ServerErrorResponse);
     }

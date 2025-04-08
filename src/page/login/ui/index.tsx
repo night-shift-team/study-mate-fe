@@ -91,9 +91,9 @@ const Login = () => {
     hideTooltip(emailInputRef.current!);
     hideTooltip(passwordInputRef.current!);
 
+    setLoginLoading(true);
     try {
       // 여기에 실제 로그인 API 호출 로직 구현
-      setLoginLoading(true);
       const tokens = await requestSignIn(formData.email, formData.password);
       setTokens(tokens);
       setAccessTokenToHeader(localStorage.getItem('accessToken'));
@@ -105,6 +105,7 @@ const Login = () => {
         router
       );
     } catch (error) {
+      console.log('loginpage catch error', error);
       if ((error as ServerErrorResponse).ecode !== undefined) {
         switch ((error as ServerErrorResponse).ecode) {
           case Ecode.E0103:
