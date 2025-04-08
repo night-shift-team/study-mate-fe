@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
-import tippy from 'tippy.js';
+import { useEffect, useState } from 'react';
+import tippy, { Instance } from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
 import { tippyStore } from '@/state/tooltip';
 import { TooltipContents } from '@/state/tooltip/tooltipContents';
@@ -9,37 +9,54 @@ import { usePathname } from 'next/navigation';
 
 const TooltipMount = () => {
   const { setTippyInstance, clearTippyInstances } = tippyStore();
-  const pathname = usePathname(); // 현재 라우트 경로 가져오기
+  const pathname = usePathname();
 
-  const initializeTooltip = () => {
-    const emailInput = document.querySelector(
-      'input[name="email"]'
-    ) as HTMLElement | null;
-    const passwordInput = document.querySelector(
-      'input[name="password"]'
-    ) as HTMLElement | null;
-    if (!emailInput || !passwordInput) return;
+  const tooltipStyling = (instance: Instance) => {
+    const fontSize = window.innerWidth <= 768 ? '14px' : '16px';
+    const tippyContent = instance.popper.querySelector('.tippy-content');
+    const tippyArrow = instance.popper.querySelector('.tippy-arrow');
 
-    if (emailInput) {
-      const emailTooltip = tippy(emailInput, {
-        content: TooltipContents.TypingEmail,
-        trigger: 'manual',
-      });
-      setTippyInstance(emailInput as HTMLElement, emailTooltip);
-    }
-
-    if (passwordInput) {
-      const passwordTooltip = tippy(passwordInput, {
-        content: TooltipContents.TypingPassword,
-        trigger: 'manual',
-      });
-      setTippyInstance(passwordInput as HTMLElement, passwordTooltip);
+    if (tippyContent && tippyArrow) {
+      (tippyContent as HTMLElement).style.fontSize = fontSize;
+      (tippyContent as HTMLElement).style.fontFamily = 'Parkdahyun';
+      (tippyContent as HTMLElement).style.color = '#000000';
+      (tippyContent as HTMLElement).style.backgroundColor = '#e8d7b9';
+      (tippyArrow as HTMLElement).style.color = '#e8d7b9';
     }
   };
 
+  const initializeTooltip = () => {
+    const inputs = [
+      { name: 'email', content: TooltipContents.TypingEmail },
+      { name: 'password', content: TooltipContents.TypingPassword },
+      { name: 'name', content: TooltipContents.TypingName }, // 추가
+      {
+        name: 'confirmpassword',
+        content: TooltipContents.TypingConfirmPassword,
+      }, // 추가
+    ];
+
+    inputs.forEach(({ name, content }) => {
+      const inputElement = document.querySelector(`input[name="${name}"]`);
+      if (inputElement) {
+        const tooltip = tippy(inputElement, {
+          content,
+          trigger: 'manual',
+          onShow: (instance) => tooltipStyling(instance),
+        });
+        setTippyInstance(inputElement as HTMLElement, tooltip);
+      }
+    });
+  };
+
   useEffect(() => {
-    clearTippyInstances(); // 메모리 정리
-    setTimeout(initializeTooltip, 100); // DOM 업데이트 대기
+    clearTippyInstances();
+    const timer = setTimeout(initializeTooltip, 100);
+
+    return () => {
+      clearTimeout(timer);
+      clearTippyInstances();
+    };
   }, [pathname]);
 
   return null;

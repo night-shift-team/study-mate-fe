@@ -122,4 +122,28 @@ body {
     font-family: 'Jalnan';
     src: url('../assets/font/Jalnan2TTF.ttf') format('truetype');
   }
+  @font-face {
+    font-family: 'Parkdahyun';
+    src: url('../assets/font/parkdahyun.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'GmarketSans';
+    src:
+      url('../assets/font/GmarketSansTTFBold.ttf') format('truetype'),
+      url('../assets/font/GmarketSansTTFLight.ttf') format('truetype'),
+      url('../assets/font/GmarketSansTTFMedium.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'NotoSansKR';
+    src:
+      url('../assets/font/NotoSansKR-Thin.ttf') format('truetype'),
+      url('../assets/font/NotoSansKR-ExtraLight.ttf') format('truetype'),
+      url('../assets/font/NotoSansKR-Light.ttf') format('truetype'),
+      url('../assets/font/NotoSansKR-Regular.ttf') format('truetype'),
+      url('../assets/font/NotoSansKR-Medium.ttf') format('truetype'),
+      url('../assets/font/NotoSansKR-SemiBold.ttf') format('truetype'),
+      url('../assets/font/NotoSansKR-Bold.ttf') format('truetype'),
+      url('../assets/font/NotoSansKR-ExtraBold.ttf') format('truetype'),
+      url('../assets/font/NotoSansKR-Black.ttf') format('truetype');
+  }
 }

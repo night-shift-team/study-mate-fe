@@ -16,7 +16,6 @@ import {
   ProblemInfoMAQ,
 } from '@/shared/constants/problemInfo';
 import { PiPaperPlaneTilt } from 'react-icons/pi';
-import PulseLoader from 'react-spinners/PulseLoader';
 import { ServerErrorResponse } from '@/shared/api/model/config';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import AuthHoc from '@/shared/auth/model/authHoc';

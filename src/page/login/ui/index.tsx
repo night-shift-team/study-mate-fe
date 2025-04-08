@@ -271,9 +271,9 @@ const Login = () => {
               id="loginButton"
               type="submit"
               disabled={loginLoading}
-              className={`flex h-[2.5rem] w-full items-center justify-center rounded-lg bg-gray-600 py-1 text-white transition-colors md:py-2 ${loginLoading ? 'hover:bg-gray-400' : 'hover:bg-opacity-80'}`}
+              className={`text-balck flex h-[2.5rem] w-full items-center justify-center rounded-lg bg-pointcolor-sand/80 py-1 transition-colors inner-border-pointcolor-beigebrown md:py-2 ${loginLoading ? 'hover:none' : 'hover:inner-border-[1.2px]'}`}
             >
-              {loginLoading ? <Spinner /> : '로그인'}
+              {loginLoading ? <Spinner color="#6b7280" /> : '로그인'}
             </button>{' '}
           </form>
 

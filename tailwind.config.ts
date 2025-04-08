@@ -64,6 +64,9 @@ module.exports = {
         spoqa: ['SpoqaHanSansNeo', 'sans-serif'],
         doodle: ['CustomFontDoodle', 'sans-serif'],
         jalnan: ['Jalnan', 'sans-serif'],
+        parkdahyun: ['Parkdahyun', 'sans-serif'],
+        gmarketsans: ['GmarketSans', 'sans-serif'],
+        notosans: ['NotoSansKR', 'sans-serif'],
       },
       colors: {
         pointcolor: {
