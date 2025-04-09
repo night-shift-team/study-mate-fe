@@ -11,6 +11,7 @@ const tempNotice: Notice = {
   noticeTitle: '환영합니다',
   noticeContent: '환영합니다',
   noticeCategory: NoticeCategory.GENERAL,
+  backgroundImage: '',
   noticePurpose: '환영합니다',
   pulbisherName: '환영합니다',
   displayStartTime: '2023-08-01T00:00:00',
@@ -20,7 +21,6 @@ const tempNotice: Notice = {
 };
 
 const NoticeBanner = () => {
-  // const [noticeList, setNoticeList] = useState<Notice[]>([]);
   const [currentNotice, setCurrentNotice] = useState<Notice | null>(null);
   const [nextNotice, setNextNotice] = useState<Notice | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);

@@ -15,6 +15,7 @@ export interface Notice {
   noticeCategory: NoticeCategory;
   noticePurpose: string;
   pulbisherName: string;
+  backgroundImage: string;
   displayStartTime: string; // ISO 8601 형식의 날짜 문자열
   displayEndTime: string; // ISO 8601 형식의 날짜 문자열
   maintenanceStartTime: string; // ISO 8601 형식의 날짜 문자열

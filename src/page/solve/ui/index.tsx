@@ -1,19 +1,6 @@
 'use client';
 import AuthHoc from '@/shared/auth/model/authHoc';
 import Link from 'next/link';
-import { CategoryGridContents } from './categoryGridContents';
-import { userStore } from '@/state/userStore';
-import { Fragment, useEffect, useState } from 'react';
-import { count } from 'console';
-import {
-  FaArrowRight,
-  FaComputer,
-  FaNetworkWired,
-  FaDatabase,
-  FaAlgolia,
-} from 'react-icons/fa6';
-import MultipleIcon from '@/assets/multipleIcon.png';
-import SentenseIcon from '@/assets/sentenseIcon.png';
 import Image from 'next/image';
 import { getCategoriesIcon } from '../model/getCategoryIcons';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
@@ -21,11 +8,6 @@ import { ProblemCategoryTitle } from '@/shared/constants/problemInfo';
 import { NoticeComponent } from './notice';
 import { RecentProblem } from './recentProblem';
 import NoticeBanner from './noticeBanner';
-import {
-  PopupConfirm,
-  PopupNotice,
-  PopupProblem,
-} from '@/shared/popUp/ui/popupV2';
 
 const TempCategories: { title: ProblemCategoryTitle; count: number }[] = [
   {
