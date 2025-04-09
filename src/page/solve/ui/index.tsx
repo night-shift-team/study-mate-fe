@@ -57,7 +57,7 @@ const SolveProblem = () => {
         <NoticeBanner />
         <RecentProblem />
       </div>
-      <div className="flex w-full flex-col gap-4 px-[2.5rem]">
+      <div className="flex w-full flex-col gap-4 px-[1.5rem] md:gap-6 md:px-[2.5rem]">
         <NoticeComponent />
 
         <div className="mt-6 flex flex-col gap-2 pt-2">
@@ -68,10 +68,10 @@ const SolveProblem = () => {
             관심 있는 카테고리를 선택하여 문제를 풀어보세요
           </span>
         </div>
-        <div className="grid w-full place-items-center gap-5 md:w-auto md:grid-flow-row md:grid-cols-2 md:grid-rows-3 md:gap-10 lg:grid-cols-3 lg:grid-rows-2 xl:grid-cols-4 xl:grid-rows-2">
+        <div className="grid w-full place-items-center gap-4 md:w-auto md:grid-flow-row md:grid-cols-2 md:gap-10 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6">
           <Link
             href={RouteTo.SolveRandom}
-            className="relative flex h-[6rem] w-[100%] min-w-[240px] flex-shrink-0 flex-col items-center justify-center rounded-xl bg-white p-2 px-4 shadow-md transition-all duration-300 ease-in-out inner-border inner-border-pointcolor-beigebrown hover:translate-y-[-5px] hover:shadow-2xl md:h-[12rem] md:w-[16rem] md:p-4 md:pt-2.5"
+            className="relative flex h-[7rem] w-[100%] min-w-[240px] flex-shrink-0 flex-col items-center justify-center rounded-xl bg-white p-2 px-4 shadow-md transition-all duration-300 ease-in-out inner-border inner-border-pointcolor-beigebrown hover:translate-y-[-5px] hover:shadow-2xl md:h-[12rem] md:w-full md:max-w-[480px] md:p-4 md:pt-2.5"
           >
             <span className="text-[1.1rem] font-bold underline-offset-8 md:mt-3">
               랜덤 문제 풀기
@@ -89,38 +89,44 @@ const SolveProblem = () => {
               <Link
                 href={RouteTo.Solve + '/' + category.title}
                 key={index}
-                className="relative h-[6rem] w-[100%] min-w-[240px] flex-shrink-0 rounded-xl bg-white px-4 pt-2.5 shadow-md transition-all duration-300 ease-in-out inner-border inner-border-pointcolor-beigebrown hover:translate-y-[-5px] hover:shadow-2xl md:h-[12rem] md:w-[16rem] md:p-4"
+                className="h-[8rem] w-[100%] min-w-[240px] flex-shrink-0 rounded-xl bg-white px-4 pt-2.5 shadow-md transition-all duration-300 ease-in-out inner-border inner-border-pointcolor-beigebrown hover:translate-y-[-5px] hover:shadow-2xl md:h-[12rem] md:w-full md:px-7 md:py-4"
               >
-                <div className="itmes-center flex aspect-1 h-[2rem] items-center justify-center rounded-full bg-red-200 md:ml-1 md:mt-2 md:h-[2.5rem]">
-                  {getCategoriesIcon(category.title)}
-                </div>
-                <span
-                  className="mt-1 flex items-center font-bold md:ml-1 md:mt-4"
-                  style={{
-                    letterSpacing: category.title.length > 20 ? '-0.06rem' : '',
-                  }}
-                >
-                  {category.title}
-                </span>
-                <span
-                  className="flex items-center text-[0.7rem] md:ml-1 md:mt-2"
-                  style={{
-                    letterSpacing: category.title.length > 20 ? '-0.06rem' : '',
-                  }}
-                >
-                  {'기본적인 알고리즘 문제를 풀어보세요.'}
-                </span>
-                <div className="absolute right-5 top-5 h-2 w-[50%] rounded-xl bg-gray-300 md:relative md:inset-0 md:ml-1 md:mt-2 md:flex md:w-full">
-                  <div
-                    className={`absolute z-[1] flex h-2 rounded-xl bg-blue-400`}
+                <div className="relative flex h-full w-full flex-col">
+                  <div className="mt-2 flex h-[2rem] items-center gap-2 md:ml-1 md:mt-2 md:h-[2.5rem]">
+                    <div className="itmes-center flex aspect-1 h-full items-center justify-center rounded-full bg-red-200">
+                      {getCategoriesIcon(category.title)}
+                    </div>
+                    <span
+                      className="flex items-center text-lg font-bold md:ml-1"
+                      style={{
+                        letterSpacing:
+                          category.title.length > 20 ? '-0.06rem' : '',
+                      }}
+                    >
+                      {category.title}
+                    </span>
+                  </div>
+                  <span
+                    className="ml-1 mt-1.5 flex items-center text-[0.7rem] md:ml-1.5 md:mt-2"
                     style={{
-                      width: ((category.count * 100) / 500).toFixed(1) + '%',
+                      letterSpacing:
+                        category.title.length > 20 ? '-0.06rem' : '',
                     }}
-                  ></div>
+                  >
+                    {'기본적인 알고리즘 문제를 풀어보세요.'}
+                  </span>
+                  <div className="absolute bottom-7 flex h-2 w-full rounded-xl bg-gray-300 md:bottom-6">
+                    <div
+                      className={`z-[1] flex h-2 rounded-xl bg-blue-400`}
+                      style={{
+                        width: ((category.count * 100) / 500).toFixed(1) + '%',
+                      }}
+                    ></div>
+                  </div>
+                  <p className="absolute bottom-2 right-2 text-xs tracking-tighter md:bottom-0 md:text-sm md:tracking-normal">
+                    진행률 : {((category.count * 100) / 500).toFixed(1) + '%'}
+                  </p>
                 </div>
-                <p className="absolute right-5 top-8 text-xs tracking-tighter md:static md:ml-1 md:mt-2 md:pt-0.5 md:text-sm md:tracking-normal">
-                  진행률 : {((category.count * 100) / 500).toFixed(1) + '%'}
-                </p>
               </Link>
             );
           })}

@@ -8,8 +8,8 @@ import { IoMenu } from 'react-icons/io5';
 import MobileSlider from './mobileSilder';
 import { MdLogout } from 'react-icons/md';
 import { LuLayoutDashboard } from 'react-icons/lu';
-import RankingIcon from '@/assets/ranking.png';
-import MypageIcon from '@/assets/user.png';
+import RankingIcon from '@/assets/icons/ranking-factor.png';
+import MypageIcon from '@/assets/icons/user.png';
 import Image from 'next/image';
 
 const RightHeaderComponents = () => {
@@ -83,7 +83,7 @@ const RightHeaderComponents = () => {
                 onClick={() => setIsOpen(true)}
               />
             </div>
-            <div className="mr-4 hidden gap-2 md:block">
+            <div className="hidden gap-2 md:flex">
               <HeaderSmallIcon
                 title="랭킹"
                 onClick={() => {
@@ -93,8 +93,8 @@ const RightHeaderComponents = () => {
                   <Image
                     src={RankingIcon}
                     alt="ranking"
-                    width={18}
-                    height={18}
+                    width={20}
+                    height={20}
                   />
                 }
               />
@@ -104,7 +104,7 @@ const RightHeaderComponents = () => {
                   router.push(RouteTo.Mypage);
                 }}
                 component={
-                  <Image src={MypageIcon} alt="mypage" width={18} height={18} />
+                  <Image src={MypageIcon} alt="mypage" width={20} height={20} />
                 }
               />
               <HeaderSmallIcon
@@ -113,7 +113,7 @@ const RightHeaderComponents = () => {
                   setUser(null);
                   router.push(RouteTo.Home);
                 }}
-                component={<MdLogout />}
+                component={<MdLogout size={20} />}
               />
             </div>
             <div className="z-[999]"></div>
