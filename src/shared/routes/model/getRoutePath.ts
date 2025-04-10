@@ -8,7 +8,7 @@ export enum RouteTo {
   Mypage = '/mypage',
   Rank = '/rank',
   SolveRandom = '/solve/random',
-  Anouncement = '/announcement',
+  Announcement = '/announcement',
 
   AdminLogin = '/admin',
   AdminDashboard = '/admin/dashboard',

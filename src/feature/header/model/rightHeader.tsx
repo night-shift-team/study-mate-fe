@@ -88,7 +88,7 @@ const RightHeaderComponents = () => {
               <HeaderSmallIcon
                 title="Announcement"
                 onClick={() => {
-                  router.push(RouteTo.Anouncement);
+                  router.push(RouteTo.Announcement);
                 }}
                 component={
                   <Image

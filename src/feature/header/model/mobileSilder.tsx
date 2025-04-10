@@ -35,7 +35,7 @@ const MobileSlider: React.FC<MobileSliderProps> = ({ open, setOpen }) => {
       <div className="flex h-[85%] flex-col items-center justify-between gap-6 p-6 font-doodle">
         <div className="flex flex-col gap-4">
           <Link
-            href={RouteTo.Anouncement}
+            href={RouteTo.Announcement}
             className="flex items-center justify-center gap-2 font-medium text-gray-700"
             onClick={() => setOpen(false)}
           >
