@@ -37,7 +37,11 @@ export const NoticeComponent = () => {
         modules={[Autoplay, Pagination]}
         spaceBetween={30}
         slidesPerView={1} // 한 번에 하나의 슬라이드 보여주기
-        autoplay={{ delay: 5000, disableOnInteraction: false }}
+        autoplay={{
+          delay: 5000,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        }}
         pagination={{ clickable: true }}
         className="h-[24rem] w-[100%]" // 전체 너비
       >
