@@ -9,6 +9,7 @@ import MobileSlider from './mobileSilder';
 import { MdLogout } from 'react-icons/md';
 import { LuLayoutDashboard } from 'react-icons/lu';
 import RankingIcon from '@/assets/icons/ranking-factor.png';
+import AnnouncementIcon from '@/assets/icons/announcement.png';
 import MypageIcon from '@/assets/icons/user.png';
 import Image from 'next/image';
 
@@ -84,6 +85,20 @@ const RightHeaderComponents = () => {
               />
             </div>
             <div className="hidden gap-2 md:flex">
+              <HeaderSmallIcon
+                title="Announcement"
+                onClick={() => {
+                  router.push(RouteTo.Anouncement);
+                }}
+                component={
+                  <Image
+                    src={AnnouncementIcon}
+                    alt="announcement"
+                    width={20}
+                    height={20}
+                  />
+                }
+              />
               <HeaderSmallIcon
                 title="랭킹"
                 onClick={() => {

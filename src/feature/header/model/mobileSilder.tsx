@@ -3,6 +3,11 @@ import { IoClose } from 'react-icons/io5';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { userStore } from '@/state/userStore';
+import Image from 'next/image';
+import RankingIcon from '@/assets/icons/ranking-factor.png';
+import MypageIcon from '@/assets/icons/user.png';
+import AnnouncementIcon from '@/assets/icons/announcement.png';
+import { MdLogout } from 'react-icons/md';
 
 interface MobileSliderProps {
   open: boolean;
@@ -19,7 +24,7 @@ const MobileSlider: React.FC<MobileSliderProps> = ({ open, setOpen }) => {
     >
       {/* 상단 헤더 */}
       <div className="flex items-center justify-between border-b bg-[rgb(254,202,202)] p-4 text-white">
-        <h2 className="text-lg font-bold">메뉴</h2>
+        <h2 className="font-spoqa text-lg font-bold">Menu</h2>
         <IoClose
           className="cursor-pointer text-2xl transition-colors hover:text-gray-200"
           onClick={() => setOpen(false)}
@@ -27,33 +32,48 @@ const MobileSlider: React.FC<MobileSliderProps> = ({ open, setOpen }) => {
       </div>
 
       {/* 메뉴 내용 */}
-      <div className="flex h-[85%] flex-col items-center justify-between gap-6 p-6">
+      <div className="flex h-[85%] flex-col items-center justify-between gap-6 p-6 font-doodle">
         <div className="flex flex-col gap-4">
           <Link
-            href={RouteTo.Mypage}
-            className="text-lg font-medium text-gray-700"
+            href={RouteTo.Anouncement}
+            className="flex items-center justify-center gap-2 font-medium text-gray-700"
             onClick={() => setOpen(false)}
           >
-            마이페이지
+            <Image
+              src={AnnouncementIcon}
+              alt="announcement"
+              width={24}
+              height={24}
+            />{' '}
+            공지사항
           </Link>
           <Link
             href={RouteTo.Rank}
-            className="text-lg font-medium text-gray-700"
+            className="flex items-center justify-center gap-2 font-medium text-gray-700"
             onClick={() => setOpen(false)}
           >
-            랭킹페이지
+            <Image src={RankingIcon} alt="ranking" width={24} height={24} />
+            랭킹
+          </Link>
+          <Link
+            href={RouteTo.Mypage}
+            className="flex items-center justify-center gap-2 font-medium text-gray-700"
+            onClick={() => setOpen(false)}
+          >
+            <Image src={MypageIcon} alt="mypage" width={24} height={24} />
+            마이 페이지
           </Link>
         </div>
 
         <button
-          className="text-lg font-medium text-gray-700"
+          className="flex items-center justify-center gap-2 font-doodle font-medium text-gray-700"
           onClick={() => {
             setUser(null);
             setOpen(false);
             window.location.href = RouteTo.Login;
           }}
         >
-          로그아웃
+          <MdLogout size={24} /> 로그아웃
         </button>
       </div>
 

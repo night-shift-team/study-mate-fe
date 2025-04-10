@@ -50,7 +50,7 @@ const SolveProblem = () => {
             관심 있는 카테고리를 선택하여 문제를 풀어보세요
           </span>
         </div>
-        <div className="grid w-full place-items-center gap-4 md:w-auto md:grid-flow-row md:grid-cols-2 md:gap-10 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6">
+        <div className="grid w-full place-items-center gap-[1.1rem] md:w-auto md:grid-flow-row md:grid-cols-2 md:gap-10 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6">
           <Link
             href={RouteTo.SolveRandom}
             className="relative flex h-[7rem] w-[100%] min-w-[240px] flex-shrink-0 flex-col items-center justify-center rounded-xl bg-white p-2 px-4 shadow-md transition-all duration-300 ease-in-out inner-border inner-border-pointcolor-beigebrown hover:translate-y-[-5px] hover:shadow-2xl md:h-[12rem] md:w-full md:max-w-[480px] md:p-4 md:pt-2.5"
