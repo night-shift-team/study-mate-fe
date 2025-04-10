@@ -46,7 +46,7 @@ export const NoticeComponent = () => {
             key={index}
             className="mb-8 rounded-lg bg-pointcolor-beigebrown p-6 shadow-md"
             style={{
-              backgroundImage: `url(${'https://t4.ftcdn.net/jpg/05/27/53/67/360_F_527536721_ZfVLgwxlMNqcUflxbuUMA071XcxoJNnv.jpg'})`,
+              backgroundImage: `url(${notice.backgroundImage})`,
               objectPosition: 'center',
               backgroundRepeat: 'no-repeat',
               backgroundSize: 'cover',
