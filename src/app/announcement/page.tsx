@@ -4,7 +4,14 @@ import {
   getAllNoticeListRes,
   GetValidnoticeListRes,
   Notice,
+  NoticeCategory,
 } from '@/feature/notice/api';
+import {
+  convertNoticeCategoryToString,
+  timestampToDate,
+} from '@/feature/notice/model/dataConvert';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 enum AnnouncementType {
@@ -83,18 +90,10 @@ const AnnouncementPage = () => {
           <div className="flex h-full w-full flex-col gap-4 px-3 py-1">
             {announcementList.map((announcement) => {
               return (
-                <div
+                <NoticeDataRow
                   key={announcement.noticeId}
-                  className="group flex h-[4rem] w-full items-center justify-between gap-0.5 rounded-xl border bg-white p-3 px-4 shadow-md transition-colors duration-500 hover:cursor-pointer hover:bg-pointcolor-beigebrown"
-                >
-                  <div className="space-x-1 font-bold">
-                    <span>[공지]</span>
-                    <span>Title</span>
-                  </div>
-                  <span className="text-sm text-gray-400 group-hover:font-semibold group-hover:text-white">
-                    2023.10.01
-                  </span>
-                </div>
+                  noticeDetail={announcement}
+                />
               );
             })}
           </div>
@@ -104,3 +103,30 @@ const AnnouncementPage = () => {
   );
 };
 export default AnnouncementPage;
+
+const NoticeDataRow = ({ noticeDetail }: { noticeDetail: Notice }) => {
+  const router = useRouter();
+
+  return (
+    <div
+      className="group flex h-[4rem] w-full items-center justify-between gap-0.5 rounded-xl border bg-white p-3 px-4 font-medium shadow-md transition-colors duration-500 hover:cursor-pointer hover:bg-pointcolor-beigebrown"
+      onClick={() => {
+        sessionStorage.setItem(
+          'currentNoticeData',
+          JSON.stringify(noticeDetail)
+        );
+        router.push(`${RouteTo.Announcement}/${noticeDetail.noticeId}`);
+      }}
+    >
+      <div>
+        <span>
+          [{convertNoticeCategoryToString(noticeDetail.noticeCategory)}]
+        </span>
+        <span>{noticeDetail.noticeTitle.split(']')[1]}</span>
+      </div>
+      <span className="text-xs font-normal">
+        {timestampToDate(noticeDetail.displayStartTime)}
+      </span>
+    </div>
+  );
+};
