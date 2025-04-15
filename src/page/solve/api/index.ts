@@ -32,6 +32,15 @@ export interface SendSAQAnswerRes {
   reflectedScore: number;
   userScore: number;
 }
+export interface GetQuestionCategoryInfoRes {
+  totalCategoryCount: number;
+  detail: {
+    categoryOriginName: ProblemCategory;
+    categoryViewName: string;
+    userSolvingCount: number;
+    solvingLimit: number;
+  }[];
+}
 
 export const getMAQbyCategoryApi = async (category: ProblemCategoryTitle) => {
   const problemTypeInfo =
@@ -74,5 +83,12 @@ export const sendSAQAnswerApi = async (
     'POST',
     API_Prefix + '/check/' + ProblemCategoryType.SAQ.toLowerCase(),
     body
+  );
+};
+
+export const getQuestionCategoryInfoApi = async () => {
+  return await _apiFetch<GetQuestionCategoryInfoRes>(
+    'GET',
+    `${API_Prefix}/category/info`
   );
 };

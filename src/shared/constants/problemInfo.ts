@@ -14,16 +14,16 @@ export enum ProblemCategoryType {
 }
 
 export enum ProblemCategory {
-  Algo_MAQ = ProblemCategoryTitle.ALGORITHUM + '_' + ProblemCategoryType.MAQ,
-  Algo_SAQ = ProblemCategoryTitle.ALGORITHUM + '_' + ProblemCategoryType.SAQ,
-  OS_MAQ = ProblemCategoryTitle.OS + '_' + ProblemCategoryType.MAQ,
-  OS_SAQ = ProblemCategoryTitle.OS + '_' + ProblemCategoryType.SAQ,
-  NETWORK_MAQ = ProblemCategoryTitle.NETWORK + '_' + ProblemCategoryType.MAQ,
-  NETWORK_SAQ = ProblemCategoryTitle.NETWORK + '_' + ProblemCategoryType.SAQ,
-  DB_MAQ = ProblemCategoryTitle.DB + '_' + ProblemCategoryType.MAQ,
-  DB_SAQ = ProblemCategoryTitle.DB + '_' + ProblemCategoryType.SAQ,
-  DESIGN_MAQ = ProblemCategoryTitle.DESIGN + '_' + ProblemCategoryType.MAQ,
-  DESIGN_SAQ = ProblemCategoryTitle.DESIGN + '_' + ProblemCategoryType.SAQ,
+  Algo_MAQ = `${ProblemCategoryTitle.ALGORITHUM}_${ProblemCategoryType.MAQ}`,
+  Algo_SAQ = `${ProblemCategoryTitle.ALGORITHUM}_${ProblemCategoryType.SAQ}`,
+  OS_MAQ = `${ProblemCategoryTitle.OS}_${ProblemCategoryType.MAQ}`,
+  OS_SAQ = `${ProblemCategoryTitle.OS}_${ProblemCategoryType.SAQ}`,
+  NETWORK_MAQ = `${ProblemCategoryTitle.NETWORK}_${ProblemCategoryType.MAQ}`,
+  NETWORK_SAQ = `${ProblemCategoryTitle.NETWORK}_${ProblemCategoryType.SAQ}`,
+  DB_MAQ = `${ProblemCategoryTitle.DB}_${ProblemCategoryType.MAQ}`,
+  DB_SAQ = `${ProblemCategoryTitle.DB}_${ProblemCategoryType.SAQ}`,
+  DESIGN_MAQ = `${ProblemCategoryTitle.DESIGN}_${ProblemCategoryType.MAQ}`,
+  DESIGN_SAQ = `${ProblemCategoryTitle.DESIGN}_${ProblemCategoryType.SAQ}`,
   LEVEL_TEST = 'LEVEL_TEST',
 }
 

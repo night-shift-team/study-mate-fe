@@ -4,35 +4,33 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getCategoriesIcon } from '../model/getCategoryIcons';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import { ProblemCategoryTitle } from '@/shared/constants/problemInfo';
+import {
+  ProblemCategory,
+  ProblemCategoryTitle,
+} from '@/shared/constants/problemInfo';
 import { NoticeComponent } from './notice';
 import { RecentProblem } from './recentProblem';
 import NoticeBanner from './noticeBanner';
-
-const TempCategories: { title: ProblemCategoryTitle; count: number }[] = [
-  {
-    title: ProblemCategoryTitle.ALGORITHUM,
-    count: 152,
-  },
-  {
-    title: ProblemCategoryTitle.DB,
-    count: 152,
-  },
-  {
-    title: ProblemCategoryTitle.DESIGN,
-    count: 15,
-  },
-  {
-    title: ProblemCategoryTitle.NETWORK,
-    count: 152,
-  },
-  {
-    title: ProblemCategoryTitle.OS,
-    count: 152,
-  },
-];
+import { useLayoutEffect, useState } from 'react';
+import { getQuestionCategoryInfoApi, GetQuestionCategoryInfoRes } from '../api';
 
 const SolveProblem = () => {
+  const [myTodaySolveData, setMyTodaySolveData] =
+    useState<GetQuestionCategoryInfoRes>();
+
+  const getQuestionCategoryInfo = async () => {
+    try {
+      const res = await getQuestionCategoryInfoApi();
+      if (res.ok) {
+        setMyTodaySolveData(res.payload as GetQuestionCategoryInfoRes);
+      }
+    } catch (e) {}
+  };
+
+  useLayoutEffect(() => {
+    getQuestionCategoryInfoApi();
+  }, []);
+
   return (
     <div className="flex h-full w-full flex-shrink-0 flex-col items-center gap-5 overflow-y-auto pb-[2rem] scrollbar-hide">
       <div className="z-1 flex w-full flex-col gap-1">
@@ -66,10 +64,10 @@ const SolveProblem = () => {
               127 <span className="text-xs font-bold text-[#3b82f6]">문제</span>
             </span>
           </Link>
-          {TempCategories.map((category, index) => {
+          {/* {myTodaySolveData.map((category, index) => {
             return (
               <Link
-                href={RouteTo.Solve + '/' + category.title}
+                href={category.questionType? RouteTo.Solve + '/' + category.questionType.split('_')[0] as ProblemCategoryTitle : RouteTo.Solve + '/' + category.questionType}
                 key={index}
                 className="h-[8rem] w-[100%] min-w-[240px] flex-shrink-0 rounded-xl bg-white px-4 pt-2.5 shadow-md transition-all duration-300 ease-in-out inner-border inner-border-pointcolor-beigebrown hover:translate-y-[-5px] hover:shadow-2xl md:h-[12rem] md:w-full md:px-7 md:py-4"
               >
@@ -111,7 +109,7 @@ const SolveProblem = () => {
                 </div>
               </Link>
             );
-          })}
+          })} */}
         </div>
       </div>
     </div>
