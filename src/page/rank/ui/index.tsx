@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { getUserRankingApi } from '../api';
 import Pagination from '@mui/material/Pagination';
+import Image from 'next/image';
 
 export const RankPageComponent = () => {
   const PAGE_LIMIT = 10;
@@ -91,10 +92,12 @@ export const RankPageComponent = () => {
                         {user.rankNo || index + 1}
                       </td>
                       <td className="flex justify-center px-2 py-1 md:px-3">
-                        <img
+                        <Image
                           src={user.profileImg}
                           alt={`${user.nickname}의 프로필`}
-                          className="h-5 w-5 rounded-full border border-gray-300 object-cover md:h-7 md:w-7"
+                          width={28} // Adjust width as per your design
+                          height={28} // Adjust height as per your design
+                          className="whitespace-nowrap rounded-full border border-gray-300 object-cover"
                         />
                       </td>
                       <td className="px-4 py-1 text-center font-medium text-gray-900 md:px-6">
