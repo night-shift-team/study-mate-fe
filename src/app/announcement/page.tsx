@@ -1,5 +1,4 @@
 'use client';
-import { ProblemPagination } from '@/feature/adminProblem/ui/manageProblemComponents';
 import {
   getAllNoticeListApi,
   getAllNoticeListRes,
@@ -11,6 +10,7 @@ import {
   convertNoticeCategoryToString,
   timestampToDate,
 } from '@/feature/notice/model/dataConvert';
+import { ProblemPagination } from '@/feature/pagination';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -34,7 +34,7 @@ const AnnouncementPage = () => {
   const [announcementList, setAnnouncementList] = useState<Notice[]>(
     getNoticeList(currentTab)
   );
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
   const MAX_PAGE = 10;
 
@@ -42,7 +42,7 @@ const AnnouncementPage = () => {
     setIsLoading(true);
 
     try {
-      const res = await getAllNoticeListApi(page, MAX_PAGE);
+      const res = await getAllNoticeListApi(page - 1, MAX_PAGE);
       if (res.ok) {
         const noticeList = (res.payload as getAllNoticeListRes).content;
         setMaxPage((res.payload as getAllNoticeListRes).totalPages);
@@ -60,34 +60,35 @@ const AnnouncementPage = () => {
       getNoticeListByPage(page);
     } else {
       setAnnouncementList([]);
-      setPage(0);
+      setPage(1);
       setMaxPage(1);
     }
+    console.log(page);
   }, [currentTab, page]);
 
   return (
-    <div className="flex h-full w-full flex-col p-20">
-      <span className="font-jalnan text-3xl">News</span>
+    <div className="flex h-full w-full flex-col overflow-y-auto p-8 scrollbar-hide md:p-20">
+      <span className="font-jalnan text-2xl md:text-3xl">News</span>
       <div className="flex h-full w-full flex-col gap-4 md:gap-6">
-        <div className="flex h-full w-full pt-4">
+        <div className="flex h-auto w-full flex-col pt-4 md:flex-row">
           {/* Announcement , Event Tab */}
-          <div className="flex w-[8rem] flex-col gap-3 p-2">
+          <div className="flex flex-shrink-0 gap-1 p-2 md:w-[8rem] md:flex-col md:gap-3">
             <button
               disabled={isLoading}
               onClick={() => setCurrentTab(AnnouncementType.Anouncement)}
-              className={`py-1 text-center text-lg font-bold ${currentTab === AnnouncementType.Anouncement ? 'bg-pointcolor-beigebrown/50 shadow-sm' : ''} rounded-xl`}
+              className={`whitespace-nowrap px-3 py-1.5 text-center font-bold md:px-0 md:py-2 md:text-lg ${currentTab === AnnouncementType.Anouncement ? 'bg-pointcolor-beigebrown/50 shadow-sm' : ''} rounded-xl`}
             >
               공지사항
             </button>
             <button
               disabled={isLoading}
               onClick={() => setCurrentTab(AnnouncementType.Event)}
-              className={`py-1 text-center text-lg ${isLoading ? 'text-gray-500' : 'font-bold'} ${currentTab === AnnouncementType.Event ? 'bg-pointcolor-beigebrown/50 shadow-sm' : ''} rounded-xl`}
+              className={`whitespace-nowrap px-3 py-1.5 text-center font-bold md:px-0 md:py-2 md:text-lg ${isLoading ? 'text-gray-500' : 'font-bold'} ${currentTab === AnnouncementType.Event ? 'bg-pointcolor-beigebrown/50 shadow-sm' : ''} rounded-xl`}
             >
               이벤트
             </button>
           </div>
-          <div className="flex h-full w-full flex-col gap-4 px-3 py-1">
+          <div className="mt-2 flex h-full w-full min-w-[10rem] flex-col gap-4 px-3 py-1 md:mt-0 md:max-w-[80vw]">
             {announcementList.length ? (
               announcementList.map((announcement) => {
                 return (
@@ -99,12 +100,12 @@ const AnnouncementPage = () => {
               })
             ) : (
               <div className="flex h-full w-full items-center justify-center">
-                <span className="text-xl">No data</span>
+                <span className="text-lg md:text-xl">No data</span>
               </div>
             )}
           </div>
         </div>
-        <div className="flex h-[4rem] w-full justify-center pl-[8rem]">
+        <div className="flex h-[4rem] w-full justify-center pb-[4rem] md:pl-[8rem]">
           <ProblemPagination
             page={page}
             setPage={setPage}
@@ -122,7 +123,7 @@ const NoticeDataRow = ({ noticeDetail }: { noticeDetail: Notice }) => {
 
   return (
     <div
-      className="group flex h-[4rem] w-full items-center justify-between gap-0.5 rounded-xl border bg-white p-3 px-4 font-medium shadow-md transition-colors duration-500 hover:cursor-pointer hover:bg-pointcolor-beigebrown"
+      className="group flex h-[6rem] w-full shrink-0 flex-col justify-between gap-0.5 rounded-xl border bg-white p-3 px-4 text-sm shadow-md transition-colors duration-500 hover:cursor-pointer hover:bg-pointcolor-beigebrown md:h-[4rem] md:flex-row md:items-center md:overflow-hidden md:whitespace-nowrap md:text-base"
       onClick={() => {
         sessionStorage.setItem(
           'currentNoticeData',
@@ -131,13 +132,20 @@ const NoticeDataRow = ({ noticeDetail }: { noticeDetail: Notice }) => {
         router.push(`${RouteTo.Announcement}/${noticeDetail.noticeId}`);
       }}
     >
-      <div>
-        <span>
+      <div className="h-[2.5rem] overflow-hidden text-ellipsis whitespace-pre-line md:h-auto md:truncate">
+        <span className="">
           [{convertNoticeCategoryToString(noticeDetail.noticeCategory)}]
         </span>
-        <span>{noticeDetail.noticeTitle.split(']')[1]}</span>
+        <span>
+          {noticeDetail.noticeTitle.split(']')[1]}
+          {noticeDetail.noticeTitle.split(']')[1]}
+          {noticeDetail.noticeTitle.split(']')[1]}
+          {noticeDetail.noticeTitle.split(']')[1]}
+          {noticeDetail.noticeTitle.split(']')[1]}
+          {noticeDetail.noticeTitle.split(']')[1]}
+        </span>
       </div>
-      <span className="text-xs font-normal">
+      <span className="text-[0.65rem] font-normal md:text-xs">
         {timestampToDate(noticeDetail.displayStartTime)}
       </span>
     </div>

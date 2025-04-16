@@ -4,20 +4,7 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { IoSearch } from 'react-icons/io5';
 import { LuArrowDownUp } from 'react-icons/lu';
 import UnfoldMoreRoundedIcon from '@mui/icons-material/UnfoldMoreRounded';
-import { Pagination } from '@mui/material';
-import {
-  GetAdminMAQListRes,
-  GetAdminSAQListRes,
-  searchAdminMAQListApi,
-  searchAdminSAQListApi,
-} from '@/page/adminProblem/api';
 import { getProblemListBySearch } from '../model/getProblemListBySearch';
-
-interface ProblemPaginationProps {
-  page: number;
-  setPage: Dispatch<SetStateAction<number>>;
-  paginationSize: number;
-}
 
 export const ProblemTypeSelectionComponent = ({
   problemType,
@@ -185,24 +172,5 @@ export const ProblemFilterComponent = ({
         </button>
       </div>
     </div>
-  );
-};
-
-export const ProblemPagination = ({
-  page,
-  setPage,
-  paginationSize,
-}: ProblemPaginationProps) => {
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
-  };
-
-  return (
-    <Pagination
-      count={paginationSize}
-      size="medium"
-      page={page}
-      onChange={handleChange}
-    />
   );
 };

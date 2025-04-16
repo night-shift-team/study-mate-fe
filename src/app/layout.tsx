@@ -19,7 +19,7 @@ export default async function RootLayout({
       <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
       <body
         id="root-container"
-        className={`flex h-full w-full font-spoqa antialiased`}
+        className={`flex h-full w-full bg-pointcolor-yogurt font-spoqa antialiased`}
       >
         <MaintenanceCheck>
           <Provider>
