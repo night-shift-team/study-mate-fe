@@ -66,7 +66,6 @@ const SolveProblem = () => {
     getQuestionCategoryInfo();
   }, []);
 
-  console.log(myTodaySolveData);
   return (
     <div className="flex h-full w-full flex-shrink-0 flex-col items-center gap-5 overflow-y-auto pb-[2rem] scrollbar-hide">
       <div className="z-1 flex w-full flex-col gap-1">

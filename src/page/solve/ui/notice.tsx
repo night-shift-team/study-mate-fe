@@ -2,9 +2,11 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import 'swiper/swiper-bundle.css'; // Swiper CSS 가져오기
-import { useLayoutEffect, useState } from 'react';
+import { Fragment, useLayoutEffect, useState } from 'react';
 import { Notice } from '@/feature/notice/api';
 import { getNoticeList } from '../model/getNoticeList';
+import Link from 'next/link';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
 
 export const NoticeComponent = () => {
   const [noticeList, setNoticeList] = useState<Notice[]>([]);
@@ -48,7 +50,7 @@ export const NoticeComponent = () => {
         {noticeList.map((notice, index) => (
           <SwiperSlide
             key={index}
-            className="mb-8 rounded-lg bg-pointcolor-beigebrown p-6 shadow-md"
+            className="relative mb-8 rounded-lg bg-pointcolor-beigebrown shadow-md"
             style={{
               backgroundImage: `url(${notice.backgroundImage})`,
               objectPosition: 'center',
@@ -57,9 +59,14 @@ export const NoticeComponent = () => {
               backgroundPositionY: 'center',
             }}
           >
-            <h2 className="mb-4 text-2xl font-bold text-white">Welcome</h2>
-            <p className="text-gray-600">{notice.noticeTitle}</p>
-            <p className="text-gray-600">{notice.noticeContent}</p>
+            <Link
+              className="absolute h-full w-full p-6"
+              href={`${RouteTo.Announcement}/${notice.noticeId}`}
+            >
+              <h2 className="mb-4 text-2xl font-bold text-white">Welcome</h2>
+              <p className="text-gray-600">{notice.noticeTitle}</p>
+              <p className="text-gray-600">{notice.noticeContent}</p>
+            </Link>
           </SwiperSlide>
         ))}
       </Swiper>

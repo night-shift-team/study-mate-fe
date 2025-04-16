@@ -4,6 +4,8 @@ import {
   Notice,
   NoticeCategory,
 } from '@/feature/notice/api';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import Link from 'next/link';
 import { useEffect, useLayoutEffect, useState } from 'react';
 
 const tempNotice: Notice = {
@@ -111,36 +113,49 @@ const NoticeBanner = () => {
   return (
     <div className="relative flex h-10 w-full flex-shrink-0 overflow-hidden bg-gray-800/80 px-[1rem] font-doodle text-white md:px-[2.5rem]">
       {/* 현재 공지사항 */}
-      <div
-        className={`absolute flex h-full w-full items-center gap-1 text-ellipsis ${
-          isAnimating
-            ? '-translate-y-full transition-transform duration-300'
-            : 'translate-y-0'
-        }`}
+      <Link
+        href={
+          currentNotice
+            ? `${RouteTo.Announcement}/${currentNotice.noticeId}`
+            : '#'
+        }
       >
-        <span>
-          [{noticeCategoryDisplayString(currentNotice?.noticeCategory)}]
-        </span>
-        <span className="underline-offset-4 hover:cursor-pointer hover:underline">
-          {currentNotice?.noticeTitle}
-        </span>
-      </div>
-
+        <div
+          className={`absolute flex h-full w-full items-center gap-1 text-ellipsis ${
+            isAnimating
+              ? '-translate-y-full transition-transform duration-300'
+              : 'translate-y-0'
+          }`}
+        >
+          <span>
+            [{noticeCategoryDisplayString(currentNotice?.noticeCategory)}]
+          </span>
+          <span className="underline-offset-4 hover:cursor-pointer hover:underline">
+            {currentNotice?.noticeTitle}
+          </span>
+        </div>
+      </Link>
       {/* 다음 공지사항 */}
-      <div
-        className={`absolute flex h-full w-full items-center gap-1 text-ellipsis ${
-          isAnimating
-            ? 'translate-y-0 transition-transform duration-300'
-            : 'translate-y-full'
-        }`}
+      <Link
+        href={
+          nextNotice ? `${RouteTo.Announcement}/${nextNotice.noticeId}` : '#'
+        }
       >
-        <span>
-          [{noticeCategoryDisplayString(currentNotice?.noticeCategory)}]
-        </span>
-        <span className="underline-offset-4 hover:cursor-pointer hover:underline">
-          {nextNotice?.noticeTitle}
-        </span>
-      </div>
+        <div
+          className={`absolute flex h-full w-full items-center gap-1 text-ellipsis ${
+            isAnimating
+              ? 'translate-y-0 transition-transform duration-300'
+              : 'translate-y-full'
+          }`}
+        >
+          <span>
+            [{noticeCategoryDisplayString(currentNotice?.noticeCategory)}]
+          </span>
+          <span className="underline-offset-4 hover:cursor-pointer hover:underline">
+            {nextNotice?.noticeTitle}
+          </span>
+        </div>
+      </Link>
     </div>
   );
 };
