@@ -51,13 +51,14 @@ const AnnouncemnetByIdDetail = ({
       <span className="font-doodle text-3xl md:text-4xl">Notice</span>
       <div className="flex min-h-[30rem] w-full flex-col items-center gap-3 rounded-3xl bg-white p-6 text-sm shadow-md md:gap-4 md:text-base">
         <span className="flex w-full justify-center font-gmarketsans">
-          {convertNoticeCategoryToString(noticeDetail?.noticeCategory)}
+          {noticeDetail &&
+            convertNoticeCategoryToString(noticeDetail?.noticeCategory)}
         </span>
         <span className="font-gmarketsans">
           {splitNoticeTitle(noticeDetail?.noticeTitle).rest}
         </span>
         <div className="w-full border-black p-1 md:p-4">
-          {noticeDetail?.noticeContent}
+          {noticeDetail && noticeDetail.noticeContent}
         </div>
       </div>
     </div>

@@ -1,13 +1,16 @@
+import ClientLayout, { IdContext } from './IdContext';
 import ClientAnnouncementDetail from './page';
 
 const AnnouncementByIdPage = async ({
+  children,
   params,
 }: {
+  children: React.ReactNode;
   params: Promise<{ id: string }>;
 }) => {
   const { id } = await params;
   console.log(id);
 
-  return <ClientAnnouncementDetail id={id} />;
+  return <ClientLayout id={id}>{children}</ClientLayout>;
 };
 export default AnnouncementByIdPage;

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { userStore } from '@/state/userStore';
 import { changeNicknameApi } from '../api';
+import Image from 'next/image';
 
 const DEFAULT_PROFILE_IMG = '/default-profile.png';
 
@@ -58,7 +59,11 @@ const Profile = () => {
     <div className="flex items-center gap-3">
       <label htmlFor="profile-upload" className="block h-full w-full">
         <div className="flex h-[12vh] w-[12vh] items-center justify-center md:w-[15vh]">
-          <img src={user?.profileImg} alt="" className="rounded-[50%]" />
+          <Image
+            src={user?.profileImg ?? ''}
+            alt=""
+            className="rounded-[50%]"
+          />
         </div>
         <input
           id="profile-upload"

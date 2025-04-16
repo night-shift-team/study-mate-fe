@@ -19,11 +19,11 @@ import { ServerErrorResponse } from '@/shared/api/model/config';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import {
   ProblemFilterComponent,
-  ProblemPagination,
   ProblemSearchComponent,
   ProblemTypeSelectionComponent,
 } from '@/feature/adminProblem/ui/manageProblemComponents';
 import { getProblemListBySearch } from '@/feature/adminProblem/model/getProblemListBySearch';
+import { ProblemPagination } from '@/feature/pagination';
 
 export type CurrentFilter = '최신 순' | '오래된 순';
 export type Problem = GetAdminMAQ | GetAdminSAQ;
