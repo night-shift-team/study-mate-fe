@@ -67,7 +67,7 @@ const AnnouncementPage = () => {
   }, [currentTab, page]);
 
   return (
-    <div className="flex h-full w-full flex-col overflow-y-auto p-8 scrollbar-hide md:p-20">
+    <div className="flex h-full w-full flex-col overflow-y-auto p-7 scrollbar-hide md:p-20">
       <span className="font-jalnan text-2xl md:text-3xl">News</span>
       <div className="flex h-full w-full flex-col gap-4 md:gap-6">
         <div className="flex h-auto w-full flex-col pt-4 md:flex-row">

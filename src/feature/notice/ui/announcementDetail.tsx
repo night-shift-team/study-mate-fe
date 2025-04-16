@@ -38,25 +38,25 @@ const AnnouncemnetByIdDetail = ({
   }
 
   return (
-    <div className="relative flex h-full w-[50rem] flex-col items-center gap-8 overflow-y-auto p-20 scrollbar-hide">
-      <div className="absolute flex h-[3rem] w-full">
+    <div className="relative flex h-full w-[50rem] flex-col items-center gap-8 overflow-y-auto p-7 scrollbar-hide md:p-20">
+      <div className="absolute left-5 flex h-[3rem] w-full md:left-0">
         <button
-          className="flex h-full w-[3rem] rounded-2xl p-2.5 inner-border hover:bg-pointcolor-beigebrown/20"
+          className="flex h-full w-[3rem] rounded-2xl p-3 hover:bg-pointcolor-beigebrown/20 md:p-2.5"
           onClick={() => router.push(RouteTo.Announcement)}
         >
           <Image src={listMenu} alt="list-text" />
         </button>
       </div>
 
-      <span className="font-doodle text-4xl">Notice</span>
-      <div className="flex min-h-[30rem] w-full flex-col items-center gap-4 rounded-3xl bg-white p-6 shadow-md">
+      <span className="font-doodle text-3xl md:text-4xl">Notice</span>
+      <div className="flex min-h-[30rem] w-full flex-col items-center gap-3 rounded-3xl bg-white p-6 text-sm shadow-md md:gap-4 md:text-base">
         <span className="flex w-full justify-center font-gmarketsans">
           {convertNoticeCategoryToString(noticeDetail?.noticeCategory)}
         </span>
         <span className="font-gmarketsans">
           {splitNoticeTitle(noticeDetail?.noticeTitle).rest}
         </span>
-        <div className="w-full border-black p-4">
+        <div className="w-full border-black p-1 md:p-4">
           {noticeDetail?.noticeContent}
         </div>
       </div>
