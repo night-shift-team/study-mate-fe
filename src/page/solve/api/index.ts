@@ -32,14 +32,15 @@ export interface SendSAQAnswerRes {
   reflectedScore: number;
   userScore: number;
 }
+export interface QuestionCategoryInfoDetail {
+  categoryOriginName: ProblemCategory;
+  categoryViewName: string;
+  userSolvingCount: number;
+  solvingLimit: number;
+}
 export interface GetQuestionCategoryInfoRes {
   totalCategoryCount: number;
-  detail: {
-    categoryOriginName: ProblemCategory;
-    categoryViewName: string;
-    userSolvingCount: number;
-    solvingLimit: number;
-  }[];
+  detail: QuestionCategoryInfoDetail[];
 }
 
 export const getMAQbyCategoryApi = async (category: ProblemCategoryTitle) => {

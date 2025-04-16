@@ -12,25 +12,61 @@ import { NoticeComponent } from './notice';
 import { RecentProblem } from './recentProblem';
 import NoticeBanner from './noticeBanner';
 import { useLayoutEffect, useState } from 'react';
-import { getQuestionCategoryInfoApi, GetQuestionCategoryInfoRes } from '../api';
+import {
+  getQuestionCategoryInfoApi,
+  GetQuestionCategoryInfoRes,
+  QuestionCategoryInfoDetail,
+} from '../api';
+
+interface ProblemCategoryInfo
+  extends Omit<
+    QuestionCategoryInfoDetail,
+    'categoryOriginName' | 'categoryViewName'
+  > {
+  categoryName: ProblemCategoryTitle;
+}
 
 const SolveProblem = () => {
   const [myTodaySolveData, setMyTodaySolveData] =
-    useState<GetQuestionCategoryInfoRes>();
+    useState<ProblemCategoryInfo[]>();
 
   const getQuestionCategoryInfo = async () => {
     try {
       const res = await getQuestionCategoryInfoApi();
       if (res.ok) {
-        setMyTodaySolveData(res.payload as GetQuestionCategoryInfoRes);
+        const data = (res.payload as GetQuestionCategoryInfoRes).detail;
+        const convertedData: ProblemCategoryInfo[] = [];
+        data.map((category) => {
+          const isTrue = convertedData.findIndex(
+            (item) =>
+              item.categoryName ===
+              (category.categoryOriginName.split(
+                '_'
+              )[0] as ProblemCategoryTitle)
+          );
+          if (isTrue >= 0) {
+            convertedData[isTrue].userSolvingCount += category.userSolvingCount;
+            convertedData[isTrue].solvingLimit += category.solvingLimit;
+          } else {
+            convertedData.push({
+              categoryName: category.categoryOriginName.split(
+                '_'
+              )[0] as ProblemCategoryTitle,
+              userSolvingCount: category.userSolvingCount,
+              solvingLimit: category.solvingLimit,
+            });
+          }
+        });
+        setMyTodaySolveData(convertedData);
       }
     } catch (e) {}
   };
 
   useLayoutEffect(() => {
-    getQuestionCategoryInfoApi();
+    getQuestionCategoryInfo();
   }, []);
 
+  console.log(myTodaySolveData);
   return (
     <div className="flex h-full w-full flex-shrink-0 flex-col items-center gap-5 overflow-y-auto pb-[2rem] scrollbar-hide">
       <div className="z-1 flex w-full flex-col gap-1">
@@ -64,52 +100,61 @@ const SolveProblem = () => {
               127 <span className="text-xs font-bold text-[#3b82f6]">문제</span>
             </span>
           </Link>
-          {/* {myTodaySolveData.map((category, index) => {
-            return (
-              <Link
-                href={category.questionType? RouteTo.Solve + '/' + category.questionType.split('_')[0] as ProblemCategoryTitle : RouteTo.Solve + '/' + category.questionType}
-                key={index}
-                className="h-[8rem] w-[100%] min-w-[240px] flex-shrink-0 rounded-xl bg-white px-4 pt-2.5 shadow-md transition-all duration-300 ease-in-out inner-border inner-border-pointcolor-beigebrown hover:translate-y-[-5px] hover:shadow-2xl md:h-[12rem] md:w-full md:px-7 md:py-4"
-              >
-                <div className="relative flex h-full w-full flex-col">
-                  <div className="mt-2 flex h-[2rem] items-center gap-2 md:ml-1 md:mt-2 md:h-[2.5rem]">
-                    <div className="itmes-center flex aspect-1 h-full items-center justify-center rounded-full bg-red-200">
-                      {getCategoriesIcon(category.title)}
+          {myTodaySolveData &&
+            myTodaySolveData.map((category, index) => {
+              return (
+                <Link
+                  href={`${RouteTo.Solve}/${category.categoryName}`}
+                  key={index}
+                  className="h-[8rem] w-[100%] min-w-[240px] flex-shrink-0 rounded-xl bg-white px-4 pt-2.5 shadow-md transition-all duration-300 ease-in-out inner-border inner-border-pointcolor-beigebrown hover:translate-y-[-5px] hover:shadow-2xl md:h-[12rem] md:w-full md:px-7 md:py-4"
+                >
+                  <div className="relative flex h-full w-full flex-col">
+                    <div className="mt-2 flex h-[2rem] items-center gap-2 md:ml-1 md:mt-2 md:h-[2.5rem]">
+                      <div className="itmes-center flex aspect-1 h-full items-center justify-center rounded-full bg-red-200">
+                        {getCategoriesIcon(category.categoryName)}
+                      </div>
+                      <span
+                        className="flex items-center text-lg font-bold md:ml-1"
+                        style={{
+                          letterSpacing:
+                            category.categoryName.length > 20 ? '-0.06rem' : '',
+                        }}
+                      >
+                        {category.categoryName}
+                      </span>
                     </div>
                     <span
-                      className="flex items-center text-lg font-bold md:ml-1"
+                      className="ml-1 mt-1.5 flex items-center text-[0.7rem] md:ml-1.5 md:mt-2"
                       style={{
                         letterSpacing:
-                          category.title.length > 20 ? '-0.06rem' : '',
+                          category.categoryName.length > 20 ? '-0.06rem' : '',
                       }}
                     >
-                      {category.title}
+                      {'기본적인 알고리즘 문제를 풀어보세요.'}
                     </span>
+                    <div className="absolute bottom-7 flex h-2 w-full rounded-xl bg-gray-300 md:bottom-6">
+                      <div
+                        className={`z-[1] flex h-2 rounded-xl bg-blue-400`}
+                        style={{
+                          width:
+                            (
+                              (category.userSolvingCount * 100) /
+                              category.solvingLimit
+                            ).toFixed(1) + '%',
+                        }}
+                      ></div>
+                    </div>
+                    <p className="absolute bottom-2 right-2 text-xs tracking-tighter md:bottom-0 md:text-sm md:tracking-normal">
+                      진행률 :{' '}
+                      {(
+                        (category.userSolvingCount * 100) /
+                        category.solvingLimit
+                      ).toFixed(1) + '%'}
+                    </p>
                   </div>
-                  <span
-                    className="ml-1 mt-1.5 flex items-center text-[0.7rem] md:ml-1.5 md:mt-2"
-                    style={{
-                      letterSpacing:
-                        category.title.length > 20 ? '-0.06rem' : '',
-                    }}
-                  >
-                    {'기본적인 알고리즘 문제를 풀어보세요.'}
-                  </span>
-                  <div className="absolute bottom-7 flex h-2 w-full rounded-xl bg-gray-300 md:bottom-6">
-                    <div
-                      className={`z-[1] flex h-2 rounded-xl bg-blue-400`}
-                      style={{
-                        width: ((category.count * 100) / 500).toFixed(1) + '%',
-                      }}
-                    ></div>
-                  </div>
-                  <p className="absolute bottom-2 right-2 text-xs tracking-tighter md:bottom-0 md:text-sm md:tracking-normal">
-                    진행률 : {((category.count * 100) / 500).toFixed(1) + '%'}
-                  </p>
-                </div>
-              </Link>
-            );
-          })} */}
+                </Link>
+              );
+            })}
         </div>
       </div>
     </div>
