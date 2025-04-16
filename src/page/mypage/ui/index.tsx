@@ -21,12 +21,9 @@ const Mypage = () => {
     userQuestionHistory();
   }, []);
 
-  // console.log('questionHistory', questionHistory);
-
   const userRanking = async () => {
     try {
       const res = await getUserRankingApi(0, 12); // 예제: 1페이지, 10개 제한
-      console.log(' userRanking res', res);
       if (res.ok) {
         if (res.payload && 'myRanking' in res.payload) {
           setMyRanking(res.payload.myRanking);
@@ -43,7 +40,8 @@ const Mypage = () => {
 
   const userQuestionHistory = async () => {
     try {
-      const res = await getQuestionHistoryApi(12);
+      const res = await getQuestionHistoryApi(100);
+      console.log('userQuestionHistory res', res);
       if (res.ok) {
         if (res.payload && 'content' in res.payload) {
           setQuestionHistory(res.payload.content);
@@ -57,8 +55,7 @@ const Mypage = () => {
       console.error(error);
     }
   };
-  console.log('유저정보', user);
-
+  // console.log('유저정보', user);
   const userScore = user?.userScore ?? 0;
   const userHistoryLength = questionHistory.length;
 

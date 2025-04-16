@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { getUserRankingApi } from '../api';
 import Pagination from '@mui/material/Pagination';
 import Image from 'next/image';
+import { GOLD_IMG, SLIVER_IMG, BRONZE_IMG } from '../../../../public/img';
+import { FaGithub } from 'react-icons/fa6';
 
 export const RankPageComponent = () => {
   const PAGE_LIMIT = 10;
@@ -52,6 +54,28 @@ export const RankPageComponent = () => {
     currentPage * PAGE_LIMIT
   );
 
+  const userRankingDisplay = (rank: number) => {
+    if (rank === 1) {
+      return <Image src={GOLD_IMG} alt="Gold" width={20} height={20} />;
+    } else if (rank === 2) {
+      return <Image src={SLIVER_IMG} alt="Silver" width={20} height={20} />;
+    } else if (rank === 3) {
+      return <Image src={BRONZE_IMG} alt="Bronze" width={20} height={20} />;
+    }
+    return rank; // 순위를 숫자로 반환
+  };
+
+  const getScoreColor = (score: number) => {
+    if (score >= 128000) return 'text-purple-500';
+    if (score >= 32000) return 'text-indigo-500';
+    if (score >= 16000) return 'text-blue-500';
+    if (score >= 8000) return 'text-green-500';
+    if (score >= 4000) return 'text-yellow-500';
+    if (score >= 2000) return 'text-orange-500';
+    if (score >= 1000) return 'text-red-500';
+    return 'text-gray-700';
+  };
+
   return (
     <div className="flex h-full w-full max-w-4xl flex-col justify-between gap-2 rounded-2xl bg-white p-3 md:shadow-lg">
       <div className="">
@@ -75,35 +99,40 @@ export const RankPageComponent = () => {
             <table className="w-full min-w-[500px] border-collapse">
               <thead className="bg-gray-100">
                 <tr className="text-left text-sm text-gray-600 md:text-base">
-                  <th className="px-2 py-1 text-center md:px-3">순위</th>
-                  <th className="px-2 py-1 text-center md:px-3">프로필</th>
-                  <th className="px-4 py-1 text-center md:px-6">닉네임</th>
-                  <th className="px-4 py-1 text-center md:px-6">점수</th>
+                  <th className="px-1 py-1 text-center md:px-1">순위</th>
+                  <th className="px-2 py-1 text-center md:px-2">프로필</th>
+                  <th className="px-1 py-1 text-center">닉네임</th>
+                  <th className="px-4 py-1 text-center md:px-4">점수</th>
                 </tr>
               </thead>
               <tbody>
                 {displayedUsers.length > 0 ? (
                   displayedUsers.map((user, index) => (
-                    <tr
-                      key={user.userId}
-                      className="border-b last:border-none hover:bg-gray-50"
-                    >
-                      <td className="px-4 py-1 text-center text-gray-700 md:px-3">
-                        {user.rankNo || index + 1}
+                    <tr key={user.userId} className="border-b hover:bg-gray-50">
+                      <td className="px-2 py-2 text-gray-700 md:px-3">
+                        <div className="flex items-center justify-center font-bold">
+                          {userRankingDisplay(user.rankNo || index + 1)}
+                        </div>
                       </td>
-                      <td className="flex justify-center px-2 py-1 md:px-3">
+                      <td className="flex justify-center px-2 py-1 md:px-2">
                         <Image
                           src={user.profileImg}
                           alt={`${user.nickname}의 프로필`}
-                          width={28} // Adjust width as per your design
-                          height={28} // Adjust height as per your design
+                          width={28}
+                          height={28}
                           className="whitespace-nowrap rounded-full border border-gray-300 object-cover"
                         />
                       </td>
-                      <td className="px-4 py-1 text-center font-medium text-gray-900 md:px-6">
-                        {user.nickname}
+                      <td className="py-2 font-medium text-gray-900 md:px-6">
+                        <div className="flex items-center justify-center gap-2">
+                          <span> {user.nickname}</span>
+
+                          <FaGithub />
+                        </div>
                       </td>
-                      <td className="px-4 py-1 text-center text-gray-700 md:px-6">
+                      <td
+                        className={`px-4 py-2 text-center md:px-6 ${getScoreColor(user.userScore)}`}
+                      >
                         {user.userScore}
                       </td>
                     </tr>

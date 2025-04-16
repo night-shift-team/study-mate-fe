@@ -69,7 +69,7 @@ export const QuestionItem: React.FC<ItemProps> = ({
   return (
     <>
       <div
-        className="flex w-[40%] items-center justify-between gap-4 rounded-lg bg-white p-2 shadow-lg"
+        className="flex items-center justify-between gap-4 rounded-lg bg-white p-2 shadow-lg"
         onClick={() => setIsPopupOpen(true)} // 팝업 열기
       >
         <span className="text-[1.5vh] font-semibold">
