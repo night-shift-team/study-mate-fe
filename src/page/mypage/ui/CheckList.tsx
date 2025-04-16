@@ -150,12 +150,12 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
         {selectedCategory && (
           <div
             ref={resultContainerRef} // 스크롤 이동 대상
-            className="h-auto w-[100%] overflow-auto rounded-xl bg-white p-4 shadow-md scrollbar-hide"
+            className="h-[30vh] w-[100%] overflow-auto rounded-xl bg-white p-4 shadow-md scrollbar-hide"
           >
             <h2 className="text-center text-lg font-bold">
               {selectedCategory}
             </h2>
-            <div className="flex gap-2">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
               {filteredHistory?.map((history, index) => (
                 <QuestionItem
                   key={history.historyId}

@@ -60,9 +60,11 @@ const Profile = () => {
       <label htmlFor="profile-upload" className="block h-full w-full">
         <div className="flex h-[12vh] w-[12vh] items-center justify-center md:w-[15vh]">
           <Image
-            src={user?.profileImg ?? ''}
+            src={user?.profileImg || DEFAULT_PROFILE_IMG}
             alt=""
             className="rounded-[50%]"
+            width={80}
+            height={80}
           />
         </div>
         <input
