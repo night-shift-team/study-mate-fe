@@ -23,6 +23,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import { Preview } from './preview';
 
 type ChoiceAttrs = Pick<
   ProblemInfoMAQ,
@@ -35,6 +36,7 @@ const LevelTest = () => {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState<boolean>(false);
   const [userAnswers, setUserAnswers] = useState<number[]>([]);
+  const [isStarted, setIsStarted] = useState(false);
 
   const [levelTestLists, setLevelTestLists] = useState<ProblemInfoLevelTest[]>(
     []
@@ -139,6 +141,12 @@ const LevelTest = () => {
     <div className="flex h-full w-full items-center justify-center px-[2%] md:px-[10%]">
       {isPageLoading ? (
         <Spinner size="xl" />
+      ) : !isStarted ? (
+        <Preview
+          onStart={() => {
+            setIsStarted(true);
+          }}
+        />
       ) : (
         <div className="flex h-full w-full max-w-[1200px] items-center justify-center rounded-xl px-[2%] py-[2%] md:max-h-[80%] md:min-h-[50vh] md:border md:border-pointcolor-sand md:shadow-lg">
           <div className="flex h-full w-full flex-col gap-4 pb-4 md:pb-0">

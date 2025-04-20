@@ -90,7 +90,7 @@ const GrassChart = () => {
             {Array(53) // 53주 기준
               .fill(0)
               .map((_, weekIndex) => (
-                <div key={weekIndex} className="flex-1 text-center">
+                <div key={weekIndex} className="flex-1 text-nowrap text-center">
                   {monthLabels[weekIndex] || ''}
                 </div>
               ))}
@@ -130,7 +130,7 @@ const GrassChart = () => {
                       return (
                         <div
                           key={dayIndex}
-                          className={`h-3 w-3 rounded-sm transition-colors duration-100 hover:ring-1 hover:ring-gray-300 ${getColorBySolveCount(
+                          className={`h-[1.7vh] w-[1.7vh] rounded-sm transition-colors duration-100 hover:ring-1 hover:ring-gray-300 ${getColorBySolveCount(
                             solveCount
                           )}`}
                           title={`날짜: ${dateString}, 문제 풀이 수: ${solveCount}`}

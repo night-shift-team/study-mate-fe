@@ -66,6 +66,7 @@ export const RankPageComponent = () => {
   };
 
   const getScoreColor = (score: number) => {
+    if (score >= 256000) return 'text-black';
     if (score >= 128000) return 'text-purple-500';
     if (score >= 32000) return 'text-indigo-500';
     if (score >= 16000) return 'text-blue-500';
