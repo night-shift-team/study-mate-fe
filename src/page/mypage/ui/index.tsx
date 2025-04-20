@@ -10,11 +10,24 @@ import CheckList from './CheckList';
 import { useEffect, useState } from 'react';
 import { userStore } from '@/state/userStore';
 import { getUserRankingApi, getQuestionHistoryApi } from '../api';
+import Image from 'next/image';
+import {
+  Dust_IMG,
+  Grain_IMG,
+  Peddle_IMG,
+  Rock_IMG,
+  Range_IMG,
+  Cloud_IMG,
+  Strom_IMG,
+  Star_IMG,
+  Universe_IMG,
+} from '../../../../public/img';
 
 const Mypage = () => {
   const [questionHistory, setQuestionHistory] = useState<any[]>([]);
   const { user } = userStore();
   const [myRanking, setMyRanking] = useState<number | null>(null);
+  const [totalElements, setTotalElements] = useState<number>(0);
 
   useEffect(() => {
     userRanking();
@@ -40,11 +53,12 @@ const Mypage = () => {
 
   const userQuestionHistory = async () => {
     try {
-      const res = await getQuestionHistoryApi(100);
+      const res = await getQuestionHistoryApi(100, 100000);
       console.log('userQuestionHistory res', res);
       if (res.ok) {
         if (res.payload && 'content' in res.payload) {
           setQuestionHistory(res.payload.content);
+          setTotalElements(res.payload.totalElements);
         } else {
           console.error(res.payload);
         }
@@ -55,9 +69,21 @@ const Mypage = () => {
       console.error(error);
     }
   };
-  // console.log('유저정보', user);
   const userScore = user?.userScore ?? 0;
-  const userHistoryLength = questionHistory.length;
+
+  const getScoreTierInfo = (score: number) => {
+    if (score >= 256000) return { img: Star_IMG };
+    if (score >= 128000) return { img: Strom_IMG };
+    if (score >= 32000) return { img: Cloud_IMG };
+    if (score >= 16000) return { img: Range_IMG };
+    if (score >= 8000) return { img: Rock_IMG };
+    if (score >= 4000) return { img: Peddle_IMG };
+    if (score >= 2000) return { img: Grain_IMG };
+    if (score >= 1000) return { img: Dust_IMG };
+    return { img: Dust_IMG };
+  };
+
+  const scoreTier = getScoreTierInfo(userScore);
 
   const cardData = [
     {
@@ -65,8 +91,14 @@ const Mypage = () => {
       label: '순위',
       img: <PiRankingLight />,
     },
-    { count: userScore, label: '점수', img: <SlNote /> },
-    { count: userHistoryLength, label: '풀이한 문제', img: <LuBookCheck /> },
+    {
+      count: (
+        <Image src={scoreTier.img} alt="Score Tier" width={20} height={50} />
+      ),
+      label: '점수',
+      img: <SlNote />,
+    },
+    { count: totalElements, label: '풀이한 문제', img: <LuBookCheck /> },
   ];
 
   const [tap, setTap] = useState('1');

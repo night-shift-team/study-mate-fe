@@ -73,10 +73,13 @@ export const getUserRankingApi = async (page: number, limit: number) => {
   );
 };
 
-export const getQuestionHistoryApi = async (monthBefore: number) => {
+export const getQuestionHistoryApi = async (
+  monthBefore: number,
+  size: number
+) => {
   return await _apiFetch<QuestionHistoryRes>(
     'GET',
-    `${API_Prefix}/history/${monthBefore}/monthly`
+    `${API_Prefix}/history/${monthBefore}/monthly?page=0&size=${size}`
   );
 };
 
