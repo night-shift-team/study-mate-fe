@@ -49,7 +49,7 @@ const Popup: React.FC<PopupProps> = ({
           >
             문제 {showContent ? '숨기기' : '보기'}
           </Button>
-          {index ? null : <Spinner />}
+          {typeof index === 'number' ? null : <Spinner />}
           {showContent ? <MarkdownComponent markdown={content ?? ''} /> : ''}
           <p className="text-gray-700">
             <span className="font-semibold text-gray-900">유저 답변:</span>{' '}
