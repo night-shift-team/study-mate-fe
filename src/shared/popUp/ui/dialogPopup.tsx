@@ -34,7 +34,7 @@ export const DialogPopup = ({
       {/* 오버레이 추가 */}
       {open && (
         <div
-          className="fixed inset-0 z-[9] bg-black/50"
+          className="fixed inset-0 z-[100] bg-black/50"
           onClick={() => {
             if (!disableX) setDialogOpen(false);
           }}
@@ -43,7 +43,7 @@ export const DialogPopup = ({
       <dialog
         ref={dialogRef}
         open={open}
-        className="absolute left-[50%] top-[50%] z-[100] flex h-[30%] min-h-[15rem] w-[80%] min-w-[20rem] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-2xl border-2 shadow-md"
+        className="absolute left-[50%] top-[50%] z-[100] flex h-[30%] min-h-[15rem] w-[80%] min-w-[20rem] max-w-[30rem] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-2xl border-2 shadow-md"
       >
         <div className="flex h-[20%] w-full items-center justify-center">
           {title}
