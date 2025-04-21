@@ -69,12 +69,11 @@ const SolveProblem = () => {
   return (
     <div className="flex h-full w-full flex-shrink-0 flex-col items-center gap-5 overflow-y-auto pb-[2rem] scrollbar-hide">
       <div className="z-1 flex w-full flex-col gap-1">
-        <NoticeBanner />
-        <RecentProblem />
+        {/* <NoticeBanner /> */}
       </div>
       <div className="flex w-full flex-col gap-4 px-[1.5rem] md:gap-6 md:px-[2.5rem]">
         <NoticeComponent />
-
+        {/* <RecentProblem /> */}
         <div className="mt-6 flex flex-col gap-2 pt-2">
           <span className="text-center text-xl font-bold">
             카테고리별 문제 풀기
@@ -86,7 +85,7 @@ const SolveProblem = () => {
         <div className="grid w-full place-items-center gap-[1.1rem] md:w-auto md:grid-flow-row md:grid-cols-2 md:gap-10 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6">
           <Link
             href={RouteTo.SolveRandom}
-            className="relative flex h-[7rem] w-[100%] min-w-[240px] flex-shrink-0 flex-col items-center justify-center rounded-xl bg-white p-2 px-4 shadow-md transition-all duration-300 ease-in-out inner-border inner-border-pointcolor-beigebrown hover:translate-y-[-5px] hover:shadow-2xl md:h-[12rem] md:w-full md:max-w-[480px] md:p-4 md:pt-2.5"
+            className="relative flex h-[7rem] w-[100%] min-w-[240px] flex-shrink-0 flex-col items-center justify-center border-t p-2 px-4 transition-all duration-300 ease-in-out hover:translate-y-[-5px] hover:shadow-lg md:h-[12rem] md:w-full md:max-w-[480px] md:rounded-sm md:border md:p-4 md:pt-2.5"
           >
             <span className="text-[1.1rem] font-bold underline-offset-8 md:mt-3">
               랜덤 문제 풀기
@@ -105,11 +104,11 @@ const SolveProblem = () => {
                 <Link
                   href={`${RouteTo.Solve}/${category.categoryName}`}
                   key={index}
-                  className="h-[8rem] w-[100%] min-w-[240px] flex-shrink-0 rounded-xl bg-white px-4 pt-2.5 shadow-md transition-all duration-300 ease-in-out inner-border inner-border-pointcolor-beigebrown hover:translate-y-[-5px] hover:shadow-2xl md:h-[12rem] md:w-full md:px-7 md:py-4"
+                  className="h-[8rem] w-[100%] min-w-[240px] flex-shrink-0 border-t px-4 pt-2.5 transition-all duration-300 ease-in-out hover:translate-y-[-5px] hover:shadow-lg hover:inner-border md:h-[12rem] md:w-full md:rounded-sm md:border md:px-7 md:py-4"
                 >
                   <div className="relative flex h-full w-full flex-col">
                     <div className="mt-2 flex h-[2rem] items-center gap-2 md:ml-1 md:mt-2 md:h-[2.5rem]">
-                      <div className="itmes-center flex aspect-1 h-full items-center justify-center rounded-full bg-red-200">
+                      <div className="itmes-center flex aspect-1 h-full items-center justify-center rounded-full bg-[#ffb26b]">
                         {getCategoriesIcon(category.categoryName)}
                       </div>
                       <span
@@ -133,7 +132,7 @@ const SolveProblem = () => {
                     </span>
                     <div className="absolute bottom-7 flex h-2 w-full rounded-xl bg-gray-300 md:bottom-6">
                       <div
-                        className={`z-[1] flex h-2 rounded-xl bg-blue-400`}
+                        className={`z-[1] flex h-2 rounded-xl bg-[#ff9f68]`}
                         style={{
                           width:
                             (

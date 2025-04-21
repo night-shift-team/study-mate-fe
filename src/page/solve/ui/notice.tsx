@@ -45,12 +45,12 @@ export const NoticeComponent = () => {
           pauseOnMouseEnter: true,
         }}
         pagination={{ clickable: true }}
-        className="h-[24rem] w-[100%]" // 전체 너비
+        className="h-[6rem] w-[100%] md:h-[24rem]" // 전체 너비
       >
         {noticeList.map((notice, index) => (
           <SwiperSlide
             key={index}
-            className="relative mb-8 rounded-lg bg-pointcolor-beigebrown shadow-md"
+            className="relative mb-8 rounded-2xl bg-pointcolor-beigebrown"
             style={{
               backgroundImage: `url(${notice.backgroundImage})`,
               objectPosition: 'center',
@@ -63,9 +63,12 @@ export const NoticeComponent = () => {
               className="absolute h-full w-full p-6"
               href={`${RouteTo.Announcement}/${notice.noticeId}`}
             >
-              <h2 className="mb-4 text-2xl font-bold text-white">Welcome</h2>
-              <p className="text-gray-600">{notice.noticeTitle}</p>
-              <p className="text-gray-600">{notice.noticeContent}</p>
+              <p className="text-sm font-black text-gray-600">
+                {notice.noticeTitle}
+              </p>
+              <p className="hidden text-xs text-gray-600 md:block">
+                {notice.noticeContent}
+              </p>
             </Link>
           </SwiperSlide>
         ))}
