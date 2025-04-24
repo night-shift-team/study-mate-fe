@@ -19,7 +19,7 @@ export default async function RootLayout({
       <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
       <body
         id="root-container"
-        className={`flex h-full w-full bg-white font-spoqa antialiased`}
+        className={`flex h-full w-full bg-pointcolor-yogurt font-spoqa antialiased`}
       >
         <MaintenanceCheck>
           <Provider>
@@ -28,7 +28,7 @@ export default async function RootLayout({
               <div className="fixed z-[100] flex h-[3.2rem] w-full bg-pointcolor-yogurt md:h-[3.5rem]">
                 <Header />
               </div>
-              <div className="mt-[3.2rem] flex h-[calc(100%-3.2rem)] w-full justify-center bg-pointcolor-yogurt md:mt-[3.5rem] md:h-[calc(100%-3.5rem)]">
+              <div className="mt-[3.2rem] flex h-[calc(100%-3.2rem)] w-full justify-center md:mt-[3.5rem] md:h-[calc(100%-3.5rem)]">
                 {children}
               </div>
             </div>

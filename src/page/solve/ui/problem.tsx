@@ -179,13 +179,13 @@ const Problem = ({ category }: ProblemProps) => {
   }, []);
 
   return (
-    <div className="flex h-full w-full items-center justify-center px-[2%] md:px-[10%]">
+    <div className="flex h-full w-full justify-center px-[2%] md:px-0">
       <Toaster />
       {isPageLoading ? (
         <Spinner />
       ) : (
-        <div className="flex h-full w-full max-w-[1200px] flex-col items-center justify-center rounded-xl px-[2%] py-[2%] md:max-h-[80%] md:min-h-[50vh] md:border md:border-pointcolor-sand md:shadow-lg">
-          <div className="flex h-full w-full flex-col overflow-y-auto scrollbar-hide">
+        <div className="flex h-full w-full max-w-[1200px] flex-col rounded-xl px-[2%] pb-[2%] pt-[1%] md:max-h-full md:min-h-[50vh]">
+          <div className="flex h-full w-full flex-col">
             <div className="flex h-full w-full flex-col pb-2 md:gap-2 md:p-2">
               <div className="flex w-full items-end justify-between">
                 <div className="space-x-1 text-xl">
@@ -210,7 +210,7 @@ const Problem = ({ category }: ProblemProps) => {
               <div className="py-3 pl-2 font-bold">
                 {currentQuestionWithType?.questionTitle}
               </div>
-              <div className="h-full w-full rounded-3xl bg-white p-2 shadow-md">
+              <div className="w-full flex-1 overflow-y-auto rounded-3xl bg-white p-2 shadow-md">
                 <MarkdownComponent
                   markdown={currentQuestionWithType?.content ?? ''}
                 />
@@ -219,7 +219,7 @@ const Problem = ({ category }: ProblemProps) => {
 
             {problemAnswer ? (
               <div className="flex w-full flex-col">
-                <div className="mt-4 flex w-full flex-col gap-2 md:gap-3">
+                <div className="mt-4 flex w-full flex-col gap-2 text-sm md:gap-3 md:pl-2 md:pr-3 md:text-base">
                   {currentQuestionWithType?.problemType ===
                   ProblemCategoryType.MAQ ? (
                     Array.from({ length: 4 }, (_, i) => i).map((index) => {
@@ -250,7 +250,7 @@ const Problem = ({ category }: ProblemProps) => {
                         readOnly
                       />
                       <div
-                        className={`mt-4 flex w-full flex-col gap-0.5 rounded-xl px-4 py-3 inner-border-2 ${(problemAnswer as SendSAQAnswerRes).reflectedScore > 0 ? 'bg-correctGreen' : 'bg-wrongRed'}`}
+                        className={`mt-4 flex w-full flex-col gap-0.5 rounded-xl px-4 py-3 inner-border ${(problemAnswer as SendSAQAnswerRes).reflectedScore > 0 ? 'bg-correctGreen' : 'bg-wrongRed'}`}
                       >
                         <p className="text-sm text-gray-600">정답 : </p>
                         <span>
@@ -261,12 +261,14 @@ const Problem = ({ category }: ProblemProps) => {
                   )}
                 </div>
                 <div
-                  className={`flex w-full flex-col ${currentQuestionWithType?.problemType === ProblemCategoryType.MAQ ? 'mt-4' : 'mt-2'} gap-0.5 rounded-xl bg-white px-4 py-3 inner-border-2`}
+                  className={`flex w-full flex-col md:pl-2 md:pr-3 ${currentQuestionWithType?.problemType === ProblemCategoryType.MAQ ? 'mt-4' : 'mt-2'} gap-0.5`}
                 >
-                  <p className="text-sm text-gray-600">해설 : </p>
-                  <span>{problemAnswer.answerExplanation}</span>
+                  <div className="flex w-full flex-col rounded-xl bg-white px-4 py-3 inner-border">
+                    <p className="text-sm text-gray-600">해설 : </p>
+                    <span>{problemAnswer.answerExplanation}</span>
+                  </div>
                 </div>
-                <div className="mt-2 flex w-full justify-end pb-4 pt-2 md:p-0">
+                <div className="mt-2 flex w-full justify-end pb-4 pt-2 md:p-0 md:pb-10">
                   {currentQuestionWithType ? (
                     <button
                       disabled={problemAnswer === null}
@@ -290,7 +292,7 @@ const Problem = ({ category }: ProblemProps) => {
               </div>
             ) : (
               <div className="flex w-full flex-col">
-                <div className="mt-2 flex w-full flex-col gap-3">
+                <div className="mt-2 flex w-full flex-col gap-2 text-sm md:gap-3 md:pl-2 md:pr-2 md:text-base">
                   {currentQuestionWithType?.problemType ===
                   ProblemCategoryType.MAQ
                     ? Array.from({ length: 4 }, (_, i) => i).map((index) => {
@@ -329,7 +331,7 @@ const Problem = ({ category }: ProblemProps) => {
                     />
                   ) : null}
                 </div>
-                <div className="mt-2 flex w-full justify-end pb-4 pt-2 md:p-0">
+                <div className="mt-2 flex w-full justify-end pb-4 pt-2 md:p-0 md:pb-10">
                   {currentQuestionWithType ? (
                     <button
                       disabled={selectedAnswer === null}
