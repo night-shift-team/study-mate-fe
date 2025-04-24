@@ -179,7 +179,7 @@ const Problem = ({ category }: ProblemProps) => {
   }, []);
 
   return (
-    <div className="flex h-full w-full justify-center px-[2%] md:px-0">
+    <div className="relative flex h-full w-full justify-center px-[2%] md:px-0">
       <Toaster />
       {isPageLoading ? (
         <Spinner />

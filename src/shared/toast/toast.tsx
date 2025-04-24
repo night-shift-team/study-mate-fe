@@ -90,7 +90,7 @@ const useToast = (
   }) => {
     return (
       <div
-        className={`absolute top-1 z-50 flex h-[2.7rem] min-w-[5rem] max-w-[95%] items-center gap-1 rounded-xl py-[1.35rem] text-[0.9rem] ${getToastBackgroundColor(status ?? toastType)} rounded-sm border px-4 shadow-light md:top-5 md:h-[2.9rem] md:w-auto md:justify-center ${animationClass}`}
+        className={`absolute top-5 z-50 flex h-[2.7rem] min-w-[5rem] max-w-[95%] items-center gap-1 rounded-xl py-[1.35rem] text-[0.9rem] md:top-1 ${getToastBackgroundColor(status ?? toastType)} rounded-sm border px-4 shadow-light md:top-5 md:h-[2.9rem] md:w-auto md:justify-center ${animationClass}`}
       >
         {status ? getToastStatusIcon(status) : getToastStatusIcon(toastType)}
         {description ?? changeDescription}
