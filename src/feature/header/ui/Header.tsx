@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import Logo from '@/assets/icons/mascotIcon.svg';
+import TextLogo from '@/assets/logo.svg';
 import Image from 'next/image';
 import RightHeaderComponents from '../model/rightHeader';
 import Link from 'next/link';
@@ -18,7 +19,22 @@ const Header = () => {
         href={RouteTo.Home}
         className="relative hidden h-full w-[6.5rem] pl-4 md:ml-8 md:flex md:w-[8rem]"
       >
-        <Image src={Logo} alt="" fill objectFit="contain" priority />
+        <Image
+          src={Logo}
+          alt=""
+          className="p-2"
+          fill
+          objectFit="contain"
+          priority
+        />
+        <Image
+          src={TextLogo}
+          alt=""
+          className="ml-20 p-2"
+          fill
+          objectFit="contain"
+          priority
+        />
       </Link>
       {/* 모바일 가운데 로고 */}
       <div className="absolute flex h-full w-full items-center justify-center md:hidden">
