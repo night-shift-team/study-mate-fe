@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import Logo from '@/assets/logo.png';
+import Logo from '@/assets/icons/mascotIcon.svg';
 import Image from 'next/image';
 import RightHeaderComponents from '../model/rightHeader';
 import Link from 'next/link';
@@ -12,7 +12,7 @@ const Header = () => {
   const path = usePathname();
   console.log(path);
   return (
-    <div className="relative flex h-full w-full items-center justify-between border-b bg-pointcolor-yogurt/10 px-0 shadow-sm md:px-4">
+    <div className="relative flex h-full w-full items-center justify-between bg-pointcolor-yogurt/10 px-0 md:px-4 md:shadow-sm">
       {/* 데스크탑 좌측 로고 */}
       <Link
         href={RouteTo.Home}
@@ -26,7 +26,14 @@ const Header = () => {
           href={RouteTo.Home}
           className="relative flex h-full w-[6.5rem] p-0"
         >
-          <Image src={Logo} alt="" fill objectFit="contain" priority />
+          <Image
+            src={Logo}
+            alt=""
+            className="p-2"
+            fill
+            objectFit="contain"
+            priority
+          />
         </Link>
       </div>
 

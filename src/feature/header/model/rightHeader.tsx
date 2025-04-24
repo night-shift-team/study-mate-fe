@@ -80,7 +80,7 @@ const RightHeaderComponents = () => {
           <div className="z-[1] flex">
             <div className="md:hidden">
               <IoMenu
-                className="mr-2 cursor-pointer text-2xl text-[rgb(254,202,202)]"
+                className="mr-1 cursor-pointer text-[1.65rem] font-bold text-pointcolor-beigebrown"
                 onClick={() => setIsOpen(true)}
               />
             </div>
