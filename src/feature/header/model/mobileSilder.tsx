@@ -18,12 +18,12 @@ const MobileSlider: React.FC<MobileSliderProps> = ({ open, setOpen }) => {
   const { setUser } = userStore();
   return (
     <div
-      className={`fixed right-0 top-0 z-50 h-full w-64 transform bg-white shadow-lg ${
-        open ? 'translate-x-0' : 'translate-x-full'
+      className={`fixed right-0 top-0 z-50 h-full w-32 transform bg-white text-xs ${
+        open ? 'translate-x-0 shadow-2xl drop-shadow-lg' : 'translate-x-full'
       } transition-transform duration-300 ease-in-out`}
     >
       {/* 상단 헤더 */}
-      <div className="flex items-center justify-between border-b bg-[rgb(254,202,202)] p-4 text-white">
+      <div className="flex h-[3.2rem] items-center justify-between border-b bg-[rgb(254,202,202)] p-4 text-white">
         <h2 className="font-spoqa text-lg font-bold">Menu</h2>
         <IoClose
           className="cursor-pointer text-2xl transition-colors hover:text-gray-200"
@@ -32,7 +32,7 @@ const MobileSlider: React.FC<MobileSliderProps> = ({ open, setOpen }) => {
       </div>
 
       {/* 메뉴 내용 */}
-      <div className="flex h-[85%] flex-col items-center justify-between gap-6 p-6 font-doodle">
+      <div className="flex h-full flex-col items-center justify-between gap-6 p-6 pb-[10rem] font-doodle">
         <div className="flex flex-col gap-4">
           <Link
             href={RouteTo.Announcement}
@@ -60,8 +60,8 @@ const MobileSlider: React.FC<MobileSliderProps> = ({ open, setOpen }) => {
             className="flex items-center justify-center gap-2 font-medium text-gray-700"
             onClick={() => setOpen(false)}
           >
-            <Image src={MypageIcon} alt="mypage" width={24} height={24} />
-            마이 페이지
+            <Image src={MypageIcon} alt="mypage" width={24} height={24} />내
+            정보
           </Link>
         </div>
 
