@@ -7,6 +7,7 @@ export enum Ecode {
   E0104 = '0104',
   E0405 = '0405',
   E0406 = '0406',
+  E0407 = '0407',
 }
 
 export const EcodeMessage = (ecode: Ecode) => {
@@ -26,7 +27,9 @@ export const EcodeMessage = (ecode: Ecode) => {
     case Ecode.E0405:
       return '이미 존재하는 문제입니다.';
     case Ecode.E0406:
-      return '더이상 문제가 없습니다.';
+      return '더 이상 문제가 없습니다.';
+    case Ecode.E0407:
+      return '더 이상 문제를 풀 수 없습니다.';
     default:
       return 'Unknown error';
   }
