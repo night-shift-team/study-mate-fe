@@ -18,22 +18,24 @@ const MobileSlider: React.FC<MobileSliderProps> = ({ open, setOpen }) => {
   const { setUser } = userStore();
   return (
     <div
-      className={`fixed right-0 top-0 z-50 h-full w-32 transform bg-white text-xs ${
+      className={`fixed right-0 top-0 z-50 flex h-full max-h-[100vh] w-full transform flex-col bg-white text-xs ${
         open ? 'translate-x-0 shadow-2xl drop-shadow-lg' : 'translate-x-full'
       } transition-transform duration-300 ease-in-out`}
     >
       {/* 상단 헤더 */}
-      <div className="flex h-[3.2rem] items-center justify-between border-b bg-[rgb(254,202,202)] p-4 text-white">
-        <h2 className="font-spoqa text-lg font-bold">Menu</h2>
+      <div className="relative flex h-[3.2rem] w-full items-center justify-between border-b bg-pointcolor-coral/100 p-4 text-white">
+        <h2 className="flex w-full justify-center font-spoqa text-lg font-bold">
+          Menu
+        </h2>
         <IoClose
-          className="cursor-pointer text-2xl transition-colors hover:text-gray-200"
+          className="absolute right-5 cursor-pointer text-2xl transition-colors hover:text-gray-200"
           onClick={() => setOpen(false)}
         />
       </div>
 
       {/* 메뉴 내용 */}
-      <div className="flex h-full flex-col items-center justify-between gap-6 p-6 pb-[10rem] font-doodle">
-        <div className="flex flex-col gap-4">
+      <div className="flex flex-1 flex-col items-center justify-between p-6 font-doodle">
+        <div className="flex flex-col gap-5">
           <Link
             href={RouteTo.Announcement}
             className="flex items-center justify-center gap-2 font-medium text-gray-700"
@@ -78,7 +80,7 @@ const MobileSlider: React.FC<MobileSliderProps> = ({ open, setOpen }) => {
       </div>
 
       {/* 하단 데코레이션 */}
-      <div className="absolute bottom-0 w-full border-t bg-gray-100 py-4 text-center">
+      <div className="flex h-[4rem] w-full justify-center border-t bg-gray-100 py-4">
         <p className="text-sm text-gray-500">© 2025 studymatye</p>
       </div>
     </div>
