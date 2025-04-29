@@ -17,22 +17,18 @@ const Header = () => {
       {/* 데스크탑 좌측 로고 */}
       <Link
         href={RouteTo.Home}
-        className="relative hidden h-full w-[6.5rem] pl-4 md:ml-8 md:flex md:w-[8rem]"
+        className="relative hidden h-full md:flex md:w-[8rem]"
       >
         <Image
           src={Logo}
           alt=""
-          className="p-2"
-          fill
-          objectFit="contain"
+          className="flex object-contain py-2.5 pl-2.5"
           priority
         />
         <Image
           src={TextLogo}
           alt=""
-          className="ml-20 p-2"
-          fill
-          objectFit="contain"
+          className="flex object-contain p-2"
           priority
         />
       </Link>
