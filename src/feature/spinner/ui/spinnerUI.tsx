@@ -19,11 +19,13 @@ export const Spinner = ({
       case 'xs':
         return 4;
       case 'sm':
+        return 6;
+      case 'md':
         return 8;
       case 'lg':
         return 12;
       case 'xl':
-        return 16;
+        return 18;
       default:
         return 8;
     }

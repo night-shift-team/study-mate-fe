@@ -30,6 +30,9 @@ import { UserInfo } from '@/shared/constants/userInfo';
 import { PiPaperPlaneTilt } from 'react-icons/pi';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { IoIosArrowForward } from 'react-icons/io';
+import { Bookmark } from 'lucide-react';
+import { BookMarkCircle } from '@/feature/boomMark/ui/bookmarkCircle';
+import { questionBookmarkToggleApi } from '@/feature/boomMark/api';
 
 interface ProblemProps {
   category: 'random' | ProblemCategoryTitle;
@@ -319,12 +322,24 @@ const Problem = ({ category }: ProblemProps) => {
     }
   };
 
+  const bookMarkToggle = async (questionId: string) => {
+    try {
+      const res = await questionBookmarkToggleApi(questionId);
+      if (res.ok) {
+        return res.payload as boolean;
+      }
+      return false;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  };
+
   useEffect(() => {
     setDefaultCanSolveProblemInfo();
     getProblem(category);
   }, []);
 
-  console.log('problemAnswer', problemAnswer);
   return (
     <div className="relative flex h-full w-full justify-center px-[2%] md:px-0">
       <Toaster />
@@ -420,22 +435,33 @@ const Problem = ({ category }: ProblemProps) => {
                   </div>
                   <div className="mt-2 flex w-full justify-end pb-4 pt-2 md:p-0 md:pb-10">
                     {currentQuestionWithType ? (
-                      <button
-                        disabled={problemAnswer === null}
-                        className={`mr-1 flex h-[42px] w-[42px] items-center justify-center rounded-full transition-all duration-200 ease-in-out md:mt-3 ${
-                          problemAnswer === null
-                            ? 'cursor-not-allowed bg-gray-400 opacity-50'
-                            : 'bg-pointcolor-deepcoral hover:bg-pointcolor-deepcoral active:scale-95'
-                        } text-white`}
-                        onClick={async () => {
-                          await handleNextButton();
-                        }}
-                      >
-                        <IoIosArrowForward
-                          color="white"
-                          className="h-[20px] w-[20px] md:h-[24px] md:w-[24px]"
+                      <div className="mr-1 flex h-full items-center gap-2 md:mr-4 md:mt-3 md:gap-2">
+                        <BookMarkCircle
+                          size={20}
+                          color="#b08968"
+                          strokeWidth={2.2}
+                          initialValue={false}
+                          onClick={async () =>
+                            await bookMarkToggle(currentQuestionWithType.id)
+                          }
                         />
-                      </button>
+                        <button
+                          disabled={problemAnswer === null}
+                          className={`flex h-[42px] w-[42px] items-center justify-center rounded-full transition-all duration-200 ease-in-out ${
+                            problemAnswer === null
+                              ? 'cursor-not-allowed bg-gray-400 opacity-50'
+                              : 'bg-pointcolor-deepcoral hover:bg-pointcolor-deepcoral active:scale-95'
+                          } text-white`}
+                          onClick={async () => {
+                            await handleNextButton();
+                          }}
+                        >
+                          <IoIosArrowForward
+                            color="white"
+                            className="h-[20px] w-[20px] md:h-[24px] md:w-[24px]"
+                          />
+                        </button>
+                      </div>
                     ) : null}
                   </div>
                 </div>
@@ -484,7 +510,7 @@ const Problem = ({ category }: ProblemProps) => {
                     {currentQuestionWithType ? (
                       <button
                         disabled={selectedAnswer === null}
-                        className={`mr-1 flex h-[42px] w-[42px] items-center justify-center rounded-full transition-all duration-200 ease-in-out md:mt-3 ${
+                        className={`mr-1 flex h-[42px] w-[42px] items-center justify-center rounded-full transition-all duration-200 ease-in-out ${
                           selectedAnswer === null || isLoading
                             ? 'cursor-not-allowed bg-gray-400 opacity-50'
                             : 'bg-pointcolor-deepcoral hover:bg-pointcolor-deepcoral active:scale-95'
