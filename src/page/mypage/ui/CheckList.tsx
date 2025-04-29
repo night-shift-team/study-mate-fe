@@ -23,7 +23,6 @@ interface CheckListProps {
 }
 
 const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
-  console.log('questionHistory', questionHistory);
   const resultContainerRef = useRef<HTMLDivElement | null>(null); // 스크롤 이동을 위한 ref
   // 클릭된 카테고리 상태 관리
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);

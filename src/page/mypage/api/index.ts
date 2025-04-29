@@ -66,6 +66,16 @@ export interface GetMyTodaySolveDataByCategory {
 }
 export type GetMyTodaySolveDataByCategoryRes = GetMyTodaySolveDataByCategory[];
 
+export interface QuestionFavoriteRes {
+  questionId: string;
+  questionTitle: string;
+  questionContent: string;
+  questionCategory: string;
+  questionAnswer: string;
+  questionExplanation: string;
+  difficulty: number;
+}
+
 export const getUserRankingApi = async (page: number, limit: number) => {
   return await _apiFetch<UserRankingRes>(
     'GET',
@@ -115,4 +125,31 @@ export const getMyTodaySolveDataByCategoryApi = async (
     'GET',
     `${API_Prefix}/history/{category}/category/today${query}`
   );
+};
+
+export const getQuestionFavoriteApi = async (page: number, size: number) => {
+  return await _apiFetch<QuestionFavoriteRes>(
+    'GET',
+    `${API_Prefix}/question-favorite/?page=${page}&size=${size}`
+  );
+};
+
+export const removeFavoriteApi = async (questionId: string) => {
+  try {
+    const response = await _apiFetch(
+      'POST',
+      `${API_Prefix}/question-favorite/${questionId}`
+    );
+
+    if (response.ok) {
+      return true;
+    } else {
+      // 서버에서 반환한 에러 메시지 처리
+      console.error('Error removing favorite:', response.payload.message);
+      return false;
+    }
+  } catch (error) {
+    console.error('Network error:', error);
+    return false;
+  }
 };
