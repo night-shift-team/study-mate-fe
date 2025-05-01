@@ -1,16 +1,35 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getUserRankingApi } from '../api';
+import { getUserRankingApi, UserRankingRes } from '../api';
 import Pagination from '@mui/material/Pagination';
 import Image from 'next/image';
 import { GOLD_IMG, SLIVER_IMG, BRONZE_IMG } from '../../../../public/img';
 import { FaGithub } from 'react-icons/fa6';
+import GoldTrophy from '@/assets/goldTrophy.jpeg';
+import SilverTrophy from '@/assets/silverTrophy.jpg';
+import BronzeTrophy from '@/assets/bronzeTrophy.jpg';
+import DefaultUserProfileImage from '@/assets/icons/user.png';
+import { ProfileImage } from '@/shared/user/ui/profileImage';
+import {
+  Avatar,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material';
+import { ProblemPagination } from '@/feature/pagination';
 
 export const RankPageComponent = () => {
   const PAGE_LIMIT = 10;
   const [myRanking, setMyRanking] = useState<number | null>(null);
-  const [otherUsers, setOtherUsers] = useState<any[]>([]);
+  const [otherUsers, setOtherUsers] = useState<UserRankingRes['otherUsers']>(
+    []
+  );
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState<boolean>(true); // 로딩 상태 추가
@@ -78,16 +97,101 @@ export const RankPageComponent = () => {
   };
 
   return (
-    <div className="flex h-full w-full max-w-4xl flex-col justify-between gap-2 rounded-2xl bg-white p-3 md:shadow-lg">
-      <div className="">
-        <h3 className="mb-4 text-lg font-semibold text-gray-900 md:text-lg">
-          나의 랭킹: <span className="">{myRanking ?? '-'}등</span>
-        </h3>
-        <h3 className="mb-3 text-sm font-medium text-gray-700 md:text-sm">
-          유저 랭킹
-        </h3>
-      </div>
+    <div className="flex h-full w-full max-w-4xl flex-col justify-between gap-2 rounded-2xl p-3 md:shadow-lg">
+      <div className="mt-2 flex h-[clamp(8rem,30%,12rem)] w-full min-w-[15rem] items-end gap-[0.1rem] px-[5%]">
+        <div className="relative flex h-[86%] w-1/3 justify-center">
+          {/* <span className='absolute top-[1.1rem] font-jalnan text-sm'>2</span> */}
+          <Image
+            src={SilverTrophy}
+            alt="Gold"
+            className="h-full w-full object-contain"
+          />
+          <div className="absolute bottom-0 flex h-[50%] w-[90%] flex-col items-center py-1 pt-2 font-parkdahyun text-xs">
+            <div className="relative flex h-full w-full flex-col items-center">
+              <ProfileImage
+                src={
+                  otherUsers && otherUsers.length
+                    ? otherUsers[1].profileImg
+                    : null
+                }
+                width={20}
+                height={20}
+              />
+              <span className="w-[90%] break-words pt-1 text-center leading-3">
+                {otherUsers.length >= 1 ? otherUsers[1].nickname : ''}
+              </span>
+            </div>
+            <span className="font-semibold text-stone-500">
+              {otherUsers.length ? otherUsers[1].userScore : ''}
+            </span>
+          </div>
+        </div>
+        <div className="relative flex h-full w-1/3 justify-center">
+          {/* <span className='absolute pr-[0.15rem] top-[1rem] font-jalnan text-sm text-[0.8rem]'>1</span> */}
+          <Image
+            src={GoldTrophy}
+            alt="Gold"
+            className="h-full w-full object-contain"
+          />
+          <div className="absolute bottom-0 flex h-[55%] w-[90%] flex-col items-center py-1 pt-2 font-parkdahyun text-xs">
+            <div className="relative flex h-full w-full flex-col items-center">
+              <ProfileImage
+                src={
+                  otherUsers && otherUsers.length
+                    ? otherUsers[0].profileImg
+                    : null
+                }
+                width={20}
+                height={20}
+              />
+              <span className="w-[90%] break-words pt-1 text-center leading-3">
+                {otherUsers.length >= 2 ? otherUsers[0].nickname : ''}
+              </span>
+            </div>
 
+            <span className="text-base font-bold text-red-500">
+              {otherUsers.length ? otherUsers[0].userScore : ''}
+            </span>
+          </div>
+        </div>
+        <div className="relative flex h-[80%] w-1/3 justify-center">
+          {/* <span className='absolute pl-[0.15rem] top-[0.94rem] font-jalnan text-sm text-[0.75rem]'>3</span> */}
+          <Image
+            src={BronzeTrophy}
+            alt="Gold"
+            className="h-full w-full object-contain"
+          />
+          <div className="absolute bottom-0 flex h-[50%] w-[90%] flex-col items-center py-1 font-parkdahyun text-xs">
+            <div className="relative flex h-full w-full flex-col items-center">
+              <ProfileImage
+                src={otherUsers.length ? otherUsers[2].profileImg : null}
+                width={20}
+                height={20}
+              />
+              <span className={`w-[90%] break-words text-center leading-3`}>
+                {otherUsers.length ? otherUsers[2].nickname : ''}
+              </span>
+            </div>
+            <span className="font-semibold text-stone-500">
+              {otherUsers.length ? otherUsers[2].userScore : ''}
+            </span>
+          </div>
+        </div>
+      </div>
+      <h3 className="mt-5 text-sm font-semibold text-gray-900 md:text-lg">
+        나의 랭킹:{' '}
+        <span
+          className={
+            myRanking ? (myRanking <= 3 ? 'text-pointcolor-coral' : '') : ''
+          }
+        >
+          {myRanking ?? '-'}등
+        </span>
+      </h3>
+
+      <h3 className="mt-2 text-sm font-medium text-gray-700 md:text-sm">
+        유저 랭킹
+      </h3>
       {/* 로딩 중일 때 메시지 표시 */}
       {isLoading ? (
         <div className="flex h-40 items-center justify-center text-lg text-gray-500">
@@ -96,72 +200,116 @@ export const RankPageComponent = () => {
       ) : (
         <>
           {/* 반응형 테이블 컨테이너 */}
-          <div className="h-[80vh] overflow-y-auto rounded-lg border border-gray-200">
-            <table className="w-full min-w-[500px] border-collapse">
-              <thead className="bg-gray-100">
-                <tr className="text-left text-sm text-gray-600 md:text-base">
-                  <th className="px-1 py-1 text-center md:px-1">순위</th>
-                  <th className="px-2 py-1 text-center md:px-2">프로필</th>
-                  <th className="px-1 py-1 text-center">닉네임</th>
-                  <th className="px-4 py-1 text-center md:px-4">점수</th>
-                </tr>
-              </thead>
-              <tbody>
+          <TableContainer
+            component={Paper}
+            className="scrollbar-hide"
+            sx={{
+              maxHeight: '80vh',
+              overflowY: 'auto',
+              borderRadius: 2,
+              boxShadow: 0,
+              backgroundColor: 'unset',
+            }}
+          >
+            <Table
+              stickyHeader
+              sx={{ width: '100%' }}
+              aria-label="ranking table"
+            >
+              <TableHead>
+                <TableRow>
+                  <TableCell
+                    className="w-[20%] !bg-pointcolor-beigebrown"
+                    align="center"
+                  >
+                    순위
+                  </TableCell>
+                  <TableCell
+                    sx={{ display: { xs: 'none', md: 'table-cell' } }}
+                    className="!bg-pointcolor-beigebrown"
+                    width={70}
+                    align="center"
+                  >
+                    프로필
+                  </TableCell>
+                  <TableCell
+                    className="w-[50%] !bg-pointcolor-beigebrown"
+                    align="center"
+                  >
+                    닉네임
+                  </TableCell>
+                  <TableCell
+                    className="w-[30%] !bg-pointcolor-beigebrown"
+                    align="center"
+                  >
+                    점수
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
                 {displayedUsers.length > 0 ? (
                   displayedUsers.map((user, index) => (
-                    <tr key={user.userId} className="border-b hover:bg-gray-50">
-                      <td className="px-2 py-2 text-gray-700 md:px-3">
-                        <div className="flex items-center justify-center font-bold">
+                    <TableRow
+                      key={user.userId}
+                      hover
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                      <TableCell align="center" className="place-items-center">
+                        <Typography fontWeight="bold">
                           {userRankingDisplay(user.rankNo || index + 1)}
-                        </div>
-                      </td>
-                      <td className="flex justify-center px-2 py-1 md:px-2">
-                        <Image
-                          src={user.profileImg}
+                        </Typography>
+                      </TableCell>
+                      <TableCell
+                        sx={{ display: { xs: 'none', md: 'table-cell' } }}
+                        align="center"
+                      >
+                        <Avatar
                           alt={`${user.nickname}의 프로필`}
-                          width={28}
-                          height={28}
-                          className="whitespace-nowrap rounded-full border border-gray-300 object-cover"
+                          src={user.profileImg}
+                          sx={{ width: 28, height: 28, mx: 'auto' }}
                         />
-                      </td>
-                      <td className="py-2 font-medium text-gray-900 md:px-6">
-                        <div className="flex items-center justify-center gap-2">
-                          <span> {user.nickname}</span>
-
-                          <FaGithub />
-                        </div>
-                      </td>
-                      <td
-                        className={`px-4 py-2 text-center md:px-6 ${getScoreColor(user.userScore)}`}
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography
+                          variant="body2"
+                          fontWeight="medium"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          gap={1}
+                        >
+                          {user.nickname} <FaGithub />
+                        </Typography>
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{ color: getScoreColor(user.userScore) }}
+                        className={`${user ? (user.rankNo === 1 ? '!text-red-500' : '') : ''}`}
                       >
                         {user.userScore}
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ))
                 ) : (
-                  <tr>
-                    <td
-                      colSpan={4}
-                      className="px-2 py-2 text-center text-gray-500"
-                    >
-                      데이터가 없습니다.
-                    </td>
-                  </tr>
+                  <TableRow>
+                    <TableCell colSpan={4} align="center">
+                      <Typography color="text.secondary">
+                        데이터가 없습니다.
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
                 )}
-              </tbody>
-            </table>
-          </div>
+              </TableBody>
+            </Table>
+          </TableContainer>
 
+          <div className="h-full flex-1 pb-0.5" />
           {/* 페이지네이션 */}
-          <div className="flex w-full justify-center">
-            <Pagination
-              count={totalPages}
+          <div className="flex w-full justify-center pb-2">
+            <ProblemPagination
               page={currentPage}
-              onChange={handlePageChange}
-              variant="outlined"
-              shape="rounded"
-              size="small" // 크기 줄이기
-              className="border-none text-blue-500"
+              setPage={setCurrentPage}
+              paginationSize={totalPages}
             />
           </div>
         </>

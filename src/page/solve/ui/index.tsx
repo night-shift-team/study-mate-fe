@@ -76,9 +76,7 @@ const SolveProblem = () => {
         <NoticeComponent />
         {/* <RecentProblem /> */}
         <div className="mt-6 flex flex-col gap-2 pt-2">
-          <span className="text-center text-xl font-bold">
-            카테고리별 문제 풀기
-          </span>
+          <span className="text-center text-xl font-bold">CATEGORY</span>
           <span className="w-full text-center text-sm">
             관심 있는 카테고리를 선택하여 문제를 풀어보세요
           </span>

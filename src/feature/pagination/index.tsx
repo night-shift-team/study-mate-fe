@@ -35,8 +35,10 @@ export const ProblemPagination = ({
             <PaginationItem
               {...item}
               disabled={
-                paginationSize === 1 &&
-                (item.type === 'next' || item.type === 'previous')
+                paginationSize === 0 ||
+                (page === 1 &&
+                  (item.type === 'next' || item.type === 'previous')) ||
+                (page === paginationSize && item.type === 'next')
               }
             />
           )}

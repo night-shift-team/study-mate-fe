@@ -9,10 +9,24 @@ module.exports = {
     './pages/**/*.{js,ts,jsx,tsx,mdx}', // pages 폴더 내의 모든 파일
     './components/**/*.{js,ts,jsx,tsx,mdx}', // components 폴더 내의 모든 파일
   ],
+  safelist: ['bg-mainNotice'],
   theme: {
     extend: {
       screens: {
         '3xl': '1920px',
+      },
+      backgroundSize: {
+        '110': '110%',
+        '120': '120%',
+        '130': '130%',
+        '140': '140%',
+        '150': '150%',
+        '160': '160%',
+        '180': '180%',
+        '200': '200%',
+      },
+      backgroundImage: {
+        'main-notice': 'url(@/assets/noticeBg.svg)',
       },
       keyframes: {
         'fade-up': {

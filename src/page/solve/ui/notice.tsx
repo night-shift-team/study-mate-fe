@@ -7,7 +7,6 @@ import { Notice } from '@/feature/notice/api';
 import { getNoticeList } from '../model/getNoticeList';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import NoticeBG from '@/assets/noticeBg.svg';
 
 export const NoticeComponent = () => {
   const [noticeList, setNoticeList] = useState<Notice[]>([]);
@@ -35,16 +34,8 @@ export const NoticeComponent = () => {
   }, []);
 
   return (
-    <div
-      className="relative mx-[-1.5rem] flex h-[10rem] w-[calc(100%+2.5rem)] md:mx-[-2.5rem] md:h-[22rem] md:w-[calc(100%+5rem)]"
-      style={{
-        backgroundImage: `url(${NoticeBG.src})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-        backgroundPosition: 'left',
-      }}
-    >
-      <div className="absolute h-full w-[clamp(100%-8rem,70%-3rem,70%-3rem)] [left:clamp(8rem,30%,30%)] md:my-10 md:h-[16rem] md:w-[30rem] md:rounded-2xl md:[left:clamp(22rem,30%,50%)]">
+    <div className="relative mx-[-1.5rem] flex h-[10rem] w-[calc(100%+2.5rem)] bg-main-notice bg-[length:150%] bg-[10%_center] bg-no-repeat md:mx-[-2.5rem] md:h-[22rem] md:w-[calc(100%+5rem)] md:bg-cover md:bg-left">
+      <div className="flex h-full w-full">
         <Swiper
           modules={[Autoplay, Pagination]}
           spaceBetween={30}
@@ -55,25 +46,15 @@ export const NoticeComponent = () => {
             pauseOnMouseEnter: true,
           }}
           pagination={{ clickable: true }}
-          className="h-full w-full md:rounded-2xl" // 전체 너비
+          className="relative h-full w-full" // 전체 너비
         >
           {noticeList.map((notice, index) => (
-            <SwiperSlide
-              key={index}
-              className="relative mb-8 md:rounded-2xl"
-              style={{
-                // backgroundImage: `url(${notice.noticeImage})`,
-                objectPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: 'cover',
-                backgroundPositionY: 'center',
-              }}
-            >
+            <SwiperSlide key={index}>
               <Link
-                className="absolute h-full w-full p-6"
+                className="absolute h-full w-[clamp(100%-8rem,70%-3rem,70%-3rem)] border-black pt-4 [left:clamp(8rem,30%,30%)] md:h-full md:w-[clamp(20rem,50%,40rem)] md:rounded-2xl md:pt-12 md:[left:clamp(22rem,30%,50%)]"
                 href={`${RouteTo.Announcement}/${notice.noticeId}`}
               >
-                <p className="pb-5 font-parkdahyun text-2xl font-black text-gray-600">
+                <p className="font-parkdahyun text-2xl font-black text-gray-600 md:pb-4">
                   Notice
                 </p>
                 <p className="text-sm font-black text-gray-600">
