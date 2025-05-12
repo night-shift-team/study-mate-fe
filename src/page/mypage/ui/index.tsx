@@ -7,9 +7,15 @@ import { SlNote } from 'react-icons/sl';
 import { LuBookCheck } from 'react-icons/lu';
 import GrassChart from '@/feature/charts/GrassChart';
 import CheckList from './CheckList';
+import { Favorite } from './Favorite';
 import { useEffect, useState } from 'react';
 import { userStore } from '@/state/userStore';
-import { getUserRankingApi, getQuestionHistoryApi } from '../api';
+import {
+  getUserRankingApi,
+  getQuestionHistoryApi,
+  getQuestionFavoriteApi,
+  QuestionFavoriteRes,
+} from '../api';
 import Image from 'next/image';
 import {
   Dust_IMG,
@@ -28,10 +34,12 @@ const Mypage = () => {
   const { user } = userStore();
   const [myRanking, setMyRanking] = useState<number | null>(null);
   const [totalElements, setTotalElements] = useState<number>(0);
+  const [favoriteList, setFavoriteList] = useState<any[]>([]);
 
   useEffect(() => {
     userRanking();
     userQuestionHistory();
+    userFavoriteApi();
   }, []);
 
   const userRanking = async () => {
@@ -69,6 +77,24 @@ const Mypage = () => {
       console.error(error);
     }
   };
+  const userFavoriteApi = async () => {
+    try {
+      const res = await getQuestionFavoriteApi(0, 10);
+      console.log('즐겨찾기 API 응답:', res);
+      if (res.ok) {
+        if (Array.isArray(res.payload)) {
+          setFavoriteList(res.payload as QuestionFavoriteRes[]);
+        } else {
+          console.error('예상치 못한 응답 구조:', res.payload);
+        }
+      } else {
+        console.error('API 요청 실패', res);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const userScore = user?.userScore ?? 0;
 
   const getScoreTierInfo = (score: number) => {
@@ -106,7 +132,7 @@ const Mypage = () => {
   return (
     <div className="z-1 h-full w-full overflow-y-auto scrollbar-hide md:w-[85%]">
       <div className="flex flex-col items-center">
-        <div className="z-1 flex h-[25vh] w-full flex-col items-center justify-between gap-5 bg-[#FEA1A1] px-6 py-6 md:flex-row md:rounded-t-3xl">
+        <div className="z-1 flex h-[25vh] w-full flex-col items-center justify-between gap-5 bg-[#77a46d] px-6 py-6 md:flex-row md:rounded-t-3xl">
           <Profile />
 
           <div className="flex w-[100%] justify-end gap-4 md:w-[70%]">
@@ -129,16 +155,26 @@ const Mypage = () => {
           </div>
 
           <div className="flex flex-col gap-4 md:flex-row">
-            <div className="flex justify-center md:flex-col">
+            <div className="flex justify-center md:flex-col md:justify-start">
               <button
                 onClick={() => setTap('1')}
                 className="w-[100px] text-nowrap text-[1rem] font-bold text-[#ECCDB4]"
               >
                 풀이한 문제
               </button>
+              <button
+                onClick={() => setTap('2')}
+                className="w-[100px] text-nowrap text-[1rem] font-bold text-[#ECCDB4]"
+              >
+                즐겨찾기
+              </button>
             </div>
             <div className="flex-1">
-              <CheckList title="1" questionHistory={questionHistory} />
+              {tap === '1' ? (
+                <CheckList title="1" questionHistory={questionHistory} />
+              ) : (
+                <Favorite title="" favoriteList={favoriteList} />
+              )}
             </div>
           </div>
         </div>

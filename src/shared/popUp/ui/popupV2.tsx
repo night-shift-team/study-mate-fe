@@ -28,7 +28,7 @@ const getSize = (size: Size): string => {
 interface PopupWithProblemProps {
   size?: Size;
   questionTitle: string;
-  difficulty: string;
+  difficulty: string | number;
   content: string;
   answer: string;
   explanation: string;

@@ -23,7 +23,6 @@ interface CheckListProps {
 }
 
 const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
-  console.log('questionHistory', questionHistory);
   const resultContainerRef = useRef<HTMLDivElement | null>(null); // 스크롤 이동을 위한 ref
   // 클릭된 카테고리 상태 관리
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -121,29 +120,22 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
                 <div
                   key={index}
                   onClick={() => setSelectedCategory(category.title)} // 클릭 시 상태 업데이트
-                  className="min-w-auto relative flex h-[6rem] cursor-pointer flex-col items-center justify-center rounded-xl bg-white px-4 pt-2.5 shadow-md transition-all duration-300 ease-in-out hover:translate-y-[-5px] md:p-4"
+                  className="min-w-auto relative flex h-[5rem] cursor-pointer flex-col items-center justify-center rounded-xl bg-white px-4 pt-2.5 shadow-md transition-all duration-300 ease-in-out hover:translate-y-[-5px] md:p-4"
                 >
-                  <div className="flex h-[2rem] w-[2rem] items-center justify-center rounded-full bg-red-200 md:h-[2.5rem] md:w-[2.5rem]">
-                    {getCategoriesIcon(category.title)}
+                  <div className="flex h-[3rem] justify-center">
+                    <div className="itmes-center relative flex aspect-1 h-full items-center justify-center">
+                      {getCategoriesIcon(category.title)}
+                    </div>
+                    <span
+                      className="flex items-center text-sm font-bold"
+                      style={{
+                        letterSpacing:
+                          category.title.length > 20 ? '-0.06rem' : '',
+                      }}
+                    >
+                      {category.title}
+                    </span>
                   </div>
-                  <span
-                    className="mt-2 text-center text-sm font-semibold"
-                    style={{
-                      letterSpacing:
-                        category.title.length > 20 ? '-0.06rem' : '',
-                    }}
-                  >
-                    {category.title}
-                  </span>
-                  <span
-                    className="mt-1 text-center text-sm font-semibold"
-                    style={{
-                      letterSpacing:
-                        category.title.length > 20 ? '-0.06rem' : '',
-                    }}
-                  >
-                    {category.question}문제
-                  </span>
                 </div>
               );
             })}
