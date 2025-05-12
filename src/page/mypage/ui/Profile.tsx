@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Button from '@/components/buttons';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import useToast, { ToastType } from '@/shared/toast/toast';
+import { ProfileImage } from '@/shared/user/ui/profileImage';
 
 const DEFAULT_PROFILE_IMG = '/default-profile.png';
 
@@ -86,13 +87,12 @@ const Profile = () => {
       {<Toaster status={ToastType.success} />}
       <label htmlFor="profile-upload" className="block h-full w-full">
         <div className="flex h-[12vh] w-[12vh] items-center justify-center md:w-[15vh]">
-          <Image
-            src={user?.profileImg || DEFAULT_PROFILE_IMG}
-            alt=""
-            className="rounded-[50%]"
-            width={80}
-            height={80}
-          />
+          <div className="relative aspect-1 w-[8vh] md:w-[10vh]">
+            <ProfileImage
+              src={user ? user.profileImg : DEFAULT_PROFILE_IMG}
+              fill={true}
+            />
+          </div>
         </div>
         <input
           id="profile-upload"

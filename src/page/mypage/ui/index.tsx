@@ -116,12 +116,13 @@ const Mypage = () => {
     },
     {
       count: (
-        <Image
-          src={getScoreTierInfo(user?.userScore ?? 0).img}
-          alt="Score Tier"
-          width={20}
-          height={50}
-        />
+        <div className="relative aspect-1 w-6 md:w-8">
+          <Image
+            src={getScoreTierInfo(user?.userScore ?? 0).img}
+            alt="Score Tier"
+            fill
+          />
+        </div>
       ),
       label: '점수',
       img: <SlNote />,
@@ -134,10 +135,10 @@ const Mypage = () => {
   return (
     <div className="z-1 h-full w-full overflow-y-auto scrollbar-hide md:w-[85%]">
       <div className="flex flex-col items-center">
-        <div className="z-1 flex h-[25vh] w-full flex-col items-center justify-between gap-5 bg-[#77a46d] px-6 py-6 md:flex-row md:rounded-t-3xl">
+        <div className="z-1 flex h-[25vh] w-full flex-col items-center bg-[#77a46d] px-6 pt-2 md:flex-row md:justify-between md:gap-4 md:rounded-t-3xl md:py-6">
           <Profile />
 
-          <div className="flex w-[100%] justify-end gap-4 md:w-[70%]">
+          <div className="flex w-[100%] justify-center gap-4 pt-2 md:max-w-[60%] md:justify-end md:pt-0">
             {cardData.map((item, index) => (
               <Card
                 key={index}

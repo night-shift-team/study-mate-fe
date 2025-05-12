@@ -4,9 +4,10 @@ import DefaultUserProfileImage from '@/assets/icons/user.png';
 
 interface ProfileImageProps {
   src: string | null;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
   alt?: string;
+  fill?: boolean;
 }
 
 export const ProfileImage = ({
@@ -14,6 +15,7 @@ export const ProfileImage = ({
   width,
   height,
   alt = 'user profile',
+  fill = false,
 }: ProfileImageProps) => {
   const [hasError, setHasError] = useState(!src);
 
@@ -30,6 +32,7 @@ export const ProfileImage = ({
               setHasError(true);
             }
           }}
+          fill={fill}
         />
       ) : (
         <></>
