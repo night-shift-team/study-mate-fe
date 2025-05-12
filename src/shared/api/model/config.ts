@@ -128,8 +128,8 @@ interceptor.on('response', async ({ response, request }) => {
   const data = await response.json();
   const errCode = data.ecode ? data.ecode : data.status;
   // console.warn(errCode);
-
   const isDisabaleToken = errCode === Ecode.E0002 || errCode === Ecode.E0005;
+
   if (isDisabaleToken && typeof window !== 'undefined') {
     try {
       console.warn(EcodeMessage(errCode));
@@ -139,16 +139,6 @@ interceptor.on('response', async ({ response, request }) => {
       currentToken = accessToken as string;
       request.headers.set('Authorization', `Bearer ${currentToken}`);
 
-      // 재요청
-      // const res = await _apiFetch(
-      //   request.method as HTTPRequestMethod,
-      //   request.url.split(
-      //     process.env.NEXT_PUBLIC_API_URL ??
-      //       'https//study-mate-bff-ecb080c0db60.herokuapp.com'
-      //   )[1],
-      //   request.body ? request.body : undefined
-      // );
-      // return res;
       window.location.reload();
     } catch (e) {
       localStorage.removeItem('accessToken');

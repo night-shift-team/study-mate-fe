@@ -55,11 +55,17 @@ module.exports = {
           '100%': { opacity: '1' },
         },
         'toast-in': {
-          '0%': { opacity: '0', transform: 'translateY(-100%)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
+          '0%': {
+            opacity: '0',
+            transform: 'translateX(-50%) translateY(-100%)',
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateX(-50%)  translateY(0)',
+          },
         },
         'toast-out': {
-          '0%': { opacity: '1', transform: 'translateY(0)' },
+          '0%': { opacity: '1', transform: 'translateX(-50%)  translateY(0)' },
           '100%': { opacity: '0', transform: 'translateX(300%)' },
         },
       },

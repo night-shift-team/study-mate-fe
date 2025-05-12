@@ -45,17 +45,18 @@ const Mypage = () => {
   const userRanking = async () => {
     try {
       const res = await getUserRankingApi(0, 12); // 예제: 1페이지, 10개 제한
+      console.log('rnaking res', res);
       if (res.ok) {
         if (res.payload && 'myRanking' in res.payload) {
           setMyRanking(res.payload.myRanking);
         } else {
-          console.error(res.payload);
+          console.log(res.payload);
         }
       } else {
-        console.error('API 요청 실패', res);
+        console.log('API 요청 실패', res);
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 
@@ -68,7 +69,7 @@ const Mypage = () => {
           setQuestionHistory(res.payload.content);
           setTotalElements(res.payload.totalElements);
         } else {
-          console.error(res.payload);
+          console.log(res.payload);
         }
       } else {
         console.error('API 요청 실패', res);
@@ -95,8 +96,6 @@ const Mypage = () => {
     }
   };
 
-  const userScore = user?.userScore ?? 0;
-
   const getScoreTierInfo = (score: number) => {
     if (score >= 256000) return { img: Star_IMG };
     if (score >= 128000) return { img: Strom_IMG };
@@ -109,8 +108,6 @@ const Mypage = () => {
     return { img: Dust_IMG };
   };
 
-  const scoreTier = getScoreTierInfo(userScore);
-
   const cardData = [
     {
       count: (myRanking !== null ? myRanking : '-') + '등',
@@ -119,7 +116,12 @@ const Mypage = () => {
     },
     {
       count: (
-        <Image src={scoreTier.img} alt="Score Tier" width={20} height={50} />
+        <Image
+          src={getScoreTierInfo(user?.userScore ?? 0).img}
+          alt="Score Tier"
+          width={20}
+          height={50}
+        />
       ),
       label: '점수',
       img: <SlNote />,

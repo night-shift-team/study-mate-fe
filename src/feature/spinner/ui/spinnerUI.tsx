@@ -1,6 +1,6 @@
 import PulseLoader from 'react-spinners/PulseLoader';
 
-export type ComponentSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+export type ComponentSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 /**
  *
  * @param {string} color - 점의 색상
@@ -16,6 +16,8 @@ export const Spinner = ({
 }) => {
   const getSize = (size?: ComponentSize) => {
     switch (size) {
+      case 'xxs':
+        return 2;
       case 'xs':
         return 4;
       case 'sm':

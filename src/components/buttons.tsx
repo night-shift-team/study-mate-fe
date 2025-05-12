@@ -5,6 +5,7 @@ import { twMerge } from 'tailwind-merge';
 const Button = ({
   size,
   children,
+  rounded = false,
   bgColor,
   textSize,
   textColor,
@@ -14,6 +15,7 @@ const Button = ({
 }: {
   size: ComponentSize;
   children: React.ReactNode;
+  rounded?: boolean;
   bgColor?: string;
   textSize?: string;
   textColor?: string;
@@ -23,6 +25,8 @@ const Button = ({
 }) => {
   const getSize = () => {
     switch (size) {
+      case 'xxs':
+        return 'w-10 h-6';
       case 'xs':
         return 'w-12 h-8';
       case 'sm':
@@ -59,11 +63,14 @@ const Button = ({
         return 'text-sm';
     }
   };
+  const getRounded = () => {
+    return rounded ? `h-auto aspect-1 rounded-full` : '';
+  };
 
   return (
     <button
       className={twMerge(
-        `flex items-center justify-center rounded-2xl border ${getSize()} ${getTextSize()} ${getBgColor()} ${getTextColor()} flex-shrink-0`,
+        `flex items-center justify-center rounded-2xl border ${getSize()} ${getRounded()} ${getTextSize()} ${getBgColor()} ${getTextColor()} flex-shrink-0`,
         className
       )}
       onClick={onClick}
