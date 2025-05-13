@@ -113,7 +113,7 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
   return (
     <>
       <div className="flex flex-col items-center gap-5 overflow-auto bg-pointcolor-yogurt">
-        <div className="h-[30vh] w-[100%] overflow-auto rounded-xl bg-white p-4 shadow-md scrollbar-hide">
+        <div className="w-[100%] overflow-auto rounded-xl p-4 scrollbar-hide">
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
             {TempCategories.map((category, index) => {
               return (
@@ -144,25 +144,29 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
         {selectedCategory && (
           <div
             ref={resultContainerRef} // 스크롤 이동 대상
-            className="h-[30vh] w-[100%] overflow-auto rounded-xl bg-white p-4 shadow-md scrollbar-hide"
+            className="h-[30vh] w-[100%] overflow-auto rounded-xl border bg-white p-4 scrollbar-hide"
           >
             <h2 className="text-center text-lg font-bold">
               {selectedCategory}
             </h2>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-              {filteredHistory?.map((history, index) => (
-                <QuestionItem
-                  key={history.historyId}
-                  index={index}
-                  isCorrectAnswer={history.isCorrect}
-                  userAnswer={history.userAnswer}
-                  userId={history.userId}
-                  historyId={history.historyId}
-                  questionId={history.questionId}
-                  questionTitle={history.questionTitle}
-                  score={history.score}
-                />
-              ))}
+              {filteredHistory ? (
+                filteredHistory.map((history, index) => (
+                  <QuestionItem
+                    key={history.historyId}
+                    index={index}
+                    isCorrectAnswer={history.isCorrect}
+                    userAnswer={history.userAnswer}
+                    userId={history.userId}
+                    historyId={history.historyId}
+                    questionId={history.questionId}
+                    questionTitle={history.questionTitle}
+                    score={history.score}
+                  />
+                ))
+              ) : (
+                <span>No data</span>
+              )}
             </div>
           </div>
         )}

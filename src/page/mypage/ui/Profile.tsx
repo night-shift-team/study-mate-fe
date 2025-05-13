@@ -86,7 +86,7 @@ const Profile = () => {
     <div className="flex items-center gap-3">
       {<Toaster status={ToastType.success} />}
       <label htmlFor="profile-upload" className="block h-full w-full">
-        <div className="flex h-[12vh] w-[12vh] items-center justify-center md:w-[15vh]">
+        <div className="flex h-[12vh] w-[12vh] items-center justify-center lg:w-[15vh]">
           <div className="relative aspect-1 w-[8vh] md:w-[10vh]">
             <ProfileImage
               src={user ? user.profileImg : DEFAULT_PROFILE_IMG}
@@ -117,20 +117,20 @@ const Profile = () => {
 
       {isModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-70">
-          <div className="w-[90%] rounded bg-white p-5 shadow-lg md:w-[50%]">
+          <div className="w-[90%] rounded bg-white p-5 shadow-lg md:w-[30rem]">
             <h2 className="ml-1 text-base font-semibold">변경할 닉네임</h2>
             <input
               type="text"
               value={newNickname}
               onChange={(e) => setNewNickname(e.target.value)}
-              className="mt-2 w-full rounded border p-2"
+              className="mt-2 w-full rounded border p-2 font-spoqa"
               placeholder="새 닉네임을 입력하세요"
             />
             <div className="mt-3 flex justify-end gap-2">
               <Button
                 size="xxs"
                 rounded={true}
-                className="rounded-full bg-gray-300 text-[0.8rem]"
+                className="rounded-full bg-gray-300 pl-[0.05rem] pt-0.5 font-mono text-[0.8rem] font-medium"
                 onClick={() => setIsModalOpen(false)}
               >
                 취소
@@ -138,7 +138,7 @@ const Profile = () => {
               <Button
                 size="xxs"
                 rounded={true}
-                className="bg-blue-500 text-[0.8rem] text-white"
+                className="bg-blue-500 pl-[0.05rem] pt-0.5 font-mono text-[0.8rem] font-medium text-white"
                 onClick={handleNicknameChange}
               >
                 {isPending ? (

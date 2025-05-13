@@ -130,8 +130,6 @@ const Mypage = () => {
     { count: totalElements, label: '풀이한 문제', img: <LuBookCheck /> },
   ];
 
-  const [tap, setTap] = useState('1');
-
   return (
     <div className="z-1 h-full w-full overflow-y-auto scrollbar-hide md:w-[85%]">
       <div className="flex flex-col items-center">
@@ -149,36 +147,30 @@ const Mypage = () => {
             ))}
           </div>
         </div>
-        <div className="flex w-full flex-col gap-4 px-4 py-6 md:px-8">
-          <div className="md:justify-betwee flex flex-col items-center gap-7 md:flex-row">
-            <button className="w-[100px] text-[1rem] font-bold text-[#ECCDB4]">
-              활동기록
-            </button>
+        <div className="flex w-full flex-col gap-6 px-4 py-6 md:border md:px-8">
+          <div className="flex flex-col gap-4">
+            <label className="flex w-full text-base font-bold md:text-lg">
+              활동 기록
+            </label>
             <GrassChart />
           </div>
-
-          <div className="flex flex-col gap-4 md:flex-row">
-            <div className="flex justify-center md:flex-col md:justify-start">
-              <button
-                onClick={() => setTap('1')}
-                className="w-[100px] text-nowrap text-[1rem] font-bold text-[#ECCDB4]"
-              >
-                풀이한 문제
-              </button>
-              <button
-                onClick={() => setTap('2')}
-                className="w-[100px] text-nowrap text-[1rem] font-bold text-[#ECCDB4]"
-              >
-                즐겨찾기
-              </button>
-            </div>
-            <div className="flex-1">
-              {tap === '1' ? (
-                <CheckList title="1" questionHistory={questionHistory} />
-              ) : (
-                <Favorite title="" favoriteList={favoriteList} />
-              )}
-            </div>
+          <div className="flex flex-col gap-4">
+            <button
+              onClick={() => {}}
+              className="flex w-full text-base font-bold md:text-lg"
+            >
+              스크랩 문제
+            </button>
+            <Favorite title="" favoriteList={favoriteList} />
+          </div>
+          <div className="flex flex-col gap-4">
+            <button
+              onClick={() => {}}
+              className="flex w-full text-base font-bold md:text-lg"
+            >
+              풀이한 문제
+            </button>
+            <CheckList title="1" questionHistory={questionHistory} />
           </div>
         </div>
       </div>

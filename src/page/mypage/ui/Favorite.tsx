@@ -62,43 +62,52 @@ export const Favorite = ({ favoriteList, title }: FavoriteListProps) => {
 
   return (
     <div>
-      <h2 className="mb-4 text-center text-xl font-bold">{title}</h2>
-      <div className="flex flex-col items-center gap-5 overflow-auto bg-pointcolor-yogurt">
-        <div className="h-[30vh] w-[100%] overflow-auto rounded-xl bg-white p-4 shadow-md scrollbar-hide">
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-3">
-            {currentFavoriteList.map((item, index) => (
-              <div
-                key={index}
-                className="flex cursor-pointer justify-between rounded-lg bg-gray-100 p-2 shadow-sm transition hover:bg-gray-200"
-                onClick={() => handleItemClick(item)}
-              >
-                <h3 className="text-sm font-semibold">{item.questionTitle}</h3>
-                <Bookmark
-                  size={28}
-                  color="bg-amber-300/80"
-                  fill="#FCD34D"
-                  onClick={(event) => handleBookmarkClick(event, item)}
-                />
+      {favoriteList.length === 0 ? (
+        <>
+          <h2 className="mb-4 text-center text-xl font-bold">{title}</h2>
+          <div className="flex flex-col items-center gap-5 overflow-auto bg-pointcolor-yogurt">
+            <div className="h-[30vh] w-[100%] overflow-auto rounded-xl p-4 shadow-md scrollbar-hide">
+              <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-3">
+                {currentFavoriteList.map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex cursor-pointer justify-between rounded-lg bg-gray-100 p-2 shadow-sm transition hover:bg-gray-200"
+                    onClick={() => handleItemClick(item)}
+                  >
+                    <h3 className="text-sm font-semibold">
+                      {item.questionTitle}
+                    </h3>
+                    <Bookmark
+                      size={28}
+                      color="bg-amber-300/80"
+                      fill="#FCD34D"
+                      onClick={(event) => handleBookmarkClick(event, item)}
+                    />
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
-        </div>
-      </div>
-      {isPending && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <Spinner />
-        </div>
-      )}
-      {isPopupOpen && questionDetail && (
-        <PopupProblem
-          size="md"
-          questionTitle={questionDetail.questionTitle}
-          difficulty={questionDetail.difficulty}
-          content={questionDetail.questionContent}
-          answer={questionDetail.questionAnswer}
-          explanation={questionDetail.questionExplanation}
-          onClose={handleClosePopup}
-        />
+
+          {isPending && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+              <Spinner />
+            </div>
+          )}
+          {isPopupOpen && questionDetail && (
+            <PopupProblem
+              size="md"
+              questionTitle={questionDetail.questionTitle}
+              difficulty={questionDetail.difficulty}
+              content={questionDetail.questionContent}
+              answer={questionDetail.questionAnswer}
+              explanation={questionDetail.questionExplanation}
+              onClose={handleClosePopup}
+            />
+          )}
+        </>
+      ) : (
+        <span>No data</span>
       )}
     </div>
   );

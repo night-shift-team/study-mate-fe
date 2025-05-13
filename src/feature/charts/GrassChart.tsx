@@ -79,7 +79,7 @@ const GrassChart = () => {
   const monthLabels = getMonthLabels(oneYearAgo);
 
   return (
-    <div className="w-[100%] overflow-x-auto rounded-xl bg-white p-2 scrollbar-hide">
+    <div className="w-[100%] max-w-[1200px] overflow-x-auto rounded-xl p-2 scrollbar-hide">
       <div className="min-w-[780px]">
         <div className="flex">
           {/* 왼쪽 여백 */}
@@ -108,11 +108,11 @@ const GrassChart = () => {
           </div>
 
           {/* 잔디 그리드 */}
-          <div className="flex flex-1 justify-between gap-[2px]">
+          <div className="flex flex-1 justify-between gap-[0.5vh]">
             {Array(53) // 53주를 기준으로 생성
               .fill(0)
               .map((_, weekIndex) => (
-                <div key={weekIndex} className="flex flex-col gap-[2px]">
+                <div key={weekIndex} className="flex flex-col gap-[0.5vh]">
                   {Array(7) // 7일을 기준으로 생성
                     .fill(0)
                     .map((_, dayIndex) => {
@@ -130,7 +130,7 @@ const GrassChart = () => {
                       return (
                         <div
                           key={dayIndex}
-                          className={`h-[1.7vh] w-[1.7vh] rounded-sm transition-colors duration-100 hover:ring-1 hover:ring-gray-300 ${getColorBySolveCount(
+                          className={`aspect-1 h-[1.7vh] rounded-sm transition-colors duration-100 hover:ring-1 hover:ring-gray-300 ${getColorBySolveCount(
                             solveCount
                           )}`}
                           title={`날짜: ${dateString}, 문제 풀이 수: ${solveCount}`}
@@ -143,7 +143,7 @@ const GrassChart = () => {
         </div>
 
         {/* 범례 */}
-        <div className="mt-4 flex items-center justify-end gap-2 text-xs text-gray-600">
+        <div className="mt-4 flex items-center gap-2 text-xs text-gray-600 md:justify-end">
           <span>활동량:</span>
           <div className="flex items-center gap-1">
             <div className="h-3 w-3 rounded-sm bg-[#ebedf0]" title="0" />
