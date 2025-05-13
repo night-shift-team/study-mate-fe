@@ -90,7 +90,8 @@ const useToast = (
     status?: ToastStatus;
     description?: string;
   }) => {
-    if (!document) return null;
+    if (typeof window === 'undefined' || typeof document === 'undefined')
+      return null;
 
     return createPortal(
       <div
