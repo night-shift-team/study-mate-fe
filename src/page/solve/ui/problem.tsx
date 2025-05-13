@@ -24,7 +24,7 @@ import {
 import { ServerErrorResponse } from '@/shared/api/model/config';
 import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
 import { Ecode } from '@/shared/errorApi/ecode';
-import useToast from '@/shared/toast/toast';
+import useToast, { ToastType } from '@/shared/toast/toast';
 import { userStore } from '@/state/userStore';
 import { UserInfo } from '@/shared/constants/userInfo';
 import { PiPaperPlaneTilt } from 'react-icons/pi';
@@ -326,12 +326,22 @@ const Problem = ({ category }: ProblemProps) => {
     try {
       const res = await questionBookmarkToggleApi(questionId);
       if (res.ok) {
+        if (res.payload) {
+          setToastDescription('북마크가 추가되었습니다.');
+        } else {
+          setToastDescription('북마크가 삭제되었습니다.');
+        }
+        setToastIcon(ToastType.success);
         return res.payload as boolean;
       }
       return false;
     } catch (e) {
       console.log(e);
+      setToastDescription('일시적인 오류가 발생하였습니다.');
+      setToastIcon(ToastType.error);
       return false;
+    } finally {
+      setToastOpen(true);
     }
   };
 
