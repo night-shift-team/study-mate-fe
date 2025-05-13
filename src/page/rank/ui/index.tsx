@@ -98,8 +98,8 @@ export const RankPageComponent = () => {
 
   return (
     <div className="flex h-full w-full max-w-4xl flex-col justify-between gap-2 rounded-2xl p-3 md:shadow-lg">
-      <div className="mt-2 flex h-[clamp(8rem,30%,12rem)] w-full min-w-[15rem] items-end gap-[0.1rem] px-[5%]">
-        <div className="relative flex h-[86%] w-1/3 justify-center">
+      <div className="mt-2 flex h-[clamp(8rem,30%,12rem)] w-full min-w-[15rem] items-end justify-center gap-[0.1rem] px-[5%]">
+        <div className="relative flex h-[86%] w-[10rem] justify-center">
           {/* <span className='absolute top-[1.1rem] font-jalnan text-sm'>2</span> */}
           <Image
             src={SilverTrophy}
@@ -126,7 +126,7 @@ export const RankPageComponent = () => {
             </span>
           </div>
         </div>
-        <div className="relative flex h-full w-1/3 justify-center">
+        <div className="relative flex h-full w-[10rem] justify-center">
           {/* <span className='absolute pr-[0.15rem] top-[1rem] font-jalnan text-sm text-[0.8rem]'>1</span> */}
           <Image
             src={GoldTrophy}
@@ -154,7 +154,7 @@ export const RankPageComponent = () => {
             </span>
           </div>
         </div>
-        <div className="relative flex h-[80%] w-1/3 justify-center">
+        <div className="relative flex h-[80%] w-[10rem] justify-center">
           {/* <span className='absolute pl-[0.15rem] top-[0.94rem] font-jalnan text-sm text-[0.75rem]'>3</span> */}
           <Image
             src={BronzeTrophy}
@@ -219,15 +219,14 @@ export const RankPageComponent = () => {
               <TableHead>
                 <TableRow>
                   <TableCell
-                    className="w-[20%] !bg-pointcolor-beigebrown"
+                    className="w-[20%] !bg-pointcolor-beigebrown md:w-[10%]"
                     align="center"
                   >
                     순위
                   </TableCell>
                   <TableCell
                     sx={{ display: { xs: 'none', md: 'table-cell' } }}
-                    className="!bg-pointcolor-beigebrown"
-                    width={70}
+                    className="!bg-pointcolor-beigebrown md:w-[20%]"
                     align="center"
                   >
                     프로필
@@ -239,7 +238,7 @@ export const RankPageComponent = () => {
                     닉네임
                   </TableCell>
                   <TableCell
-                    className="w-[30%] !bg-pointcolor-beigebrown"
+                    className="w-[30%] !bg-pointcolor-beigebrown md:w-[20%]"
                     align="center"
                   >
                     점수
