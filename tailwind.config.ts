@@ -26,7 +26,7 @@ module.exports = {
         '200': '200%',
       },
       backgroundImage: {
-        'main-notice': "url('/assets/noticeBg.svg')",
+        'main-notice': "url('@/assets/noticeBg.svg')",
       },
       keyframes: {
         'fade-up': {

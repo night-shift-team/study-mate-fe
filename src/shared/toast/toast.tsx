@@ -95,7 +95,7 @@ const useToast = (
 
     return createPortal(
       <div
-        className={`fixed left-1/2 top-[3.5rem] z-50 flex h-[2.7rem] w-auto min-w-[5rem] max-w-[95vw] items-center gap-1 rounded-xl py-[1.35rem] text-[0.9rem] md:top-1 ${getToastBackgroundColor(status ?? toastType)} rounded-sm border px-4 shadow-light md:top-16 md:h-[2.9rem] md:justify-center ${animationClass}`}
+        className={`fixed left-1/2 top-[3.5rem] z-50 flex h-[2.7rem] w-auto min-w-[5rem] max-w-[95vw] items-center gap-1 rounded-xl py-[1.35rem] text-[0.9rem] md:top-1 ${getToastBackgroundColor(status ?? toastType)} rounded-sm border px-4 shadow-light md:top-16 md:h-[2.9rem] md:justify-center ${animationClass} z-[10000]`}
       >
         {status ? getToastStatusIcon(status) : getToastStatusIcon(toastType)}
         {description ?? changeDescription}
