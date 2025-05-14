@@ -78,18 +78,18 @@ export const getProblemDetailInfoApi = async (id: string) => {
 };
 
 export const getAdminMAQListApi = async (page: number, limit: number) => {
-  const path = `${page.toString()}/${limit.toString()}/${ProblemCategoryType.MAQ.toLowerCase()}`;
+  const query = `?page=${String(page)}&limit=${String(limit)}`;
   return await _apiFetch<GetAdminMAQListRes>(
     'GET',
-    `${API_PREFIX}/admin/${path}`
+    `${API_PREFIX}/admin/maq${query}`
   );
 };
 
 export const getAdminSAQListApi = async (page: number, limit: number) => {
-  const path = `${page.toString()}/${limit.toString()}/${ProblemCategoryType.SAQ.toLowerCase()}`;
+  const query = `?page=${String(page)}&limit=${String(limit)}`;
   return await _apiFetch<GetAdminSAQListRes>(
     'GET',
-    `${API_PREFIX}/admin/${path}`
+    `${API_PREFIX}/admin/saq${query}`
   );
 };
 

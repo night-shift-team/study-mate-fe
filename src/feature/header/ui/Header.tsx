@@ -11,6 +11,7 @@ import { FaArrowLeft } from 'react-icons/fa';
 
 const Header = () => {
   const path = usePathname();
+
   console.log(path);
   return (
     <div className="relative flex h-full w-full items-center justify-between bg-pointcolor-yogurt/10 px-0 md:px-4 md:shadow-sm">

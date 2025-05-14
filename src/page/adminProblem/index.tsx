@@ -237,7 +237,9 @@ const ManageProlemPage = () => {
                 ? null
                 : selectedProblem
                   ? selectedProblem.questionTitle
-                  : (problemList[0]?.questionTitle ?? '')}
+                  : problemList.length
+                    ? problemList[0].questionTitle
+                    : ''}
             </span>
             <span className="mt-4 text-lg font-bold">Contents</span>
             <div className="mt-1 h-[75%] min-h-[10rem] w-full rounded-3xl border bg-white">
@@ -246,7 +248,9 @@ const ManageProlemPage = () => {
                   markdown={
                     selectedProblem
                       ? selectedProblem.content
-                      : (problemList[0]?.content ?? '')
+                      : problemList.length
+                        ? problemList[0].content
+                        : ''
                   }
                 />
               )}

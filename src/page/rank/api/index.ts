@@ -16,8 +16,6 @@ export interface UserRankingRes {
 }
 
 export const getUserRankingApi = async (page: number, limit: number) => {
-  return await _apiFetch<UserRankingRes>(
-    'GET',
-    `${API_Prefix}/${page}/${limit}/rank`
-  );
+  const query = `?page=${page}&limit=${limit}`;
+  return await _apiFetch<UserRankingRes>('GET', `${API_Prefix}/rank${query}`);
 };

@@ -19,7 +19,6 @@ import { PiPaperPlaneTilt } from 'react-icons/pi';
 import { ServerErrorResponse } from '@/shared/api/model/config';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import AuthHoc from '@/shared/auth/model/authHoc';
-import { useQuery } from '@tanstack/react-query';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';

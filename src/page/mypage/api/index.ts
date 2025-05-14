@@ -77,9 +77,10 @@ export interface QuestionFavoriteRes {
 }
 
 export const getUserRankingApi = async (page: number, limit: number) => {
+  const query = `?page=${page}&limit=${limit}`;
   return await _apiFetch<UserRankingRes>(
     'GET',
-    `${API_Prefix}/users/${page}/${limit}/rank`
+    `${API_Prefix}/users/rank${query}`
   );
 };
 
@@ -87,9 +88,10 @@ export const getQuestionHistoryApi = async (
   monthBefore: number,
   size: number
 ) => {
+  const query = `?month-before=${monthBefore}&page=0&size=${size}`;
   return await _apiFetch<QuestionHistoryRes>(
     'GET',
-    `${API_Prefix}/history/${monthBefore}/monthly?page=0&size=${size}`
+    `${API_Prefix}/history/monthly${query}`
   );
 };
 
@@ -130,7 +132,7 @@ export const getMyTodaySolveDataByCategoryApi = async (
 export const getQuestionFavoriteApi = async (page: number, size: number) => {
   return await _apiFetch<QuestionFavoriteRes>(
     'GET',
-    `${API_Prefix}/question-favorite/?page=${page}&size=${size}`
+    `${API_Prefix}/question-favorite/?page=${page + 1}&size=${size}`
   );
 };
 
