@@ -18,7 +18,9 @@ export const Favorite = ({ favoriteList, title }: FavoriteListProps) => {
   const [questionDetail, setQuestionDetail] =
     useState<QuestionFavoriteRes | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [currentFavoriteList, setCurrentFavoriteList] = useState(favoriteList);
+  const [currentFavoriteList, setCurrentFavoriteList] = useState([
+    ...favoriteList,
+  ]);
   const [isPending, startTransition] = useTransition();
 
   const handleClosePopup = () => {
@@ -62,9 +64,9 @@ export const Favorite = ({ favoriteList, title }: FavoriteListProps) => {
 
   return (
     <div>
-      {favoriteList.length === 0 ? (
+      {favoriteList.length !== 0 ? (
         <>
-          <h2 className="mb-4 text-center text-xl font-bold">{title}</h2>
+          {/* <h2 className="mb-4 text-center text-xl font-bold">{title}</h2> */}
           <div className="flex flex-col items-center gap-5 overflow-auto bg-pointcolor-yogurt">
             <div className="h-[30vh] w-[100%] overflow-auto rounded-xl p-4 shadow-md scrollbar-hide">
               <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-3">

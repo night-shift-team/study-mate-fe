@@ -34,7 +34,7 @@ const Mypage = () => {
   const { user } = userStore();
   const [myRanking, setMyRanking] = useState<number | null>(null);
   const [totalElements, setTotalElements] = useState<number>(0);
-  const [favoriteList, setFavoriteList] = useState<any[]>([]);
+  const [favoriteList, setFavoriteList] = useState<QuestionFavoriteRes[]>([]);
 
   useEffect(() => {
     userRanking();
