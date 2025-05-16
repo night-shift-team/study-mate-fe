@@ -18,9 +18,9 @@ export const Favorite = ({ favoriteList, title }: FavoriteListProps) => {
   const [questionDetail, setQuestionDetail] =
     useState<QuestionFavoriteRes | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [currentFavoriteList, setCurrentFavoriteList] = useState([
-    ...favoriteList,
-  ]);
+  const [currentFavoriteList, setCurrentFavoriteList] = useState<
+    QuestionFavoriteRes[]
+  >([]);
   const [isPending, startTransition] = useTransition();
 
   const handleClosePopup = () => {
@@ -62,6 +62,9 @@ export const Favorite = ({ favoriteList, title }: FavoriteListProps) => {
     }
   };
 
+  useEffect(() => {
+    setCurrentFavoriteList(favoriteList);
+  }, [favoriteList]);
   return (
     <div>
       {favoriteList.length !== 0 ? (

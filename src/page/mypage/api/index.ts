@@ -132,7 +132,7 @@ export const getMyTodaySolveDataByCategoryApi = async (
 export const getQuestionFavoriteApi = async (page: number, size: number) => {
   return await _apiFetch<QuestionFavoriteRes>(
     'GET',
-    `${API_Prefix}/question-favorite/?page=${page + 1}&size=${size}`
+    `${API_Prefix}/question-favorite/?page=${page}&size=${size}`
   );
 };
 
