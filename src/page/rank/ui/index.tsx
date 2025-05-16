@@ -4,12 +4,11 @@ import { useEffect, useState } from 'react';
 import { getUserRankingApi, UserRankingRes } from '../api';
 import Pagination from '@mui/material/Pagination';
 import Image from 'next/image';
-import { GOLD_IMG, SLIVER_IMG, BRONZE_IMG } from '../../../../public/img';
+import { GOLD_IMG, SLIVER_IMG, BRONZE_IMG } from '../model/img';
 import { FaGithub } from 'react-icons/fa6';
-import GoldTrophy from '@public/assets/goldTrophy.jpeg';
-import SilverTrophy from '@public/assets/silverTrophy.jpg';
-import BronzeTrophy from '@public/assets/bronzeTrophy.jpg';
-import DefaultUserProfileImage from '@public/assets/icons/user.png';
+import GoldTrophy from '@public/assets/backgroundImages/trophy/goldTrophy.jpeg';
+import SilverTrophy from '@public/assets/backgroundImages/trophy/silverTrophy.jpg';
+import BronzeTrophy from '@public/assets/backgroundImages/trophy/bronzeTrophy.jpg';
 import { ProfileImage } from '@/shared/user/ui/profileImage';
 import {
   Avatar,

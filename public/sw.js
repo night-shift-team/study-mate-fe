@@ -71,8 +71,8 @@ self.addEventListener('push', function (event) {
 
     const options = {
       body: data.body,
-      icon: '/file.svg',
-      badge: '/globe.svg',
+      icon: '/assets/icons/serviceWorker/file.svg',
+      badge: '/assets/icons/serviceWorker/globe.svg',
       tag: data.tag || 'notification-tag', // 서버에서 보낸 태그 사용 또는 기본값
       data: {
         notificationId: notificationId,

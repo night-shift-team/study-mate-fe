@@ -7,11 +7,11 @@ import {
   FaDelicious,
 } from 'react-icons/fa6';
 import Image from 'next/image';
-import AlgoliaIcon from '@public/assets/icons/algorithmIcon.svg';
-import osIcon from '@public/assets/icons/osIcon.svg';
-import dbIcon from '@public/assets/icons/dbIcon.svg';
-import networkIcon from '@public/assets/icons/networkIcon.svg';
-import designIcon from '@public/assets/icons/designIcon.svg';
+import AlgoliaIcon from '@public/assets/icons/categoryTitleIcon/algorithmIcon.svg';
+import osIcon from '@public/assets/icons/categoryTitleIcon/osIcon.svg';
+import dbIcon from '@public/assets/icons/categoryTitleIcon/dbIcon.svg';
+import networkIcon from '@public/assets/icons/categoryTitleIcon/networkIcon.svg';
+import designIcon from '@public/assets/icons/categoryTitleIcon/designIcon.svg';
 
 export const getCategoriesIcon = (title: ProblemCategoryTitle) => {
   switch (title) {

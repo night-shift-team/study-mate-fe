@@ -27,7 +27,7 @@ import {
   Strom_IMG,
   Star_IMG,
   Universe_IMG,
-} from '../../../../public/img';
+} from '../model/img';
 
 const Mypage = () => {
   const [questionHistory, setQuestionHistory] = useState<any[]>([]);

@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
-import Logo from '@public/assets//icons/mascotIcon.svg';
-import TextLogo from '@public/assets//logo.svg';
+import Logo from '@public/assets/icons/header/mascotIcon.svg';
+import TextLogo from '@public/assets/backgroundImages/main/logo.svg';
 import Image from 'next/image';
 import RightHeaderComponents from '../model/rightHeader';
 import Link from 'next/link';

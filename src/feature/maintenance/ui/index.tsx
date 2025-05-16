@@ -5,8 +5,8 @@ import {
 import Image from 'next/image';
 import { RemainTimeSV2 } from './noticeEndtimer';
 import { Suspense } from 'react';
-import Logo from '@public/assets//logo.png';
-import UnderConstruction from '@public/assets//under_construction.png';
+import Logo from '@public/assets/backgroundImages/main/logo.svg';
+import UnderConstruction from '@public/assets/backgroundImages/main/under_construction.png';
 
 export const MaintenanceCheck = ({
   children,
