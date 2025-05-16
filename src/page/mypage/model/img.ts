@@ -1,4 +1,5 @@
 const GradePath = '/assets/icons/grade';
+// const GradePath = 'https://d3i4mjesasgykp.cloudfront.net/test';
 
 export const Dust_IMG = GradePath + '/dust.png';
 export const Grain_IMG = GradePath + '/grain.png';

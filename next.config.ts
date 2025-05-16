@@ -12,6 +12,11 @@ const nextConfig: NextConfig = {
         pathname: '/storage/v1/object/public/study-mate/**',
         search: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'd3i4mjesasgykp.cloudfront.net',
+        pathname: '/test/**',
+      },
     ],
   },
 };
