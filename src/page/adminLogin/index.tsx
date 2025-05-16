@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import Logo from '@/assets/logo.png';
+import Logo from '@public/assets/logo.png';
 import AdminLoginForm from './ui/adminLoginForm';
 import { useState } from 'react';
 import useToast from '@/shared/toast/toast';

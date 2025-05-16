@@ -1,6 +1,6 @@
 'use client';
 
-import Logo from '@/assets/studyMate_logo.png';
+import Logo from '@public/assets//studyMate_logo.png';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { LoginButton } from '@/entities';

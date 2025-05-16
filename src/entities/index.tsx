@@ -1,6 +1,6 @@
-import kakao from '@/assets/icons/kakao.png';
-import google from '@/assets/icons/google.png';
-import github from '@/assets/icons/github.png';
+import kakao from '@public/assets/icons/kakao.png';
+import google from '@public/assets/icons/google.png';
+import github from '@public/assets/icons/github.png';
 
 export const LoginButton = [
   { id: 2, img: kakao, title: 'kakao', link: '' },

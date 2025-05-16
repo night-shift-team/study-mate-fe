@@ -8,9 +8,9 @@ import { IoMenu } from 'react-icons/io5';
 import MobileSlider from './mobileSilder';
 import { MdLogout } from 'react-icons/md';
 import { LuLayoutDashboard } from 'react-icons/lu';
-import RankingIcon from '@/assets/icons/ranking-factor.png';
-import AnnouncementIcon from '@/assets/icons/announcement.png';
-import MypageIcon from '@/assets/icons/user.png';
+import RankingIcon from '@public/assets/icons/ranking-factor.png';
+import AnnouncementIcon from '@public/assets//icons/announcement.png';
+import MypageIcon from '@public/assets/icons/user.png';
 import Image from 'next/image';
 
 const RightHeaderComponents = () => {

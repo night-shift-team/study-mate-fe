@@ -6,10 +6,10 @@ import Pagination from '@mui/material/Pagination';
 import Image from 'next/image';
 import { GOLD_IMG, SLIVER_IMG, BRONZE_IMG } from '../../../../public/img';
 import { FaGithub } from 'react-icons/fa6';
-import GoldTrophy from '@/assets/goldTrophy.jpeg';
-import SilverTrophy from '@/assets/silverTrophy.jpg';
-import BronzeTrophy from '@/assets/bronzeTrophy.jpg';
-import DefaultUserProfileImage from '@/assets/icons/user.png';
+import GoldTrophy from '@public/assets/goldTrophy.jpeg';
+import SilverTrophy from '@public/assets/silverTrophy.jpg';
+import BronzeTrophy from '@public/assets/bronzeTrophy.jpg';
+import DefaultUserProfileImage from '@public/assets/icons/user.png';
 import { ProfileImage } from '@/shared/user/ui/profileImage';
 import {
   Avatar,

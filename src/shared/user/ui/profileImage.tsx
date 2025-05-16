@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useState } from 'react';
-import DefaultUserProfileImage from '@/assets/icons/user.png';
+import DefaultUserProfileImage from '@public/assets/icons/user.png';
 
 interface ProfileImageProps {
   src: string | null;

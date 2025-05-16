@@ -6,10 +6,10 @@ import {
   splitNoticeTitle,
 } from '../model/dataConvert';
 import Image from 'next/image';
-import listMenu from '@/assets/icons/list-text.png';
+import listMenu from '@public/assets/icons/list-text.png';
 import { useRouter } from 'next/navigation';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import NoticeFoxBg from '@/assets/noticeFoxBg.svg';
+import NoticeFoxBg from '@public/assets/noticeFoxBg.svg';
 
 const AnnouncemnetByIdDetail = ({
   id,

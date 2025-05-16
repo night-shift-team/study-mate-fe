@@ -17,7 +17,7 @@ import {
   GetQuestionCategoryInfoRes,
   QuestionCategoryInfoDetail,
 } from '../api';
-import randomIcon from '@/assets/icons/randomIcon.svg';
+import randomIcon from '@public/assets/icons/randomIcon.svg';
 
 interface ProblemCategoryInfo
   extends Omit<
