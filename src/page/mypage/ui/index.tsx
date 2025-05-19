@@ -42,9 +42,13 @@ const Mypage = () => {
     userFavoriteApi();
   }, []);
 
+  useEffect(() => {
+    console.log('favoriteList가 업데이트되었습니다:', favoriteList);
+  }, [favoriteList]); // favoriteList가 변경될 때 실행
+
   const userRanking = async () => {
     try {
-      const res = await getUserRankingApi(0, 12); // 예제: 1페이지, 10개 제한
+      const res = await getUserRankingApi(0, 12); // 예제:
       console.log('rnaking res', res);
       if (res.ok) {
         if (res.payload && 'myRanking' in res.payload) {
@@ -78,21 +82,22 @@ const Mypage = () => {
       console.error(error);
     }
   };
+
   const userFavoriteApi = async () => {
     try {
-      const res = await getQuestionFavoriteApi(0, 10);
+      const res = await getQuestionFavoriteApi(0, 12);
       console.log('즐겨찾기 API 응답:', res);
       if (res.ok) {
         if (Array.isArray(res.payload)) {
           setFavoriteList(res.payload as QuestionFavoriteRes[]);
         } else {
-          console.error('예상치 못한 응답 구조:', res.payload);
+          console.error('Payload is not an array');
         }
       } else {
-        console.error('API 요청 실패', res);
+        console.log('API 요청 실패', res);
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 

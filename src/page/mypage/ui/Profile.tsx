@@ -28,6 +28,7 @@ const Profile = () => {
     setIsToastOpen
   );
 
+  // 닉네임 변경 처리
   const handleNicknameChange = async () => {
     if (user?.nickname === newNickname) {
       setErrorMessage('현재와 다른 닉네임을 입력해주세요.');
@@ -46,14 +47,7 @@ const Profile = () => {
           setUser({
             ...user,
             nickname: newNickname,
-            userId: user.userId || '',
-            loginType: user.loginType || '',
-            loginId: user.loginId || '',
-            profileImg: user.profileImg || '',
-            status: user.status || '',
-            role: user.role || 0,
-            registeredAt: user.registeredAt || '',
-            userScore: user.userScore || 0,
+            profileImg: user.profileImg || DEFAULT_PROFILE_IMG,
           });
           setIsModalOpen(false);
           setErrorMessage('');
@@ -82,16 +76,17 @@ const Profile = () => {
       setIsNicknameChanged(false);
     }
   }, [isNicknameChanged]);
+
   return (
     <div className="flex items-center gap-3">
+      {/* Toast 컴포넌트 */}
       {<Toaster status={ToastType.success} />}
+
+      {/* 프로필 이미지 */}
       <label htmlFor="profile-upload" className="block h-full w-full">
         <div className="flex h-[12vh] w-[12vh] items-center justify-center lg:w-[15vh]">
           <div className="relative aspect-1 w-[8vh] md:w-[10vh]">
-            <ProfileImage
-              src={user ? user.profileImg : DEFAULT_PROFILE_IMG}
-              fill={true}
-            />
+            <ProfileImage src={imageUrl} fill={true} />
           </div>
         </div>
         <input
@@ -102,11 +97,12 @@ const Profile = () => {
           className="hidden"
         />
       </label>
+
+      {/* 닉네임 및 버튼 */}
       <div className="flex w-full flex-col gap-3 text-nowrap md:flex-col">
         <div className="flex gap-1 text-[2vh] text-white">
           <span>닉네임:</span> <p className="font-bold">{user?.nickname}</p>
         </div>
-
         <button
           className="rounded-lg bg-white p-1 text-[1.8vh] shadow-xl"
           onClick={() => setIsModalOpen(true)}
@@ -115,6 +111,7 @@ const Profile = () => {
         </button>
       </div>
 
+      {/* 닉네임 변경 모달 */}
       {isModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-70">
           <div className="w-[90%] rounded bg-white p-5 shadow-lg md:w-[30rem]">

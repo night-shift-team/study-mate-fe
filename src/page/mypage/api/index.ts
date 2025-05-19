@@ -130,28 +130,12 @@ export const getMyTodaySolveDataByCategoryApi = async (
 };
 
 export const getQuestionFavoriteApi = async (page: number, size: number) => {
-  return await _apiFetch<QuestionFavoriteRes>(
-    'GET',
-    `${API_Prefix}/question-favorite/?page=${page + 1}&size=${size}`
-  );
+  const query = `?page=${page}&size=${size}`;
+  const url = `${API_Prefix}/question-favorite/${query}`;
+
+  return await _apiFetch<QuestionFavoriteRes>('GET', url);
 };
-
 export const removeFavoriteApi = async (questionId: string) => {
-  try {
-    const response = await _apiFetch(
-      'POST',
-      `${API_Prefix}/question-favorite/${questionId}`
-    );
-
-    if (response.ok) {
-      return true;
-    } else {
-      // 서버에서 반환한 에러 메시지 처리
-      console.error('Error removing favorite:', response.payload.message);
-      return false;
-    }
-  } catch (error) {
-    console.error('Network error:', error);
-    return false;
-  }
+  const path = questionId;
+  return await _apiFetch('POST', `${API_Prefix}/question-favorite/${path}`);
 };
