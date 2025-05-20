@@ -93,8 +93,6 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
     },
   ];
 
-  console.log(OS_MAQ);
-
   const filteredHistory = selectedCategory
     ? questionHistory?.filter(
         (history) => history.questionType === `${selectedCategory}_MAQ`

@@ -3,6 +3,7 @@ import React from 'react';
 import { MaintenanceCheck } from '@/feature/maintenance/ui';
 
 import ClientSideWrapper from './clientSideWrapper';
+import { Footer } from '@/feature/footer/ui/Footer';
 
 export const metadata = {
   manifest: '/manifest.ts',
