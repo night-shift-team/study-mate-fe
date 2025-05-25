@@ -1,31 +1,33 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import { usePathname, useRouter } from 'next/navigation';
 const WritePage = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     console.log('건의사항 제출됨:', { title, content });
-
     setSubmitted(true);
     setTitle('');
     setContent('');
   };
 
-  // 자동으로 알림 숨기기
   useEffect(() => {
     if (submitted) {
       const timer = setTimeout(() => {
         setSubmitted(false);
+        router.push(RouteTo.Suggestion);
       }, 2000);
+
       return () => clearTimeout(timer);
     }
-  }, [submitted]);
+  }, [submitted, router]);
 
   return (
     <div className="relative w-full flex-col items-center">

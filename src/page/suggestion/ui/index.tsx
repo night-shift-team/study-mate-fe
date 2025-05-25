@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 export const Suggestion = () => {
   const router = useRouter();
   return (
-    <div className="h-[100vh] w-[90vw]">
+    <div className="h-[100vh] w-[90vw] max-w-[1100px]">
       <div className="flex h-[50px] items-center text-lg font-bold">
         {' '}
         건의사항
