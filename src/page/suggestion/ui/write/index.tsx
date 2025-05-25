@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const WritePage = () => {
   const [title, setTitle] = useState('');
@@ -10,7 +10,6 @@ const WritePage = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // 여기에 실제 서버 전송 코드 추가 가능 (예: fetch, axios)
     console.log('건의사항 제출됨:', { title, content });
 
     setSubmitted(true);
@@ -18,18 +17,33 @@ const WritePage = () => {
     setContent('');
   };
 
+  // 자동으로 알림 숨기기
+  useEffect(() => {
+    if (submitted) {
+      const timer = setTimeout(() => {
+        setSubmitted(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [submitted]);
+
   return (
-    <div className="w-full flex-col items-center">
+    <div className="relative w-full flex-col items-center">
+      <div
+        className={`absolute left-1/2 top-4 z-50 w-[90%] max-w-md -translate-x-1/2 transform rounded-md bg-green-500 px-4 py-3 text-center text-white shadow-lg transition-all duration-500 ease-in-out ${
+          submitted
+            ? 'translate-y-0 opacity-100'
+            : 'pointer-events-none -translate-y-10 opacity-0'
+        }`}
+      >
+        건의사항이 제출되었습니다!
+      </div>
+
       <div className="flex h-[50px] items-center text-lg font-bold">
         건의사항 작성하기
       </div>
-      <div className="rounded-xl bg-white p-6 shadow-md">
-        {submitted && (
-          <div className="mb-4 font-semibold text-green-600">
-            건의사항이 제출되었습니다!
-          </div>
-        )}
 
+      <div className="rounded-xl bg-white p-6 shadow-md">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="mb-1 block font-medium">제목</label>
