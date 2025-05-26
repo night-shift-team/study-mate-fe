@@ -12,9 +12,13 @@ import { FaArrowLeft } from 'react-icons/fa';
 const Header = () => {
   const path = usePathname();
 
-  console.log(path);
   return (
-    <div className="relative flex h-full w-full items-center justify-between bg-pointcolor-yogurt/10 px-0 md:px-4 md:shadow-sm">
+    <div
+      className={`relative flex h-full w-full items-center justify-between px-0 md:px-4 md:shadow-sm`}
+    >
+      <div
+        className={`absolute h-full w-full ${path === RouteTo.Store ? 'bg-transparent' : 'bg-pointcolor-yogurt/10'}`}
+      />
       {/* 데스크탑 좌측 로고 */}
       <Link
         href={RouteTo.Home}
@@ -26,11 +30,8 @@ const Header = () => {
           className="flex object-contain py-2.5 pl-2.5"
           priority
         />
-        <Image
-          src={TextLogo}
-          alt=""
-          className="flex object-contain p-2"
-          priority
+        <TextLogo
+          className={`h-auto w-full p-2 ${path === RouteTo.Store ? 'text-white' : 'text-[#ECCDB5]'}`}
         />
       </Link>
       {/* 모바일 가운데 로고 */}

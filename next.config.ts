@@ -1,6 +1,14 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js | *.jsx | *.ts | *.tsx',
+      },
+    },
+  },
   /* config options here */
   reactStrictMode: false,
   images: {

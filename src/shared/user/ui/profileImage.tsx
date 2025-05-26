@@ -8,6 +8,7 @@ interface ProfileImageProps {
   height?: number;
   alt?: string;
   fill?: boolean;
+  className?: string;
 }
 
 export const ProfileImage = ({
@@ -16,6 +17,7 @@ export const ProfileImage = ({
   height,
   alt = 'user profile',
   fill = false,
+  className,
 }: ProfileImageProps) => {
   const [hasError, setHasError] = useState(!src);
 
@@ -32,6 +34,7 @@ export const ProfileImage = ({
               setHasError(true);
             }
           }}
+          className={className}
           fill={fill}
         />
       ) : (
