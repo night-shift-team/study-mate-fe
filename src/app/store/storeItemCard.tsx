@@ -1,5 +1,5 @@
 import Image, { StaticImageData } from 'next/image';
-import ShieldIcon from '@public/assets/icons/store/shieldIcon.png';
+import ShieldIcon from '@public/assets/icons/store/shieldIcon3.png';
 interface ItemCardProps {
   title: string;
   description: string;
@@ -15,7 +15,13 @@ const ItemCard = ({
   return (
     <div className="group flex h-80 w-60 flex-col items-center justify-between rounded-[4rem] border-2 border-orange-200 bg-[#feefd8] py-5 hover:cursor-pointer hover:border-orange-500">
       <div className="mt-4 flex w-full flex-col items-center justify-center">
-        <Image src={imageUrl} alt={title} width={80} height={80} className="" />
+        <Image
+          src={imageUrl}
+          alt={title}
+          width={80}
+          height={80}
+          className="opacity-80"
+        />
         <span className="mb-2.5 mt-1 text-2xl">{title}</span>
         {description.split(',').map((desc, index) => (
           <span key={index} className="text-lg leading-6">

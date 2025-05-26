@@ -12,6 +12,7 @@ import RankingIcon from '@public/assets/icons/header/ranking-factor.png';
 import AnnouncementIcon from '@public/assets/icons/header/announcement.png';
 import MypageIcon from '@public/assets/icons/header/user.png';
 import Image from 'next/image';
+import StoreIcon from '@public/assets/icons/store/storeIcon.png';
 
 const RightHeaderComponents = () => {
   const routePath = usePathname();
@@ -85,6 +86,15 @@ const RightHeaderComponents = () => {
               />
             </div>
             <div className="hidden gap-2 md:flex">
+              <HeaderSmallIcon
+                title="상점"
+                onClick={() => {
+                  router.push(RouteTo.Store);
+                }}
+                component={
+                  <Image src={StoreIcon} alt="store" width={26} height={26} />
+                }
+              />
               <HeaderSmallIcon
                 title="Announcement"
                 onClick={() => {
