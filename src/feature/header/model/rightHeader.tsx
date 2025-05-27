@@ -81,7 +81,7 @@ const RightHeaderComponents = () => {
           <div className="z-[1] flex">
             <div className="md:hidden">
               <IoMenu
-                className="mr-1 cursor-pointer text-[1.65rem] font-bold text-pointcolor-beigebrown"
+                className={`mr-1 cursor-pointer text-[1.65rem] font-bold ${routePath === RouteTo.Store ? 'text-black' : 'text-pointcolor-beigebrown'}`}
                 onClick={() => setIsOpen(true)}
               />
             </div>

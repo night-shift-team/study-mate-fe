@@ -125,7 +125,15 @@ interceptor.on('response', async ({ response, request }) => {
   // console.log("interceptor", response.headers.get('Content-Type'))
   if (response.ok) return;
 
-  const data = await response.json();
+  const contentType = response.headers.get('content-type');
+  let data;
+  if (contentType?.includes('application/json')) {
+    // JSON 응답 처리
+    data = await response.json();
+  } else {
+    // 텍스트 응답 처리
+    data = await response.text();
+  }
   const errCode = data.ecode ? data.ecode : data.status;
   // console.warn(errCode);
   const isDisabaleToken = errCode === Ecode.E0002 || errCode === Ecode.E0005;

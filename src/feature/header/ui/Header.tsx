@@ -14,11 +14,8 @@ const Header = () => {
 
   return (
     <div
-      className={`relative flex h-full w-full items-center justify-between px-0 md:px-4 md:shadow-sm`}
+      className={`relative flex h-full w-full items-center justify-between px-0 md:px-4 md:shadow-sm ${path === RouteTo.Store ? 'bg-transparent bg-local will-change-transform' : 'bg-pointcolor-yogurt'}`}
     >
-      <div
-        className={`absolute h-full w-full ${path === RouteTo.Store ? 'bg-transparent' : 'bg-pointcolor-yogurt/10'}`}
-      />
       {/* 데스크탑 좌측 로고 */}
       <Link
         href={RouteTo.Home}
@@ -40,14 +37,7 @@ const Header = () => {
           href={RouteTo.Home}
           className="relative flex h-full w-[6.5rem] p-0"
         >
-          <Image
-            src={Logo}
-            alt=""
-            className="p-2"
-            fill
-            objectFit="contain"
-            priority
-          />
+          <Logo className="w-full p-2" />
         </Link>
       </div>
 

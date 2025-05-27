@@ -16,7 +16,7 @@ const ClientSideWrapper = ({ children }: { children: React.ReactNode }) => {
   };
   return (
     <Provider>
-      <div className="base h-full w-full">
+      <div className="base relative h-full w-full">
         <TooltipWrapper />
         <div className="fixed z-[100] flex h-[3.2rem] w-full md:h-[3.5rem]">
           <Header />

@@ -8,6 +8,7 @@ import RankingIcon from '@public/assets/icons/header/ranking-factor.png';
 import MypageIcon from '@public/assets/icons/header/user.png';
 import AnnouncementIcon from '@public/assets/icons/header/announcement.png';
 import { MdLogout } from 'react-icons/md';
+import StoreIcon from '@public/assets/icons/store/storeIcon.png';
 
 interface MobileSliderProps {
   open: boolean;
@@ -23,8 +24,8 @@ const MobileSlider: React.FC<MobileSliderProps> = ({ open, setOpen }) => {
       } transition-transform duration-300 ease-in-out`}
     >
       {/* 상단 헤더 */}
-      <div className="relative flex h-[3.2rem] w-full items-center justify-between border-b bg-pointcolor-coral/100 p-4 text-white">
-        <h2 className="flex w-full justify-center font-spoqa text-lg font-bold">
+      <div className="relative flex h-[3.2rem] w-full items-center justify-between p-4">
+        <h2 className="flex w-full justify-center font-spoqa text-lg font-medium">
           Menu
         </h2>
         <IoClose
@@ -36,6 +37,21 @@ const MobileSlider: React.FC<MobileSliderProps> = ({ open, setOpen }) => {
       {/* 메뉴 내용 */}
       <div className="flex flex-1 flex-col items-center justify-between p-6 font-doodle">
         <div className="flex flex-col gap-5">
+          <Link
+            href={RouteTo.Store}
+            className="flex items-center justify-center gap-2 font-medium text-gray-700"
+          >
+            <Image
+              src={StoreIcon}
+              alt="store"
+              width={26}
+              height={26}
+              color="red"
+            />
+            <span className="text-sm font-bold text-pointcolor-deepcoral">
+              상점
+            </span>
+          </Link>
           <Link
             href={RouteTo.Announcement}
             className="flex items-center justify-center gap-2 font-medium text-gray-700"
