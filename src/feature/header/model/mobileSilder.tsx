@@ -8,7 +8,7 @@ import RankingIcon from '@public/assets/icons/header/ranking-factor.png';
 import MypageIcon from '@public/assets/icons/header/user.png';
 import AnnouncementIcon from '@public/assets/icons/header/announcement.png';
 import { MdLogout } from 'react-icons/md';
-import StoreIcon from '@public/assets/icons/store/storeIcon.png';
+import StoreIcon from '@public/assets/icons/header/storeIcon.png';
 
 interface MobileSliderProps {
   open: boolean;

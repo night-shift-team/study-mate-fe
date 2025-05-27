@@ -10,6 +10,7 @@ export enum RouteTo {
   SolveRandom = '/solve/random',
   Announcement = '/announcement',
   Store = '/store',
+  StorePurchaseHistory = '/store/purchase-history',
 
   AdminLogin = '/admin',
   AdminDashboard = '/admin/dashboard',

@@ -12,7 +12,7 @@ import RankingIcon from '@public/assets/icons/header/ranking-factor.png';
 import AnnouncementIcon from '@public/assets/icons/header/announcement.png';
 import MypageIcon from '@public/assets/icons/header/user.png';
 import Image from 'next/image';
-import StoreIcon from '@public/assets/icons/store/storeIcon.png';
+import StoreIcon from '@public/assets/icons/header/storeIcon.png';
 
 const RightHeaderComponents = () => {
   const routePath = usePathname();
