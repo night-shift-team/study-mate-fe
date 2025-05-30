@@ -241,18 +241,20 @@ const CartPopupData = ({
             ))
           : '장바구니가 비어있습니다.'}
       </div>
-      <button
-        type="button"
-        disabled={cart.length === 0}
-        onClick={async () => {}}
-        className={`mt-1 flex h-[2.4rem] w-[6.8rem] items-center justify-center rounded-2xl hover:border ${cart.length === 0 ? 'bg-gray-200 hover:border-none' : 'bg-amber-300'} px-4 font-parkdahyun hover:border-white md:mt-3 md:h-[2.8rem] md:w-[8rem] md:px-6 md:text-xl`}
-      >
-        <span className="flex items-center justify-between gap-2 tracking-tighter">
-          {<IoCardOutline />}
+      {cart.length !== 0 ? (
+        <button
+          type="button"
+          disabled={cart.length === 0}
+          onClick={async () => {}}
+          className={`mt-1 flex h-[2.4rem] w-[6.8rem] items-center justify-center rounded-2xl hover:border ${cart.length === 0 ? 'bg-gray-200 hover:border-none' : 'bg-amber-300'} px-4 font-parkdahyun hover:border-white md:mt-3 md:h-[2.8rem] md:w-[8rem] md:px-6 md:text-xl`}
+        >
+          <span className="flex items-center justify-between gap-2 tracking-tighter">
+            {<IoCardOutline />}
 
-          <span>{'₩' + totalPrice.toLocaleString('ko-KR')}</span>
-        </span>
-      </button>
+            <span>{'₩' + totalPrice.toLocaleString('ko-KR')}</span>
+          </span>
+        </button>
+      ) : null}
     </div>
   );
 };
