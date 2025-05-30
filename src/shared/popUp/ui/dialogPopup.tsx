@@ -41,7 +41,7 @@ export const DialogPopup = ({
         />
       )}
       <dialog
-        ref={dialogRef}
+        ref={dialogRef as React.RefObject<HTMLDialogElement>}
         open={open}
         className="absolute left-[50%] top-[50%] z-[100] flex h-[30%] min-h-[15rem] w-[80%] min-w-[20rem] max-w-[30rem] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-2xl border-2 shadow-md"
       >

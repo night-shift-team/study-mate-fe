@@ -92,8 +92,10 @@ export const PopupProblem: React.FC<PopupWithProblemProps> = ({
 interface PopupNoticeProps {
   size: Size;
   title: string;
-  content: string;
+  content: JSX.Element | string;
   onClose: () => void;
+  ref: React.RefObject<HTMLElement | null>;
+  color?: string;
 }
 
 export const PopupNotice: React.FC<PopupNoticeProps> = ({
@@ -101,9 +103,11 @@ export const PopupNotice: React.FC<PopupNoticeProps> = ({
   title,
   content,
   onClose,
+  ref,
+  color,
 }) => {
   return (
-    <PopupContainer size={size}>
+    <PopupContainer ref={ref} size={size} color={color}>
       <IoMdClose
         onClick={onClose}
         className="absolute right-5 cursor-pointer text-gray-500 transition-colors hover:text-gray-800"
@@ -170,14 +174,20 @@ export const PopupConfirm: React.FC<PopupConfirmProps> = ({
 const PopupContainer = ({
   size,
   children,
+  ref,
+  color = '#ffffff',
 }: {
   size: Size;
   children: React.ReactNode;
+  ref?: React.RefObject<HTMLElement | null>;
+  color?: string;
 }) => {
   return (
     <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black bg-opacity-60 p-4 backdrop-blur-sm transition-opacity duration-300">
       <div
-        className={`w-full ${getSize(size)} max-h-full transform overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl transition-transform duration-300 scrollbar-hide`}
+        ref={ref as React.RefObject<HTMLDivElement>}
+        className={`w-full ${getSize(size)} max-h-full transform overflow-y-auto rounded-2xl p-6 shadow-2xl transition-transform duration-300 scrollbar-hide`}
+        style={{ backgroundColor: color }}
       >
         {children}
       </div>
