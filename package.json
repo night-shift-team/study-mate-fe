@@ -27,6 +27,7 @@
     "@radix-ui/react-slot": "^1.1.1",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tanstack/react-query": "^5.76.0",
+    "animejs": "^4.0.2",
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",

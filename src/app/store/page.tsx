@@ -7,9 +7,12 @@ import CartIcon from '@public/assets/icons/store/cartIcon.png';
 import PurchaseHistory from '@public/assets/icons/store/purchaseHistory.png';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { PopupNotice } from '@/shared/popUp/ui/popupV2';
 import useOutsideClick from '@/shared/routes/model/useOutsideClick';
+import { animate, eases } from 'animejs';
+import { IoCartOutline } from 'react-icons/io5';
+import { IoCardOutline } from 'react-icons/io5';
 
 const StorePage = () => {
   const [popupOpen, setPopupOpen] = React.useState(false);
@@ -136,27 +139,101 @@ const PurchasePopupDate = ({
         </button>
       </div>
       <div className="flex gap-4">
-        <button
-          type="button"
-          onClick={() => {}}
-          className="mt-1 flex h-[2.4rem] w-[6.5rem] items-center justify-center rounded-2xl border bg-amber-300 px-4 font-parkdahyun hover:border-orange-500 md:mt-3 md:h-[2.8rem] md:w-[8rem] md:px-6 md:text-xl"
-        >
-          <span>장바구니 담기</span>
-          <span className="tracking-tighter">
-            {/* {count && '₩'+ (count * item.price).toLocaleString('ko-KR')} */}
-          </span>
-        </button>
-        <button
-          type="button"
-          onClick={() => {}}
-          className="mt-1 flex h-[2.4rem] w-[6.5rem] items-center justify-center rounded-2xl border bg-amber-300 px-4 font-parkdahyun hover:border-orange-500 md:mt-3 md:h-[2.8rem] md:w-[8rem] md:px-6 md:text-xl"
-        >
-          <span>바로 구매</span>
-          <span className="tracking-tighter">
-            {/* {count && '₩'+ (count * item.price).toLocaleString('ko-KR')} */}
-          </span>
-        </button>
+        <PurchaseButtonWithAnimation
+          text="장바구니 담기"
+          price={item.price}
+          count={count}
+        />
+        <PurchaseButtonWithAnimation
+          text="바로 구매"
+          price={item.price}
+          count={count}
+        />
       </div>
     </div>
+  );
+};
+
+const PurchaseButtonWithAnimation = ({
+  text,
+  price,
+  count,
+}: {
+  text: string;
+  price: number;
+  count: number | null;
+}) => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const textRef = useRef<HTMLSpanElement>(null);
+  const [hovered, setHovered] = useState(false);
+
+  const originalColor = '#fcd34d'; // bg-amber-300
+  const hoverColor = '#f87171'; // bg-rose-400
+
+  const handleMouseEnter = () => {
+    if (!buttonRef.current || !textRef.current) return;
+
+    animate(buttonRef.current, {
+      backgroundColor: [originalColor, hoverColor],
+      duration: 250,
+      easing: eases.outQuad,
+    });
+
+    fadeOutInText(setHovered, true);
+  };
+
+  const handleMouseLeave = () => {
+    if (!buttonRef.current || !textRef.current) return;
+
+    animate(buttonRef.current, {
+      backgroundColor: [hoverColor, originalColor],
+      duration: 250,
+      easing: eases.outQuad,
+    });
+
+    fadeOutInText(setHovered, false);
+  };
+
+  const fadeOutInText = (set: (v: boolean) => void, value: boolean) => {
+    if (!textRef.current) return;
+
+    animate(textRef.current, {
+      opacity: [1, 0],
+      duration: 150,
+      easing: eases.outQuad,
+      complete: () => {
+        set(value); // ✅ 상태 먼저 바꾼 다음
+        requestAnimationFrame(() => {
+          // ✅ 그 다음 opacity 올리는 트랜지션 적용
+          animate(textRef.current!, {
+            opacity: [0, 1],
+            duration: 150,
+            easing: eases.outQuad,
+          });
+        });
+      },
+    });
+  };
+
+  return (
+    <button
+      ref={buttonRef}
+      type="button"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={() => {}}
+      className="mt-1 flex h-[2.4rem] w-[6.8rem] items-center justify-center rounded-2xl border bg-amber-300 px-4 font-parkdahyun hover:border-orange-500 md:mt-3 md:h-[2.8rem] md:w-[8rem] md:px-6 md:text-xl"
+    >
+      <span
+        ref={textRef}
+        className="flex items-center justify-between gap-2 tracking-tighter"
+      >
+        {text === '바로 구매' && hovered && <IoCardOutline />}
+        {text === '장바구니 담기' && hovered && <IoCartOutline />}
+        {hovered
+          ? count && '₩' + (count * price).toLocaleString('ko-KR')
+          : text}
+      </span>
+    </button>
   );
 };
