@@ -1,23 +1,18 @@
 'use client';
 import AuthHoc from '@/shared/auth/model/authHoc';
 import Link from 'next/link';
-import Image from 'next/image';
 import { getCategoriesIcon } from '../model/getCategoryIcons';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import {
-  ProblemCategory,
-  ProblemCategoryTitle,
-} from '@/shared/constants/problemInfo';
+import { ProblemCategoryTitle } from '@/shared/constants/problemInfo';
 import { NoticeComponent } from './notice';
-import { RecentProblem } from './recentProblem';
-import NoticeBanner from './noticeBanner';
 import { useLayoutEffect, useState } from 'react';
 import {
   getQuestionCategoryInfoApi,
   GetQuestionCategoryInfoRes,
   QuestionCategoryInfoDetail,
 } from '../api';
-import randomIcon from '@public/assets/icons/categoryTitleIcon/randomIcon.svg';
+import RandomIcon from '@public/assets/icons/categoryTitleIcon/randomIcon.svg';
+import { SvgIcon } from '@mui/material';
 
 interface ProblemCategoryInfo
   extends Omit<
@@ -86,11 +81,13 @@ const SolveProblem = () => {
             href={RouteTo.SolveRandom}
             className="relative flex h-[7rem] w-[100%] min-w-[240px] flex-shrink-0 flex-col items-center justify-center border-t p-2 px-4 transition-all duration-300 ease-in-out hover:translate-y-[-5px] hover:shadow-lg md:h-[12rem] md:w-full md:max-w-[480px] md:rounded-sm md:border md:p-4 md:pt-2.5"
           >
-            <Image
-              src={randomIcon}
-              alt="randomIcon"
-              className="h-[50%] w-fit"
-            />
+            <div className="relative flex aspect-1 h-[2rem] items-center justify-center md:h-[3rem]">
+              <SvgIcon
+                component={RandomIcon}
+                inheritViewBox
+                sx={{ width: '100%', height: '100%' }}
+              />
+            </div>
             <span className="text-[1.1rem] font-bold underline-offset-8 md:mt-3">
               랜덤 문제 풀기
             </span>

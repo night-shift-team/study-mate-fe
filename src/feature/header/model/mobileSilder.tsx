@@ -19,7 +19,7 @@ const MobileSlider: React.FC<MobileSliderProps> = ({ open, setOpen }) => {
   const { setUser } = userStore();
   return (
     <div
-      className={`fixed right-0 top-0 z-50 flex h-full max-h-[100vh] w-full transform flex-col bg-white text-xs ${
+      className={`fixed right-0 top-0 z-50 flex h-[100vh] max-h-[100vh] w-full transform flex-col bg-white text-xs ${
         open ? 'translate-x-0 shadow-2xl drop-shadow-lg' : 'translate-x-full'
       } transition-transform duration-300 ease-in-out`}
     >
@@ -40,6 +40,7 @@ const MobileSlider: React.FC<MobileSliderProps> = ({ open, setOpen }) => {
           <Link
             href={RouteTo.Store}
             className="flex items-center justify-center gap-2 font-medium text-gray-700"
+            onClick={() => setOpen(false)}
           >
             <Image
               src={StoreIcon}

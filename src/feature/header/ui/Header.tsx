@@ -21,12 +21,7 @@ const Header = () => {
         href={RouteTo.Home}
         className="relative hidden h-full md:flex md:w-[8rem]"
       >
-        <Image
-          src={Logo}
-          alt=""
-          className="flex object-contain py-2.5 pl-2.5"
-          priority
-        />
+        <Logo className="flex object-contain py-2.5 pl-2.5" />
         <TextLogo
           className={`h-auto w-full p-2 ${path === RouteTo.Store ? 'text-white' : 'text-[#ECCDB5]'}`}
         />

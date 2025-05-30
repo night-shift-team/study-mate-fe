@@ -41,13 +41,6 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
           history.questionType === 'DB_MAQ' || history.questionType === 'DB_SAQ'
       ).length
     : 0;
-  const DESIGN_MAQ = questionHistory
-    ? questionHistory.filter(
-        (history) =>
-          history.questionType === 'DESIGN_MAQ' ||
-          history.questionType === 'DESIGN_SAQ'
-      ).length
-    : 0;
   const NETWORK_MAQ = questionHistory
     ? questionHistory.filter(
         (history) =>
@@ -75,11 +68,6 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
       title: ProblemCategoryTitle.DB,
       count: 152,
       question: DB_MAQ,
-    },
-    {
-      title: ProblemCategoryTitle.DESIGN,
-      count: 15,
-      question: DESIGN_MAQ,
     },
     {
       title: ProblemCategoryTitle.NETWORK,

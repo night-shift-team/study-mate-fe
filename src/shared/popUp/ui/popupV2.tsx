@@ -121,7 +121,9 @@ export const PopupNotice: React.FC<PopupNoticeProps> = ({
         </div>
       </PopupHeader>
 
-      <p className="tiems-center flex w-full justify-center px-2">{content}</p>
+      <div className="flex w-full items-center justify-center px-2">
+        {content}
+      </div>
     </PopupContainer>
   );
 };

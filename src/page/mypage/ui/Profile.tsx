@@ -9,13 +9,11 @@ import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import useToast, { ToastType } from '@/shared/toast/toast';
 import { ProfileImage } from '@/shared/user/ui/profileImage';
 
-const DEFAULT_PROFILE_IMG = '/default-profile.png';
+import DEFAULT_PROFILE_IMG from '@public/assets/icons/header/user.png';
 
 const Profile = () => {
   const { user, setUser } = userStore();
-  const [imageUrl, setImageUrl] = useState<string>(
-    user?.profileImg || DEFAULT_PROFILE_IMG
-  );
+  const [imageUrl, setImageUrl] = useState<string>(user ? user.profileImg : '');
   const [errorMessage, setErrorMessage] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newNickname, setNewNickname] = useState<string>(user?.nickname || '');
@@ -47,7 +45,7 @@ const Profile = () => {
           setUser({
             ...user,
             nickname: newNickname,
-            profileImg: user.profileImg || DEFAULT_PROFILE_IMG,
+            profileImg: user.profileImg,
           });
           setIsModalOpen(false);
           setErrorMessage('');

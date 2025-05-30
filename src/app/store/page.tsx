@@ -32,7 +32,7 @@ const StorePage = () => {
   const [cart, setCart] = useState<StoreItemInfo[]>([]);
 
   return (
-    <div className="absolute inset-0 h-screen w-screen bg-storeBg bg-cover pt-[3.2rem] md:pt-[3.5rem]">
+    <div className="absolute inset-0 z-[1] h-screen w-screen bg-storeBg bg-cover pt-[3.2rem] md:pt-[3.5rem]">
       {purchaseOpen ? (
         <PopupNotice
           ref={outSideClickRef}

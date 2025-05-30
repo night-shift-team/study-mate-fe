@@ -8,62 +8,46 @@ import {
 } from 'react-icons/fa6';
 import Image from 'next/image';
 import AlgoliaIcon from '@public/assets/icons/categoryTitleIcon/algorithmIcon.svg';
-import osIcon from '@public/assets/icons/categoryTitleIcon/osIcon.svg';
-import dbIcon from '@public/assets/icons/categoryTitleIcon/dbIcon.svg';
-import networkIcon from '@public/assets/icons/categoryTitleIcon/networkIcon.svg';
-import designIcon from '@public/assets/icons/categoryTitleIcon/designIcon.svg';
+import OSIcon from '@public/assets/icons/categoryTitleIcon/osIcon.svg';
+import DBIcon from '@public/assets/icons/categoryTitleIcon/dbIcon.svg';
+import NetworkIcon from '@public/assets/icons/categoryTitleIcon/networkIcon.svg';
+import { SvgIcon } from '@mui/material';
 
 export const getCategoriesIcon = (title: ProblemCategoryTitle) => {
   switch (title) {
     case ProblemCategoryTitle.ALGORITHUM:
       return (
-        // <FaAlgolia className="h-[70%] w-fit items-center justify-center py-0.5" />
-        <Image src={AlgoliaIcon} alt="algorithmIcon" objectFit="contain" fill />
+        <SvgIcon
+          component={AlgoliaIcon}
+          inheritViewBox
+          sx={{ width: '100%', height: '100%' }}
+        />
       );
     case ProblemCategoryTitle.DB:
       return (
-        // <FaDatabase className="h-[60%] w-fit items-center justify-center py-0.5" />
-        <Image
-          src={dbIcon}
-          alt="dbIcon"
-          objectFit="contain"
-          className="p-2"
-          fill
+        <SvgIcon
+          component={DBIcon}
+          inheritViewBox
+          sx={{ width: '75%', height: '75%' }}
         />
       );
     case ProblemCategoryTitle.NETWORK:
       return (
-        // <FaNetworkWired className="h-[70%] w-fit items-center justify-center py-0.5" />
-        <Image
-          src={networkIcon}
-          alt="networkIcon"
-          objectFit="contain"
-          className="p-1"
-          fill
+        <SvgIcon
+          component={NetworkIcon}
+          inheritViewBox
+          sx={{ width: '80%', height: '80%' }}
         />
       );
     case ProblemCategoryTitle.OS:
       return (
-        // <FaComputer className="h-[60%] w-fit items-center justify-center py-0.5" />
-        <Image
-          src={osIcon}
-          alt="osIcon"
-          objectFit="contain"
-          className="p-1"
-          fill
+        <SvgIcon
+          component={OSIcon}
+          inheritViewBox
+          sx={{ width: '80%', height: '80%' }}
         />
       );
-    case ProblemCategoryTitle.DESIGN:
-      return (
-        // <FaDelicious className="h-[70%] w-fit items-center justify-center py-0.5" />
-        <Image
-          src={designIcon}
-          alt="designIcon"
-          objectFit="contain"
-          className="p-2"
-          fill
-        />
-      );
+
     default:
       return (
         <FaComputer className="h-[80%] w-fit items-center justify-center py-0.5" />
