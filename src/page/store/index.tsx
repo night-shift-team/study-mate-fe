@@ -1,0 +1,116 @@
+'use client';
+import Panel from '@public/assets/backgroundImages/store/storePanel2.svg';
+import Image, { StaticImageData } from 'next/image';
+import ItemCard from './ui/storeItemCard';
+import ShieldIcon from '@public/assets/icons/store/shieldIcon3.png';
+import CartIcon from '@public/assets/icons/store/cartIcon.png';
+import PurchaseHistory from '@public/assets/icons/store/purchaseHistory.png';
+import Link from 'next/link';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import React, { useState } from 'react';
+import { PopupNotice } from '@/shared/popUp/ui/popupV2';
+import useOutsideClick from '@/shared/routes/model/useOutsideClick';
+
+import CartPopupData from './ui/cartPopup';
+import PurchasePopupData from './ui/purchasePopup';
+
+export interface StoreItemInfo {
+  title: string;
+  imageUrl: string | StaticImageData;
+  price: number;
+  count: number;
+}
+
+const StorePage = () => {
+  const [purchaseOpen, setPurchaseOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
+  const outSideClickRef = useOutsideClick(() => {
+    setPurchaseOpen(false);
+    setCartOpen(false);
+  });
+  const [selectedItem, setSelectedItem] = useState<StoreItemInfo | null>(null);
+  const [cart, setCart] = useState<StoreItemInfo[]>([]);
+
+  return (
+    <div className="absolute inset-0 z-[1] h-screen w-screen bg-storeBg bg-cover pt-[3.2rem] md:pt-[3.5rem]">
+      {purchaseOpen ? (
+        <PopupNotice
+          ref={outSideClickRef}
+          size="sm"
+          title="아이템 구매"
+          content={
+            <PurchasePopupData
+              item={selectedItem}
+              setItem={setSelectedItem}
+              setCart={setCart}
+              popupClose={() => setPurchaseOpen(false)}
+            />
+          }
+          onClose={() => setPurchaseOpen(false)}
+          color="#ffffe9"
+        />
+      ) : null}
+      {cartOpen ? (
+        <PopupNotice
+          ref={outSideClickRef}
+          size="md"
+          title="장바구니"
+          content={<CartPopupData cart={cart} setCart={setCart} />}
+          onClose={() => setCartOpen(false)}
+          color="#ffffe9"
+        />
+      ) : null}
+      <div className="relative flex h-full w-full flex-col overflow-y-auto overflow-x-hidden scrollbar-hide">
+        <div className="mt-4 flex h-[8rem] w-full justify-center">
+          <Panel className="h-full w-full scale-[1.45] object-contain" />
+        </div>
+        <button
+          aria-label="cart"
+          className="group fixed right-2 top-12 flex h-[3rem] w-[2.8rem] flex-col md:right-5 md:top-16 md:h-[3.8rem] md:w-[3.6rem]"
+          onClick={() => setCartOpen(true)}
+        >
+          <div className="relative flex h-full w-full">
+            <div className="absolute flex aspect-1 w-full">
+              <Image src={CartIcon} fill alt="cart_icon" />
+            </div>
+            <div className="absolute bottom-2 right-1 flex aspect-1 h-3.5 items-center justify-center rounded-full bg-[#ef4444] text-[0.6rem] font-semibold text-white group-hover:border group-hover:border-white/50 md:bottom-[0.65rem] md:right-1.5 md:h-[1.1rem] md:text-[0.65rem]">
+              {cart.length}
+            </div>
+            <span className="absolute -bottom-[0.1rem] flex w-full justify-center text-[0.5rem] tracking-tighter md:text-[0.65rem] md:tracking-tight">
+              장바구니
+            </span>
+          </div>
+        </button>
+        <Link
+          aria-label="purchase_history"
+          href={RouteTo.StorePurchaseHistory}
+          className="fixed right-2 top-[6.3rem] flex h-[3rem] w-[2.8rem] flex-col md:right-5 md:top-32 md:h-[3.8rem] md:w-[3.6rem]"
+        >
+          <div className="relative flex h-full w-full">
+            <div className="absolute flex aspect-1 w-full">
+              <Image src={PurchaseHistory} fill alt="purchase_history" />
+            </div>
+            <span className="absolute -bottom-[0.1rem] flex w-full justify-center text-[0.5rem] tracking-tighter md:text-[0.65rem] md:tracking-tight">
+              구매내역
+            </span>
+          </div>
+        </Link>
+        <div className="mt-5 grid h-auto w-full grid-cols-[repeat(auto-fill,_minmax(150px,_1fr))] place-items-center gap-4 px-6 pb-20 md:mt-10 md:grid-cols-[repeat(auto-fill,_minmax(240px,_1fr))] md:gap-10 md:px-32">
+          {Array.from({ length: 15 }).map((_, index) => (
+            <ItemCard
+              key={index}
+              title={'Title ' + index}
+              description="24시간,문제풀이,방어"
+              imageUrl={ShieldIcon}
+              popupOpen={purchaseOpen}
+              setPopupOpen={setPurchaseOpen}
+              setSelectedItem={setSelectedItem}
+              price={2000}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+export default StorePage;
