@@ -66,7 +66,7 @@ const StorePage = () => {
         </div>
         <button
           aria-label="cart"
-          className="group absolute right-2 top-0 flex h-[3rem] w-[2.8rem] flex-col md:right-5 md:top-3 md:h-[3.8rem] md:w-[3.6rem]"
+          className="group fixed right-2 top-12 flex h-[3rem] w-[2.8rem] flex-col md:right-5 md:top-16 md:h-[3.8rem] md:w-[3.6rem]"
           onClick={() => setCartOpen(true)}
         >
           <div className="relative flex h-full w-full">
@@ -84,7 +84,7 @@ const StorePage = () => {
         <Link
           aria-label="purchase_history"
           href={RouteTo.StorePurchaseHistory}
-          className="absolute right-2 top-[3.2rem] flex h-[3rem] w-[2.8rem] flex-col md:right-5 md:top-20 md:h-[3.8rem] md:w-[3.6rem]"
+          className="fixed right-2 top-[6.3rem] flex h-[3rem] w-[2.8rem] flex-col md:right-5 md:top-32 md:h-[3.8rem] md:w-[3.6rem]"
         >
           <div className="relative flex h-full w-full">
             <div className="absolute flex aspect-1 w-full">
@@ -95,8 +95,8 @@ const StorePage = () => {
             </span>
           </div>
         </Link>
-        <div className="mt-5 grid h-auto w-full grid-cols-[repeat(auto-fill,_minmax(150px,_1fr))] place-items-center gap-4 px-6 pb-20 md:mt-10 md:grid-cols-[repeat(auto-fill,_minmax(240px,_1fr))] md:gap-10 md:px-40">
-          {Array.from({ length: 10 }).map((_, index) => (
+        <div className="mt-5 grid h-auto w-full grid-cols-[repeat(auto-fill,_minmax(150px,_1fr))] place-items-center gap-4 px-6 pb-20 md:mt-10 md:grid-cols-[repeat(auto-fill,_minmax(240px,_1fr))] md:gap-10 md:px-32">
+          {Array.from({ length: 15 }).map((_, index) => (
             <ItemCard
               key={index}
               title={'Title ' + index}
@@ -133,12 +133,12 @@ const CartPopupData = ({
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-4">
-      <div className="flex w-full flex-col items-center justify-center gap-2 overflow-y-auto text-xs md:text-sm">
+      <div className="flex max-h-[70vh] w-full flex-col items-center gap-2 overflow-y-auto text-xs md:text-sm">
         {cart.length
           ? cart.map((item, index) => (
               <div
                 key={index}
-                className="flex w-full items-center justify-between gap-1"
+                className={`flex w-full items-center justify-between gap-1`}
               >
                 <div className="relative flex aspect-1 w-[clamp(2rem,10%,3rem)] scale-[1.3] items-center justify-center">
                   <Image src={item.imageUrl} alt={item.title} fill />
@@ -431,7 +431,7 @@ const PurchaseButtonWithAnimation = ({
       onClick={async () => {
         await cartOrPurchaseClick();
       }}
-      className="mt-1 flex h-[2.4rem] w-[6.8rem] items-center justify-center rounded-2xl border bg-amber-300 px-4 font-parkdahyun hover:border-orange-500 md:mt-3 md:h-[2.8rem] md:w-[8rem] md:px-6 md:text-xl"
+      className="mt-1 flex h-[2.4rem] w-[6.8rem] items-center justify-center rounded-2xl border bg-amber-300 px-4 font-parkdahyun hover:border-white md:mt-3 md:h-[2.8rem] md:w-[8rem] md:px-6 md:text-xl"
     >
       <span
         ref={textRef}

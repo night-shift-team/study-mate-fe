@@ -188,7 +188,7 @@ const PopupContainer = ({
     <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black bg-opacity-60 p-4 backdrop-blur-sm transition-opacity duration-300">
       <div
         ref={ref as React.RefObject<HTMLDivElement>}
-        className={`w-full ${getSize(size)} max-h-full transform overflow-y-auto rounded-2xl p-6 shadow-2xl transition-transform duration-300 scrollbar-hide`}
+        className={`w-full ${getSize(size)} max-h-[90vh] transform rounded-2xl p-6 shadow-2xl transition-transform duration-300 scrollbar-hide`}
         style={{ backgroundColor: color }}
       >
         {children}
