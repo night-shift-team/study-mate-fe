@@ -1,18 +1,72 @@
+'use client';
 import { SuggestionList } from './SuggestionList';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { userStore } from '@/state/userStore';
+import { getQnABoardListApi } from '../api';
+import { useEffect, useState } from 'react';
+
+interface SuggestionItem {
+  id: number;
+  title: string;
+  author: string;
+  views: number;
+  date: string; // MM-DD
+}
 
 export const Suggestion = () => {
+  const { user } = userStore();
   const router = useRouter();
+  const [list, setList] = useState<SuggestionItem[] | null>(null);
+
+  console.log(list);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await getQnABoardListApi(0, 10);
+        if (res.ok && Array.isArray(res.payload?.content)) {
+          const mappedList: SuggestionItem[] = res.payload.content.map(
+            (item) => ({
+              id: item.id,
+              title: item.title,
+              author: item.user.nickname || item.user.loginId,
+              views: item.view,
+              date: formatDate(item.createdDt),
+            })
+          );
+          setList(mappedList);
+        } else {
+          setList([]);
+          console.error(
+            'QnA 불러오기 실패: payload.content is not an array',
+            res
+          );
+        }
+      } catch (error) {
+        setList([]);
+        console.error('QnA 불러오기 실패:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // 날짜 포맷터: ISO 날짜 → MM-DD
+  const formatDate = (isoString: string): string => {
+    const date = new Date(isoString);
+    const month = `${date.getMonth() + 1}`.padStart(2, '0');
+    const day = `${date.getDate()}`.padStart(2, '0');
+    return `${month}-${day}`;
+  };
+
+  if (list === null) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="h-[100vh] w-[90vw] max-w-[1100px]">
-      <div className="flex h-[50px] items-center text-lg font-bold">
-        {' '}
-        건의사항
-      </div>
-      <div className="rounded-lg bg-white p-4 shadow-md">
-        <SuggestionList />
-      </div>
+      <SuggestionList list={list} />
       <div className="mt-6 flex justify-end">
         <button
           className="rounded-xl bg-orange-300 px-6 py-2 font-semibold text-white shadow-md transition-colors duration-200 hover:bg-orange-500"

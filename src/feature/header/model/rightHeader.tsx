@@ -114,7 +114,7 @@ const RightHeaderComponents = () => {
                   />
                 }
               />
-              <HeaderSmallIcon
+              {/* <HeaderSmallIcon
                 title="건의사항"
                 onClick={() => {
                   router.push(RouteTo.Suggestion);
@@ -127,7 +127,7 @@ const RightHeaderComponents = () => {
                     height={20}
                   />
                 }
-              />
+              /> */}
               <HeaderSmallIcon
                 title="마이 페이지"
                 onClick={() => {

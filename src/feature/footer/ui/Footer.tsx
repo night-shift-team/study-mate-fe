@@ -1,3 +1,5 @@
+'use client';
+
 import { FaGithub, FaEnvelope } from 'react-icons/fa';
 import { FooterSection } from './FooterSection';
 
@@ -9,7 +11,7 @@ const developers = [
 
 const quickLinks = [
   { label: '소개', href: '/' },
-  { label: '문의하기', href: '/' },
+  { label: '문의하기', href: '/suggestion' },
 ];
 
 const contacts = [

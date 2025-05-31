@@ -3,19 +3,27 @@
 import { useState, useEffect } from 'react';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { usePathname, useRouter } from 'next/navigation';
+import { createQnABoardApi } from '../../api';
 const WritePage = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log('건의사항 제출됨:', { title, content });
-    setSubmitted(true);
-    setTitle('');
-    setContent('');
+    try {
+      const postId = await createQnABoardApi({ title, content });
+      console.log('게시글 생성 성공, ID:', postId);
+
+      setSubmitted(true);
+      setTitle('');
+      setContent('');
+    } catch (error) {
+      console.error('게시글 생성 실패:', error);
+      alert('게시글 생성 중 오류가 발생했습니다.');
+    }
   };
 
   useEffect(() => {
