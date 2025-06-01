@@ -61,7 +61,7 @@ export const Suggestion = () => {
   };
 
   if (list === null) {
-    return <div>Loading...</div>;
+    return <div className="h-[100vh] w-[90vw] max-w-[1100px]"></div>;
   }
 
   return (
