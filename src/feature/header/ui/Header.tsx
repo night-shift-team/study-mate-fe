@@ -14,7 +14,7 @@ const Header = () => {
 
   return (
     <div
-      className={`relative flex h-full w-full items-center justify-between px-0 md:px-4 md:shadow-sm ${path === RouteTo.Store ? 'bg-transparent bg-local will-change-transform' : 'bg-pointcolor-yogurt'}`}
+      className={`relative flex h-full w-full items-center justify-between px-0 md:px-4 md:shadow-sm ${path.startsWith(RouteTo.Store) ? 'bg-transparent bg-local will-change-transform' : 'bg-pointcolor-yogurt'}`}
     >
       {/* 데스크탑 좌측 로고 */}
       <Link
@@ -23,7 +23,7 @@ const Header = () => {
       >
         <Logo className="flex object-contain py-2.5 pl-2.5" />
         <TextLogo
-          className={`h-auto w-full p-2 ${path === RouteTo.Store ? 'text-white' : 'text-[#ECCDB5]'}`}
+          className={`h-auto w-full p-2 ${path === RouteTo.Store ? 'text-white' : 'text-black'}`}
         />
       </Link>
       {/* 모바일 가운데 로고 */}

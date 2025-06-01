@@ -8,7 +8,8 @@ import RankingIcon from '@public/assets/icons/header/ranking-factor.png';
 import MypageIcon from '@public/assets/icons/header/user.png';
 import AnnouncementIcon from '@public/assets/icons/header/announcement.png';
 import { MdLogout } from 'react-icons/md';
-import StoreIcon from '@public/assets/icons/header/storeIcon.png';
+import StoreIcon from '@public/assets/icons/header/storeIcon.svg';
+import { SvgIcon } from '@mui/material';
 
 interface MobileSliderProps {
   open: boolean;
@@ -42,12 +43,10 @@ const MobileSlider: React.FC<MobileSliderProps> = ({ open, setOpen }) => {
             className="flex items-center justify-center gap-2 font-medium text-gray-700"
             onClick={() => setOpen(false)}
           >
-            <Image
-              src={StoreIcon}
-              alt="store"
-              width={26}
-              height={26}
-              color="red"
+            <SvgIcon
+              component={StoreIcon}
+              inheritViewBox
+              sx={{ width: 24, height: 24, color: 'red' }}
             />
             <span className="text-sm font-bold text-pointcolor-deepcoral">
               상점

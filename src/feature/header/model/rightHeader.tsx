@@ -12,7 +12,8 @@ import RankingIcon from '@public/assets/icons/header/ranking-factor.png';
 import AnnouncementIcon from '@public/assets/icons/header/announcement.png';
 import MypageIcon from '@public/assets/icons/header/user.png';
 import Image from 'next/image';
-import StoreIcon from '@public/assets/icons/header/storeIcon.png';
+import StoreIcon from '@public/assets/icons/header/storeIcon.svg';
+import { SvgIcon } from '@mui/material';
 
 const RightHeaderComponents = () => {
   const routePath = usePathname();
@@ -81,7 +82,7 @@ const RightHeaderComponents = () => {
           <div className="z-[1] flex">
             <div className="md:hidden">
               <IoMenu
-                className={`mr-1 cursor-pointer text-[1.65rem] font-bold ${routePath === RouteTo.Store ? 'text-black' : 'text-pointcolor-beigebrown'}`}
+                className={`mr-1 cursor-pointer text-[1.65rem] font-bold ${routePath.startsWith(RouteTo.Store) ? 'text-black' : 'text-pointcolor-beigebrown'}`}
                 onClick={() => setIsOpen(true)}
               />
             </div>
@@ -92,7 +93,11 @@ const RightHeaderComponents = () => {
                   router.push(RouteTo.Store);
                 }}
                 component={
-                  <Image src={StoreIcon} alt="store" width={26} height={26} />
+                  <SvgIcon
+                    component={StoreIcon}
+                    inheritViewBox
+                    sx={{ width: 26, height: 26 }}
+                  />
                 }
               />
               <HeaderSmallIcon

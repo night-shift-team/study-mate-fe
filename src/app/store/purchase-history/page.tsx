@@ -1,8 +1,6 @@
-const StorePurchaseHistoryPage = () => {
-  return (
-    <div>
-      <h1>StorePurchaseHistoryPage</h1>
-    </div>
-  );
+import StorePurchaseHistoryPage from '@/page/store/purchaseHistory';
+
+const StorePurchaseHistory = () => {
+  return <StorePurchaseHistoryPage />;
 };
-export default StorePurchaseHistoryPage;
+export default StorePurchaseHistory;
