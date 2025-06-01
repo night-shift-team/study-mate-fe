@@ -23,7 +23,7 @@ const Header = () => {
       >
         <Logo className="flex object-contain py-2.5 pl-2.5" />
         <TextLogo
-          className={`h-auto w-full p-2 ${path === RouteTo.Store ? 'text-white' : 'text-black'}`}
+          className={`h-auto w-full p-2 ${path.startsWith(RouteTo.Store) ? 'text-white' : 'text-black'}`}
         />
       </Link>
       {/* 모바일 가운데 로고 */}
