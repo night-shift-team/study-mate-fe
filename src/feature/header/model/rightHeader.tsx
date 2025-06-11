@@ -11,6 +11,7 @@ import { LuLayoutDashboard } from 'react-icons/lu';
 import RankingIcon from '@public/assets/icons/header/ranking-factor.png';
 import AnnouncementIcon from '@public/assets/icons/header/announcement.png';
 import MypageIcon from '@public/assets/icons/header/user.png';
+import SuggestionIcon from '@public/assets/icons/header/suggestion.png';
 import Image from 'next/image';
 import StoreIcon from '@public/assets/icons/header/storeIcon.svg';
 import { SvgIcon } from '@mui/material';
@@ -128,6 +129,20 @@ const RightHeaderComponents = () => {
                   />
                 }
               />
+              {/* <HeaderSmallIcon
+                title="건의사항"
+                onClick={() => {
+                  router.push(RouteTo.Suggestion);
+                }}
+                component={
+                  <Image
+                    src={SuggestionIcon}
+                    alt="suggestion"
+                    width={20}
+                    height={20}
+                  />
+                }
+              /> */}
               <HeaderSmallIcon
                 title="마이 페이지"
                 onClick={() => {
