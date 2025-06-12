@@ -24,6 +24,7 @@ import { getUserInfo } from '../model/getUserInfo';
 import InstallButton from '@/app/install-button';
 import useTooltip from '@/feature/tooltip/tooltipController';
 import { TooltipContents } from '@/state/tooltip/tooltipContents';
+import { openNewWindowWithoutDuplicate } from '@/shared/window/model/openWindow';
 
 const Login = () => {
   const router = useRouter();
@@ -306,10 +307,10 @@ const Login = () => {
                   key={item.id}
                   disabled={loginLoading}
                   onClick={() => {
-                    setToastIcon(ToastType.info);
-                    setToastDescription('준비 중 입니다');
-                    setToastOpen(true);
-                    // openNewWindowWithoutDuplicate(windowReference, item.link);
+                    // setToastIcon(ToastType.info);
+                    // setToastDescription('준비 중 입니다');
+                    // setToastOpen(true);
+                    openNewWindowWithoutDuplicate(windowReference, item.link);
                   }}
                   className="flex h-[4rem] w-1/3 cursor-pointer flex-col justify-center md:h-[5rem]"
                 >
