@@ -10,6 +10,7 @@ import listMenu from '@public/assets/icons/format/list-text.png';
 import { useRouter } from 'next/navigation';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import NoticeFoxBg from '@public/assets/backgroundImages/main/noticeFoxBg.svg';
+import { getWithCache } from '@/entities/apiCacheHook';
 
 const AnnouncemnetByIdDetail = ({
   id,
@@ -24,7 +25,11 @@ const AnnouncemnetByIdDetail = ({
   const getNoticeDetailInfo = async (id: string) => {
     if (isNaN(Number(id))) return;
     try {
-      const res = await getNoticeDetailApi(Number(id));
+      const res = await getWithCache({
+        key: 'AnnouncementByIdDetail-getNoticeDetail',
+        fetcher: async () => await getNoticeDetailApi(Number(id)),
+        expires: 5 * 60 * 1000, // 5분
+      });
       if (res.ok) {
         const noticeDetail = res.payload as Notice;
         setNoticeDetail(noticeDetail);

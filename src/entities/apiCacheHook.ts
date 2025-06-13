@@ -32,7 +32,6 @@ export async function getWithCache<T>({
 
   try {
     const response = await fetcher();
-
     const responseToCache = new Response(JSON.stringify(response), {
       headers: { 'Content-Type': 'application/json' },
     });

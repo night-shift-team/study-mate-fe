@@ -3,24 +3,42 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import 'swiper/swiper-bundle.css'; // Swiper CSS 가져오기
 import { Fragment, useLayoutEffect, useState } from 'react';
-import { Notice } from '@/feature/notice/api';
+import {
+  getValidNoticeListApi,
+  GetValidnoticeListRes,
+  Notice,
+} from '@/feature/notice/api';
 import { getNoticeList } from '../model/getNoticeList';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import { getWithCache } from '@/entities/apiCacheHook';
 
 export const NoticeComponent = () => {
   const [noticeList, setNoticeList] = useState<Notice[]>([]);
+
+  const getValidNoticeList = async () => {
+    try {
+      const res = await getWithCache({
+        key: 'NoticeComponent-getValidNoticeList',
+        fetcher: async () => await getValidNoticeListApi(),
+        expires: 3 * 60 * 60 * 1000, // 3시간
+      });
+      if (res.ok) {
+        const noticeList = (res.payload as GetValidnoticeListRes)
+          .displayNotices;
+        setNoticeList(noticeList.sort((a, b) => a.noticeId - b.noticeId));
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   useLayoutEffect(() => {
     const noticeListString: string | null =
       sessionStorage.getItem('validNoticeList');
 
     if (!noticeListString && noticeList.length === 0) {
-      getNoticeList().then((list) => {
-        if (list) {
-          setNoticeList(list.sort((a, b) => a.noticeId - b.noticeId));
-        }
-      });
+      getValidNoticeList();
     }
 
     if (noticeListString && noticeList.length === 0) {

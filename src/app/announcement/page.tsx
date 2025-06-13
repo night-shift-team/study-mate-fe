@@ -1,4 +1,5 @@
 'use client';
+import { getWithCache } from '@/entities/apiCacheHook';
 import {
   getAllNoticeListApi,
   getAllNoticeListRes,
@@ -42,7 +43,12 @@ const AnnouncementPage = () => {
     setIsLoading(true);
 
     try {
-      const res = await getAllNoticeListApi(page - 1, MAX_PAGE);
+      const res = await getWithCache({
+        key: 'AnnouncementPage-getAllNoticeList',
+        fetcher: async () => await getAllNoticeListApi(page - 1, MAX_PAGE),
+        expires: 3 * 60 * 60 * 1000,
+      }); // 3시간
+
       if (res.ok) {
         const noticeList = (res.payload as getAllNoticeListRes).content;
         setMaxPage((res.payload as getAllNoticeListRes).totalPages);

@@ -4,6 +4,7 @@ import { getQuestionDetailApi, QuestionDetailRes } from '@/page/mypage/api';
 import { useEffect, useState } from 'react';
 import Popup from './popup';
 import { PopupProblem } from '@/shared/popUp/ui/popupV2';
+import { getWithCache } from '@/entities/apiCacheHook';
 
 interface ItemProps {
   index: number;
@@ -41,7 +42,11 @@ export const QuestionItem: React.FC<ItemProps> = ({
   // API 호출 함수
   const fetchQuestionDetail = async () => {
     try {
-      const res = await getQuestionDetailApi(questionId);
+      const res = await getWithCache({
+        key: `QuestionItem-fetchQuestionDetail-${questionId}`,
+        fetcher: async () => await getQuestionDetailApi(questionId),
+        expires: 3 * 24 * 60 * 60 * 1000, // 3일
+      });
       if (res.ok && res.payload) {
         setQuestionDetail(res.payload);
       } else {
