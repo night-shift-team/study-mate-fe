@@ -17,7 +17,7 @@ import { ToastType } from '@/shared/toast/toast';
 import { LoginToastText } from './loginToastText';
 
 export const addSocialLoginRedirectDataListener = (
-  setIsAuthSucess: Dispatch<SetStateAction<boolean>>,
+  setLoading: Dispatch<SetStateAction<boolean>>,
   setToastDescription: (description: string) => void,
   setToastOpen: Dispatch<SetStateAction<boolean>>,
   setToastIcon: (status: ToastType) => void,
@@ -26,6 +26,7 @@ export const addSocialLoginRedirectDataListener = (
   const router = useRouter();
 
   const googleLogin = async (authData: string) => {
+    setLoading(true);
     try {
       const res = await googleSignInApi(authData);
       console.log('res', res);
@@ -39,7 +40,6 @@ export const addSocialLoginRedirectDataListener = (
       }
       setTokens(res.payload as LoginRes);
       setAccessTokenToHeader(localStorage.getItem('accessToken'));
-      setIsAuthSucess(true);
       await getUserInfo(
         setToastDescription,
         setToastOpen,
@@ -52,6 +52,8 @@ export const addSocialLoginRedirectDataListener = (
       setToastDescription(LoginToastText.LOGIN_FAILED);
       setToastIcon(ToastType.error);
       setToastOpen(true);
+    } finally {
+      setLoading(false);
     }
   };
 
