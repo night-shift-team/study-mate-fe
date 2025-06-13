@@ -14,6 +14,7 @@ import { getUserInfo } from './getUserInfo';
 import { userStore } from '@/state/userStore';
 import { UserInfo } from '@/shared/constants/userInfo';
 import { ToastType } from '@/shared/toast/toast';
+import { LoginToastText } from './loginToastText';
 
 export const addSocialLoginRedirectDataListener = (
   setIsAuthSucess: Dispatch<SetStateAction<boolean>>,
@@ -28,12 +29,12 @@ export const addSocialLoginRedirectDataListener = (
     try {
       const res = await googleSignInApi(authData);
       console.log('res', res);
-      // res.payload === ServerErrorResponse 일때도 에러 처리
+
       if (!res.ok || (res.payload && 'ecode' in res.payload)) {
         const errData = res.payload as ServerErrorResponse;
         if (errData.ecode === Ecode.E0106) {
           EcodeMessage(Ecode.E0106);
-          return;
+          throw new Error(EcodeMessage(Ecode.E0106));
         }
       }
       setTokens(res.payload as LoginRes);
@@ -48,7 +49,9 @@ export const addSocialLoginRedirectDataListener = (
       );
     } catch (e: any) {
       console.log(e);
-      // router.push(RouteTo.Login);
+      setToastDescription(LoginToastText.LOGIN_FAILED);
+      setToastIcon(ToastType.error);
+      setToastOpen(true);
     }
   };
 
