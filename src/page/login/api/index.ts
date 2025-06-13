@@ -2,11 +2,6 @@ import { _apiFetch } from '@/shared/api/model/config';
 import { UserLoginType, UserStatus } from '@/shared/constants/userInfo';
 
 const Api_Prefix = '/api/v1/users';
-
-export interface GoogleSignInApiRes {
-  accessToken: string;
-  refreshToken: string;
-}
 export interface UserInfoRes {
   userId: string;
   loginType: UserLoginType;
@@ -19,7 +14,7 @@ export interface UserInfoRes {
   userScore: number;
 }
 
-export interface LocalLoginRes {
+export interface LoginRes {
   accessToken: string;
   refreshToken: string;
 }
@@ -30,17 +25,13 @@ export const userInfoApi = async () => {
 
 export const localLoginApi = async (loginId: string, password: string) => {
   const body = { loginId: loginId, loginPw: password };
-  return await _apiFetch<LocalLoginRes>(
-    'POST',
-    Api_Prefix + '/sign-in/local',
-    body
-  );
+  return await _apiFetch<LoginRes>('POST', Api_Prefix + '/sign-in/local', body);
 };
 export const googleSignInApi = async (code: string) => {
   const body = {
     googleCode: code,
   };
-  return await _apiFetch<GoogleSignInApiRes>(
+  return await _apiFetch<LoginRes>(
     'POST',
     Api_Prefix + `/sign-in/google`,
     body

@@ -1,6 +1,6 @@
-import { LocalLoginRes } from '../api';
+import { LoginRes } from '../api';
 
-export const setTokens = (tokens: LocalLoginRes) => {
+export const setTokens = (tokens: LoginRes) => {
   localStorage.setItem('accessToken', tokens.accessToken);
   localStorage.setItem('refreshToken', tokens.refreshToken);
 };

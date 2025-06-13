@@ -1,13 +1,26 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
-import { GoogleSignInApiRes, googleSignInApi } from '../api';
-import { ServerErrorResponse } from '@/shared/api/model/config';
+import { googleSignInApi, LoginRes } from '../api';
+import {
+  ServerErrorResponse,
+  setAccessTokenToHeader,
+} from '@/shared/api/model/config';
 import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import { setTokens } from './setTokens';
+import { ServerResponse } from 'http';
+import { getUserInfo } from './getUserInfo';
+import { userStore } from '@/state/userStore';
+import { UserInfo } from '@/shared/constants/userInfo';
+import { ToastType } from '@/shared/toast/toast';
 
 export const addSocialLoginRedirectDataListener = (
-  setIsAuthSucess: Dispatch<SetStateAction<boolean>>
+  setIsAuthSucess: Dispatch<SetStateAction<boolean>>,
+  setToastDescription: (description: string) => void,
+  setToastOpen: Dispatch<SetStateAction<boolean>>,
+  setToastIcon: (status: ToastType) => void,
+  setUser: (newUser: UserInfo | null) => void
 ) => {
   const router = useRouter();
 
@@ -15,17 +28,24 @@ export const addSocialLoginRedirectDataListener = (
     try {
       const res = await googleSignInApi(authData);
       console.log('res', res);
-      if (!res.ok) {
+      // res.payload === ServerErrorResponse 일때도 에러 처리
+      if (!res.ok || (res.payload && 'ecode' in res.payload)) {
         const errData = res.payload as ServerErrorResponse;
         if (errData.ecode === Ecode.E0106) {
           EcodeMessage(Ecode.E0106);
           return;
         }
       }
-      const data = res.payload as GoogleSignInApiRes;
-      localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
+      setTokens(res.payload as LoginRes);
+      setAccessTokenToHeader(localStorage.getItem('accessToken'));
       setIsAuthSucess(true);
+      await getUserInfo(
+        setToastDescription,
+        setToastOpen,
+        setToastIcon,
+        setUser,
+        router
+      );
     } catch (e: any) {
       console.log(e);
       // router.push(RouteTo.Login);

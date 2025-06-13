@@ -43,7 +43,13 @@ const Login = () => {
     setToastOpen
   );
   // 인증 response 리스너
-  addSocialLoginRedirectDataListener(setLoginLoading);
+  addSocialLoginRedirectDataListener(
+    setLoginLoading,
+    setToastDescription,
+    setToastOpen,
+    setToastIcon,
+    setUser
+  );
   const { showTooltip, hideTooltip, updateTooltip } = useTooltip();
 
   const [formData, setFormData] = useState({
@@ -307,9 +313,6 @@ const Login = () => {
                   key={item.id}
                   disabled={loginLoading}
                   onClick={() => {
-                    // setToastIcon(ToastType.info);
-                    // setToastDescription('준비 중 입니다');
-                    // setToastOpen(true);
                     openNewWindowWithoutDuplicate(windowReference, item.link);
                   }}
                   className="flex h-[4rem] w-1/3 cursor-pointer flex-col justify-center md:h-[5rem]"
