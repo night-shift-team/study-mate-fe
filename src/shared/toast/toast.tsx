@@ -1,5 +1,11 @@
 'use client';
-import { Dispatch, SetStateAction, useLayoutEffect, useState } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react';
 import { CircleCheckBig, TriangleAlert, CircleX, Info } from 'lucide-react';
 import { createPortal } from 'react-dom';
 
@@ -90,8 +96,12 @@ const useToast = (
     status?: ToastStatus;
     description?: string;
   }) => {
-    if (typeof window === 'undefined' || typeof document === 'undefined')
-      return null;
+    const [mounted, setMounted] = useState(false);
+    if (!mounted) return null;
+
+    useEffect(() => {
+      setMounted(true);
+    }, []);
 
     return createPortal(
       <div
