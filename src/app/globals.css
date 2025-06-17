@@ -172,4 +172,34 @@ body {
   .delay-500 {
     animation-delay: 500ms;
   }
+  .delay-600 {
+    animation-delay: 600ms;
+  }
+  .delay-700 {
+    animation-delay: 700ms;
+  }
+  .delay-800 {
+    animation-delay: 800ms;
+  }
+  .delay-900 {
+    animation-delay: 900ms;
+  }
+  .delay-1000 {
+    animation-delay: 1000ms;
+  }
+  .delay-1100 {
+    animation-delay: 1100ms;
+  }
+  .delay-1200 {
+    animation-delay: 1200ms;
+  }
+  .delay-1300 {
+    animation-delay: 1300ms;
+  }
+  .delay-1400 {
+    animation-delay: 1400ms;
+  }
+  .delay-1500 {
+    animation-delay: 1500ms;
+  }
 }

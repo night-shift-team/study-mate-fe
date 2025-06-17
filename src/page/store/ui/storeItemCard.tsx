@@ -3,6 +3,7 @@ import Image, { StaticImageData } from 'next/image';
 import ShieldIcon from '@public/assets/icons/store/shieldIcon3.png';
 import React, { useEffect } from 'react';
 interface ItemCardProps {
+  index: number;
   title: string;
   description: string;
   price: number;
@@ -12,6 +13,7 @@ interface ItemCardProps {
   setSelectedItem: React.Dispatch<React.SetStateAction<any>>;
 }
 const ItemCard = ({
+  index,
   title = 'Title',
   description = '24시간,문제풀이,방어',
   price = 2000,
@@ -27,7 +29,9 @@ const ItemCard = ({
   }, []);
 
   return (
-    <div className="group flex h-60 w-[150px] flex-col items-center justify-between rounded-[4rem] border-2 border-orange-200 bg-[#feefd8] py-5 pb-6 hover:cursor-pointer md:h-80 md:w-60 md:hover:border-orange-500">
+    <div
+      className={`group flex h-60 w-[150px] animate-fade-up ${'delay-' + (index + 1) * 100} flex-col items-center justify-between rounded-[4rem] border-2 border-orange-200 bg-[#feefd8] py-5 pb-6 hover:cursor-pointer md:h-80 md:w-60 md:hover:border-orange-500`}
+    >
       <div className="flex w-full flex-col items-center justify-center md:mt-4">
         <Image
           src={imageUrl}

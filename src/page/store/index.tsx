@@ -61,7 +61,7 @@ const StorePage = () => {
         />
       ) : null}
       <div className="relative flex h-full w-full flex-col overflow-y-auto overflow-x-hidden scrollbar-hide">
-        <div className="mt-4 flex h-[8rem] w-full justify-center">
+        <div className="mt-4 flex h-[8rem] w-full animate-fade-up justify-center">
           <Panel className="h-full w-full scale-[1.45] object-contain" />
         </div>
         <button
@@ -99,6 +99,7 @@ const StorePage = () => {
           {Array.from({ length: 15 }).map((_, index) => (
             <ItemCard
               key={index}
+              index={index}
               title={'Title ' + index}
               description="24시간,문제풀이,방어"
               imageUrl={ShieldIcon}

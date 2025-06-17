@@ -16,6 +16,16 @@ module.exports = {
     'delay-300',
     'delay-400',
     'delay-500',
+    'delay-600',
+    'delay-700',
+    'delay-800',
+    'delay-900',
+    'delay-1000',
+    'delay-1100',
+    'delay-1200',
+    'delay-1300',
+    'delay-1400',
+    'delay-1500',
   ],
   theme: {
     extend: {
