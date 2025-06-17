@@ -11,11 +11,11 @@ module.exports = {
   ],
   safelist: [
     'bg-mainNotice',
-    'animate-fade-up-delay-100',
-    'animate-fade-up-delay-200',
-    'animate-fade-up-delay-300',
-    'animate-fade-up-delay-400',
-    'animate-fade-up-delay-500',
+    'delay-100',
+    'delay-200',
+    'delay-300',
+    'delay-400',
+    'delay-500',
   ],
   theme: {
     extend: {
@@ -79,8 +79,10 @@ module.exports = {
       },
       animation: {
         'fade-in': 'fade-in 1s ease-in-out',
-        'fade-up': 'fade-up 0.3s ease-in-out',
-        'slide-up': 'slide-up 300ms linear infinite',
+        'fade-in-fast': 'fade-in 0.5s ease-in-out',
+        'fade-in-slow': 'fade-in 2s ease-in-out',
+        'fade-up': 'fade-up 0.6s ease-in-out both',
+        'slide-up': 'slide-up 0.3s linear infinite',
         'toast-in': 'toast-in 0.2s ease-out forwards',
         'toast-out': 'toast-out 0.5s ease-in-out forwards',
       },

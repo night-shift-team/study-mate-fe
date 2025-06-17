@@ -14,8 +14,7 @@ interface SuggestionItem {
   date: string; // MM-DD
 }
 
-export const Suggestion = () => {
-  const { user } = userStore();
+const Suggestion = () => {
   const router = useRouter();
   const [list, setList] = useState<SuggestionItem[] | null>(null);
 
@@ -65,18 +64,22 @@ export const Suggestion = () => {
   }
 
   return (
-    <div className="h-[100vh] w-[90vw] max-w-[1100px]">
-      <SuggestionList list={list} />
-      <div className="mt-6 flex justify-end">
-        <button
-          className="rounded-xl bg-orange-300 px-6 py-2 font-semibold text-white shadow-md transition-colors duration-200 hover:bg-orange-500"
-          onClick={() => {
-            router.push(RouteTo.WriteSuggestion);
-          }}
-        >
-          글 작성하기
-        </button>
+    <div className="flex w-full flex-col items-center">
+      <div className="h-[100vh] w-[90vw] max-w-[1100px]">
+        <SuggestionList list={list} />
+        <div className="mt-6 flex justify-end">
+          <button
+            className="rounded-xl bg-orange-300 px-6 py-2 font-semibold text-white shadow-md transition-colors duration-200 hover:bg-orange-500"
+            onClick={() => {
+              router.push(RouteTo.WriteSuggestion);
+            }}
+          >
+            글 작성하기
+          </button>
+        </div>
       </div>
     </div>
   );
 };
+
+export default Suggestion;

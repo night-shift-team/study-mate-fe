@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 type FooterSectionProps = {
   title: string;
   items: { label: string; href?: string }[];
@@ -10,9 +12,9 @@ export const FooterSection = ({ title, items }: FooterSectionProps) => (
       {items.map((item, index) => (
         <li key={index}>
           {item.href ? (
-            <a href={item.href} className="hover:text-white">
+            <Link href={item.href} className="hover:text-white">
               {item.label}
-            </a>
+            </Link>
           ) : (
             item.label
           )}

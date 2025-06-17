@@ -194,7 +194,7 @@ const Login = () => {
   };
 
   return (
-    <div className="relative z-[1000] flex h-full w-full flex-col items-center overflow-hidden overflow-y-auto bg-white/60 scrollbar-hide md:flex-row md:justify-center md:bg-transparent md:pb-[4rem]">
+    <div className="relative z-[1000] flex h-full w-full animate-fade-in flex-col items-center overflow-hidden overflow-y-auto bg-white/60 duration-300 scrollbar-hide md:flex-row md:justify-center md:bg-transparent md:pb-[4rem]">
       <Toaster />
       <div className="absolute right-0 md:left-[50%] md:right-auto md:top-5 md:-translate-x-[50%]">
         <InstallButton />

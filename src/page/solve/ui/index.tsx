@@ -102,7 +102,7 @@ const SolveProblem = () => {
                 <Link
                   href={`${RouteTo.Solve}/${category.categoryName}`}
                   key={index}
-                  className={`h-[8rem] w-[100%] min-w-[240px] ${'animate-fade-up-delay-' + String((index + 1) * 100)} flex-shrink-0 border-t px-4 pt-2.5 transition-all duration-300 ease-in-out hover:translate-y-[-5px] hover:shadow-lg hover:inner-border md:h-[12rem] md:w-full md:rounded-sm md:border md:px-7 md:py-4`}
+                  className={`h-[8rem] w-[100%] min-w-[240px] ${'delay- animate-fade-up' + String((index + 1) * 100)} flex-shrink-0 border-t px-4 pt-2.5 transition-all duration-300 ease-in-out hover:translate-y-[-5px] hover:shadow-lg hover:inner-border md:h-[12rem] md:w-full md:rounded-sm md:border md:px-7 md:py-4`}
                 >
                   <div className="relative flex h-full w-full flex-col">
                     <div className="flex h-[4rem] items-center">
