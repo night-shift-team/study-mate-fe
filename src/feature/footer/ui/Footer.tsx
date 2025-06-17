@@ -27,10 +27,10 @@ const contacts = [
   },
 ];
 
-export const Footer = () => {
+const Footer = () => {
   return (
-    <footer className="w-full bg-gray-100 py-5 text-gray-300">
-      <div className="mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="flex h-auto w-full bg-gray-100 py-5 text-gray-300">
+      <div className="mx-auto w-full px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <h2
@@ -72,3 +72,4 @@ export const Footer = () => {
     </footer>
   );
 };
+export default Footer;

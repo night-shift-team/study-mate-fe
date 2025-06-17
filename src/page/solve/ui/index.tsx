@@ -13,8 +13,8 @@ import {
 } from '../api';
 import RandomIcon from '@public/assets/icons/categoryTitleIcon/randomIcon.svg';
 import { SvgIcon } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import Footer from '@/feature/footer/ui/Footer';
 
 interface ProblemCategoryInfo
   extends Omit<
@@ -65,11 +65,8 @@ const SolveProblem = () => {
   }, []);
 
   return (
-    <div className="flex h-full w-full flex-shrink-0 flex-col items-center overflow-y-auto pb-[2rem] scrollbar-hide">
-      <div className="z-1 flex w-full flex-col gap-1">
-        {/* <NoticeBanner /> */}
-      </div>
-      <div className="flex w-full flex-col gap-4 px-[1rem] md:gap-6 md:px-[2.5rem]">
+    <div className="flex h-full w-full flex-shrink-0 flex-col items-center overflow-y-auto scrollbar-hide">
+      <div className="flex w-full flex-col gap-4 px-[1rem] pb-[5rem] md:gap-6 md:px-[2.5rem]">
         <NoticeComponent />
         {/* <RecentProblem /> */}
         <div className="mt-6 flex flex-col gap-2 pt-2">
@@ -79,7 +76,9 @@ const SolveProblem = () => {
           </span>
         </div>
         {!myTodaySolveData ? (
-          <Spinner size="lg" />
+          <div className="pt-10">
+            <Spinner size="lg" />
+          </div>
         ) : (
           <div className="grid w-full place-items-center gap-[1.1rem] md:w-auto md:grid-flow-row md:grid-cols-2 md:gap-10 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6">
             <Link
@@ -154,6 +153,7 @@ const SolveProblem = () => {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 };
