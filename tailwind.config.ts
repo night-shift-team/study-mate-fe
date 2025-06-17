@@ -41,6 +41,10 @@ module.exports = {
           '0%': { opacity: '0', transform: 'translateY(10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
+        'hover-up': {
+          '0%': { transform: 'translateY(0)' },
+          '100%': { transform: 'translateY(-5px)' },
+        },
         'slide-up': {
           '0%': {
             top: '100%' /* 화면 아래에서 시작 */,
@@ -82,6 +86,7 @@ module.exports = {
         'fade-in-fast': 'fade-in 0.5s ease-in-out',
         'fade-in-slow': 'fade-in 2s ease-in-out',
         'fade-up': 'fade-up 0.6s ease-in-out both',
+        'hover-up': 'hover-up 0.3s ease-in-out',
         'slide-up': 'slide-up 0.3s linear infinite',
         'toast-in': 'toast-in 0.2s ease-out forwards',
         'toast-out': 'toast-out 0.5s ease-in-out forwards',
