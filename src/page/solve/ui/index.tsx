@@ -104,7 +104,7 @@ const SolveProblem = () => {
               return (
                 <div
                   key={index}
-                  className={`flex h-[9rem] w-full min-w-[240px] flex-shrink-0 border-t pt-[0.5rem] md:h-[12rem] md:border-hidden ${'delay- animate-fade-up' + String((index + 1) * 100)}`}
+                  className={`flex h-[9rem] w-full min-w-[240px] flex-shrink-0 border-t pt-[0.5rem] md:h-[12rem] md:border-hidden md:pt-0 ${'delay- animate-fade-up' + String((index + 1) * 100)}`}
                 >
                   <Link
                     href={`${RouteTo.Solve}/${category.categoryName}`}
