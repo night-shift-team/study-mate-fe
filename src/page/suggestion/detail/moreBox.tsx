@@ -14,6 +14,14 @@ export const MoreBox = ({ onClose, boardId }: MoreBoxProps) => {
   const handleDelete = async () => {
     const confirmed = confirm('정말로 이 게시글을 삭제하시겠습니까?');
     if (!confirmed) return;
+
+    try {
+      await deleteQnABoardApi(boardId);
+      alert('게시글이 삭제되었습니다.');
+      router.push('/suggestion');
+    } catch (error: any) {
+      alert(`삭제 실패: ${error.message}`);
+    }
   };
 
   return (

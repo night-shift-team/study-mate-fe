@@ -206,7 +206,7 @@ export const RankPageComponent = () => {
               maxHeight: '80vh',
               overflowY: 'auto',
               borderRadius: 2,
-              boxShadow: 0,
+              boxShadow: 5,
               backgroundColor: 'unset',
             }}
           >

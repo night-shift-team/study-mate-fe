@@ -111,12 +111,11 @@ export const getQnABoardDetailApi = async (
 };
 
 export const deleteQnABoardApi = async (id: number): Promise<void> => {
-  const res = await _apiFetch('POST', `${API_Prefix}/boards/${id}`);
+  const res = await _apiFetch('DELETE', `${API_Prefix}/boards/${id}`);
   if (!res.ok) {
     throw new Error(`Failed to delete QnA board with id ${id}`);
   }
 };
-
 export const createCommentApi = async (
   data: CreateCommentReq
 ): Promise<APIResponse<null>> => {

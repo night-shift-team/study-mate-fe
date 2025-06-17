@@ -1,10 +1,14 @@
+import { userStore } from '@/state/userStore';
+
 type PreviewProps = {
   onStart: () => void;
 };
 
 export const Preview = ({ onStart }: PreviewProps) => {
+  const { user } = userStore();
   return (
     <div className="flex h-full flex-col items-center justify-center">
+      <h3>안녕하세요{user?.nickname} 님!</h3>
       <h2 className="mb-4 text-2xl font-bold">
         레벨 테스트에 오신 것을 환영합니다
       </h2>

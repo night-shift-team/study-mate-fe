@@ -45,8 +45,10 @@ const SuggestionDetailPage = () => {
     isOpen(true);
   };
 
+  console.log(suggestion.comments, 'suggestion');
+
   return (
-    <div className="flex h-[80vh] w-[90vw] max-w-[1100px] flex-col overflow-auto">
+    <div className="mt-5 flex h-[80vh] w-[90vw] max-w-[1100px] flex-col">
       <div className="flex-1 rounded-xl bg-white p-4 shadow-md">
         <div className="mb-2 flex w-[100%] items-center justify-between text-sm text-gray-500">
           #{suggestion.id}

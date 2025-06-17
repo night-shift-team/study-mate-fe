@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { userStore } from '@/state/userStore';
 import { getQnABoardListApi } from '../api';
 import { useEffect, useState } from 'react';
+import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 
 interface SuggestionItem {
   id: number;
@@ -61,7 +62,11 @@ export const Suggestion = () => {
   };
 
   if (list === null) {
-    return <div>Loading...</div>;
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <Spinner />
+      </div>
+    );
   }
 
   return (

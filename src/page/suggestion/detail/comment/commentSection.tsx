@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { createCommentApi } from '../../api';
+import seedrandom from 'seedrandom';
 
 interface Comment {
   id: number;
@@ -52,16 +53,22 @@ const CommentSection = ({
     }
   };
 
+  const changeAuthor = (email: string) => {
+    const cmail = seedrandom(email);
+    const number = Math.floor(cmail() * 10000);
+    return `사용자${number.toString().padStart(4, '0')}`;
+  };
+
   return (
-    <div className="mt-8 rounded-xl bg-white p-4 shadow-md">
-      <h2 className="mb-4 text-lg font-semibold">댓글</h2>
+    <div className="mt-8 overflow-auto rounded-xl bg-white p-4 shadow-md">
+      <h2 className="mb-4 text-sm font-semibold">댓글</h2>
 
       {comments.length > 0 ? (
         <ul className="mb-4 space-y-4">
           {comments.map((comment) => (
             <li key={comment.id} className="rounded-md border p-3 text-xs">
               <div className="mb-1 text-gray-600">
-                {comment.author} | {comment.date}
+                {changeAuthor(comment.author)} | {comment.date}
               </div>
               <div className="whitespace-pre-wrap text-gray-800">
                 {comment.content}
