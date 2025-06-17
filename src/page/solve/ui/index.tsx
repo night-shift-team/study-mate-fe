@@ -5,7 +5,7 @@ import { getCategoriesIcon } from '../model/getCategoryIcons';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { ProblemCategoryTitle } from '@/shared/constants/problemInfo';
 import { NoticeComponent } from './notice';
-import { useLayoutEffect, useState } from 'react';
+import { Suspense, useLayoutEffect, useState } from 'react';
 import {
   getQuestionCategoryInfoApi,
   GetQuestionCategoryInfoRes,
@@ -13,6 +13,8 @@ import {
 } from '../api';
 import RandomIcon from '@public/assets/icons/categoryTitleIcon/randomIcon.svg';
 import { SvgIcon } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
+import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 
 interface ProblemCategoryInfo
   extends Omit<
@@ -76,30 +78,32 @@ const SolveProblem = () => {
             관심 있는 카테고리를 선택하여 문제를 풀어보세요
           </span>
         </div>
-        <div className="grid w-full place-items-center gap-[1.1rem] md:w-auto md:grid-flow-row md:grid-cols-2 md:gap-10 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6">
-          <Link
-            href={RouteTo.SolveRandom}
-            className="relative flex h-[7rem] w-[100%] min-w-[240px] flex-shrink-0 flex-col items-center justify-center border-t p-2 px-4 transition-all duration-300 ease-in-out hover:translate-y-[-5px] hover:shadow-lg md:h-[12rem] md:w-full md:max-w-[480px] md:rounded-sm md:border md:p-4 md:pt-2.5"
-          >
-            <div className="relative flex aspect-1 h-[2rem] items-center justify-center md:h-[3rem]">
-              <SvgIcon
-                component={RandomIcon}
-                inheritViewBox
-                sx={{ width: '100%', height: '100%' }}
-              />
-            </div>
-            <span className="text-[1.1rem] font-bold underline-offset-8 md:mt-3">
-              랜덤 문제 풀기
-            </span>
-            <span className="mt-1 text-xs text-gray-600 no-underline md:mt-3">{`모든 카테고리`}</span>
-          </Link>
-          {myTodaySolveData &&
-            myTodaySolveData.map((category, index) => {
+        {!myTodaySolveData ? (
+          <Spinner size="lg" />
+        ) : (
+          <div className="grid w-full place-items-center gap-[1.1rem] md:w-auto md:grid-flow-row md:grid-cols-2 md:gap-10 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6">
+            <Link
+              href={RouteTo.SolveRandom}
+              className="relative flex h-[7rem] w-[100%] min-w-[240px] flex-shrink-0 animate-fade-up flex-col items-center justify-center border-t p-2 px-4 transition-all duration-300 ease-in-out hover:translate-y-[-5px] hover:shadow-lg md:h-[12rem] md:w-full md:max-w-[480px] md:rounded-sm md:border md:p-4 md:pt-2.5"
+            >
+              <div className="relative flex aspect-1 h-[2rem] items-center justify-center md:h-[3rem]">
+                <SvgIcon
+                  component={RandomIcon}
+                  inheritViewBox
+                  sx={{ width: '100%', height: '100%' }}
+                />
+              </div>
+              <span className="text-[1.1rem] font-bold underline-offset-8 md:mt-3">
+                랜덤 문제 풀기
+              </span>
+              <span className="mt-1 text-xs text-gray-600 no-underline md:mt-3">{`모든 카테고리`}</span>
+            </Link>
+            {myTodaySolveData.map((category, index) => {
               return (
                 <Link
                   href={`${RouteTo.Solve}/${category.categoryName}`}
                   key={index}
-                  className="h-[8rem] w-[100%] min-w-[240px] flex-shrink-0 border-t px-4 pt-2.5 transition-all duration-300 ease-in-out hover:translate-y-[-5px] hover:shadow-lg hover:inner-border md:h-[12rem] md:w-full md:rounded-sm md:border md:px-7 md:py-4"
+                  className={`h-[8rem] w-[100%] min-w-[240px] ${'animate-fade-up-delay-' + String((index + 1) * 100)} flex-shrink-0 border-t px-4 pt-2.5 transition-all duration-300 ease-in-out hover:translate-y-[-5px] hover:shadow-lg hover:inner-border md:h-[12rem] md:w-full md:rounded-sm md:border md:px-7 md:py-4`}
                 >
                   <div className="relative flex h-full w-full flex-col">
                     <div className="flex h-[4rem] items-center">
@@ -147,7 +151,8 @@ const SolveProblem = () => {
                 </Link>
               );
             })}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
