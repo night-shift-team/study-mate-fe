@@ -28,13 +28,14 @@ import {
   Star_IMG,
   Universe_IMG,
 } from '../model/img';
+import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 
 const Mypage = () => {
   const [questionHistory, setQuestionHistory] = useState<any[]>([]);
   const { user } = userStore();
-  const [myRanking, setMyRanking] = useState<number | null>(null);
-  const [totalElements, setTotalElements] = useState<number>(0);
-  const [favoriteList, setFavoriteList] = useState<QuestionFavoriteRes[]>([]);
+  const [myRanking, setMyRanking] = useState<number>();
+  const [totalElements, setTotalElements] = useState<number>();
+  const [favoriteList, setFavoriteList] = useState<QuestionFavoriteRes[]>();
 
   useEffect(() => {
     userRanking();
@@ -115,18 +116,20 @@ const Mypage = () => {
 
   const cardData = [
     {
-      count: (myRanking !== null ? myRanking : '-') + '등',
+      count: (!myRanking ? '-' : myRanking) + '등',
       label: '순위',
       img: <PiRankingLight />,
     },
     {
       count: (
         <div className="relative aspect-1 w-6 md:w-8">
-          <Image
-            src={getScoreTierInfo(user?.userScore ?? 0).img}
-            alt="Score Tier"
-            fill
-          />
+          {user ? (
+            <Image
+              src={getScoreTierInfo(user.userScore ?? 0).img}
+              alt="Score Tier"
+              fill
+            />
+          ) : null}
         </div>
       ),
       label: '점수',
@@ -134,13 +137,12 @@ const Mypage = () => {
     },
     { count: totalElements, label: '풀이한 문제', img: <LuBookCheck /> },
   ];
-
+  console.log('---', myRanking, totalElements, favoriteList);
   return (
     <div className="z-1 h-full w-full overflow-y-auto scrollbar-hide md:w-[85%]">
       <div className="flex flex-col items-center">
         <div className="z-1 flex h-[25vh] w-full flex-col items-center bg-[#77a46d] px-6 pt-2 md:flex-row md:justify-between md:gap-4 md:rounded-t-3xl md:py-6">
           <Profile />
-
           <div className="flex w-[100%] justify-center gap-4 pt-2 md:max-w-[60%] md:justify-end md:pt-0">
             {cardData.map((item, index) => (
               <Card
@@ -166,7 +168,11 @@ const Mypage = () => {
             >
               스크랩 문제
             </button>
-            <Favorite title="" favoriteList={favoriteList} />
+            {typeof favoriteList === 'undefined' ? (
+              <Spinner size="md" />
+            ) : (
+              <Favorite title="" favoriteList={favoriteList} />
+            )}
           </div>
           <div className="flex flex-col gap-4">
             <button

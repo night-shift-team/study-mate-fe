@@ -44,12 +44,12 @@ export interface QuestionDetailRes {
   answer: string;
   answerExplanation: string;
 }
-interface SolveStats {
+export interface SolveStats {
   solveDay: string;
   solveCount: number;
 }
 
-interface SolveStatsResponse {
+export interface SolveStatsResponse {
   solveStats: SolveStats[];
   startDate: string;
   endDate: string;

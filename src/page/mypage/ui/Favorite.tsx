@@ -101,9 +101,9 @@ export const Favorite = ({ favoriteList, title }: FavoriteListProps) => {
   };
 
   return (
-    <div>
+    <div className="animate-fade-up">
       {currentFavoriteList.length !== 0 ? (
-        <>
+        <div>
           <div className="flex flex-col items-center gap-5 overflow-auto bg-pointcolor-yogurt">
             <div className="h-[30vh] w-full overflow-auto rounded-xl p-4 shadow-md scrollbar-hide">
               <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-3">
@@ -160,7 +160,7 @@ export const Favorite = ({ favoriteList, title }: FavoriteListProps) => {
               onCancel={handleCancelRemoval}
             />
           )}
-        </>
+        </div>
       ) : (
         <span>즐겨찾는 문제 없음</span>
       )}
