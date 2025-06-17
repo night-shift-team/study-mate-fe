@@ -110,10 +110,10 @@ export const Favorite = ({ favoriteList, title }: FavoriteListProps) => {
                 {currentFavoriteList.map((item, index) => (
                   <div
                     key={index}
-                    className="flex cursor-pointer justify-between rounded-lg bg-gray-100 p-2 shadow-sm transition hover:bg-gray-200"
+                    className="flex max-h-[10rem] cursor-pointer justify-between rounded-lg bg-gray-100 p-2 shadow-sm transition hover:bg-gray-200"
                     onClick={() => handleItemClick(item)}
                   >
-                    <h3 className="text-sm font-semibold">
+                    <h3 className="truncate text-sm font-semibold">
                       {item.questionTitle}
                     </h3>
                     <Bookmark
