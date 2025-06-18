@@ -65,7 +65,7 @@ const SolveProblem = () => {
   }, []);
 
   return (
-    <div className="flex h-full w-full flex-shrink-0 flex-col items-center overflow-y-auto scrollbar-hide">
+    <div className="flex h-full w-full flex-shrink-0 flex-col items-center justify-between overflow-y-auto scrollbar-hide">
       <div className="flex w-full flex-col gap-4 px-[1rem] pb-[5rem] md:gap-6 md:px-[2.5rem]">
         <NoticeComponent />
         {/* <RecentProblem /> */}
