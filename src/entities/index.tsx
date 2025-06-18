@@ -3,7 +3,6 @@ import google from '@public/assets/icons/social/google.png';
 import github from '@public/assets/icons/social/github.png';
 
 export const LoginButton = [
-  { id: 2, img: kakao, title: 'kakao', link: '' },
   {
     id: 1,
     img: google,

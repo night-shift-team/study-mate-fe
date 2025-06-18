@@ -311,12 +311,17 @@ const Login = () => {
                 </span>
               </div>
             </div>
-            <div className="flex w-full justify-between gap-4">
+            <div className="flex w-full justify-center gap-4">
               {LoginButton.map((item) => (
                 <button
                   key={item.id}
                   disabled={loginLoading}
-                  onClick={() => {
+                  onClick={(e) => {
+                    if (item.title != 'google') {
+                      e.preventDefault();
+                      testToast();
+                      return;
+                    }
                     openNewWindowWithoutDuplicate(windowReference, item.link);
                   }}
                   className="flex h-[4rem] w-1/3 cursor-pointer flex-col justify-center md:h-[5rem]"
@@ -347,7 +352,6 @@ const Login = () => {
           </div>
         </div>
       </div>
-      {/* <PushNotificationButtonV2 /> */}
     </div>
   );
 };

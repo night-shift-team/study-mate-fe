@@ -11,18 +11,19 @@
 #   exit 1
 
 # Filter staged files to include only changed, added, or deleted files
-STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACDM)
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
 
 # # Run formatting only on staged files
 # STAGED_FILES=$(git diff --cached --name-only --diff-filter=d)
 
 # If there are any staged files, run formatting
 if [ -n "$STAGED_FILES" ]; then
-  # Run formatting on the staged files
-  pnpm format --write $STAGED_FILES
-  
-  # Add formatted files back to staging (if formatting changed any files)
-  git add $STAGED_FILES
+  # Run formatting on each staged file individually to avoid formatting all files
+  for file in $STAGED_FILES; do
+    pnpm format --write "$file"
+    # Add formatted file back to staging (if formatting changed the file)
+    git add "$file"
+  done
 fi
 
 # If formatting fails, exit with an error code
