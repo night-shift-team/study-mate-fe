@@ -274,8 +274,12 @@ const Login = () => {
                 </div>
                 <div>
                   <button
-                    // disabled={true}
-                    className="text-[0.8rem] font-bold text-[#5761eb] hover:cursor-pointer hover:underline hover:underline-offset-4"
+                    disabled={true}
+                    className={`text-[0.8rem] font-bold ${
+                      true
+                        ? 'text-gray-400'
+                        : 'text-[#5761eb] hover:cursor-pointer hover:underline hover:underline-offset-4'
+                    }`}
                     onClick={(e) => {
                       e.preventDefault();
                       testToast();

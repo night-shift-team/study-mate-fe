@@ -9,10 +9,12 @@
 # If linting fails, exit with an error code
 # if [ $? -ne 0 ]; then
 #   exit 1
-# fi
 
-# Run formatting only on staged files
-STAGED_FILES=$(git diff --cached --name-only --diff-filter=d)
+# Filter staged files to include only changed, added, or deleted files
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACDM)
+
+# # Run formatting only on staged files
+# STAGED_FILES=$(git diff --cached --name-only --diff-filter=d)
 
 # If there are any staged files, run formatting
 if [ -n "$STAGED_FILES" ]; then
