@@ -1,6 +1,10 @@
-import Provider from '@/components/ui/provider';
+'use client';
+const Provider = dynamic(() => import('../components/ui/provider'), {
+  ssr: false,
+});
 import Header from '@/feature/header/ui/Header';
 import TooltipWrapper from '@/feature/tooltip/tooltipWrapper';
+import dynamic from 'next/dynamic';
 
 const ClientSideWrapper = ({ children }: { children: React.ReactNode }) => {
   return (

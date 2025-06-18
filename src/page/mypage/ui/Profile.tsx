@@ -78,7 +78,7 @@ const Profile = () => {
   return (
     <div className="flex items-center gap-3">
       {/* Toast 컴포넌트 */}
-      {<Toaster status={ToastType.success} />}
+      <Toaster status={ToastType.success} />
 
       {/* 프로필 이미지 */}
       <label htmlFor="profile-upload" className="block h-full w-full">
