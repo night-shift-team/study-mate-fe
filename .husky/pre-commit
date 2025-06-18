@@ -8,7 +8,7 @@ if [ -n "$STAGED_FILES" ]; then
   echo "Checking formatting on staged files..."
   
   # Check formatting without modifying files
-  pnpm format --check $STAGED_FILES
+  pnpm format --write $STAGED_FILES
   
   # If formatting check fails, exit with error
   if [ $? -ne 0 ]; then
