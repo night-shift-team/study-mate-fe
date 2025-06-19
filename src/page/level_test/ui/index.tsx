@@ -23,6 +23,7 @@ import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { Preview } from './preview';
+import { useChacingLevelTest } from '../hooks';
 
 type ChoiceAttrs = Pick<
   ProblemInfoMAQ,
@@ -37,47 +38,64 @@ const LevelTest = () => {
   const [userAnswers, setUserAnswers] = useState<number[]>([]);
   const [isStarted, setIsStarted] = useState(false);
 
-  const [levelTestLists, setLevelTestLists] = useState<ProblemInfoLevelTest[]>(
-    []
-  );
-  const [isPageLoading, setIsPageLoading] = useState<boolean>(true);
+  // const [levelTestLists, setLevelTestLists] = useState<ProblemInfoLevelTest[]>(
+  //   []
+  // );
+  // const [isPageLoading, setIsPageLoading] = useState<boolean>(true);
   const [isGetResultApiLoading, setIsGetResultApiLoading] =
     useState<boolean>(false);
 
-  const getLevelTestQuestions = async () => {
-    try {
-      const res = await getLevelTestQuestionsApi();
-      if (res.ok) {
-        setLevelTestLists(res.payload as ProblemInfoLevelTest[]);
-        setIsPageLoading(false);
-        return res.payload;
-      }
-      throw res.payload;
-    } catch (e) {
-      console.log(e);
-      throw e;
-    }
-  };
+  const { data: levelTestLists = [], isLoading: isPageLoading } =
+    useChacingLevelTest();
+
   useEffect(() => {
-    getLevelTestQuestions()
-      .then((list) => {
-        const problemListWithNo = (list as ProblemInfoLevelTest[]).map(
-          (item, index) => {
-            return {
-              no: index + 1,
-              id: item.id,
-            };
-          }
-        );
-        sessionStorage.setItem(
-          'levelTestListWithNo',
-          JSON.stringify(problemListWithNo)
-        );
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, []);
+    if (levelTestLists.length > 0) {
+      const questionList = levelTestLists.map((item, index) => ({
+        no: index + 1,
+        id: item.id,
+      }));
+      sessionStorage.setItem(
+        'levelTestListWithNo',
+        JSON.stringify(questionList)
+      );
+    }
+  }, [levelTestLists]);
+
+  // const getLevelTestQuestions = async () => {
+  //   try {
+  //     const res = await getLevelTestQuestionsApi();
+  //     if (res.ok) {
+  //       setLevelTestLists(res.payload as ProblemInfoLevelTest[]);
+  //       setIsPageLoading(false);
+  //       return res.payload;
+  //     }
+  //     throw res.payload;
+  //   } catch (e) {
+  //     console.log(e);
+  //     throw e;
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getLevelTestQuestions()
+  //     .then((list) => {
+  //       const problemListWithNo = (list as ProblemInfoLevelTest[]).map(
+  //         (item, index) => {
+  //           return {
+  //             no: index + 1,
+  //             id: item.id,
+  //           };
+  //         }
+  //       );
+  //       sessionStorage.setItem(
+  //         'levelTestListWithNo',
+  //         JSON.stringify(problemListWithNo)
+  //       );
+  //     })
+  //     .catch((e) => {
+  //       console.log(e);
+  //     });
+  // }, []);
 
   const handleAnswerSelect = (index: number) => {
     setSelectedAnswer(index);
