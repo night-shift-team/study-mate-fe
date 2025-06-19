@@ -7,7 +7,7 @@
  */
 
 export type GetMaqQuestionsLatest2Params = {
-page: number;
-limit: number;
-keyword?: string;
+  page: number;
+  limit: number;
+  keyword?: string;
 };

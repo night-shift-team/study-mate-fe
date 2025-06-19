@@ -6,8 +6,8 @@
  * OpenAPI spec version: v1
  */
 
-export type GetUserDtoStatus = typeof GetUserDtoStatus[keyof typeof GetUserDtoStatus];
-
+export type GetUserDtoStatus =
+  (typeof GetUserDtoStatus)[keyof typeof GetUserDtoStatus];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetUserDtoStatus = {

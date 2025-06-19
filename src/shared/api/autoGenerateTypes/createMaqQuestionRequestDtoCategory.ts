@@ -6,8 +6,8 @@
  * OpenAPI spec version: v1
  */
 
-export type CreateMaqQuestionRequestDtoCategory = typeof CreateMaqQuestionRequestDtoCategory[keyof typeof CreateMaqQuestionRequestDtoCategory];
-
+export type CreateMaqQuestionRequestDtoCategory =
+  (typeof CreateMaqQuestionRequestDtoCategory)[keyof typeof CreateMaqQuestionRequestDtoCategory];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateMaqQuestionRequestDtoCategory = {

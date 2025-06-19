@@ -6,8 +6,8 @@
  * OpenAPI spec version: v1
  */
 
-export type BoardDtoStatus = typeof BoardDtoStatus[keyof typeof BoardDtoStatus];
-
+export type BoardDtoStatus =
+  (typeof BoardDtoStatus)[keyof typeof BoardDtoStatus];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const BoardDtoStatus = {

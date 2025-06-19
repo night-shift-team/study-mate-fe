@@ -7,5 +7,5 @@
  */
 
 export type DuplicateCheckNicknameParams = {
-nickname: string;
+  nickname: string;
 };

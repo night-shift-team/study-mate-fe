@@ -6,8 +6,8 @@
  * OpenAPI spec version: v1
  */
 
-export type BoardDtoCategory = typeof BoardDtoCategory[keyof typeof BoardDtoCategory];
-
+export type BoardDtoCategory =
+  (typeof BoardDtoCategory)[keyof typeof BoardDtoCategory];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const BoardDtoCategory = {

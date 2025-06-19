@@ -7,5 +7,5 @@
  */
 
 export type DuplicateCheckEmailParams = {
-email: string;
+  email: string;
 };

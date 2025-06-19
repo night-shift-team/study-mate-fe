@@ -6,8 +6,8 @@
  * OpenAPI spec version: v1
  */
 
-export type MaqQuestionDtoCategory = typeof MaqQuestionDtoCategory[keyof typeof MaqQuestionDtoCategory];
-
+export type MaqQuestionDtoCategory =
+  (typeof MaqQuestionDtoCategory)[keyof typeof MaqQuestionDtoCategory];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MaqQuestionDtoCategory = {

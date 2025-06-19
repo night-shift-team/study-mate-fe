@@ -6,8 +6,8 @@
  * OpenAPI spec version: v1
  */
 
-export type QuestionDetailDtoQuestionCategory = typeof QuestionDetailDtoQuestionCategory[keyof typeof QuestionDetailDtoQuestionCategory];
-
+export type QuestionDetailDtoQuestionCategory =
+  (typeof QuestionDetailDtoQuestionCategory)[keyof typeof QuestionDetailDtoQuestionCategory];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const QuestionDetailDtoQuestionCategory = {

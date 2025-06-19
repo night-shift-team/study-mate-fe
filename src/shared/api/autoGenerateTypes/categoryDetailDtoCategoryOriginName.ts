@@ -6,8 +6,8 @@
  * OpenAPI spec version: v1
  */
 
-export type CategoryDetailDtoCategoryOriginName = typeof CategoryDetailDtoCategoryOriginName[keyof typeof CategoryDetailDtoCategoryOriginName];
-
+export type CategoryDetailDtoCategoryOriginName =
+  (typeof CategoryDetailDtoCategoryOriginName)[keyof typeof CategoryDetailDtoCategoryOriginName];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CategoryDetailDtoCategoryOriginName = {

@@ -6,8 +6,8 @@
  * OpenAPI spec version: v1
  */
 
-export type GetUserDtoLoginType = typeof GetUserDtoLoginType[keyof typeof GetUserDtoLoginType];
-
+export type GetUserDtoLoginType =
+  (typeof GetUserDtoLoginType)[keyof typeof GetUserDtoLoginType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetUserDtoLoginType = {

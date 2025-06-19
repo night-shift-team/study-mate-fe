@@ -7,6 +7,6 @@
  */
 
 export type GetQnaBoardParams = {
-page: number;
-limit: number;
+  page: number;
+  limit: number;
 };

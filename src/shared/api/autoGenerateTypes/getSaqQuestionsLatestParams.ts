@@ -7,7 +7,7 @@
  */
 
 export type GetSaqQuestionsLatestParams = {
-page: number;
-limit: number;
-keyword?: string;
+  page: number;
+  limit: number;
+  keyword?: string;
 };

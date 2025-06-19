@@ -32,15 +32,15 @@ const StorePage = () => {
   const [selectedItem, setSelectedItem] = useState<StoreItemInfo | null>(null);
   const [cart, setCart] = useState<StoreItemInfo[]>([]);
 
-  const getStoreItemLists = async() =>{
-    const res = await getStoreItemListApi(0,99)
-    console.log("res",res)
-  }
+  const getStoreItemLists = async () => {
+    const res = await getStoreItemListApi(0, 99);
+    console.log('res', res);
+  };
 
-  useEffect(()=>{
-    getStoreItemLists()
-  }, [])
-  
+  useEffect(() => {
+    getStoreItemLists();
+  }, []);
+
   return (
     <div className="absolute inset-0 z-[1] h-screen w-screen bg-storeBg bg-cover pt-[3.2rem] md:pt-[3.5rem]">
       {purchaseOpen ? (
