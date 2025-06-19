@@ -14,6 +14,11 @@ import useOutsideClick from '@/shared/routes/model/useOutsideClick';
 import CartPopupData from './ui/cartPopup';
 import PurchasePopupData from './ui/purchasePopup';
 import { getStoreItemListApi } from './api';
+import {
+  PageResponseDtoStoreItemDto,
+  StoreItemDto,
+} from '@/shared/api/autoGenerateTypes';
+import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 
 export interface StoreItemInfo {
   title: string;
@@ -31,10 +36,20 @@ const StorePage = () => {
   });
   const [selectedItem, setSelectedItem] = useState<StoreItemInfo | null>(null);
   const [cart, setCart] = useState<StoreItemInfo[]>([]);
+  const [storeItems, setStoreItems] = useState<StoreItemDto[]>([]);
 
   const getStoreItemLists = async () => {
-    const res = await getStoreItemListApi(0, 99);
-    console.log('res', res);
+    try {
+      const res = await getStoreItemListApi(0, 99);
+      if (res.ok) {
+        const data = res.payload as PageResponseDtoStoreItemDto;
+        if ('content' in data && data.content) {
+          setStoreItems(data.content);
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
@@ -105,21 +120,27 @@ const StorePage = () => {
             </span>
           </div>
         </Link>
-        <div className="mt-5 grid h-auto w-full grid-cols-[repeat(auto-fill,_minmax(150px,_1fr))] place-items-center gap-4 px-6 pb-20 md:mt-10 md:grid-cols-[repeat(auto-fill,_minmax(240px,_1fr))] md:gap-10 md:px-32">
-          {Array.from({ length: 15 }).map((_, index) => (
-            <ItemCard
-              key={index}
-              index={index}
-              title={'Title ' + index}
-              description="24시간,문제풀이,방어"
-              imageUrl={ShieldIcon}
-              popupOpen={purchaseOpen}
-              setPopupOpen={setPurchaseOpen}
-              setSelectedItem={setSelectedItem}
-              price={2000}
-            />
-          ))}
-        </div>
+        {storeItems.length > 0 ? (
+          <div className="mt-5 grid h-auto w-full grid-cols-[repeat(auto-fill,_minmax(150px,_1fr))] place-items-center gap-4 px-6 pb-20 md:mt-10 md:grid-cols-[repeat(auto-fill,_minmax(240px,_1fr))] md:gap-10 md:px-32">
+            {storeItems.map((item, index) => (
+              <ItemCard
+                key={index}
+                index={index}
+                title={item.itemName}
+                description={item.itemDescription}
+                imageUrl={item.itemImage}
+                popupOpen={purchaseOpen}
+                setPopupOpen={setPurchaseOpen}
+                setSelectedItem={setSelectedItem}
+                price={item.priceKrw}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="flex h-full w-full justify-center pb-[10%]">
+            <Spinner size="lg" color="#fff" />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -14,9 +14,9 @@ interface ItemCardProps {
 }
 const ItemCard = ({
   index,
-  title = 'Title',
+  title = '무적',
   description = '24시간,문제풀이,방어',
-  price = 2000,
+  price = 999999,
   imageUrl = ShieldIcon,
   popupOpen,
   setPopupOpen,
@@ -34,20 +34,18 @@ const ItemCard = ({
     >
       <div className="flex w-full flex-col items-center justify-center md:mt-4">
         <Image
-          src={imageUrl}
+          src={imageUrl as string}
           alt={title}
           width={isMobile ? 55 : 80}
           height={isMobile ? 55 : 80}
           className="opacity-80"
         />
-        <span className="-mt-1 mb-1 text-lg md:mb-2.5 md:mt-1 md:text-2xl">
+        <span className="font-regular mb-1 mt-2 text-base md:mb-2.5 md:mt-1.5 md:text-xl">
           {title}
         </span>
-        {description.split(',').map((desc, index) => (
-          <span key={index} className="text-xs md:text-lg md:leading-6">
-            {desc}
-          </span>
-        ))}
+        <span key={index} className="mx-6 text-xs md:text-base md:leading-6">
+          {description}
+        </span>
       </div>
       <button
         type="button"
@@ -64,7 +62,7 @@ const ItemCard = ({
         className="flex h-[2.4rem] w-[6rem] items-center justify-between rounded-2xl bg-amber-300 px-4 font-parkdahyun hover:border hover:border-white md:h-[2.8rem] md:w-[8rem] md:px-6 md:text-xl"
       >
         <span>₩</span>
-        <span className="tracking-tighter">
+        <span className={String(price).length >= 6 ? `tracking-tighter` : ''}>
           {price.toLocaleString('ko-KR')}
         </span>
       </button>
