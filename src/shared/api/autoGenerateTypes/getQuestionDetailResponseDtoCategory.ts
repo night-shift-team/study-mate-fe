@@ -9,7 +9,6 @@
 export type GetQuestionDetailResponseDtoCategory =
   (typeof GetQuestionDetailResponseDtoCategory)[keyof typeof GetQuestionDetailResponseDtoCategory];
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetQuestionDetailResponseDtoCategory = {
   ALGORITHUM_MAQ: 'ALGORITHUM_MAQ',
   ALGORITHUM_SAQ: 'ALGORITHUM_SAQ',

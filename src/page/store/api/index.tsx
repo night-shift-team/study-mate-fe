@@ -10,3 +10,15 @@ export const getStoreItemListApi = async (page: number, limit: number) => {
     `${API_Prefix}${query}`
   );
 };
+
+export const buyStoreItemApi = async (itemId: string) => {
+  const body = {
+    itemId: itemId,
+  };
+  return await _apiFetch<string>(
+    'POST',
+    `${API_Prefix}/payment/request`,
+    body,
+    'text/plain'
+  );
+};

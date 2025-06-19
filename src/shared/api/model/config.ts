@@ -55,8 +55,8 @@ export const setRefreshTokenToHeader = (token: string | null) => {
 export const _apiFetch = async <T = any>(
   method: HTTPRequestMethod,
   endPoint: string,
-  body?: any,
-  contentType = 'application/json'
+  body?: { [key: string]: any },
+  contentType: ContentType = 'application/json'
 ): Promise<{ ok: boolean; payload: T | ServerErrorResponse }> => {
   if (!apiDomainUrl) {
     throw new Error('Domain URL is not defined');
@@ -66,7 +66,7 @@ export const _apiFetch = async <T = any>(
   const options: RequestInit = {
     method,
     headers: {
-      'Content-Type': contentType,
+      'Content-Type': 'application/json',
     },
     body: body ? JSON.stringify(body) : undefined,
   };

@@ -9,7 +9,6 @@
 export type QuestionHistoryDtoQuestionType =
   (typeof QuestionHistoryDtoQuestionType)[keyof typeof QuestionHistoryDtoQuestionType];
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const QuestionHistoryDtoQuestionType = {
   ALGORITHUM_MAQ: 'ALGORITHUM_MAQ',
   ALGORITHUM_SAQ: 'ALGORITHUM_SAQ',

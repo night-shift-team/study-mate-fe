@@ -8,7 +8,7 @@ import PurchaseHistory from '@public/assets/icons/store/purchaseHistory.png';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import React, { useEffect, useState } from 'react';
-import { PopupNotice } from '@/shared/popUp/ui/popupV2';
+import { PopupConfirm, PopupNotice } from '@/shared/popUp/ui/popupV2';
 import useOutsideClick from '@/shared/routes/model/useOutsideClick';
 
 import CartPopupData from './ui/cartPopup';
@@ -19,6 +19,7 @@ import {
   StoreItemDto,
 } from '@/shared/api/autoGenerateTypes';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import useToast, { ToastType } from '@/shared/toast/toast';
 
 export interface StoreItemInfo {
   title: string;
@@ -26,17 +27,21 @@ export interface StoreItemInfo {
   price: number;
   count: number;
 }
+export type PurchaseStatus = 'success' | 'fail' | 'none';
 
 const StorePage = () => {
   const [purchaseOpen, setPurchaseOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [purchaseStatus, setPurchaseStatus] = useState<PurchaseStatus>('none');
   const outSideClickRef = useOutsideClick(() => {
     setPurchaseOpen(false);
     setCartOpen(false);
   });
+  const [toastOpen, setToastOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<StoreItemInfo | null>(null);
   const [cart, setCart] = useState<StoreItemInfo[]>([]);
   const [storeItems, setStoreItems] = useState<StoreItemDto[]>([]);
+  const { Toaster, setToastDescription } = useToast(toastOpen, setToastOpen);
 
   const getStoreItemLists = async () => {
     try {
@@ -50,6 +55,17 @@ const StorePage = () => {
     } catch (e) {
       console.log(e);
     }
+  };
+
+  const updateBuyingStatusSuccess = () => {
+    setPurchaseStatus('success');
+    setToastDescription(`아이템 구매 완료`);
+    setToastOpen(true);
+    setTimeout(() => {
+      setPurchaseStatus('none');
+      setPurchaseOpen(false);
+      setSelectedItem(null);
+    }, 3000);
   };
 
   useEffect(() => {
@@ -83,6 +99,13 @@ const StorePage = () => {
           content={<CartPopupData cart={cart} setCart={setCart} />}
           onClose={() => setCartOpen(false)}
           color="#ffffe9"
+        />
+      ) : null}
+      {purchaseStatus !== 'none' ? (
+        <Toaster
+          status={
+            purchaseStatus === 'success' ? ToastType.success : ToastType.error
+          }
         />
       ) : null}
       <div className="relative flex h-full w-full flex-col overflow-y-auto overflow-x-hidden scrollbar-hide">
@@ -126,13 +149,13 @@ const StorePage = () => {
               <ItemCard
                 key={index}
                 index={index}
+                id={item.itemId}
                 title={item.itemName}
                 description={item.itemDescription}
                 imageUrl={item.itemImage}
-                popupOpen={purchaseOpen}
-                setPopupOpen={setPurchaseOpen}
-                setSelectedItem={setSelectedItem}
+                purchaseStatus={purchaseStatus}
                 price={item.priceKrw}
+                afterPaymentCallback={updateBuyingStatusSuccess}
               />
             ))}
           </div>

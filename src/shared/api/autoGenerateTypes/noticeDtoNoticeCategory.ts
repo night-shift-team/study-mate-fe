@@ -9,7 +9,6 @@
 export type NoticeDtoNoticeCategory =
   (typeof NoticeDtoNoticeCategory)[keyof typeof NoticeDtoNoticeCategory];
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const NoticeDtoNoticeCategory = {
   GENERAL: 'GENERAL',
   URGENT: 'URGENT',

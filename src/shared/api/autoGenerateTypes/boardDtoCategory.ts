@@ -9,7 +9,6 @@
 export type BoardDtoCategory =
   (typeof BoardDtoCategory)[keyof typeof BoardDtoCategory];
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const BoardDtoCategory = {
   FREE: 'FREE',
   QNA: 'QNA',

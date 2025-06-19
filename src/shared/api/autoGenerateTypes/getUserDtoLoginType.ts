@@ -9,7 +9,6 @@
 export type GetUserDtoLoginType =
   (typeof GetUserDtoLoginType)[keyof typeof GetUserDtoLoginType];
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetUserDtoLoginType = {
   LOCAL: 'LOCAL',
   GITHUB: 'GITHUB',
