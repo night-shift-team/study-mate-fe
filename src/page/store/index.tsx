@@ -7,12 +7,13 @@ import CartIcon from '@public/assets/icons/store/cartIcon.png';
 import PurchaseHistory from '@public/assets/icons/store/purchaseHistory.png';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PopupNotice } from '@/shared/popUp/ui/popupV2';
 import useOutsideClick from '@/shared/routes/model/useOutsideClick';
 
 import CartPopupData from './ui/cartPopup';
 import PurchasePopupData from './ui/purchasePopup';
+import { getStoreItemListApi } from './api';
 
 export interface StoreItemInfo {
   title: string;
@@ -31,6 +32,15 @@ const StorePage = () => {
   const [selectedItem, setSelectedItem] = useState<StoreItemInfo | null>(null);
   const [cart, setCart] = useState<StoreItemInfo[]>([]);
 
+  const getStoreItemLists = async() =>{
+    const res = await getStoreItemListApi(0,99)
+    console.log("res",res)
+  }
+
+  useEffect(()=>{
+    getStoreItemLists()
+  }, [])
+  
   return (
     <div className="absolute inset-0 z-[1] h-screen w-screen bg-storeBg bg-cover pt-[3.2rem] md:pt-[3.5rem]">
       {purchaseOpen ? (
