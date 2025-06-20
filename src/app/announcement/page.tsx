@@ -12,6 +12,7 @@ import {
   timestampToDate,
 } from '@/feature/notice/model/dataConvert';
 import { ProblemPagination } from '@/feature/pagination';
+import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import PageAnimationWrapper from '@/shared/style/ui/pageAnimationWrapper';
 import { useRouter } from 'next/navigation';
@@ -19,23 +20,13 @@ import { useEffect, useState } from 'react';
 
 enum AnnouncementType {
   Anouncement,
-  Event,
+  // Event,
 }
 
 const AnnouncementPage = () => {
   const [currentTab, setCurrentTab] = useState<AnnouncementType>(0);
   const [isLoading, setIsLoading] = useState(false);
-
-  const getNoticeList = (currentTab: AnnouncementType) => {
-    if (currentTab === AnnouncementType.Anouncement) {
-      return [] as Notice[];
-    }
-    return [] as Notice[];
-  };
-
-  const [announcementList, setAnnouncementList] = useState<Notice[]>(
-    getNoticeList(currentTab)
-  );
+  const [announcementList, setAnnouncementList] = useState<Notice[]>();
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
   const MAX_PAGE = 10;
@@ -88,29 +79,31 @@ const AnnouncementPage = () => {
               >
                 공지사항
               </button>
-              <button
+              {/* <button
                 disabled={isLoading}
                 onClick={() => setCurrentTab(AnnouncementType.Event)}
                 className={`whitespace-nowrap px-3 py-1.5 text-center font-bold md:px-0 md:py-2 md:text-lg ${isLoading ? 'text-gray-500' : 'font-bold'} ${currentTab === AnnouncementType.Event ? 'bg-pointcolor-beigebrown/50 shadow-sm' : ''} rounded-xl`}
               >
                 이벤트
-              </button>
+              </button> */}
             </div>
-            <div className="mt-2 flex h-full w-full min-w-[10rem] flex-col gap-4 px-3 py-1 md:mt-0 md:max-w-[80vw]">
-              {announcementList.length ? (
-                announcementList.map((announcement) => {
-                  return (
-                    <NoticeDataRow
-                      key={announcement.noticeId}
-                      noticeDetail={announcement}
-                    />
-                  );
-                })
-              ) : (
+            <div className="mt-2 flex h-full w-full min-w-[10rem] flex-col gap-4 px-3 py-1 pb-4 md:mt-0 md:max-w-[80vw]">
+              {announcementList && announcementList.length > 0
+                ? announcementList.map((announcement) => {
+                    return (
+                      <NoticeDataRow
+                        key={announcement.noticeId}
+                        noticeDetail={announcement}
+                      />
+                    );
+                  })
+                : null}
+              {announcementList && announcementList.length === 0 ? (
                 <div className="flex h-full w-full items-center justify-center">
                   <span className="text-lg md:text-xl">No data</span>
                 </div>
-              )}
+              ) : null}
+              {!announcementList ? <Spinner /> : null}
             </div>
           </div>
           <div className="flex h-[4rem] w-full justify-center pb-[4rem] md:pl-[8rem]">
@@ -132,7 +125,7 @@ const NoticeDataRow = ({ noticeDetail }: { noticeDetail: Notice }) => {
 
   return (
     <div
-      className="group flex h-[6rem] w-full shrink-0 flex-col justify-between gap-0.5 rounded-xl border bg-white p-3 px-4 text-sm shadow-md transition-colors duration-500 hover:cursor-pointer hover:bg-pointcolor-beigebrown md:h-[4rem] md:flex-row md:items-center md:overflow-hidden md:whitespace-nowrap md:text-base"
+      className="group flex h-[6rem] w-full shrink-0 flex-col justify-between gap-0.5 rounded-xl border bg-white p-3 px-4 text-sm shadow-md transition-colors duration-300 hover:cursor-pointer hover:bg-pointcolor-beigebrown md:h-[4rem] md:flex-row md:items-center md:overflow-hidden md:whitespace-nowrap md:text-base"
       onClick={() => {
         sessionStorage.setItem(
           'currentNoticeData',

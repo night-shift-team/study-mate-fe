@@ -6,7 +6,7 @@ import {
   splitNoticeTitle,
 } from '../model/dataConvert';
 import Image from 'next/image';
-import listMenu from '@public/assets/icons/format/list-text.png';
+import { BsList } from 'react-icons/bs';
 import { useRouter } from 'next/navigation';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import NoticeFoxBg from '@public/assets/backgroundImages/main/noticeFoxBg.svg';
@@ -46,18 +46,20 @@ const AnnouncemnetByIdDetail = ({
   return (
     <div className="relative flex h-full w-[50rem] flex-col items-center gap-8 overflow-y-auto p-7 scrollbar-hide md:px-20 md:py-20">
       <div className="absolute left-1 top-11 flex h-[4rem] w-full md:left-0 md:top-[5.5em]">
-        <button
-          className="relative flex h-full w-full gap-1 rounded-2xl p-2 md:gap-2 md:p-2.5"
-          onClick={() => router.push(RouteTo.Announcement)}
-        >
-          <Image
+        <div className="relative flex h-full w-full gap-3 rounded-2xl p-2 md:gap-9 md:p-2.5">
+          {/* <Image
             src={listMenu}
             alt="list-text"
             className="h-fit w-[3.5rem] rounded-full p-2 px-4 hover:bg-pointcolor-beigebrown/20 md:w-[3.8rem]"
             objectFit="cover"
-          />
-          <span className="font-doodle text-3xl md:text-4xl">Notice</span>
-        </button>
+          /> */}
+          <button onClick={() => router.push(RouteTo.Announcement)}>
+            <BsList className="hidden h-fit w-[2rem] rounded-xl bg-pointcolor-beigebrown/60 p-2 px-1.5 hover:bg-pointcolor-beigebrown/90 md:block md:w-[2.5rem]" />
+          </button>
+          <span className="md:text-4x pl-5 font-doodle text-3xl md:pl-0">
+            Notice
+          </span>
+        </div>
       </div>
       <div className="absolute right-10 top-8 flex h-[5rem] w-fit md:right-[5rem] md:top-4 md:h-[10.2rem]">
         <Image
