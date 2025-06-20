@@ -8,7 +8,7 @@ import PurchaseHistory from '@public/assets/icons/store/purchaseHistory.png';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import React, { useEffect, useState } from 'react';
-import { PopupConfirm, PopupNotice } from '@/shared/popUp/ui/popupV2';
+import { PopupNotice } from '@/shared/popUp/ui/popupV2';
 import useOutsideClick from '@/shared/routes/model/useOutsideClick';
 
 import CartPopupData from './ui/cartPopup';

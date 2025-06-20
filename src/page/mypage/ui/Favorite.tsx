@@ -7,10 +7,16 @@ import { Bookmark } from 'lucide-react';
 import { removeFavoriteApi } from '../api';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { ConfirmPopup } from './ConfirmPopup';
+import { ProblemDetailInfoRes } from '@/page/adminProblem/api';
 
 interface FavoriteListProps {
   favoriteList: QuestionFavoriteRes[];
   title: string;
+  setPopupProblemDetail: React.Dispatch<
+    React.SetStateAction<ProblemDetailInfoRes | null>
+  >;
+  isPopupOpen: boolean;
+  setIsPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 // AlertPopup 컴포넌트 정의
@@ -34,10 +40,13 @@ const AlertPopup = ({
   </div>
 );
 
-export const Favorite = ({ favoriteList, title }: FavoriteListProps) => {
-  const [questionDetail, setQuestionDetail] =
-    useState<QuestionFavoriteRes | null>(null);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+export const Favorite = ({
+  favoriteList,
+  title,
+  setPopupProblemDetail,
+  isPopupOpen,
+  setIsPopupOpen,
+}: FavoriteListProps) => {
   const [currentFavoriteList, setCurrentFavoriteList] = useState([
     ...favoriteList,
   ]);
@@ -54,11 +63,19 @@ export const Favorite = ({ favoriteList, title }: FavoriteListProps) => {
 
   const handleClosePopup = () => {
     setIsPopupOpen(false);
-    setQuestionDetail(null);
+    setPopupProblemDetail(null);
   };
 
   const handleItemClick = (item: QuestionFavoriteRes) => {
-    setQuestionDetail(item);
+    setPopupProblemDetail({
+      questionId: item.questionId,
+      questionTitle: item.questionTitle,
+      content: item.questionTitle,
+      answerExplanation: item.questionExplanation,
+      category: item.questionCategory,
+      answer: item.questionAnswer,
+      difficulty: item.difficulty,
+    } as ProblemDetailInfoRes);
     setIsPopupOpen(true);
   };
 
@@ -132,18 +149,6 @@ export const Favorite = ({ favoriteList, title }: FavoriteListProps) => {
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
               <Spinner />
             </div>
-          )}
-
-          {isPopupOpen && questionDetail && (
-            <PopupProblem
-              size="md"
-              questionTitle={questionDetail.questionTitle}
-              difficulty={questionDetail.difficulty}
-              content={questionDetail.questionContent}
-              answer={questionDetail.questionAnswer}
-              explanation={questionDetail.questionExplanation}
-              onClose={handleClosePopup}
-            />
           )}
 
           {alertMessage && (
