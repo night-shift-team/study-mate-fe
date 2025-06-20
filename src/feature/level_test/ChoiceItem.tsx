@@ -52,7 +52,7 @@ export const ChoicedItemResult: React.FC<ChoiceItemResultProps> = ({
 
   return (
     <div
-      className={`flex h-auto w-[100%] cursor-pointer items-center rounded-md border border-goldBorder p-2 shadow-md ${getBackgroundClass()}`}
+      className={`flex h-auto w-[100%] items-center rounded-md border border-goldBorder p-2 shadow-md ${getBackgroundClass()}`}
     >
       <span>{text}</span>
     </div>
