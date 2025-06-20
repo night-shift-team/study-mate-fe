@@ -112,7 +112,7 @@ const StorePage = () => {
         <div className="mt-4 flex h-[8rem] w-full animate-fade-up justify-center">
           <Panel className="h-full w-full scale-[1.45] object-contain" />
         </div>
-        <button
+        {/* <button
           aria-label="cart"
           className="group fixed right-2 top-12 flex h-[3rem] w-[2.8rem] flex-col md:right-5 md:top-16 md:h-[3.8rem] md:w-[3.6rem]"
           onClick={() => setCartOpen(true)}
@@ -128,11 +128,16 @@ const StorePage = () => {
               장바구니
             </span>
           </div>
-        </button>
-        <Link
+        </button> */}
+        {/* <Link
           aria-label="purchase_history"
           href={RouteTo.StorePurchaseHistory}
           className="fixed right-2 top-[6.3rem] flex h-[3rem] w-[2.8rem] flex-col md:right-5 md:top-32 md:h-[3.8rem] md:w-[3.6rem]"
+        > */}
+        <Link
+          aria-label="purchase_history"
+          href={RouteTo.StorePurchaseHistory}
+          className="fixed right-2 top-12 flex h-[3rem] w-[2.8rem] flex-col md:right-5 md:top-16 md:h-[3.8rem] md:w-[3.6rem]"
         >
           <div className="relative flex h-full w-full">
             <div className="absolute flex aspect-1 w-full">
@@ -144,7 +149,7 @@ const StorePage = () => {
           </div>
         </Link>
         {storeItems.length > 0 ? (
-          <div className="mt-5 grid h-auto w-full grid-cols-[repeat(auto-fill,_minmax(150px,_1fr))] place-items-center gap-4 px-6 pb-20 md:mt-10 md:grid-cols-[repeat(auto-fill,_minmax(240px,_1fr))] md:gap-10 md:px-32">
+          <div className="md:px-18 mt-5 grid h-auto w-full grid-cols-[repeat(auto-fill,_minmax(150px,_1fr))] place-items-center gap-4 px-3 pb-20 sm:px-10 md:mt-10 md:grid-cols-[repeat(auto-fill,_minmax(240px,_1fr))] md:gap-10 lg:px-32">
             {storeItems.map((item, index) => (
               <ItemCard
                 key={index}
