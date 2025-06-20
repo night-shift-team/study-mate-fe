@@ -49,7 +49,6 @@ const SuggestionDetailPage = () => {
   console.log(suggestion.comments, 'suggestion');
 
   return (
-
     <PageAnimationWrapper>
       <div className="flex h-[80vh] w-[90vw] max-w-[1100px] flex-col overflow-auto">
         <div className="flex-1 rounded-xl bg-white p-4 shadow-md">
@@ -78,7 +77,6 @@ const SuggestionDetailPage = () => {
               )}
             </span>
           </div>
-
 
           <h1 className="mb-4t ext-xl font-semibold">{suggestion.title}</h1>
 

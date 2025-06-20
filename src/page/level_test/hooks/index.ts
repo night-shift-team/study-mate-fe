@@ -23,6 +23,7 @@ export const useChachingLevelTest = () => {
         throw res.payload;
       } catch (e) {
         console.log('레벨 테스트 문제 로딩 실패:', e);
+        throw e;
       }
     },
     staleTime: 1000 * 60 * 5, // 5분
