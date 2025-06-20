@@ -7,6 +7,7 @@ import {
   getValidNoticeListApi,
   GetValidnoticeListRes,
   Notice,
+  NoticeCategory,
 } from '@/feature/notice/api';
 import { getNoticeList } from '../model/getNoticeList';
 import Link from 'next/link';
@@ -35,6 +36,7 @@ export const NoticeComponent = () => {
       return [] as Notice[];
     } catch (e) {
       console.log(e);
+      return [] as Notice[];
     }
   };
 
@@ -46,13 +48,20 @@ export const NoticeComponent = () => {
       getValidNoticeList().then((sortedNoticeList) => {
         // 임시 노티스 데이터 추가
         if (!sortedNoticeList.length) {
-          const tempNotice = [
+          const tempNotice: Notice[] = [
             {
               noticeId: 0,
               noticeTitle: '환영합니다',
               noticeContent:
                 'StudyMate에 오신 것을 환영합니다! 다양한 문제를 풀고, 레벨 테스트를 통해 자신의 실력을 확인해보세요.',
-              noticeDate: new Date().toISOString(),
+              noticeCategory: NoticeCategory.GENERAL,
+              noticePurpose: 'WELCOME',
+              pulbisherName: 'system',
+              backgroundImage: '',
+              displayStartTime: '',
+              displayEndTime: '',
+              maintenanceStartTime: '',
+              maintenanceEndTime: '',
             },
           ];
           setNoticeList(tempNotice);
