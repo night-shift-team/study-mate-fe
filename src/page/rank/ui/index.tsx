@@ -229,6 +229,7 @@ export const RankPageComponent = () => {
               </span>
             </h3>
 
+
             <h3 className="mt-2 animate-fade-up text-sm font-medium text-gray-700 delay-200 md:text-sm">
               유저 랭킹
             </h3>
@@ -257,6 +258,7 @@ export const RankPageComponent = () => {
                         align="center"
                       >
                         순위
+
                       </TableCell>
                       <TableCell
                         sx={{ display: { xs: 'none', md: 'table-cell' } }}
