@@ -12,17 +12,12 @@ export const useChachingLevelTest = () => {
   return useQuery<ProblemInfoLevelTest[], Error>({
     queryKey: ['levelTestQuestions'],
     queryFn: async () => {
-      const res: ApiResponse<ProblemInfoLevelTest[]> =
-        await getLevelTestQuestionsApi();
-
-      if (!res.ok) {
-        const errorPayload = res.payload as ServerErrorResponse;
-        throw new Error(
-          errorPayload.message || '레벨 테스트 문제를 불러오지 못했습니다.'
-        );
+      const res = await getLevelTestQuestionsApi();
+      if (res.ok) {
+        return res.payload as ProblemInfoLevelTest[];
       }
 
-      return res.payload as ProblemInfoLevelTest[];
+      throw res.payload;
     },
     staleTime: 1000 * 60 * 5,
     retry: 1,
