@@ -23,7 +23,7 @@ import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { Preview } from './preview';
-import { useChacingLevelTest } from '../hooks';
+import { useChachingLevelTest } from '../hooks';
 
 type ChoiceAttrs = Pick<
   ProblemInfoMAQ,
@@ -46,7 +46,7 @@ const LevelTest = () => {
     useState<boolean>(false);
 
   const { data: levelTestLists = [], isLoading: isPageLoading } =
-    useChacingLevelTest();
+    useChachingLevelTest();
 
   useEffect(() => {
     if (levelTestLists.length > 0) {
