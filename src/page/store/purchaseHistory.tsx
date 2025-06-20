@@ -1,3 +1,4 @@
+'use client';
 import Image from 'next/image';
 
 const StorePurchaseHistoryPage = () => {
@@ -78,6 +79,10 @@ const StorePurchaseHistoryPage = () => {
                     alt="icon"
                     width={20}
                     height={20}
+                    onError={(e) => {
+                      e.currentTarget.src =
+                        '/assets/icons/header/mascotIcon.svg';
+                    }}
                     className="mx-auto"
                   />
                   <div>{item.title}</div>

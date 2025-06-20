@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import NoticeFoxBg from '@public/assets/backgroundImages/main/noticeFoxBg.svg';
 import { getWithCache } from '@/entities/apiCacheHook';
+import { SvgIcon } from '@mui/material';
 
 const AnnouncemnetByIdDetail = ({
   id,
@@ -62,10 +63,11 @@ const AnnouncemnetByIdDetail = ({
         </div>
       </div>
       <div className="absolute right-10 top-8 flex h-[5rem] w-fit md:right-[5rem] md:top-4 md:h-[10.2rem]">
-        <Image
-          src={NoticeFoxBg}
-          alt="noticeFoxBg"
+        <SvgIcon
           className="h-full w-full drop-shadow-lg"
+          component={NoticeFoxBg}
+          inheritViewBox
+          sx={{ width: '100%', height: '100%' }}
         />
       </div>
 
