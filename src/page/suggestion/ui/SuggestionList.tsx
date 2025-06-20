@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Pagination } from '@mui/material';
 import { BoardContent } from '../api';
+import { MobileSuggestionList } from './MobileSuggestionList';
 
 interface SuggestionItem {
   id: number;
@@ -67,60 +68,111 @@ export const SuggestionList = ({ list }: SuggestionListProps) => {
   };
 
   return (
-    <div className="ju flex h-[80vh] flex-col rounded-lg bg-white p-4 shadow-md">
-      {/* <div className="flex h-[50px] items-center text-lg font-bold">
-        건의사항
-      </div> */}
-      <div className="mx-auto flex h-[100%] w-full flex-col justify-between">
-        <table className="min-w-full border border-gray-200">
-          <thead className="bg-gray-100 text-gray-700">
-            <tr>
-              <th className="border px-4 py-2">번호</th>
-              <th className="border px-4 py-2">제목</th>
-              <th className="border px-4 py-2">작성자</th>
-              <th
-                className="cursor-pointer border px-4 py-2 hover:bg-gray-200"
-                onClick={() => handleSort('views')}
-              >
-                조회
-              </th>
-              <th
-                className="cursor-pointer border px-4 py-2 hover:bg-gray-200"
-                onClick={() => handleSort('date')}
-              >
-                날짜
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedSuggestions.map((item) => (
-              <tr
-                key={item.id}
-                onClick={() => handleClick(item.id)}
-                className="cursor-pointer transition-colors hover:bg-blue-50"
-              >
-                <td className="border px-4 py-2 text-center">{item.id}</td>
-                <td className="border px-4 py-2 text-center">{item.title}</td>
-                <td className="border px-4 py-2 text-center">{item.author}</td>
-                <td className="border px-4 py-2 text-center">{item.views}</td>
-                <td className="border px-4 py-2 text-center">{item.date}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="mt-3 flex justify-center">
+    <>
+      {/* ✅ 데스크톱 전용 테이블 */}
+      <div className="hidden h-[80vh] flex-col justify-center rounded-lg p-4 md:flex">
+        <h2 className="mb-4 text-lg font-bold">건의사항</h2>
+        <div className="rounded-lgp-4 flex h-[80vh] flex-col justify-center">
+          <div className="mx-auto flex h-[100%] w-full flex-col justify-between">
+            <table className="min-w-full">
+              <thead>
+                <tr>
+                  <th colSpan={5} className="p-0">
+                    <div className="grid grid-cols-5 overflow-hidden rounded-md bg-[#78A46D] text-center font-semibold text-white">
+                      <div className="px-4 py-2">번호</div>
+                      <div className="px-4 py-2">제목</div>
+                      <div className="px-4 py-2">작성자</div>
+                      <div
+                        className="cursor-pointer px-4 py-2"
+                        onClick={() => handleSort('date')}
+                      >
+                        날짜
+                      </div>
+                      <div
+                        className="cursor-pointer px-4 py-2"
+                        onClick={() => handleSort('views')}
+                      >
+                        조회수
+                      </div>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedSuggestions.map((item) => (
+                  <tr
+                    key={item.id}
+                    onClick={() => handleClick(item.id)}
+                    className="cursor-pointer"
+                  >
+                    <td colSpan={5} className="py-2">
+                      <div className="grid grid-cols-5 overflow-hidden rounded-md bg-white shadow-md hover:bg-gray-100">
+                        <div className="px-4 py-2 text-center font-medium text-gray-800">
+                          {item.id.toString().padStart(2, '0')}
+                        </div>
+                        <div className="px-4 py-2 text-center text-gray-800">
+                          {item.title}
+                        </div>
+                        <div className="px-4 py-2 text-center text-gray-800">
+                          {item.author}
+                        </div>
+                        <div className="px-4 py-2 text-center text-gray-800">
+                          {item.date}
+                        </div>
+                        <div className="px-4 py-2 text-center text-gray-800">
+                          {item.views}
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="mt-3 flex justify-center">
+              <Pagination
+                count={totalPages}
+                page={currentPage}
+                onChange={handleChangePage}
+                color="primary"
+                shape="rounded"
+                size="medium"
+                showFirstButton
+                showLastButton
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ✅ 모바일 전용 카드 리스트 */}
+      <div className="mt-5 block rounded-xl bg-white px-2 shadow-lg md:hidden">
+        {paginatedSuggestions.map((item, index) => (
+          <div
+            key={item.id}
+            onClick={() => handleClick(item.id)}
+            className="w-full px-4 py-2"
+          >
+            <MobileSuggestionList
+              id={item.id}
+              title={item.title}
+              author={item.author}
+              views={item.views}
+              date={item.date}
+              isLast={index === paginatedSuggestions.length - 1}
+            />
+          </div>
+        ))}
+        {/* <div className="mt-3 flex justify-center">
           <Pagination
             count={totalPages}
             page={currentPage}
             onChange={handleChangePage}
             color="primary"
             shape="rounded"
-            size="medium"
-            showFirstButton
-            showLastButton
+            size="small"
           />
-        </div>
+        </div> */}
       </div>
-    </div>
+    </>
   );
 };

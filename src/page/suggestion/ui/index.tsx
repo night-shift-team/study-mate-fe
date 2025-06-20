@@ -74,7 +74,7 @@ const Suggestion = () => {
         <SuggestionList list={list} />
         <div className="mt-6 flex justify-end">
           <button
-            className="rounded-xl bg-orange-300 px-6 py-2 font-semibold text-white shadow-md transition-colors duration-200 hover:bg-orange-500"
+            className="rounded-3xl bg-orange-300 px-6 py-2 text-sm font-semibold text-white hover:bg-orange-500"
             onClick={() => {
               router.push(RouteTo.WriteSuggestion);
             }}
