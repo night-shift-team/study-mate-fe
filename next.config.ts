@@ -51,6 +51,10 @@ const nextConfig: NextConfig = {
         hostname: 'd3i4mjesasgykp.cloudfront.net',
         pathname: '/test/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'encrypted-tbn0.gstatic.com',
+      },
     ],
   },
 };

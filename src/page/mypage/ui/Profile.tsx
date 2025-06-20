@@ -78,7 +78,7 @@ const Profile = () => {
   return (
     <div className="flex items-center gap-3">
       {/* Toast 컴포넌트 */}
-      {<Toaster status={ToastType.success} />}
+      <Toaster status={ToastType.success} />
 
       {/* 프로필 이미지 */}
       <label htmlFor="profile-upload" className="block h-full w-full">
@@ -99,7 +99,10 @@ const Profile = () => {
       {/* 닉네임 및 버튼 */}
       <div className="flex w-full flex-col gap-3 text-nowrap md:flex-col">
         <div className="flex gap-1 text-[2vh] text-white">
-          <span>닉네임:</span> <p className="font-bold">{user?.nickname}</p>
+          <span>닉네임:</span>{' '}
+          {user ? (
+            <p className="animate-fade-up font-bold">{user.nickname}</p>
+          ) : null}
         </div>
         <button
           className="rounded-lg bg-white p-1 text-[1.8vh] shadow-xl"

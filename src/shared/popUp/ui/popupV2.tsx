@@ -15,13 +15,13 @@ type Size = 'sm' | 'md' | 'lg';
 const getSize = (size: Size): string => {
   switch (size) {
     case 'sm':
-      return 'max-w-[20rem]';
+      return 'max-w-[20rem] min-h-[20rem]';
     case 'md':
-      return 'max-w-[40rem]';
+      return 'max-w-[40rem] min-h-[20rem]';
     case 'lg':
-      return 'max-w-[60rem]';
+      return 'max-w-[60rem] min-h-[40rem]';
     default:
-      return 'max-w-[40rem]';
+      return 'max-w-[40rem] min-h-[20rem]';
   }
 };
 
@@ -65,8 +65,10 @@ export const PopupProblem: React.FC<PopupWithProblemProps> = ({
         </div>
       </PopupHeader>
       {/* 컨텐츠 */}
-      <div className="flex w-full flex-col gap-2 px-2">
-        <MarkdownComponent markdown={content} />
+      <div className="flex w-full flex-col gap-2 overflow-y-auto px-2">
+        <div className="flex w-full flex-1">
+          <MarkdownComponent markdown={content} />
+        </div>
         {userAnswer && (
           <p className="mt-2 flex w-full whitespace-pre-wrap font-bold">
             유저 선택 :{' '}
@@ -188,7 +190,7 @@ const PopupContainer = ({
     <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black bg-opacity-60 p-4 backdrop-blur-sm transition-opacity duration-300">
       <div
         ref={ref as React.RefObject<HTMLDivElement>}
-        className={`w-full ${getSize(size)} max-h-[90vh] transform rounded-2xl p-6 shadow-2xl transition-transform duration-300 scrollbar-hide`}
+        className={`flex w-full flex-col ${getSize(size)} h-full max-h-[90vh] transform rounded-2xl p-6 shadow-2xl transition-transform duration-300 scrollbar-hide`}
         style={{ backgroundColor: color }}
       >
         {children}

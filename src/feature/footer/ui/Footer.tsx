@@ -2,6 +2,8 @@
 
 import { FaGithub, FaEnvelope } from 'react-icons/fa';
 import { FooterSection } from './FooterSection';
+import Link from 'next/link';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
 
 const developers = [
   { label: '이한동' },
@@ -10,19 +12,19 @@ const developers = [
 ];
 
 const quickLinks = [
-  { label: '소개', href: '/' },
-  { label: '문의하기', href: '/suggestion' },
+  { label: '소개', href: RouteTo.Home },
+  { label: '문의하기', href: RouteTo.Suggestion },
 ];
 
 const contacts = [
   {
     icon: <FaEnvelope size={20} />,
-    href: '/',
+    href: RouteTo.Home,
     label: 'Email',
   },
   {
     icon: <FaGithub size={20} />,
-    href: '/',
+    href: RouteTo.Home,
     label: 'GitHub',
   },
 ];
@@ -50,15 +52,9 @@ const Footer = () => {
             <h3 className="text-sm font-semibold text-gray-500">Contact</h3>
             <div className="mt-2 flex items-center gap-4 text-gray-400">
               {contacts.map((item, index) => (
-                <a
-                  key={index}
-                  href={item.href}
-                  target="_blank"
-                  aria-label={item.label}
-                  className="hover:text-white"
-                >
+                <Link key={index} href={item.href} className="hover:text-white">
                   {item.icon}
-                </a>
+                </Link>
               ))}
             </div>
           </div>

@@ -1,5 +1,6 @@
 import Problem from '@/page/solve/ui/problem';
 import { ProblemCategoryTitle } from '@/shared/constants/problemInfo';
+import PageAnimationWrapper from '@/shared/style/ui/pageAnimationWrapper';
 
 const ProblemPage = async ({
   params,
@@ -8,7 +9,11 @@ const ProblemPage = async ({
 }) => {
   const { category } = await params;
 
-  return <Problem category={category as 'random' | ProblemCategoryTitle} />;
+  return (
+    <PageAnimationWrapper>
+      <Problem category={category as 'random' | ProblemCategoryTitle} />
+    </PageAnimationWrapper>
+  );
 };
 
 export default ProblemPage;

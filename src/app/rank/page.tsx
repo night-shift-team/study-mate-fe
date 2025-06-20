@@ -1,7 +1,12 @@
 import { RankPageComponent } from '@/page/rank/ui';
+import PageAnimationWrapper from '@/shared/style/ui/pageAnimationWrapper';
 
 const RankPage = () => {
-  return <RankPageComponent />;
+  return (
+    <PageAnimationWrapper>
+      <RankPageComponent />
+    </PageAnimationWrapper>
+  );
 };
 
 export default RankPage;

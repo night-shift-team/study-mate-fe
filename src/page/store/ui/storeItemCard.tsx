@@ -2,67 +2,105 @@
 import Image, { StaticImageData } from 'next/image';
 import ShieldIcon from '@public/assets/icons/store/shieldIcon3.png';
 import React, { useEffect } from 'react';
+import { buyStoreItemApi } from '../api';
+import { openNewWindowWithoutDuplicate } from '@/shared/window/model/openWindow';
+import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import { PurchaseStatus } from '..';
+import { after } from 'lodash';
 interface ItemCardProps {
+  index: number;
+  id: string;
   title: string;
   description: string;
   price: number;
   imageUrl: string | StaticImageData;
-  popupOpen: boolean;
-  setPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedItem: React.Dispatch<React.SetStateAction<any>>;
+  purchaseStatus: PurchaseStatus;
+  afterPaymentCallback: () => void;
 }
 const ItemCard = ({
-  title = 'Title',
+  index,
+  id,
+  title = '무적',
   description = '24시간,문제풀이,방어',
-  price = 2000,
+  price = 999999,
   imageUrl = ShieldIcon,
-  popupOpen,
-  setPopupOpen,
-  setSelectedItem,
+  purchaseStatus,
+  afterPaymentCallback,
 }: ItemCardProps) => {
   const [isMobile, setIsMobile] = React.useState(false);
+  const [paymentOpen, setPaymentOpen] = React.useState(false);
+  const windowReference: Window | null = null;
 
+  const buyItem = async (count: number) => {
+    setPaymentOpen(true);
+    try {
+      const res = await buyStoreItemApi(id);
+      if (res.ok) {
+        const link = res.payload as string;
+        openNewWindowWithoutDuplicate(
+          windowReference,
+          link,
+          afterPaymentCallback
+        );
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setPaymentOpen(false);
+    }
+  };
   useEffect(() => {
     setIsMobile(typeof window !== 'undefined' && window.innerWidth < 768);
   }, []);
 
   return (
-    <div className="group flex h-60 w-[150px] flex-col items-center justify-between rounded-[4rem] border-2 border-orange-200 bg-[#feefd8] py-5 pb-6 hover:cursor-pointer md:h-80 md:w-60 md:hover:border-orange-500">
+    <div
+      className={`group flex h-60 w-[150px] animate-fade-up ${'delay-' + (index + 1) * 100} flex-col items-center justify-between rounded-[4rem] border-2 border-orange-200 bg-[#feefd8] py-5 pb-6 hover:cursor-pointer md:h-80 md:w-60 md:hover:border-orange-500`}
+    >
       <div className="flex w-full flex-col items-center justify-center md:mt-4">
         <Image
-          src={imageUrl}
+          src={imageUrl as string}
           alt={title}
           width={isMobile ? 55 : 80}
           height={isMobile ? 55 : 80}
           className="opacity-80"
         />
-        <span className="-mt-1 mb-1 text-lg md:mb-2.5 md:mt-1 md:text-2xl">
+        <span className="font-regular mb-1 mt-2 text-base md:mb-2.5 md:mt-1.5 md:text-xl">
           {title}
         </span>
-        {description.split(',').map((desc, index) => (
-          <span key={index} className="text-xs md:text-lg md:leading-6">
-            {desc}
-          </span>
-        ))}
+        <span key={index} className="mx-6 text-xs md:text-base md:leading-6">
+          {description}
+        </span>
       </div>
       <button
         type="button"
-        onClick={() => {
-          setPopupOpen(true);
-          setSelectedItem((prev: any) => ({
-            ...prev,
-            title: title,
-            imageUrl: imageUrl,
-            price: price,
-            count: 1,
-          }));
+        onClick={async () => {
+          await buyItem(1);
+          // setPopupOpen(true);
+          // setSelectedItem((prev: any) => ({
+          //   ...prev,
+          //   title: title,
+          //   imageUrl: imageUrl,
+          //   price: price,
+          //   count: 1,
+          // }));
         }}
         className="flex h-[2.4rem] w-[6rem] items-center justify-between rounded-2xl bg-amber-300 px-4 font-parkdahyun hover:border hover:border-white md:h-[2.8rem] md:w-[8rem] md:px-6 md:text-xl"
       >
-        <span>₩</span>
-        <span className="tracking-tighter">
-          {price.toLocaleString('ko-KR')}
-        </span>
+        {paymentOpen ? (
+          <div className="flex w-full justify-center">
+            <Spinner color="#fff" />
+          </div>
+        ) : (
+          <>
+            <span>₩</span>
+            <span
+              className={String(price).length >= 6 ? `tracking-tighter` : ''}
+            >
+              {price.toLocaleString('ko-KR')}
+            </span>
+          </>
+        )}
       </button>
     </div>
   );

@@ -7,12 +7,19 @@ import CartIcon from '@public/assets/icons/store/cartIcon.png';
 import PurchaseHistory from '@public/assets/icons/store/purchaseHistory.png';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import React, { useState } from 'react';
-import { PopupNotice } from '@/shared/popUp/ui/popupV2';
+import React, { useEffect, useState } from 'react';
+import { PopupConfirm, PopupNotice } from '@/shared/popUp/ui/popupV2';
 import useOutsideClick from '@/shared/routes/model/useOutsideClick';
 
 import CartPopupData from './ui/cartPopup';
 import PurchasePopupData from './ui/purchasePopup';
+import { getStoreItemListApi } from './api';
+import {
+  PageResponseDtoStoreItemDto,
+  StoreItemDto,
+} from '@/shared/api/autoGenerateTypes';
+import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import useToast, { ToastType } from '@/shared/toast/toast';
 
 export interface StoreItemInfo {
   title: string;
@@ -20,16 +27,50 @@ export interface StoreItemInfo {
   price: number;
   count: number;
 }
+export type PurchaseStatus = 'success' | 'fail' | 'none';
 
 const StorePage = () => {
   const [purchaseOpen, setPurchaseOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [purchaseStatus, setPurchaseStatus] = useState<PurchaseStatus>('none');
   const outSideClickRef = useOutsideClick(() => {
     setPurchaseOpen(false);
     setCartOpen(false);
   });
+  const [toastOpen, setToastOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<StoreItemInfo | null>(null);
   const [cart, setCart] = useState<StoreItemInfo[]>([]);
+  const [storeItems, setStoreItems] = useState<StoreItemDto[]>([]);
+  const { Toaster, setToastDescription } = useToast(toastOpen, setToastOpen);
+
+  const getStoreItemLists = async () => {
+    try {
+      const res = await getStoreItemListApi(0, 99);
+      if (res.ok) {
+        const data = res.payload as PageResponseDtoStoreItemDto;
+        if ('content' in data && data.content) {
+          setStoreItems(data.content);
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const updateBuyingStatusSuccess = () => {
+    setPurchaseStatus('success');
+    setToastDescription(`아이템 구매 완료`);
+    setToastOpen(true);
+    setTimeout(() => {
+      setPurchaseStatus('none');
+      setPurchaseOpen(false);
+      setSelectedItem(null);
+    }, 3000);
+  };
+
+  useEffect(() => {
+    getStoreItemLists();
+  }, []);
 
   return (
     <div className="absolute inset-0 z-[1] h-screen w-screen bg-storeBg bg-cover pt-[3.2rem] md:pt-[3.5rem]">
@@ -60,8 +101,15 @@ const StorePage = () => {
           color="#ffffe9"
         />
       ) : null}
+      {purchaseStatus !== 'none' ? (
+        <Toaster
+          status={
+            purchaseStatus === 'success' ? ToastType.success : ToastType.error
+          }
+        />
+      ) : null}
       <div className="relative flex h-full w-full flex-col overflow-y-auto overflow-x-hidden scrollbar-hide">
-        <div className="mt-4 flex h-[8rem] w-full justify-center">
+        <div className="mt-4 flex h-[8rem] w-full animate-fade-up justify-center">
           <Panel className="h-full w-full scale-[1.45] object-contain" />
         </div>
         <button
@@ -95,20 +143,27 @@ const StorePage = () => {
             </span>
           </div>
         </Link>
-        <div className="mt-5 grid h-auto w-full grid-cols-[repeat(auto-fill,_minmax(150px,_1fr))] place-items-center gap-4 px-6 pb-20 md:mt-10 md:grid-cols-[repeat(auto-fill,_minmax(240px,_1fr))] md:gap-10 md:px-32">
-          {Array.from({ length: 15 }).map((_, index) => (
-            <ItemCard
-              key={index}
-              title={'Title ' + index}
-              description="24시간,문제풀이,방어"
-              imageUrl={ShieldIcon}
-              popupOpen={purchaseOpen}
-              setPopupOpen={setPurchaseOpen}
-              setSelectedItem={setSelectedItem}
-              price={2000}
-            />
-          ))}
-        </div>
+        {storeItems.length > 0 ? (
+          <div className="mt-5 grid h-auto w-full grid-cols-[repeat(auto-fill,_minmax(150px,_1fr))] place-items-center gap-4 px-6 pb-20 md:mt-10 md:grid-cols-[repeat(auto-fill,_minmax(240px,_1fr))] md:gap-10 md:px-32">
+            {storeItems.map((item, index) => (
+              <ItemCard
+                key={index}
+                index={index}
+                id={item.itemId}
+                title={item.itemName}
+                description={item.itemDescription}
+                imageUrl={item.itemImage}
+                purchaseStatus={purchaseStatus}
+                price={item.priceKrw}
+                afterPaymentCallback={updateBuyingStatusSuccess}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="flex h-full w-full justify-center pb-[10%]">
+            <Spinner size="lg" color="#fff" />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -194,7 +194,7 @@ const Login = () => {
   };
 
   return (
-    <div className="relative z-[1000] flex h-full w-full flex-col items-center overflow-hidden overflow-y-auto bg-white/60 scrollbar-hide md:flex-row md:justify-center md:bg-transparent md:pb-[4rem]">
+    <div className="relative z-[1000] flex h-full w-full animate-fade-in flex-col items-center overflow-hidden overflow-y-auto bg-white/60 duration-300 scrollbar-hide md:flex-row md:justify-center md:bg-transparent md:pb-[4rem]">
       <Toaster />
       <div className="absolute right-0 md:left-[50%] md:right-auto md:top-5 md:-translate-x-[50%]">
         <InstallButton />
@@ -274,8 +274,12 @@ const Login = () => {
                 </div>
                 <div>
                   <button
-                    // disabled={true}
-                    className="text-[0.8rem] font-bold text-[#5761eb] hover:cursor-pointer hover:underline hover:underline-offset-4"
+                    disabled={true}
+                    className={`text-[0.8rem] font-bold ${
+                      true
+                        ? 'text-gray-400'
+                        : 'text-[#5761eb] hover:cursor-pointer hover:underline hover:underline-offset-4'
+                    }`}
                     onClick={(e) => {
                       e.preventDefault();
                       testToast();
@@ -307,12 +311,17 @@ const Login = () => {
                 </span>
               </div>
             </div>
-            <div className="flex w-full justify-between gap-4">
+            <div className="flex w-full justify-center gap-4">
               {LoginButton.map((item) => (
                 <button
                   key={item.id}
                   disabled={loginLoading}
-                  onClick={() => {
+                  onClick={(e) => {
+                    if (item.title != 'google') {
+                      e.preventDefault();
+                      testToast();
+                      return;
+                    }
                     openNewWindowWithoutDuplicate(windowReference, item.link);
                   }}
                   className="flex h-[4rem] w-1/3 cursor-pointer flex-col justify-center md:h-[5rem]"
@@ -343,7 +352,6 @@ const Login = () => {
           </div>
         </div>
       </div>
-      {/* <PushNotificationButtonV2 /> */}
     </div>
   );
 };
