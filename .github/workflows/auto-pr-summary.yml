@@ -25,6 +25,7 @@ jobs:
       - name: Get commit SHAs in PR
         run: |
           git log --pretty=format:"%H" origin/${{ github.base_ref }}..origin/${{ github.head_ref }} > commits.txt
+          echo >> commits.txt  # ✅ 마지막 줄 개행 추가
           echo "✅ commits.txt 내용:"
           cat commits.txt
 
