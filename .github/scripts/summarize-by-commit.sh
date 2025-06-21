@@ -35,10 +35,13 @@ EOF
       "model": "gpt-4o",
       "messages": [
         { "role": "system", "content": "당신은 친절한 한국어 기술 요약 작성자입니다." },
-        { "role": "user", "content": "'"${PROMPT//$'\n'/\\n}"'" }
-      ],
+        {
+        "role": "user",
+        "content": "다음은 커밋 메시지와 코드 변경 내용입니다. 한국어로 간결한 요약을 작성해주세요.\n\n커밋 메시지:\nfix: 버튼 클릭 시 오류 수정\n\n변경 내용:\n```diff\n- const active = false;\n+ const active = true;\n```"
+        }],
       "temperature": 0.3
     }')
+
   echo "🔍 GPT 응답 원본:"  
   echo "$RESPONSE"
   CONTENT=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // empty')
