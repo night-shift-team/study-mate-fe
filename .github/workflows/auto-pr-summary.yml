@@ -1,0 +1,59 @@
+name: Summarize PR by Commit (GPT-4o)
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  summarize-by-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch base branch
+        run: |
+          git fetch --unshallow || true
+          git fetch origin ${{ github.base_ref }}
+          git fetch origin ${{ github.head_ref }}
+
+      - name: Get commit SHAs in PR
+        run: |
+          git log --pretty=format:"%H" origin/${{ github.base_ref }}..origin/${{ github.head_ref }} > commits.txt
+          echo "✅ commits.txt 내용:"
+          cat commits.txt
+
+      - name: Summarize commits via GPT-4o script
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          chmod +x .github/scripts/summarize-by-commit.sh
+          .github/scripts/summarize-by-commit.sh
+
+      - name: Post summary as PR comment
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body-path: summary.md
+
+      - name: Update PR body with GPT summary
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          SUMMARY=$(cat summary.md)
+
+          # JSON-safe 문자열로 변환
+          BODY_JSON=$(jq -n --arg body "$SUMMARY" '{ body: $body }')
+
+          PR_URL="${{ github.event.pull_request.url }}"
+
+          curl -s -X PATCH "$PR_URL" \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$BODY_JSON"
