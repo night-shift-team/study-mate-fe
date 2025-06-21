@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   checkDuplicateEmailApi,
   checkDuplicateNicknameApi,
@@ -15,6 +15,7 @@ import useToast, { ToastType } from '@/shared/toast/toast';
 import useTooltip from '@/feature/tooltip/tooltipController';
 import { TooltipContents } from '@/state/tooltip/tooltipContents';
 import { PopupConfirm } from '@/shared/popUp/ui/popupV2';
+import tooltipMountHook from '@/feature/tooltip/tooltipMount';
 
 export interface SignUpFormData {
   name: string;
@@ -45,6 +46,7 @@ const SignUp = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
   const signUpPopupRef = useRef<HTMLElement>(null);
+  const { setMountTooltip } = tooltipMountHook();
 
   const router = useRouter();
 
@@ -149,6 +151,22 @@ const SignUp = () => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    setMountTooltip(nameRef.current as HTMLElement, TooltipContents.TypingName);
+    setMountTooltip(
+      emailRef.current as HTMLElement,
+      TooltipContents.TypingEmail
+    );
+    setMountTooltip(
+      passwordRef.current as HTMLElement,
+      TooltipContents.TypingPassword
+    );
+    setMountTooltip(
+      confirmPasswordRef.current as HTMLElement,
+      TooltipContents.TypingConfirmPassword
+    );
+  }, []);
 
   return (
     <div className="relative flex h-full w-full items-center justify-center p-4">
