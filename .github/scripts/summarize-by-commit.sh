@@ -57,13 +57,13 @@ CONTENT=$(echo "$RESPONSE" | jq -r '.choices[0].message.content')
 echo "✅ $SHORT_HASH 응답 수신됨"
 echo -e "▶︎ 요약 내용:\n$CONTENT"
 
-SUMMARY_TITLE=$(echo "$CONTENT" | sed -n 's/^### 🧾 \(.*\) \[\`.*\`\](.*)/\1/p')
+SUMMARY_TITLE=$(echo "$CONTENT" | sed -n 's/^### 🧾 //p' | head -n1)
 SUMMARY_BODY=$(echo "$CONTENT" | sed -n 's/^### 🧾.*//p;/^- /p')
 
 echo "### 🧾 $SUMMARY_TITLE [\`$SHORT_HASH\`]($REPO_URL/commit/$COMMIT_HASH)" >> summary.md
 echo "$SUMMARY_BODY" >> summary.md
 echo "" >> summary.md
-  echo "" >> summary.md
+echo "" >> summary.md
 done < commits.txt
 
 echo "📄 summary.md 작성 완료"
