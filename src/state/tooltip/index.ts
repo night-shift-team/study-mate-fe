@@ -1,10 +1,12 @@
 // stores/tippyStore.ts
+import { Instance, Props } from 'tippy.js';
 import { create } from 'zustand';
 
 interface TippyStore {
-  tippyInstances: Map<HTMLElement, any>; // Map으로 변경하여 특정 DOM 요소와 연결
+  tippyInstances: Map<HTMLElement, Instance<Props>>; // Map으로 변경하여 특정 DOM 요소와 연결
   setTippyInstance: (element: HTMLElement, instance: any) => void;
-  clearTippyInstances: () => void;
+  clearAllTippyInstances: () => void;
+  clearTargetTippyInstances: (element: HTMLElement) => void;
 }
 
 export const tippyStore = create<TippyStore>((set) => ({
@@ -15,5 +17,12 @@ export const tippyStore = create<TippyStore>((set) => ({
       newMap.set(element, instance);
       return { tippyInstances: newMap };
     }),
-  clearTippyInstances: () => set({ tippyInstances: new Map() }),
+  clearAllTippyInstances: () => set({ tippyInstances: new Map() }),
+  clearTargetTippyInstances: (element: HTMLElement) => {
+    set((state) => {
+      const currentTippyInstances = new Map(state.tippyInstances);
+      currentTippyInstances.delete(element);
+      return { tippyInstances: currentTippyInstances };
+    });
+  },
 }));
