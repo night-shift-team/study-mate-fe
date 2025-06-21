@@ -17,7 +17,7 @@ while read COMMIT_HASH; do
   PROMPT="다음은 하나의 커밋에 대한 정보입니다. 커밋 메시지는 참고용일 뿐이며, 변경된 코드(diff)를 바탕으로 명확하게 어떤 기능이 어떻게 바뀌었는지를 한국어로 요약해주세요.
 
 형식:
-### 🧾 [제목] [커밋ID]
+### 🧾 [제목]
 - 주요 변경사항 1
 - 주요 변경사항 2 (필요 시)
 
@@ -57,7 +57,7 @@ CONTENT=$(echo "$RESPONSE" | jq -r '.choices[0].message.content')
 echo "✅ $SHORT_HASH 응답 수신됨"
 echo -e "▶︎ 요약 내용:\n$CONTENT"
 
-SUMMARY_TITLE=$(echo "$CONTENT" | grep '^### 🧾' | sed 's/^### 🧾 //;s/ \[[^]]*\]$//')
+SUMMARY_TITLE=$(echo "$CONTENT" | grep '^### 🧾' | sed 's/^### 🧾 //')
 SUMMARY_LINK="$REPO_URL/commit/$COMMIT_HASH"
 SUMMARY_BODY=$(echo "$CONTENT" | sed -n 's/^### 🧾.*//p;/^- /p')
 
