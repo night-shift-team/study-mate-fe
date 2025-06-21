@@ -39,14 +39,23 @@ EOF
       ],
       "temperature": 0.3
     }')
+  echo "🔍 GPT 응답 원본:"  
+  echo "$RESPONSE"
+  CONTENT=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // empty')
 
-  SUMMARY_TITLE=$(echo "$RESPONSE" | jq -r '.choices[0].message.content' | grep '^제목:' | sed 's/제목:[ ]*//')
-  SUMMARY_BODY=$(echo "$RESPONSE" | jq -r '.choices[0].message.content' | sed -n '/^주요 변경사항:/,$p' | tail -n +2)
+  if [ -z "$CONTENT" ]; then
+    echo "❗ GPT 응답이 비어 있거나 실패했습니다. summary.md 작성 스킵."
+    continue  # 이 커밋은 건너뜀
+  fi
+
+  SUMMARY_TITLE=$(echo "$CONTENT" | grep '^제목:' | sed 's/제목:[ ]*//')
+  SUMMARY_BODY=$(echo "$CONTENT" | sed -n '/^주요 변경사항:/,$p' | tail -n +2)
 
   if [ -z "$SUMMARY_TITLE" ]; then
-    echo "❗ 요약 제목이 비어있습니다. GPT 응답 문제 가능성 있음"
-    echo "GPT 전체 응답:"
-    echo "$RESPONSE"
+    echo "❗ 요약 제목이 없음 → GPT 프롬프트 형식이 예상과 다름"
+    echo "📦 전체 content:"
+    echo "$CONTENT"
+    continue
   fi
 
   echo "### 🧾 $SUMMARY_TITLE (\`$SHORT_HASH\`)" >> summary.md
