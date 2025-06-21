@@ -1,19 +1,25 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import {
-  getSolveStatsApi,
-  SolveStats,
-  SolveStatsResponse,
-} from '@/page/mypage/api';
+import React, { use, useEffect, useRef, useState } from 'react';
+import { getSolveStatsApi, SolveStats } from '@/page/mypage/api';
 import { Spinner } from '../spinner/ui/spinnerUI';
+import useTooltip from '../tooltip/tooltipController';
+
+import tooltipMountHook from '../tooltip/tooltipMount';
 
 const GrassChart = () => {
   const [stats, setStats] = useState<SolveStats[]>();
   const [mapStats, setMapStats] = useState<{ [key: string]: number }>();
 
   // const grassSize = 1;  잔디 크기 (1rem = h-4)
+  // const days = ['월', '화', '수', '목', '금', '토', '일'];
 
-  const days = ['월', '화', '수', '목', '금', '토', '일'];
+  const { setMountTooltip, clearTargetTippyInstances } = tooltipMountHook();
+  const { showTooltip, updateTooltip, hideTooltip } = useTooltip();
+  const [currentGrassMouseOver, setCurrentGrassMouseOver] =
+    useState<HTMLElement | null>(null);
+  const currentGrassDataRef = useRef<{ date: string; count: number } | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchSolveStats = async () => {
@@ -63,9 +69,6 @@ const GrassChart = () => {
     const getTargetMonth =
       new Date(Date.now() - minusDate.getTime()).getMonth() + 1;
     const getTargetDate = new Date(Date.now() - minusDate.getTime()).getDate();
-    console.log(
-      `-${weekCountByToday}주 : ${getTargetMonth}월 ${getTargetDate}일`
-    );
 
     // -n주가 월초인지 계산
     const isMonthStartWeek = () => {
@@ -152,7 +155,19 @@ const GrassChart = () => {
                               className={`aspect-1 h-4 rounded-sm transition-colors duration-100 hover:ring-1 hover:ring-gray-300 ${getColorBySolveCount(
                                 solveCount
                               )}`}
-                              title={`날짜: ${dateString}, 문제 풀이 수: ${solveCount}`}
+                              onMouseEnter={async (e) => {
+                                const target = e.currentTarget as HTMLElement;
+                                const tooltipText = `날짜: ${dateString} 갯수: ${solveCount}회`;
+                                const instance = setMountTooltip(
+                                  target,
+                                  tooltipText
+                                );
+                                instance.show();
+                              }}
+                              onMouseLeave={(e) => {
+                                hideTooltip(e.currentTarget as HTMLElement);
+                              }}
+                              title={`dateToolTip${weekIndex}-${dayIndex}`}
                             />
                           );
                         })}
