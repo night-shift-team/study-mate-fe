@@ -13,12 +13,11 @@ while read COMMIT_HASH; do
   SHORT_HASH=$(echo "$COMMIT_HASH" | cut -c1-7)
   COMMIT_MSG=$(git log -1 --pretty=format:"%s" "$COMMIT_HASH")
   COMMIT_DIFF=$(git show --no-color --pretty=format:"" "$COMMIT_HASH")
-  REPO_URL="https://github.com/${{ github.repository }}"
 
   PROMPT="다음은 하나의 커밋에 대한 정보입니다. 커밋 메시지는 참고용일 뿐이며, 변경된 코드(diff)를 바탕으로 명확하게 어떤 기능이 어떻게 바뀌었는지를 한국어로 요약해주세요.
 
 형식:
-### 🧾 ${SUMMARY_TITLE} [\`${SHORT_HASH}\`](${REPO_URL}/commit/${COMMIT_HASH})
+### 🧾 [제목] ([\`커밋 ID\`](GitHub 커밋 링크로 연결))
 - 주요 변경사항 1
 - 주요 변경사항 2 (필요 시)
 
@@ -57,10 +56,12 @@ $COMMIT_DIFF
 CONTENT=$(echo "$RESPONSE" | jq -r '.choices[0].message.content')
 echo "✅ $SHORT_HASH 응답 수신됨"
 echo "▶︎ 요약 내용:\n$CONTENT"
+
 SUMMARY_TITLE=$(echo "$CONTENT" | grep '^### 🧾' | sed 's/^### 🧾 //;s/ (`.*//')
 SUMMARY_BODY=$(echo "$CONTENT" | sed -n 's/^### 🧾.*//p;/^- /p')
 
-echo "### 🧾 $SUMMARY_TITLE (\`$SHORT_HASH\`)" >> summary.md
+# echo "### 🧾 $SUMMARY_TITLE (\`$SHORT_HASH\`)" >> summary.md
+echo "### 🧾 $SUMMARY_TITLE [\`$SHORT_HASH\`](${REPO_URL}/commit/${COMMIT_HASH})" >> summary.md
 echo "$SUMMARY_BODY" >> summary.md
 echo "" >> summary.md
   echo "" >> summary.md

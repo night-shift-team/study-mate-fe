@@ -32,6 +32,7 @@ jobs:
       - name: Summarize commits via GPT-4o script
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          REPO_URL: https://github.com/${{ github.repository }}
         run: |
           chmod +x .github/scripts/summarize-by-commit.sh
           .github/scripts/summarize-by-commit.sh
