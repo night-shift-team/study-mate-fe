@@ -8,12 +8,18 @@ interface ItemProps {
   isCorrectAnswer: boolean;
   onClick: (index: number, userAnswer: string | null) => void;
   userAnswer?: string | null;
+  title?: string;
 }
 
-const Item: React.FC<ItemProps> = ({ index, isCorrectAnswer, onClick }) => {
+const Item: React.FC<ItemProps> = ({
+  index,
+  isCorrectAnswer,
+  title,
+  onClick,
+}) => {
   return (
     <div
-      className="flex h-[3rem] w-[100%] cursor-pointer items-center gap-2 rounded-lg border border-pointcolor-beigebrown bg-white shadow-lg md:h-auto"
+      className="flex h-[30px] w-[100%] cursor-pointer items-center gap-2 rounded-lg border bg-white shadow-lg"
       onClick={() => onClick(index, '2')} // 클릭 이벤트
     >
       <div className="w-8 pl-4">
@@ -32,6 +38,7 @@ const Item: React.FC<ItemProps> = ({ index, isCorrectAnswer, onClick }) => {
       </div>
       <span className="pl-2">문제</span>
       {index + 1}
+      <div>{title}</div>
     </div>
   );
 };

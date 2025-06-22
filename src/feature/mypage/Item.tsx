@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import Popup from './popup';
 import { PopupProblem } from '@/shared/popUp/ui/popupV2';
 import { getWithCache } from '@/entities/apiCacheHook';
+import { FaArrowRightLong } from 'react-icons/fa6';
 
 interface ItemProps {
   index: number;
@@ -73,25 +74,26 @@ export const QuestionItem: React.FC<ItemProps> = ({
 
   return (
     <>
-      <div
-        className="flex items-center justify-between gap-4 rounded-lg bg-white p-2 shadow-lg"
-        onClick={() => setIsPopupOpen(true)} // 팝업 열기
-      >
-        <span className="text-[1.5vh] font-semibold">
-          문제 {truncateText(questionTitle, 10)}
-        </span>
-        <p
-          className={`text-[1.8vh] ${
-            score < 0 ? 'text-red-600' : 'text-green-600'
-          }`}
-        >
-          {score} 점
-        </p>
-        {isCorrectAnswer ? (
+      <div className="flex items-center justify-between gap-4 rounded-lg bg-white p-2 shadow-lg">
+        <div className="flex gap-5">
+          <span className="text-[1.5vh] font-semibold">
+            {truncateText(questionTitle, 40)}
+          </span>
+          <p className="text-[1.5vh] text-gray-500">난이도 : {score}</p>
+          {/* {isCorrectAnswer ? (
           <CircleCheck size={20} className="text-green-600" strokeWidth={2.5} />
         ) : (
           <CircleX size={20} className="text-red-600" strokeWidth={2.5} />
-        )}
+        )} */}
+        </div>
+
+        <button
+          onClick={() => setIsPopupOpen(true)}
+          className="flex items-center justify-center gap-5 rounded-xl bg-[#FEBA73] p-2 text-[1.5vh] text-white"
+        >
+          자세히 보기
+          <FaArrowRightLong />
+        </button>
       </div>
       {isPopupOpen && questionDetail && (
         <PopupProblem

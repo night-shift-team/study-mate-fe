@@ -7,6 +7,9 @@ import { Bookmark } from 'lucide-react';
 import { removeFavoriteApi } from '../api';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { ConfirmPopup } from './ConfirmPopup';
+import { ProblemCategoryTitle } from '@/shared/constants/problemInfo';
+import { getQuestionDetailApi } from '../api';
+import { getWithCache } from '@/entities/apiCacheHook';
 
 interface FavoriteListProps {
   favoriteList: QuestionFavoriteRes[];
@@ -47,9 +50,11 @@ export const Favorite = ({ favoriteList, title }: FavoriteListProps) => {
     null
   );
   const [isPending, startTransition] = useTransition();
+  const [solvedStatus, setSolvedStatus] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     setCurrentFavoriteList(favoriteList);
+    SearchQuestion();
   }, [favoriteList]);
 
   const handleClosePopup = () => {
@@ -100,30 +105,100 @@ export const Favorite = ({ favoriteList, title }: FavoriteListProps) => {
     setConfirmItem(null); // 삭제할 아이템 초기화
   };
 
+  const truncateText = (text: string, maxLength: number) => {
+    return text.length > maxLength ? `${text.slice(0, maxLength)}` : text;
+  };
+  const questionIds = currentFavoriteList.map((item) => item.questionId);
+
+  const SearchQuestion = async () => {
+    try {
+      const res = await Promise.all(
+        questionIds.map((id) => getQuestionDetailApi(id))
+      );
+      console.log('즐겨찾기 API 응답:', res);
+
+      // Do something with results if needed
+    } catch (error) {}
+  };
+
   return (
     <div className="animate-fade-up">
       {currentFavoriteList.length !== 0 ? (
         <div>
           <div className="flex flex-col items-center gap-5 overflow-auto bg-pointcolor-yogurt">
-            <div className="h-[30vh] w-full overflow-auto rounded-xl p-4 shadow-md scrollbar-hide">
-              <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-3">
-                {currentFavoriteList.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex max-h-[10rem] cursor-pointer justify-between rounded-lg bg-gray-100 p-2 shadow-sm transition hover:bg-gray-200"
-                    onClick={() => handleItemClick(item)}
-                  >
-                    <h3 className="truncate text-sm font-semibold">
-                      {item.questionTitle}
-                    </h3>
-                    <Bookmark
-                      size={28}
-                      color="bg-amber-300/80"
-                      fill="#FCD34D"
-                      onClick={(event) => handleBookmarkClick(event, item)}
-                    />
-                  </div>
-                ))}
+            <div className="h-[35vh] w-full overflow-auto rounded-xl p-4 shadow-md scrollbar-hide">
+              <div className="flex gap-2">
+                {currentFavoriteList.map((item, index) => {
+                  const categoryBgColors: Record<ProblemCategoryTitle, string> =
+                    {
+                      [ProblemCategoryTitle.ALGORITHUM]: 'bg-[#DDEDFB]',
+                      [ProblemCategoryTitle.NETWORK]: 'bg-[#EEDDFB]',
+                      [ProblemCategoryTitle.DB]: 'bg-[#E3F5E8]',
+                      [ProblemCategoryTitle.OS]: 'bg-[#FDDCDE]',
+                      [ProblemCategoryTitle.DESIGN]: 'bg-[#FFF5E1]',
+                    };
+                  const categoryTextColors: Record<
+                    ProblemCategoryTitle,
+                    string
+                  > = {
+                    [ProblemCategoryTitle.ALGORITHUM]: 'text-[#1E88E5]',
+                    [ProblemCategoryTitle.NETWORK]: 'text-[#8F1EE5]',
+                    [ProblemCategoryTitle.DB]: 'text-[#41B963]',
+                    [ProblemCategoryTitle.OS]: 'text-[#FF969C]',
+                    [ProblemCategoryTitle.DESIGN]: 'text-white',
+                  };
+
+                  const categoryKey = item.questionCategory.split(
+                    '_'
+                  )[0] as ProblemCategoryTitle;
+                  const bgColorClass =
+                    categoryBgColors[categoryKey] ?? 'bg-white';
+
+                  const textColorCss =
+                    categoryTextColors[categoryKey] ?? 'text-white';
+
+                  return (
+                    <div
+                      key={index}
+                      className="bg-whiteshadow- flex h-[180px] w-[320px] cursor-pointer flex-col rounded-lg bg-white shadow-lg transition"
+                    >
+                      <div className="flex h-[60px] w-full items-center justify-between">
+                        <div className="flex flex-col truncate pl-4 text-sm">
+                          <span className="font-semibold">
+                            {truncateText(item.questionTitle, 20)}
+                          </span>
+
+                          <span className="text-xs text-gray-400">
+                            스크랩 날짜
+                          </span>
+                        </div>
+                        <div
+                          className={`flex h-[32px] w-[100px] items-center justify-center rounded-l-lg text-xs ${textColorCss} font-medium ${bgColorClass}`}
+                        >
+                          {categoryKey}
+                        </div>
+                      </div>
+                      <div className="mt-2 flex flex-col gap-1 pl-4 text-xs">
+                        <span>난이도:{item.difficulty}</span>
+                        <span>풀이상태:</span>
+                      </div>
+                      {/* <Bookmark
+                        size={28}
+                        color="bg-amber-300/80"
+                        fill="#FCD34D"
+                        onClick={(event) => handleBookmarkClick(event, item)}
+                      /> */}
+                      <div className="w-ful mt-auto h-[30px]">
+                        <span
+                          onClick={() => handleItemClick(item)}
+                          className="flex justify-end pr-4 text-xs text-[#6E6E6E] underline"
+                        >
+                          자세히 보기
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>

@@ -144,7 +144,7 @@ export const SuggestionList = ({ list }: SuggestionListProps) => {
         </div>
       </div>
 
-      {/* ✅ 모바일 전용 카드 리스트 */}
+      {/*모바일 */}
       <div className="mt-5 block rounded-xl bg-white px-2 shadow-lg md:hidden">
         {paginatedSuggestions.map((item, index) => (
           <div
