@@ -189,6 +189,7 @@ const Mypage = () => {
               <Spinner size="md" />
             ) : (
               <Favorite
+                questionHistory={questionHistory}
                 title=""
                 favoriteList={favoriteList}
                 setPopupProblemDetail={setPopupProblemDetail}

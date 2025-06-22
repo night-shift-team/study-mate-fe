@@ -20,6 +20,17 @@ interface FavoriteListProps {
   >;
   isPopupOpen: boolean;
   setIsPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  questionHistory: QuestionHistory[];
+}
+interface QuestionHistory {
+  historyId: number;
+  questionTitle: string;
+  questionId: string;
+  userId: string;
+  userAnswer: string;
+  score: number;
+  isCorrect: boolean;
+  questionType: string;
 }
 
 // AlertPopup 컴포넌트 정의
@@ -49,6 +60,7 @@ export const Favorite = ({
   setPopupProblemDetail,
   isPopupOpen,
   setIsPopupOpen,
+  questionHistory,
 }: FavoriteListProps) => {
   const [currentFavoriteList, setCurrentFavoriteList] = useState([
     ...favoriteList,
@@ -63,7 +75,6 @@ export const Favorite = ({
 
   useEffect(() => {
     setCurrentFavoriteList(favoriteList);
-    SearchQuestion();
   }, [favoriteList]);
 
   const handleClosePopup = () => {
@@ -117,6 +128,8 @@ export const Favorite = ({
     });
   };
 
+  console.log('0000000', questionHistory);
+
   const handleCancelRemoval = () => {
     setIsConfirmOpen(false); // ConfirmPopup 닫기
     setConfirmItem(null); // 삭제할 아이템 초기화
@@ -125,26 +138,14 @@ export const Favorite = ({
   const truncateText = (text: string, maxLength: number) => {
     return text.length > maxLength ? `${text.slice(0, maxLength)}` : text;
   };
-  const questionIds = currentFavoriteList.map((item) => item.questionId);
-
-  const SearchQuestion = async () => {
-    try {
-      const res = await Promise.all(
-        questionIds.map((id) => getQuestionDetailApi(id))
-      );
-      console.log('즐겨찾기 API 응답:', res);
-
-      // Do something with results if needed
-    } catch (error) {}
-  };
 
   return (
     <div className="animate-fade-up">
       {currentFavoriteList.length !== 0 ? (
         <div>
           <div className="flex flex-col items-center gap-5 overflow-auto bg-pointcolor-yogurt">
-            <div className="h-[35vh] w-full overflow-auto rounded-xl p-4 shadow-md scrollbar-hide">
-              <div className="flex gap-2">
+            <div className="h-[30vh] w-full overflow-auto rounded-xl scrollbar-hide">
+              <div className="flex w-full gap-3 overflow-x-auto px-4 pb-2">
                 {currentFavoriteList.map((item, index) => {
                   const categoryBgColors: Record<ProblemCategoryTitle, string> =
                     {
@@ -174,10 +175,20 @@ export const Favorite = ({
                   const textColorCss =
                     categoryTextColors[categoryKey] ?? 'text-white';
 
+                  const history = questionHistory.find(
+                    (h) => h.questionId === item.questionId
+                  );
+                  const solveStatus =
+                    history?.isCorrect === true
+                      ? '완료'
+                      : history
+                        ? '미완료'
+                        : '-';
+
                   return (
                     <div
                       key={index}
-                      className="bg-whiteshadow- flex h-[180px] w-[320px] cursor-pointer flex-col rounded-lg bg-white shadow-lg transition"
+                      className="bg-whiteshadow flex h-[180px] w-[330px] flex-col rounded-lg bg-white shadow-lg transition"
                     >
                       <div className="flex h-[60px] w-full items-center justify-between">
                         <div className="flex flex-col truncate pl-4 text-sm">
@@ -197,7 +208,7 @@ export const Favorite = ({
                       </div>
                       <div className="mt-2 flex flex-col gap-1 pl-4 text-xs">
                         <span>난이도:{item.difficulty}</span>
-                        <span>풀이상태:</span>
+                        <span>풀이상태: {solveStatus}</span>
                       </div>
                       {/* <Bookmark
                         size={28}

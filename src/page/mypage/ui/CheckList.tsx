@@ -4,8 +4,7 @@ import { ProblemCategoryTitle } from '@/shared/constants/problemInfo';
 import React, { useEffect, useRef, useState } from 'react';
 import { getCategoriesIcon } from '@/page/solve/model/getCategoryIcons';
 import { QuestionItem } from '@/feature/mypage/Item';
-import { getQuestionDetailApi } from '../api';
-
+import { MobileCheckList } from './MobileCheckList';
 interface QuestionHistory {
   historyId: number;
   questionTitle: string;
@@ -104,7 +103,7 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
     <>
       <div className="flex flex-col items-center overflow-auto bg-pointcolor-yogurt">
         <div className="w-[100%] overflow-auto scrollbar-hide">
-          <div className="grid lg:grid-cols-4">
+          <div className="flex">
             {TempCategories.map((category, index) => {
               const categoryBgColors: Record<ProblemCategoryTitle, string> = {
                 [ProblemCategoryTitle.ALGORITHUM]: 'bg-[#DDEDFB]',
@@ -119,7 +118,7 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
                 <div
                   key={index}
                   onClick={() => setSelectedCategory(category.title)}
-                  className={`flex h-[3rem] cursor-pointer flex-col items-center justify-center rounded-tr-2xl px-4 pt-2.5 md:p-4 ${bgColorClass}`}
+                  className={`hidden h-[3rem] w-[150px] cursor-pointer flex-col items-center justify-center rounded-tr-2xl px-4 pt-2.5 md:flex md:p-4 ${bgColorClass}`}
                 >
                   <div className="flex h-[3rem] justify-center">
                     {/* <div className="itmes-center relative flex aspect-1 h-full items-center justify-center">
@@ -143,10 +142,29 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
               );
             })}
           </div>
+          <div className="mt-5 grid grid-cols-2 gap-6 md:hidden">
+            {TempCategories.map((category, index) => {
+              const categoryBgColors: Record<ProblemCategoryTitle, string> = {
+                [ProblemCategoryTitle.ALGORITHUM]: 'bg-[#DDEDFB]',
+                [ProblemCategoryTitle.NETWORK]: 'bg-[#EEDDFB]',
+                [ProblemCategoryTitle.DB]: 'bg-[#E3F5E8]',
+                [ProblemCategoryTitle.OS]: 'bg-[#FDDCDE]',
+                [ProblemCategoryTitle.DESIGN]: 'bg-[#FFF5E1]', // Added DESIGN category
+              };
+              const bgColorClass =
+                categoryBgColors[category.title] ?? 'bg-white';
+              return (
+                <div key={index}>
+                  <MobileCheckList bg={bgColorClass} title={category.title} />
+                </div>
+              );
+            })}
+          </div>
+
           {selectedCategory && (
             <div
               ref={resultContainerRef}
-              className={`h-[30vh] w-[100%] overflow-auto ${
+              className={`hidden h-[30vh] w-[100%] overflow-auto md:flex ${
                 {
                   [ProblemCategoryTitle.ALGORITHUM]: 'bg-[#DDEDFB]',
                   [ProblemCategoryTitle.NETWORK]: 'bg-[#EEDDFB]',
