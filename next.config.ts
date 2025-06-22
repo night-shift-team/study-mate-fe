@@ -55,6 +55,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'encrypted-tbn0.gstatic.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'study-mate-s3.s3.ap-northeast-2.amazonaws.com',
+      },
     ],
   },
 };

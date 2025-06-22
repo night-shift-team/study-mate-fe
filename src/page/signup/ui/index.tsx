@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   checkDuplicateEmailApi,
   checkDuplicateNicknameApi,
@@ -14,6 +14,8 @@ import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import useToast, { ToastType } from '@/shared/toast/toast';
 import useTooltip from '@/feature/tooltip/tooltipController';
 import { TooltipContents } from '@/state/tooltip/tooltipContents';
+import { PopupConfirm } from '@/shared/popUp/ui/popupV2';
+import tooltipMountHook from '@/feature/tooltip/tooltipMount';
 
 export interface SignUpFormData {
   name: string;
@@ -38,11 +40,13 @@ const SignUp = () => {
   const { showTooltip, updateTooltip, hideTooltip } = useTooltip();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [popupOpen, setPopupOpen] = useState(false);
+  const [popupOpen, setPopupOpen] = useState(true);
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
+  const signUpPopupRef = useRef<HTMLElement>(null);
+  const { setMountTooltip } = tooltipMountHook();
 
   const router = useRouter();
 
@@ -148,19 +152,33 @@ const SignUp = () => {
     }
   };
 
+  useEffect(() => {
+    setMountTooltip(nameRef.current as HTMLElement, TooltipContents.TypingName);
+    setMountTooltip(
+      emailRef.current as HTMLElement,
+      TooltipContents.TypingEmail
+    );
+    setMountTooltip(
+      passwordRef.current as HTMLElement,
+      TooltipContents.TypingPassword
+    );
+    setMountTooltip(
+      confirmPasswordRef.current as HTMLElement,
+      TooltipContents.TypingConfirmPassword
+    );
+  }, []);
+
   return (
     <div className="relative flex h-full w-full items-center justify-center p-4">
       <Toaster />
       {popupOpen && (
-        <DialogPopup
-          open={popupOpen}
-          setDialogOpen={() => setPopupOpen(false)}
+        <PopupConfirm
+          size="sm"
           title="회원가입"
-          description="회원가입이 정상적으로 완료되었습니다"
-          execFunc={() => {
-            router.push(RouteTo.Home);
+          content="회원가입이 정상적으로 완료되었습니다"
+          onConfirm={() => {
+            router.push(RouteTo.Login);
           }}
-          disableX={true}
         />
       )}
       <div className="flex w-full max-w-[550px] flex-col justify-center gap-8 rounded-[1rem] bg-white p-4 shadow-lg md:p-8">
