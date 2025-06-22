@@ -25,6 +25,7 @@ import InstallButton from '@/app/install-button';
 import useTooltip from '@/feature/tooltip/tooltipController';
 import { TooltipContents } from '@/state/tooltip/tooltipContents';
 import { openNewWindowWithoutDuplicate } from '@/shared/window/model/openWindow';
+import tooltipMountHook from '@/feature/tooltip/tooltipMount';
 
 const Login = () => {
   const router = useRouter();
@@ -37,7 +38,7 @@ const Login = () => {
 
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
-
+  const { setMountTooltip } = tooltipMountHook();
   const { Toaster, setToastIcon, setToastDescription } = useToast(
     toastOpen,
     setToastOpen
@@ -158,6 +159,17 @@ const Login = () => {
   }, [loginLoading]);
 
   useEffect(() => {
+    // 툴팁 마운트
+    setMountTooltip(
+      emailInputRef.current as HTMLElement,
+      TooltipContents.TypingEmail
+    );
+    setMountTooltip(
+      passwordInputRef.current as HTMLElement,
+      TooltipContents.TypingPassword
+    );
+
+    // 로그인 폼 enter 리스너
     const form = document.getElementById('loginForm') as HTMLFormElement | null;
     if (!form) return;
     const formEnterListener = (e: KeyboardEvent) => {

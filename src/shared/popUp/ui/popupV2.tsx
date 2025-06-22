@@ -12,16 +12,28 @@ import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
 // 1. sm, md, lg
 
 type Size = 'sm' | 'md' | 'lg';
-const getSize = (size: Size): string => {
+const getWidthSize = (size: Size): string => {
   switch (size) {
     case 'sm':
-      return 'max-w-[20rem] min-h-[20rem]';
+      return 'max-w-[20rem]';
     case 'md':
-      return 'max-w-[40rem] min-h-[20rem]';
+      return 'max-w-[40rem]';
     case 'lg':
-      return 'max-w-[60rem] min-h-[40rem]';
+      return 'max-w-[60rem]';
     default:
-      return 'max-w-[40rem] min-h-[20rem]';
+      return 'max-w-[40rem]';
+  }
+};
+const getHeightSize = (size: Size): string => {
+  switch (size) {
+    case 'sm':
+      return 'min-h-[20rem]';
+    case 'md':
+      return 'min-h-[20rem]';
+    case 'lg':
+      return 'min-h-[40rem]';
+    default:
+      return 'min-h-[20rem]';
   }
 };
 
@@ -47,7 +59,7 @@ export const PopupProblem: React.FC<PopupWithProblemProps> = ({
   userAnswer,
 }) => {
   return (
-    <PopupContainer size={size ?? 'md'}>
+    <PopupContainer size={size ?? 'md'} height>
       {/* 헤더 */}
       <PopupHeader>
         <div className="flex w-[80%] flex-col text-[2vh] font-semibold text-gray-800">
@@ -180,17 +192,19 @@ const PopupContainer = ({
   children,
   ref,
   color = '#ffffff',
+  height = false,
 }: {
   size: Size;
   children: React.ReactNode;
   ref?: React.RefObject<HTMLElement | null>;
   color?: string;
+  height?: boolean;
 }) => {
   return (
-    <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black bg-opacity-60 p-4 backdrop-blur-sm transition-opacity duration-300">
+    <div className="fixed inset-0 z-[50000] flex items-center justify-center bg-black bg-opacity-60 p-4 backdrop-blur-sm transition-opacity duration-300">
       <div
         ref={ref as React.RefObject<HTMLDivElement>}
-        className={`flex w-full flex-col ${getSize(size)} h-full max-h-[90vh] transform rounded-2xl p-6 shadow-2xl transition-transform duration-300 scrollbar-hide`}
+        className={`flex w-full flex-col ${getWidthSize(size)} ${height ? getHeightSize(size) : ''} h-auto max-h-[90vh] transform rounded-2xl p-6 shadow-2xl transition-transform duration-300 scrollbar-hide`}
         style={{ backgroundColor: color }}
       >
         {children}

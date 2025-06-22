@@ -7,6 +7,7 @@ import {
   getValidNoticeListApi,
   GetValidnoticeListRes,
   Notice,
+  NoticeCategory,
 } from '@/feature/notice/api';
 import { getNoticeList } from '../model/getNoticeList';
 import Link from 'next/link';
@@ -26,10 +27,16 @@ export const NoticeComponent = () => {
       if (res.ok) {
         const noticeList = (res.payload as GetValidnoticeListRes)
           .displayNotices;
-        setNoticeList(noticeList.sort((a, b) => a.noticeId - b.noticeId));
+        const sortedNoticeList = noticeList.sort(
+          (a, b) => a.noticeId - b.noticeId
+        );
+        setNoticeList(sortedNoticeList);
+        return sortedNoticeList;
       }
+      return [] as Notice[];
     } catch (e) {
       console.log(e);
+      return [] as Notice[];
     }
   };
 
@@ -38,7 +45,28 @@ export const NoticeComponent = () => {
       sessionStorage.getItem('validNoticeList');
 
     if (!noticeListString && noticeList.length === 0) {
-      getValidNoticeList();
+      getValidNoticeList().then((sortedNoticeList) => {
+        // 임시 노티스 데이터 추가
+        if (!sortedNoticeList.length) {
+          const tempNotice: Notice[] = [
+            {
+              noticeId: 0,
+              noticeTitle: '환영합니다',
+              noticeContent:
+                'StudyMate에 오신 것을 환영합니다! 다양한 문제를 풀고, 레벨 테스트를 통해 자신의 실력을 확인해보세요.',
+              noticeCategory: NoticeCategory.GENERAL,
+              noticePurpose: 'WELCOME',
+              pulbisherName: 'system',
+              backgroundImage: '',
+              displayStartTime: '',
+              displayEndTime: '',
+              maintenanceStartTime: '',
+              maintenanceEndTime: '',
+            },
+          ];
+          setNoticeList(tempNotice);
+        }
+      });
     }
 
     if (noticeListString && noticeList.length === 0) {

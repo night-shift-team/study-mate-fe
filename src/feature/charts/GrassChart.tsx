@@ -1,17 +1,25 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import {
-  getSolveStatsApi,
-  SolveStats,
-  SolveStatsResponse,
-} from '@/page/mypage/api';
+import React, { use, useEffect, useRef, useState } from 'react';
+import { getSolveStatsApi, SolveStats } from '@/page/mypage/api';
 import { Spinner } from '../spinner/ui/spinnerUI';
+import useTooltip from '../tooltip/tooltipController';
+
+import tooltipMountHook from '../tooltip/tooltipMount';
 
 const GrassChart = () => {
   const [stats, setStats] = useState<SolveStats[]>();
   const [mapStats, setMapStats] = useState<{ [key: string]: number }>();
 
-  const days = ['월', '화', '수', '목', '금', '토', '일'];
+  // const grassSize = 1;  잔디 크기 (1rem = h-4)
+  // const days = ['월', '화', '수', '목', '금', '토', '일'];
+
+  const { setMountTooltip, clearTargetTippyInstances } = tooltipMountHook();
+  const { showTooltip, updateTooltip, hideTooltip } = useTooltip();
+  const [currentGrassMouseOver, setCurrentGrassMouseOver] =
+    useState<HTMLElement | null>(null);
+  const currentGrassDataRef = useRef<{ date: string; count: number } | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchSolveStats = async () => {
@@ -52,27 +60,28 @@ const GrassChart = () => {
     return now.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 반환
   };
 
-  const getMonthLabels = (startDate: string) => {
-    const labels: { [key: string]: string } = {};
-    const start = new Date(startDate);
-    const end = new Date();
-    const current = new Date(start);
+  const getMonthLabels = (weekCountByToday: number) => {
+    // 월초에 해당하는 주에만 월 표기
 
-    while (current <= end) {
-      if (current.getDate() === 1) {
-        const weekIndex = Math.floor(
-          (current.getTime() - start.getTime()) / (1000 * 60 * 60 * 24 * 7)
-        );
-        labels[weekIndex] = `${current.getMonth() + 1}월`;
+    const minusDate = new Date(weekCountByToday * 7 * 24 * 60 * 60 * 1000); // n * 7일
+
+    // -n주가 몇월, 몇일인지 계산
+    const getTargetMonth =
+      new Date(Date.now() - minusDate.getTime()).getMonth() + 1;
+    const getTargetDate = new Date(Date.now() - minusDate.getTime()).getDate();
+
+    // -n주가 월초인지 계산
+    const isMonthStartWeek = () => {
+      if (getTargetDate >= 1 && getTargetDate <= 7) {
+        return true;
       }
-      current.setDate(current.getDate() + 1);
+      return false;
+    };
+    if (isMonthStartWeek()) {
+      return String(getTargetMonth) + '월';
     }
-
-    return labels;
+    return '';
   };
-
-  const oneYearAgo = getOneYearAgoDate();
-  const monthLabels = getMonthLabels(oneYearAgo);
 
   useEffect(() => {
     if (stats) {
@@ -86,19 +95,22 @@ const GrassChart = () => {
         <div className="w-[100%] max-w-[1200px] animate-fade-up overflow-x-auto rounded-xl p-2 scrollbar-hide">
           <div className="min-w-[780px]">
             <div className="flex">
-              {/* 왼쪽 여백 */}
-              <div className="w-8" />
-
               {/* 동적 월 표시 */}
-              <div className="mb-2 flex flex-1 text-xs text-gray-600">
+              <div
+                className={`mb-2 ml-6 flex gap-[0.1rem] text-xs text-gray-600 md:gap-[0.2rem]`}
+              >
                 {Array(53) // 53주 기준
                   .fill(0)
                   .map((_, weekIndex) => (
                     <div
                       key={weekIndex}
-                      className="flex-1 text-nowrap text-center"
+                      className={`relative aspect-1 h-4 text-nowrap text-center`}
                     >
-                      {monthLabels[weekIndex] || ''}
+                      <span
+                        className={`absolute ${getMonthLabels(weekIndex).length >= 3 ? '-left-1' : 'left-0'}`}
+                      >
+                        {getMonthLabels(weekIndex)}
+                      </span>
                     </div>
                   ))}
               </div>
@@ -106,28 +118,28 @@ const GrassChart = () => {
 
             <div className="flex">
               {/* 요일 표시 */}
-              <div className="flex w-8 flex-col justify-around text-xs text-gray-600">
-                {days.map((day, index) => (
+              <div className="flex h-auto w-6 shrink-0 flex-col justify-between pr-1 text-xs text-gray-600">
+                {/* {days.map((day, index) => (
                   <div key={index} className="h-3 pr-2 text-right">
                     {index % 2 === 0 ? day : ''}{' '}
-                    {/* 격일로 표시하여 공간 확보 */}
                   </div>
-                ))}
+                ))} */}
+                <span className="text-nowrap">오늘</span>
               </div>
 
               {/* 잔디 그리드 */}
-              <div className="flex flex-1 justify-between gap-[0.5vh]">
+              <div className="flex gap-[0.2rem]">
                 {Array(53) // 53주를 기준으로 생성
                   .fill(0)
                   .map((_, weekIndex) => (
-                    <div key={weekIndex} className="flex flex-col gap-[0.5vh]">
+                    <div key={weekIndex} className="flex flex-col gap-[0.2rem]">
                       {Array(7) // 7일을 기준으로 생성
                         .fill(0)
                         .map((_, dayIndex) => {
                           // 현재 날짜 계산
-                          const currentDate = new Date(oneYearAgo);
+                          const currentDate = new Date(Date.now());
                           currentDate.setDate(
-                            currentDate.getDate() + weekIndex * 7 + dayIndex
+                            currentDate.getDate() - weekIndex * 7 - dayIndex
                           );
 
                           const dateString = currentDate
@@ -140,10 +152,22 @@ const GrassChart = () => {
                           return (
                             <div
                               key={dayIndex}
-                              className={`aspect-1 h-[1.7vh] rounded-sm transition-colors duration-100 hover:ring-1 hover:ring-gray-300 ${getColorBySolveCount(
+                              className={`aspect-1 h-4 rounded-sm transition-colors duration-100 hover:ring-1 hover:ring-gray-300 ${getColorBySolveCount(
                                 solveCount
                               )}`}
-                              title={`날짜: ${dateString}, 문제 풀이 수: ${solveCount}`}
+                              onMouseEnter={async (e) => {
+                                const target = e.currentTarget as HTMLElement;
+                                const tooltipText = `날짜: ${dateString} 갯수: ${solveCount}회`;
+                                const instance = setMountTooltip(
+                                  target,
+                                  tooltipText
+                                );
+                                instance.show();
+                              }}
+                              onMouseLeave={(e) => {
+                                hideTooltip(e.currentTarget as HTMLElement);
+                              }}
+                              title={`dateToolTip${weekIndex}-${dayIndex}`}
                             />
                           );
                         })}
@@ -153,7 +177,7 @@ const GrassChart = () => {
             </div>
 
             {/* 범례 */}
-            <div className="mt-4 flex items-center gap-2 text-xs text-gray-600 md:justify-end">
+            <div className="mt-4 flex items-center gap-2 text-xs text-gray-600">
               <span>활동량:</span>
               <div className="flex items-center gap-1">
                 <div className="h-3 w-3 rounded-sm bg-[#ebedf0]" title="0" />

@@ -29,6 +29,9 @@ import {
   Universe_IMG,
 } from '../model/img';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import { Problem } from '@/page/adminProblem';
+import { ProblemDetailInfoRes } from '@/page/adminProblem/api';
+import { PopupProblem } from '@/shared/popUp/ui/popupV2';
 
 const Mypage = () => {
   const [questionHistory, setQuestionHistory] = useState<any[]>([]);
@@ -36,6 +39,9 @@ const Mypage = () => {
   const [myRanking, setMyRanking] = useState<number>();
   const [totalElements, setTotalElements] = useState<number>();
   const [favoriteList, setFavoriteList] = useState<QuestionFavoriteRes[]>();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [popUpProblemDetail, setPopupProblemDetail] =
+    useState<ProblemDetailInfoRes | null>(null);
 
   useEffect(() => {
     userRanking();
@@ -140,6 +146,17 @@ const Mypage = () => {
   console.log('---', myRanking, totalElements, favoriteList);
   return (
     <div className="z-1 h-full w-full overflow-y-auto scrollbar-hide md:w-[85%]">
+      {isPopupOpen && popUpProblemDetail && (
+        <PopupProblem
+          size="md"
+          questionTitle={popUpProblemDetail.questionTitle}
+          difficulty={popUpProblemDetail.difficulty}
+          content={popUpProblemDetail.content}
+          answer={popUpProblemDetail.answer}
+          explanation={popUpProblemDetail.answerExplanation}
+          onClose={() => setIsPopupOpen(false)}
+        />
+      )}
       <div className="flex flex-col items-center">
         <div className="z-1 flex h-[25vh] w-full flex-col items-center bg-[#77a46d] px-6 pt-2 md:flex-row md:justify-between md:gap-4 md:rounded-t-3xl md:py-6">
           <Profile />
@@ -171,7 +188,13 @@ const Mypage = () => {
             {typeof favoriteList === 'undefined' ? (
               <Spinner size="md" />
             ) : (
-              <Favorite title="" favoriteList={favoriteList} />
+              <Favorite
+                title=""
+                favoriteList={favoriteList}
+                setPopupProblemDetail={setPopupProblemDetail}
+                isPopupOpen={isPopupOpen}
+                setIsPopupOpen={setIsPopupOpen}
+              />
             )}
           </div>
           <div className="flex flex-col gap-4">

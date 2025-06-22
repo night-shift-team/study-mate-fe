@@ -26,6 +26,14 @@ module.exports = {
     'delay-1300',
     'delay-1400',
     'delay-1500',
+    'gap-1',
+    'gap-1.5',
+    'gap-2',
+    'gap-2.5',
+    'gap-3',
+    'gap-4',
+    'h-4',
+    'h-8',
   ],
   theme: {
     extend: {

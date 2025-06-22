@@ -3,14 +3,13 @@ const Provider = dynamic(() => import('../components/ui/provider'), {
   ssr: false,
 });
 import Header from '@/feature/header/ui/Header';
-import TooltipWrapper from '@/feature/tooltip/tooltipWrapper';
+
 import dynamic from 'next/dynamic';
 
 const ClientSideWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <Provider>
       <div className="base relative h-full w-full">
-        <TooltipWrapper />
         <div className="fixed z-[100] flex h-[3.2rem] w-full md:h-[3.5rem]">
           <Header />
         </div>
