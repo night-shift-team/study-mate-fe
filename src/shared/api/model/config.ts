@@ -6,6 +6,8 @@ import { getAccessToken } from './refreshTokenApi';
 import { AuthTokenRes } from '@/shared/user/api';
 import { userStore } from '@/state/userStore';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import { resetUserData } from './resetAuthData';
+import { makeRequest } from './makeRequest';
 
 type HTTPRequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 type ContentType =
@@ -34,6 +36,7 @@ const interceptor = new BatchInterceptor({
 // 인터셉터 적용
 interceptor.apply();
 
+// 헤더 토큰 지정
 let currentToken: string | null = null;
 export const setAccessTokenToHeader = (token: string | null) => {
   currentToken = token;
@@ -41,6 +44,9 @@ export const setAccessTokenToHeader = (token: string | null) => {
 export const setRefreshTokenToHeader = (token: string | null) => {
   currentToken = token;
 };
+
+// 재호출용 Request 객체
+let currentRequest: { url: string; options: RequestInit } | null = null;
 
 /**
  * @typedef {(
@@ -61,17 +67,22 @@ export const _apiFetch = async <T = any>(
   if (!apiDomainUrl) {
     throw new Error('Domain URL is not defined');
   }
+
   endPoint = apiDomainUrl + endPoint;
 
   const options: RequestInit = {
     method,
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json' as ContentType,
     },
     body: body ? JSON.stringify(body) : undefined,
   };
+
+  const newRequest = makeRequest(endPoint, options);
+  currentRequest = newRequest;
+
   try {
-    const response = await fetch(endPoint, options);
+    const response = await fetch(newRequest.url, newRequest.options);
     const contentType = response.headers.get('content-type');
     let payload: T | ServerErrorResponse;
 
@@ -106,7 +117,7 @@ export const _apiFetch = async <T = any>(
 
 // 인터셉터 리스너 설정
 interceptor.on('request', async ({ request }) => {
-  if (request.url.includes('/api/')) {
+  if (request.url.includes(`${String(apiDomainUrl)}/api/`)) {
     if (!currentToken && typeof window !== 'undefined') {
       try {
         const accessToken = await getAccessToken();
@@ -115,6 +126,7 @@ interceptor.on('request', async ({ request }) => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         console.log(e);
+        resetUserData();
       }
     }
     request.headers.set('Authorization', `Bearer ${currentToken}`);
@@ -134,29 +146,48 @@ interceptor.on('response', async ({ response, request }) => {
     // 텍스트 응답 처리
     data = await response.text();
   }
-  const errCode = data.ecode ? data.ecode : data.status;
-  // console.warn(errCode);
-  const isDisabaleToken = errCode === Ecode.E0002 || errCode === Ecode.E0005;
 
-  if (isDisabaleToken && typeof window !== 'undefined') {
+  // 토큰 에러 처리
+  // 서버에서 전달해주는 에러 양식일 경우
+  let isDisabaleToken = false;
+  if (typeof data.ecode !== 'undefined') {
+    isDisabaleToken = data.ecode === Ecode.E0002 || data.ecode === Ecode.E0005;
+  }
+  if (!isDisabaleToken) return;
+
+  if (typeof window !== 'undefined') {
+    console.warn(EcodeMessage(data.ecode));
+    localStorage.removeItem('accessToken');
+
     try {
-      console.warn(EcodeMessage(errCode));
-      localStorage.removeItem('accessToken');
-
       const accessToken = await getAccessToken();
       currentToken = accessToken as string;
+
+      if (!currentToken) {
+        resetUserData();
+        return;
+      }
       request.headers.set('Authorization', `Bearer ${currentToken}`);
 
-      window.location.reload();
+      if (!currentRequest) return;
+      const parsedBody: { [key: string]: string } | undefined = currentRequest
+        .options.body
+        ? JSON.parse(currentRequest.options.body as string)
+        : undefined;
+      const contentType: ContentType =
+        (currentRequest.options.headers as any)['Content-Type'] ||
+        'application/json';
+      await _apiFetch(
+        currentRequest.options.method as HTTPRequestMethod,
+        currentRequest.url,
+        parsedBody,
+        contentType
+      );
     } catch (e) {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
-      const setUser = userStore.getState().setUser;
-      setUser(null);
       console.log(e);
-      if (window) {
-        window.location.href = RouteTo.Home;
-      }
+      resetUserData();
     }
   }
 });

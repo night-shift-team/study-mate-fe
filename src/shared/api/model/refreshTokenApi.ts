@@ -4,7 +4,7 @@ import {
   setAccessTokenToHeader,
   setRefreshTokenToHeader,
 } from './config';
-import { Ecode } from '@/shared/errorApi/ecode';
+import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
 
 export const getAccessToken = async () => {
   try {
@@ -25,9 +25,8 @@ export const getAccessToken = async () => {
         return (res.payload as AuthTokenRes).accessToken;
       }
       if ((res.payload as ServerErrorResponse).ecode === Ecode.E0005) {
-        localStorage.removeItem('refreshToken');
         console.log('refresh token expired');
-        throw null;
+        throw EcodeMessage(Ecode.E0005);
       }
       throw res.payload as ServerErrorResponse;
     }
