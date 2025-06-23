@@ -40,7 +40,7 @@ const SignUp = () => {
   const { showTooltip, updateTooltip, hideTooltip } = useTooltip();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [popupOpen, setPopupOpen] = useState(true);
+  const [popupOpen, setPopupOpen] = useState(false);
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);

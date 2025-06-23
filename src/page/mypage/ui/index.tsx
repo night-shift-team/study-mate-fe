@@ -133,6 +133,7 @@ const Mypage = () => {
             <Image
               src={getScoreTierInfo(user.userScore ?? 0).img}
               alt="Score Tier"
+              onError={(e) => (e.currentTarget.src = Dust_IMG)}
               fill
             />
           ) : null}
