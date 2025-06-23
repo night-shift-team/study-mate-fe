@@ -18,6 +18,9 @@ import {
 import { ServerErrorResponse } from '@/shared/api/model/config';
 import { Category } from './category';
 import { getQuestionDetailApi } from '@/page/mypage/api';
+import { categoryGroups } from '../constants';
+import { FaArrowRightLong } from 'react-icons/fa6';
+import Arrow from '@public/assets/icons/leveltest/Arrow 7.svg';
 
 interface ResultData extends GetLevelTestResultRes {
   userAnswers: number[];
@@ -41,9 +44,10 @@ const ResultContent = () => {
 
   const router = useRouter();
   const [resultData, setResultData] = useState<ResultData | null>(null);
-  const [questionTitles, setQuestionTitles] = useState<Record<string, string>>(
-    {}
-  );
+  const [questionInfos, setQuestionInfos] = useState<
+    Record<string, { title: string; category: string }>
+  >({});
+  const [selectedCategoryKey, setSelectedCategoryKey] = useState('ALGORITHUM');
 
   useEffect(() => {
     if (problemLists.length === 0 && resultData === null) {
@@ -81,28 +85,52 @@ const ResultContent = () => {
   useEffect(() => {
     if (problemLists.length === 0) return;
 
-    const fetchTitles = async () => {
-      const map: Record<string, string> = {};
+    const fetchInfos = async () => {
+      const map: Record<string, { title: string; category: string }> = {};
       await Promise.all(
         problemLists.map(async (problem) => {
           const res = await getQuestionDetailApi(problem.id);
           if (res.ok && res.payload) {
-            // 예: payload에 questionTitle 필드가 있다고 가정
-            map[problem.id] = (
-              res.payload as { questionTitle: string }
-            ).questionTitle;
+            const { questionTitle, category } = res.payload as {
+              questionTitle: string;
+              category: string;
+            };
+            map[problem.id] = { title: questionTitle, category };
           } else {
-            map[problem.id] = '제목 없음';
+            map[problem.id] = { title: '제목 없음', category: 'UNKNOWN' };
           }
         })
       );
-      setQuestionTitles(map);
+      setQuestionInfos(map);
     };
 
-    fetchTitles();
+    fetchInfos();
   }, [problemLists]);
 
-  console.log(questionTitles, 'questionTitles');
+  const generateCategoryData = () => {
+    return categoryGroups.map((group) => {
+      const filtered = problemLists.filter(
+        (p) =>
+          questionInfos[p.id] &&
+          group.types.includes(questionInfos[p.id].category)
+      );
+
+      const correct = filtered.filter((p) =>
+        resultData?.correctQuestions.includes(p.id)
+      ).length;
+
+      return {
+        key: group.key,
+        title: group.title,
+        correct,
+        total: filtered.length,
+        color: group.color,
+        border: group.border,
+        text: group.text,
+      };
+    });
+  };
+
   const correctCount = resultData?.correctQuestions.length;
   const totalQuestions = resultData?.requestedQuestionCount;
   const incorrectCount = resultData?.wrongQuestions.length;
@@ -164,16 +192,29 @@ const ResultContent = () => {
     }
   };
 
-  // console.log(problemLists.map((p) => p.id));
+  const filteredProblems = problemLists.filter((problem) => {
+    const info = questionInfos[problem.id];
 
-  if (!resultData) {
+    if (!info) return false;
+
+    const group = categoryGroups.find((g) => g.key === selectedCategoryKey);
+
+    return group?.types.includes(info.category);
+  });
+
+  console.log(filteredProblems);
+  console.log();
+  const isLoading = Object.keys(questionInfos).length > 0;
+
+  if (!isLoading) {
     return <Spinner size="xl" />;
   }
+
   return (
     <div className="flex h-full w-full max-w-[1200px] flex-col items-center gap-6 overflow-y-scroll rounded-2xl bg-pointcolor-yogurt p-3 shadow-[0_8px_30px_rgb(0,0,0,0.06)] scrollbar-hide md:justify-center">
-      <div className="flex w-[100%] flex-col md:h-auto md:flex-row">
-        <div className="flex aspect-1 w-[100%] flex-col items-center space-y-4">
-          <div className="flex h-full w-full justify-center pt-6 md:p-[20%]">
+      <div className="flex w-[100%] flex-col gap-6 md:h-auto md:flex-row">
+        <div className="flex w-[100%] flex-col items-center space-y-4">
+          <div className="flex h-full w-full justify-center pt-6 md:p-[8%]">
             <DonutChart
               data={data}
               level={calculateLevel(correctCount ?? 0, totalQuestions ?? 1)}
@@ -182,28 +223,35 @@ const ResultContent = () => {
             />
           </div>
         </div>
-        <Category />
-        <div className="flex w-full flex-col justify-center space-y-2">
-          <span className="flex justify-center text-lg font-extrabold text-gray-500 md:w-[30rem]">
-            문제풀이
-          </span>
-          <div className="grid grid-cols-1 gap-0.5 overflow-auto rounded-lg border-pointcolor-beigebrown bg-white p-0.5 md:h-[36vh] md:w-[15rem]">
-            {problemLists.map((problem, index) => {
+
+        <Category
+          data={generateCategoryData()}
+          onSelectCategory={setSelectedCategoryKey}
+        />
+        <div className="flex h-full w-full flex-col gap-5">
+          <button className="hidden items-center justify-between rounded-md bg-[#FEBA73] p-3 text-white md:flex">
+            자세히 보기
+            <div className="h-auto w-[40px]">
+              <Arrow />
+            </div>
+          </button>
+          <div className="grid grid-cols-2 flex-col overflow-y-scroll rounded-lg border-pointcolor-beigebrown bg-white p-0.5 shadow-md scrollbar-hide md:flex md:h-[40vh]">
+            {filteredProblems.map((problem, index) => {
+              const title = questionInfos[problem.id]?.title ?? '제목 없음';
+              const number = problem.no;
               return (
                 <Item
                   key={index}
                   index={index}
+                  title={title}
+                  number={number}
                   isCorrectAnswer={
-                    resultData?.correctQuestions.find(
-                      (value) => value === problem.id
-                    )
-                      ? true
-                      : false
+                    resultData?.correctQuestions.includes(problem.id) ?? false
                   }
                   onClick={async () => {
                     setPopup(true);
                     await handleOpenPopup(index, problem.id);
-                  }} // 유저 답변 전달
+                  }}
                 />
               );
             })}

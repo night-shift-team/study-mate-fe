@@ -174,7 +174,7 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
                 }[selectedCategory as ProblemCategoryTitle] ?? 'bg-white'
               } p-4 scrollbar-hide`}
             >
-              <div className="flex flex-col gap-2">
+              <div className="flex w-full flex-col gap-2">
                 {filteredHistory && filteredHistory.length > 0 ? (
                   filteredHistory.map((history, index) => (
                     <QuestionItem
