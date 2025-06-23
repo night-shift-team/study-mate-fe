@@ -12,7 +12,7 @@ import { userStore } from '@/state/userStore';
 import AuthHoc from '@/shared/auth/model/authHoc';
 import {
   ServerErrorResponse,
-  setAccessTokenToHeader,
+  setTokenToHeader,
 } from '@/shared/api/model/config';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { resetFocus } from '@/shared/dom/model/focus';
@@ -104,7 +104,7 @@ const Login = () => {
       // 여기에 실제 로그인 API 호출 로직 구현
       const tokens = await requestSignIn(formData.email, formData.password);
       setTokens(tokens);
-      setAccessTokenToHeader(localStorage.getItem('accessToken'));
+      setTokenToHeader(localStorage.getItem('accessToken'));
       await getUserInfo(
         setToastDescription,
         setToastOpen,

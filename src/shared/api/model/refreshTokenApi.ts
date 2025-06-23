@@ -1,35 +1,35 @@
 import { accessTokenRefreshApi, AuthTokenRes } from '@/shared/user/api';
-import {
-  ServerErrorResponse,
-  setAccessTokenToHeader,
-  setRefreshTokenToHeader,
-} from './config';
+import { ServerErrorResponse, setTokenToHeader } from './config';
 import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
 
 export const getAccessToken = async () => {
   try {
     const accessToken = localStorage.getItem('accessToken');
-    const refreshToken = localStorage.getItem('refreshToken');
-    if (accessToken) {
-      setAccessTokenToHeader(accessToken);
-      return accessToken;
+    setTokenToHeader(accessToken);
+    return accessToken;
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+};
+
+export const getAccessTokenFromRefreshToken = async (
+  refreshToken: string | null
+) => {
+  if (!refreshToken) throw new Error('no refresh token');
+  try {
+    const res = await accessTokenRefreshApi(refreshToken);
+    if (res.ok) {
+      const data = res.payload as AuthTokenRes;
+      localStorage.setItem('accessToken', data.accessToken);
+      localStorage.setItem('refreshToken', data.refreshToken);
+      return (res.payload as AuthTokenRes).accessToken;
     }
-    //* header에 refresh Token을 담아서 보내야 함
-    if (refreshToken) {
-      setRefreshTokenToHeader(refreshToken);
-      const res = await accessTokenRefreshApi(refreshToken);
-      if (res.ok) {
-        const data = res.payload as AuthTokenRes;
-        localStorage.setItem('accessToken', data.accessToken);
-        localStorage.setItem('refreshToken', data.refreshToken);
-        return (res.payload as AuthTokenRes).accessToken;
-      }
-      if ((res.payload as ServerErrorResponse).ecode === Ecode.E0005) {
-        console.log('refresh token expired');
-        throw EcodeMessage(Ecode.E0005);
-      }
-      throw res.payload as ServerErrorResponse;
+    if ((res.payload as ServerErrorResponse).ecode === Ecode.E0005) {
+      console.log('refresh token expired');
+      throw EcodeMessage(Ecode.E0005);
     }
+    throw res.payload as ServerErrorResponse;
   } catch (e) {
     console.log(e);
     throw e;

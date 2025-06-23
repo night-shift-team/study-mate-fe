@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 import { googleSignInApi, LoginRes } from '../api';
 import {
   ServerErrorResponse,
-  setAccessTokenToHeader,
+  setTokenToHeader,
 } from '@/shared/api/model/config';
 import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
@@ -39,7 +39,7 @@ export const addSocialLoginRedirectDataListener = (
         }
       }
       setTokens(res.payload as LoginRes);
-      setAccessTokenToHeader(localStorage.getItem('accessToken'));
+      setTokenToHeader(localStorage.getItem('accessToken'));
       await getUserInfo(
         setToastDescription,
         setToastOpen,

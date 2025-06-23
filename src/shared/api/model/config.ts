@@ -2,15 +2,17 @@ import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
 import { BatchInterceptor } from '@mswjs/interceptors';
 import { FetchInterceptor } from '@mswjs/interceptors/fetch';
 import { ok } from 'assert';
-import { getAccessToken } from './refreshTokenApi';
+import {
+  getAccessToken,
+  getAccessTokenFromRefreshToken,
+} from './refreshTokenApi';
 import { AuthTokenRes } from '@/shared/user/api';
 import { userStore } from '@/state/userStore';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { resetUserData } from './resetAuthData';
-import { makeRequest } from './makeRequest';
 
-type HTTPRequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
-type ContentType =
+export type HTTPRequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+export type ContentType =
   | 'text/html'
   | 'application/json'
   | 'text/plain'
@@ -26,6 +28,7 @@ export interface ApiResponseType<T = any> {
   ok: boolean;
   payload: T;
 }
+
 const apiDomainUrl = process.env.NEXT_PUBLIC_API_URL;
 // 인터셉터 인스턴스 생성
 const interceptor = new BatchInterceptor({
@@ -38,15 +41,9 @@ interceptor.apply();
 
 // 헤더 토큰 지정
 let currentToken: string | null = null;
-export const setAccessTokenToHeader = (token: string | null) => {
+export const setTokenToHeader = (token: string | null) => {
   currentToken = token;
 };
-export const setRefreshTokenToHeader = (token: string | null) => {
-  currentToken = token;
-};
-
-// 재호출용 Request 객체
-let currentRequest: { url: string; options: RequestInit } | null = null;
 
 /**
  * @typedef {(
@@ -62,27 +59,23 @@ export const _apiFetch = async <T = any>(
   method: HTTPRequestMethod,
   endPoint: string,
   body?: { [key: string]: any },
-  contentType: ContentType = 'application/json'
+  contentType: ContentType = 'application/json',
+  isRetry: boolean = false
 ): Promise<{ ok: boolean; payload: T | ServerErrorResponse }> => {
   if (!apiDomainUrl) {
     throw new Error('Domain URL is not defined');
   }
 
-  endPoint = apiDomainUrl + endPoint;
-
   const options: RequestInit = {
     method,
-    headers: {
-      'Content-Type': 'application/json' as ContentType,
-    },
+    headers: { 'Content-Type': contentType },
     body: body ? JSON.stringify(body) : undefined,
   };
 
-  const newRequest = makeRequest(endPoint, options);
-  currentRequest = newRequest;
+  const fetchRequest = new Request(apiDomainUrl + endPoint, options);
 
   try {
-    const response = await fetch(newRequest.url, newRequest.options);
+    const response = await fetch(fetchRequest);
     const contentType = response.headers.get('content-type');
     let payload: T | ServerErrorResponse;
 
@@ -99,7 +92,29 @@ export const _apiFetch = async <T = any>(
     };
 
     if (!response.ok) {
-      handleServerErrors(responseWithData.payload as ServerErrorResponse);
+      const serverErrorData = payload as ServerErrorResponse;
+      if (
+        (serverErrorData.ecode === Ecode.E0002 ||
+          serverErrorData.ecode === Ecode.E0005) &&
+        !isRetry &&
+        typeof window !== 'undefined'
+      ) {
+        const refreshToken = localStorage.getItem('refreshToken');
+        setTokenToHeader(refreshToken);
+        const accessToken = await getAccessTokenFromRefreshToken(refreshToken);
+        setTokenToHeader(accessToken);
+        return await _apiFetch(
+          method,
+          endPoint,
+          body,
+          contentType as ContentType,
+          true
+        );
+      }
+      handleServerErrors(
+        response,
+        responseWithData.payload as ServerErrorResponse
+      );
     }
     return responseWithData;
   } catch (e: any) {
@@ -118,15 +133,17 @@ export const _apiFetch = async <T = any>(
 // 인터셉터 리스너 설정
 interceptor.on('request', async ({ request }) => {
   if (request.url.includes(`${String(apiDomainUrl)}/api/`)) {
-    if (!currentToken && typeof window !== 'undefined') {
+    if (
+      !currentToken &&
+      !request.url.includes('/users/refresh') &&
+      typeof window !== 'undefined'
+    ) {
       try {
         const accessToken = await getAccessToken();
-        currentToken = accessToken as string;
+        if (accessToken) localStorage.setItem('accessToken', accessToken);
+        currentToken = accessToken;
       } catch (e) {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
         console.log(e);
-        resetUserData();
       }
     }
     request.headers.set('Authorization', `Bearer ${currentToken}`);
@@ -134,61 +151,16 @@ interceptor.on('request', async ({ request }) => {
 });
 
 interceptor.on('response', async ({ response, request }) => {
-  // console.log("interceptor", response.headers.get('Content-Type'))
-  if (response.ok) return;
-
-  const contentType = response.headers.get('content-type');
-  let data;
-  if (contentType?.includes('application/json')) {
-    // JSON 응답 처리
-    data = await response.json();
-  } else {
-    // 텍스트 응답 처리
-    data = await response.text();
-  }
-
-  // 토큰 에러 처리
-  // 서버에서 전달해주는 에러 양식일 경우
-  let isDisabaleToken = false;
-  if (typeof data.ecode !== 'undefined') {
-    isDisabaleToken = data.ecode === Ecode.E0002 || data.ecode === Ecode.E0005;
-  }
-  if (!isDisabaleToken) return;
-
-  if (typeof window !== 'undefined') {
-    console.warn(EcodeMessage(data.ecode));
+  // 자동 갱신 로직에서만 refresh 호출이 일어나는데 실패했을때
+  if (
+    request.url.includes('/users/refresh') &&
+    !response.ok &&
+    typeof window !== 'undefined'
+  ) {
+    userStore.getState().setUser(null);
     localStorage.removeItem('accessToken');
-
-    try {
-      const accessToken = await getAccessToken();
-      currentToken = accessToken as string;
-
-      if (!currentToken) {
-        resetUserData();
-        return;
-      }
-      request.headers.set('Authorization', `Bearer ${currentToken}`);
-
-      if (!currentRequest) return;
-      const parsedBody: { [key: string]: string } | undefined = currentRequest
-        .options.body
-        ? JSON.parse(currentRequest.options.body as string)
-        : undefined;
-      const contentType: ContentType =
-        (currentRequest.options.headers as any)['Content-Type'] ||
-        'application/json';
-      await _apiFetch(
-        currentRequest.options.method as HTTPRequestMethod,
-        currentRequest.url,
-        parsedBody,
-        contentType
-      );
-    } catch (e) {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      console.log(e);
-      resetUserData();
-    }
+    localStorage.removeItem('refreshToken');
+    window.location.href = RouteTo.Home;
   }
 });
 
@@ -205,6 +177,9 @@ export const handleFetchErrors = (error: Error) => {
   }
   //로그 관리
 };
-export const handleServerErrors = (error: ServerErrorResponse) => {
+export const handleServerErrors = async (
+  res: Response,
+  error: ServerErrorResponse
+) => {
   //로그 관리
 };

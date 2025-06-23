@@ -3,8 +3,7 @@ import { FaArrowRightLong } from 'react-icons/fa6';
 import { useRouter } from 'next/navigation';
 import {
   ServerErrorResponse,
-  setAccessTokenToHeader,
-  setRefreshTokenToHeader,
+  setTokenToHeader,
 } from '@/shared/api/model/config';
 import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { Ecode } from '@/shared/errorApi/ecode';
@@ -52,7 +51,7 @@ const AdminLoginForm = ({
         accessToken: res.accessToken,
         refreshToken: res.refreshToken,
       });
-      setAccessTokenToHeader(localStorage.getItem('accessToken'));
+      setTokenToHeader(localStorage.getItem('accessToken'));
       await getUserInfo(
         setToastText,
         setOpen,
