@@ -6,10 +6,7 @@
  * OpenAPI spec version: v1
  */
 
-export interface StoreItemDto {
-  itemId?: string;
-  itemName?: string;
-  itemDescription?: string;
-  itemImage?: string;
-  priceKrw?: number;
-}
+export type GetMyOrdersParams = {
+  page: number;
+  limit: number;
+};

@@ -5,11 +5,13 @@
  * 스터디메이트 BFF Server API 문서 (Dev)
  * OpenAPI spec version: v1
  */
+import type { OrderDtoStatus } from './orderDtoStatus';
 
-export interface StoreItemDto {
-  itemId?: string;
+export interface OrderDto {
+  orderId?: string;
   itemName?: string;
-  itemDescription?: string;
-  itemImage?: string;
-  priceKrw?: number;
+  paymentMethod?: string;
+  price?: number;
+  paymentDate?: string;
+  status?: OrderDtoStatus;
 }

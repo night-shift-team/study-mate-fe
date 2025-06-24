@@ -15,4 +15,5 @@ export interface QuestionDetailDto {
   questionAnswer?: string;
   questionExplanation?: string;
   difficulty?: number;
+  createdDt?: string;
 }

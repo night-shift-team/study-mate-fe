@@ -9,6 +9,7 @@
 export type CategoryDetailDtoCategoryOriginName =
   (typeof CategoryDetailDtoCategoryOriginName)[keyof typeof CategoryDetailDtoCategoryOriginName];
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CategoryDetailDtoCategoryOriginName = {
   ALGORITHUM_MAQ: 'ALGORITHUM_MAQ',
   ALGORITHUM_SAQ: 'ALGORITHUM_SAQ',

@@ -10,6 +10,7 @@ export default defineConfig({
       },
     },
     output: {
+      target: './src/shared/api/__autoGenerateAPI__.ts',
       schemas: './src/shared/api/autoGenerateTypes', // 타입(모델) 파일 위치
     },
   },

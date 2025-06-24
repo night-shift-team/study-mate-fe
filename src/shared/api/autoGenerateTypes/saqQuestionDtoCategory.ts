@@ -9,6 +9,7 @@
 export type SaqQuestionDtoCategory =
   (typeof SaqQuestionDtoCategory)[keyof typeof SaqQuestionDtoCategory];
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SaqQuestionDtoCategory = {
   ALGORITHUM_MAQ: 'ALGORITHUM_MAQ',
   ALGORITHUM_SAQ: 'ALGORITHUM_SAQ',

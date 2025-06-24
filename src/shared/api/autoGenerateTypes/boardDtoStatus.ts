@@ -9,6 +9,7 @@
 export type BoardDtoStatus =
   (typeof BoardDtoStatus)[keyof typeof BoardDtoStatus];
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const BoardDtoStatus = {
   RECEIVED: 'RECEIVED',
   IN_REVIEW: 'IN_REVIEW',
