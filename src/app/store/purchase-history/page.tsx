@@ -1,8 +1,7 @@
-import { PaymentHistoryApiRes } from '@/page/store/api';
 import StorePurchaseHistoryPage from '@/page/store/purchaseHistory';
 import PageAnimationWrapper from '@/shared/style/ui/pageAnimationWrapper';
 
-const StorePurchaseHistory = async () => {
+const StorePurchaseHistory = () => {
   return (
     <PageAnimationWrapper>
       <StorePurchaseHistoryPage />
