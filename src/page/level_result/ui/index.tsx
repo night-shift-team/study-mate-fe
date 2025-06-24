@@ -52,7 +52,6 @@ const ResultContent = () => {
   useEffect(() => {
     if (problemLists.length === 0 && resultData === null) {
       const problems = sessionStorage.getItem('levelTestListWithNo');
-      console.log('problems', problems);
       if (problems) {
         try {
           console.log(JSON.parse(problems));
@@ -202,8 +201,6 @@ const ResultContent = () => {
     return group?.types.includes(info.category);
   });
 
-  console.log(filteredProblems);
-  console.log();
   const isLoading = Object.keys(questionInfos).length > 0;
 
   if (!isLoading) {
