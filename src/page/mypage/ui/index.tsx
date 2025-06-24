@@ -144,7 +144,6 @@ const Mypage = () => {
     },
     { count: totalElements, label: '풀이한 문제', img: <LuBookCheck /> },
   ];
-  console.log('---', myRanking, totalElements, favoriteList);
   return (
     <div className="z-1 h-full w-full overflow-y-auto scrollbar-hide md:w-[85%]">
       {isPopupOpen && popUpProblemDetail && (

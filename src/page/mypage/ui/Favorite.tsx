@@ -11,6 +11,7 @@ import { ProblemCategoryTitle } from '@/shared/constants/problemInfo';
 import { getQuestionDetailApi } from '../api';
 import { getWithCache } from '@/entities/apiCacheHook';
 import { ProblemDetailInfoRes } from '@/page/adminProblem/api';
+import { IoClose } from 'react-icons/io5';
 
 interface FavoriteListProps {
   favoriteList: QuestionFavoriteRes[];
@@ -143,7 +144,7 @@ export const Favorite = ({
     <div className="animate-fade-up">
       {currentFavoriteList.length !== 0 ? (
         <div>
-          <div className="flex flex-col items-center gap-5 overflow-auto bg-pointcolor-yogurt">
+          <div className="flex flex-col items-center gap-5 overflow-auto bg-pointcolor-yogurt scrollbar-hide">
             <div className="h-[30vh] w-full overflow-auto rounded-xl scrollbar-hide">
               <div className="flex w-full gap-3 overflow-x-auto px-4 pb-2">
                 {currentFavoriteList.map((item, index) => {
@@ -190,7 +191,14 @@ export const Favorite = ({
                       key={index}
                       className="bg-whiteshadow flex h-[180px] w-[330px] flex-col rounded-lg bg-white shadow-lg transition"
                     >
-                      <div className="flex h-[60px] w-full items-center justify-between">
+                      <div className="flex w-full justify-end p-2">
+                        <IoClose
+                          onClick={(event) => handleBookmarkClick(event, item)}
+                          size={20}
+                        />
+                      </div>
+
+                      <div className="flex h-[50px] w-full items-center justify-between gap-4">
                         <div className="flex flex-col truncate pl-4 text-sm">
                           <span className="font-semibold">
                             {truncateText(item.questionTitle, 20)}
@@ -198,6 +206,7 @@ export const Favorite = ({
 
                           <span className="text-xs text-gray-400">
                             스크랩 날짜
+                            {item.createdDt.toString().slice(0, 10)}
                           </span>
                         </div>
                         <div
