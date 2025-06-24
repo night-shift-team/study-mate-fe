@@ -8,10 +8,10 @@
 import type { OrderDtoStatus } from './orderDtoStatus';
 
 export interface OrderDto {
-  orderId?: string;
-  itemName?: string;
-  paymentMethod?: string;
-  price?: number;
-  paymentDate?: string;
-  status?: OrderDtoStatus;
+  orderId: string;
+  itemName: string;
+  paymentMethod: string;
+  price: number;
+  paymentDate: string;
+  status: OrderDtoStatus;
 }

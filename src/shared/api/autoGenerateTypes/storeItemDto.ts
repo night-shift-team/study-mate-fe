@@ -7,9 +7,9 @@
  */
 
 export interface StoreItemDto {
-  itemId?: string;
-  itemName?: string;
-  itemDescription?: string;
-  itemImage?: string;
-  priceKrw?: number;
+  itemId: string;
+  itemName: string;
+  itemDescription: string;
+  itemImage: string;
+  priceKrw: number;
 }

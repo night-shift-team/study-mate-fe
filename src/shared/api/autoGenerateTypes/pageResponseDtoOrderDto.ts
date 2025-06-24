@@ -8,10 +8,10 @@
 import type { OrderDto } from './orderDto';
 
 export interface PageResponseDtoOrderDto {
-  content?: OrderDto[];
-  page?: number;
-  size?: number;
-  totalElements?: number;
-  totalPages?: number;
-  hasNext?: boolean;
+  content: OrderDto[];
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  hasNext: boolean;
 }
