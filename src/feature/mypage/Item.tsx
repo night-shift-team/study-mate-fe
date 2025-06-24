@@ -6,6 +6,7 @@ import Popup from './popup';
 import { PopupProblem } from '@/shared/popUp/ui/popupV2';
 import { getWithCache } from '@/entities/apiCacheHook';
 import { FaArrowRightLong } from 'react-icons/fa6';
+import Arrow from '@public/assets/icons/mypage/Arrow.svg';
 
 interface ItemProps {
   index: number;
@@ -74,17 +75,12 @@ export const QuestionItem: React.FC<ItemProps> = ({
 
   return (
     <>
-      <div className="flex items-center justify-between gap-4 rounded-lg bg-white p-2 shadow-lg">
+      <div className="hidden items-center justify-between gap-4 rounded-lg bg-white p-2 shadow-lg md:flex">
         <div className="flex gap-5">
           <span className="text-[1.5vh] font-semibold">
             {truncateText(questionTitle, 40)}
           </span>
           <p className="text-[1.5vh] text-gray-500">난이도 : {score}</p>
-          {/* {isCorrectAnswer ? (
-          <CircleCheck size={20} className="text-green-600" strokeWidth={2.5} />
-        ) : (
-          <CircleX size={20} className="text-red-600" strokeWidth={2.5} />
-        )} */}
         </div>
 
         <button
@@ -94,6 +90,29 @@ export const QuestionItem: React.FC<ItemProps> = ({
           자세히 보기
           <FaArrowRightLong />
         </button>
+      </div>
+      <div className="flex items-center justify-between gap-4 rounded-lg bg-white p-2 shadow-lg md:hidden">
+        <div className="flex items-center gap-5">
+          <span className="ml-2 text-sm font-semibold">{index + 1}</span>
+          <div className="flex items-center">
+            <span className="text-[1.5vh] font-semibold">
+              <h2>문제 제목</h2> {truncateText(questionTitle, 30)}
+            </span>
+            {isCorrectAnswer ? (
+              <CircleCheck
+                size={20}
+                className="text-green-600"
+                strokeWidth={2.5}
+              />
+            ) : (
+              <CircleX size={20} className="text-red-600" strokeWidth={2.5} />
+            )}
+          </div>
+        </div>
+
+        <div className="h-[20px] w-[20px]">
+          <Arrow />
+        </div>
       </div>
       {isPopupOpen && questionDetail && (
         <PopupProblem
