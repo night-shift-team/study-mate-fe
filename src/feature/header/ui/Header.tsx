@@ -14,7 +14,7 @@ const Header = () => {
 
   return (
     <div
-      className={`relative flex h-full w-full items-center justify-between px-0 md:px-4 md:shadow-sm ${path.startsWith(RouteTo.Store) ? 'bg-transparent bg-local will-change-transform' : 'bg-pointcolor-yogurt'}`}
+      className={`relative flex h-full w-full items-center justify-between px-0 md:px-4 md:shadow-sm ${path.startsWith(RouteTo.Store) ? 'bg-transparent backdrop-blur-sm' : 'bg-pointcolor-yogurt'}`}
     >
       {/* 데스크탑 좌측 로고 */}
       <Link

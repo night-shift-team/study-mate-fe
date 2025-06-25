@@ -9,6 +9,7 @@
 export type CreateSaqQuestionRequestDtoCategory =
   (typeof CreateSaqQuestionRequestDtoCategory)[keyof typeof CreateSaqQuestionRequestDtoCategory];
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateSaqQuestionRequestDtoCategory = {
   ALGORITHUM_MAQ: 'ALGORITHUM_MAQ',
   ALGORITHUM_SAQ: 'ALGORITHUM_SAQ',
