@@ -59,50 +59,51 @@ const StorePurchaseHistoryPage = () => {
 
         <div className="mx-auto mb-6 flex w-[90%] max-w-3xl flex-col gap-2 md:w-full md:gap-6">
           {paymentHistory ? (
-            paymentHistory.content.map((order, index) => (
-              <div
-                key={order.orderId}
-                className={`mx-auto mb-6 flex w-full max-w-3xl animate-fade-up flex-col gap-2 rounded-2xl bg-[#fef4dd] p-4 shadow-md delay-${(index + 1) * 100}`}
-              >
-                {/* 구매일 */}
-                <div className="flex w-full justify-between px-1 text-sm font-medium text-gray-500">
-                  <span>{order.paymentDate.split('T').join(' ')}</span>
-                  <span>주문번호 {order.orderId.split('-')[0]}</span>
-                </div>
+            paymentHistory.content.length > 0 ? (
+              paymentHistory.content.map((order, index) => (
+                <div
+                  key={order.orderId}
+                  className={`mx-auto mb-6 flex w-full max-w-3xl animate-fade-up flex-col gap-2 rounded-2xl bg-[#fef4dd] p-4 shadow-md delay-${(index + 1) * 100}`}
+                >
+                  {/* 구매일 */}
+                  <div className="flex w-full justify-between px-1 text-sm font-medium text-gray-500">
+                    <span>{order.paymentDate.split('T').join(' ')}</span>
+                    <span>주문번호 {order.orderId.split('-')[0]}</span>
+                  </div>
 
-                {/* 아이템 목록 */}
-                <div className="grid grid-cols-[2rem_1fr_3rem_6rem_3rem] items-center border-b px-2 py-2 text-sm last:border-b-0 md:grid-cols-[2rem_1fr_3rem_6rem_6rem]">
-                  <Image
-                    src={'/assets/icons/header/mascotIcon.svg'}
-                    alt="icon"
-                    width={20}
-                    height={20}
-                    onError={(e) => {
-                      e.currentTarget.src =
-                        '/assets/icons/header/mascotIcon.svg';
-                    }}
-                    className="mx-auto"
-                    priority
-                  />
-                  <div>{order.itemName}</div>
-                  <div className="text-center">{1}개</div>
-                  <div className="text-center">
-                    ₩ {order.price.toLocaleString()}
-                  </div>
-                  <div
-                    className={`text-center text-xs font-medium ${
-                      order.status === OrderDtoStatus.PENDING
-                        ? 'text-yellow-600'
-                        : order.status === OrderDtoStatus.PAID
-                          ? 'text-green-600'
-                          : order.status === OrderDtoStatus.FAILED
-                            ? 'text-red-500'
-                            : 'text-gray-500'
-                    }`}
-                  >
-                    {getOrderStatusStringKr(order.status)}
-                  </div>
-                  {/* <div className="text-center">
+                  {/* 아이템 목록 */}
+                  <div className="grid grid-cols-[2rem_1fr_3rem_6rem_3rem] items-center border-b px-2 py-2 text-sm last:border-b-0 md:grid-cols-[2rem_1fr_3rem_6rem_6rem]">
+                    <Image
+                      src={'/assets/icons/header/mascotIcon.svg'}
+                      alt="icon"
+                      width={20}
+                      height={20}
+                      onError={(e) => {
+                        e.currentTarget.src =
+                          '/assets/icons/header/mascotIcon.svg';
+                      }}
+                      className="mx-auto"
+                      priority
+                    />
+                    <div>{order.itemName}</div>
+                    <div className="text-center">{1}개</div>
+                    <div className="text-center">
+                      ₩ {order.price.toLocaleString()}
+                    </div>
+                    <div
+                      className={`text-center text-xs font-medium ${
+                        order.status === OrderDtoStatus.PENDING
+                          ? 'text-yellow-600'
+                          : order.status === OrderDtoStatus.PAID
+                            ? 'text-green-600'
+                            : order.status === OrderDtoStatus.FAILED
+                              ? 'text-red-500'
+                              : 'text-gray-500'
+                      }`}
+                    >
+                      {getOrderStatusStringKr(order.status)}
+                    </div>
+                    {/* <div className="text-center">
                   <button
                     // onClick={() => item.status === '구매 완료' && handleRefund(item.id)}
                     // disabled={item.status !== '구매 완료'}
@@ -115,16 +116,21 @@ const StorePurchaseHistoryPage = () => {
                     환불
                   </button>
                 </div> */}
-                </div>
+                  </div>
 
-                {/* <span className="flex w-full justify-end pr-3 text-sm">
+                  {/* <span className="flex w-full justify-end pr-3 text-sm">
                 총 ₩
                 {purchase.items
                   .reduce((total, item) => total + item.price, 0)
                   .toLocaleString()}
               </span> */}
-              </div>
-            ))
+                </div>
+              ))
+            ) : (
+              <span className="flex w-full justify-center">
+                구매 내역이 없습니다
+              </span>
+            )
           ) : (
             <div className="w-full">
               <Spinner size="md" color="#fff" />
