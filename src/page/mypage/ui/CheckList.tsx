@@ -4,8 +4,7 @@ import { ProblemCategoryTitle } from '@/shared/constants/problemInfo';
 import React, { useEffect, useRef, useState } from 'react';
 import { getCategoriesIcon } from '@/page/solve/model/getCategoryIcons';
 import { QuestionItem } from '@/feature/mypage/Item';
-import { getQuestionDetailApi } from '../api';
-
+import { MobileCheckList } from './MobileCheckList';
 interface QuestionHistory {
   historyId: number;
   questionTitle: string;
@@ -25,7 +24,9 @@ interface CheckListProps {
 const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
   const resultContainerRef = useRef<HTMLDivElement | null>(null); // 스크롤 이동을 위한 ref
   // 클릭된 카테고리 상태 관리
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>(
+    ProblemCategoryTitle.ALGORITHUM
+  );
 
   // 각 카테고리별 문제 개수를 계산
   const ALGORITHUM_MAQ = questionHistory
@@ -83,7 +84,9 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
 
   const filteredHistory = selectedCategory
     ? questionHistory?.filter(
-        (history) => history.questionType === `${selectedCategory}_MAQ`
+        (history) =>
+          history.questionType === `${selectedCategory}_MAQ` ||
+          history.questionType === `${selectedCategory}_SAQ`
       )
     : [];
 
@@ -98,22 +101,35 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
 
   return (
     <>
-      <div className="flex flex-col items-center gap-5 overflow-auto bg-pointcolor-yogurt">
-        <div className="w-[100%] overflow-auto rounded-xl p-4 scrollbar-hide">
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+      <div className="flex flex-col items-center overflow-auto bg-pointcolor-yogurt">
+        <div className="w-[100%] overflow-auto scrollbar-hide">
+          <div className="flex">
             {TempCategories.map((category, index) => {
+              const categoryBgColors: Record<ProblemCategoryTitle, string> = {
+                [ProblemCategoryTitle.ALGORITHUM]: 'bg-[#DDEDFB]',
+                [ProblemCategoryTitle.NETWORK]: 'bg-[#EEDDFB]',
+                [ProblemCategoryTitle.DB]: 'bg-[#E3F5E8]',
+                [ProblemCategoryTitle.OS]: 'bg-[#FDDCDE]',
+                [ProblemCategoryTitle.DESIGN]: 'bg-[#FFF5E1]', // Added DESIGN category
+              };
+              const bgColorClass =
+                categoryBgColors[category.title] ?? 'bg-white';
               return (
                 <div
                   key={index}
-                  onClick={() => setSelectedCategory(category.title)} // 클릭 시 상태 업데이트
-                  className="min-w-auto relative flex h-[5rem] cursor-pointer flex-col items-center justify-center rounded-xl bg-white px-4 pt-2.5 shadow-md transition-all duration-300 ease-in-out hover:translate-y-[-5px] md:p-4"
+                  onClick={() => setSelectedCategory(category.title)}
+                  className={`hidden h-[3rem] w-[150px] cursor-pointer flex-col items-center justify-center rounded-tr-2xl px-4 pt-2.5 md:flex md:p-4 ${bgColorClass}`}
                 >
                   <div className="flex h-[3rem] justify-center">
-                    <div className="itmes-center relative flex aspect-1 h-full items-center justify-center">
+                    {/* <div className="itmes-center relative flex aspect-1 h-full items-center justify-center">
                       {getCategoriesIcon(category.title)}
-                    </div>
+                    </div> */}
                     <span
-                      className="flex items-center text-sm font-bold"
+                      className={`flex items-center text-sm font-bold ${
+                        selectedCategory === category.title
+                          ? 'text-black'
+                          : 'text-gray-500'
+                      }`}
                       style={{
                         letterSpacing:
                           category.title.length > 20 ? '-0.06rem' : '',
@@ -126,36 +142,59 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
               );
             })}
           </div>
-        </div>
-        {selectedCategory && (
-          <div
-            ref={resultContainerRef} // 스크롤 이동 대상
-            className="h-[30vh] w-[100%] overflow-auto rounded-xl border bg-white p-4 scrollbar-hide"
-          >
-            <h2 className="text-center text-lg font-bold">
-              {selectedCategory}
-            </h2>
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-              {filteredHistory ? (
-                filteredHistory.map((history, index) => (
-                  <QuestionItem
-                    key={history.historyId}
-                    index={index}
-                    isCorrectAnswer={history.isCorrect}
-                    userAnswer={history.userAnswer}
-                    userId={history.userId}
-                    historyId={history.historyId}
-                    questionId={history.questionId}
-                    questionTitle={history.questionTitle}
-                    score={history.score}
-                  />
-                ))
-              ) : (
-                <span>No data</span>
-              )}
-            </div>
+          <div className="mt-5 grid grid-cols-2 md:hidden">
+            {TempCategories.map((category, index) => {
+              const categoryBgColors: Record<ProblemCategoryTitle, string> = {
+                [ProblemCategoryTitle.ALGORITHUM]: 'bg-[#DDEDFB]',
+                [ProblemCategoryTitle.NETWORK]: 'bg-[#EEDDFB]',
+                [ProblemCategoryTitle.DB]: 'bg-[#E3F5E8]',
+                [ProblemCategoryTitle.OS]: 'bg-[#FDDCDE]',
+                [ProblemCategoryTitle.DESIGN]: 'bg-[#FFF5E1]',
+              };
+
+              return (
+                <div key={index} className="grid-2 grid md:hidden">
+                  <MobileCheckList category={category.title} />
+                </div>
+              );
+            })}
           </div>
-        )}
+
+          {selectedCategory && (
+            <div
+              ref={resultContainerRef}
+              className={`hidden h-[30vh] w-[100%] overflow-auto md:flex ${
+                {
+                  [ProblemCategoryTitle.ALGORITHUM]: 'bg-[#DDEDFB]',
+                  [ProblemCategoryTitle.NETWORK]: 'bg-[#EEDDFB]',
+                  [ProblemCategoryTitle.DB]: 'bg-[#E3F5E8]',
+                  [ProblemCategoryTitle.OS]: 'bg-[#FDDCDE]',
+                  [ProblemCategoryTitle.DESIGN]: 'bg-[#FFF5E1]',
+                }[selectedCategory as ProblemCategoryTitle] ?? 'bg-white'
+              } p-4 scrollbar-hide`}
+            >
+              <div className="flex w-full flex-col gap-2">
+                {filteredHistory && filteredHistory.length > 0 ? (
+                  filteredHistory.map((history, index) => (
+                    <QuestionItem
+                      key={history.historyId}
+                      index={index}
+                      isCorrectAnswer={history.isCorrect}
+                      userAnswer={history.userAnswer}
+                      userId={history.userId}
+                      historyId={history.historyId}
+                      questionId={history.questionId}
+                      questionTitle={history.questionTitle}
+                      score={history.score}
+                    />
+                  ))
+                ) : (
+                  <span>No data</span>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

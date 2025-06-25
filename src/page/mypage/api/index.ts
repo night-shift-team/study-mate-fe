@@ -74,6 +74,7 @@ export interface QuestionFavoriteRes {
   questionAnswer: string;
   questionExplanation: string;
   difficulty: number;
+  createdDt: number;
 }
 
 export const getUserRankingApi = async (page: number, limit: number) => {

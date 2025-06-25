@@ -34,7 +34,6 @@ const SuggestionDetailPage = () => {
     fetchData();
   }, [id]);
 
-  console.log(suggestion);
   if (!suggestion)
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -45,8 +44,6 @@ const SuggestionDetailPage = () => {
   const handleMoreClick = () => {
     isOpen(true);
   };
-
-  console.log(suggestion.comments, 'suggestion');
 
   return (
     <PageAnimationWrapper>
