@@ -32,7 +32,7 @@ export const MobileCheckList = ({ category }: MobileCheckListProps) => {
       </div>
 
       <div
-        className="absolute bottom-7 right-4 z-10 flex h-[30px] w-[30px] items-center justify-center"
+        className="absolute bottom-7 right-4 z-10 flex h-[48px] w-[48px] items-center justify-center"
         onClick={() => router.push(`/mypage/${category}`)}
       >
         <Arrow />

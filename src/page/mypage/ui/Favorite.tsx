@@ -146,7 +146,7 @@ export const Favorite = ({
         <div>
           <div className="flex flex-col items-center gap-5 overflow-auto bg-pointcolor-yogurt scrollbar-hide">
             <div className="h-[30vh] w-full overflow-auto rounded-xl scrollbar-hide">
-              <div className="flex w-full gap-3 overflow-x-auto px-4 pb-2">
+              <div className="flex w-full snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth px-4 pb-2">
                 {currentFavoriteList.map((item, index) => {
                   const categoryBgColors: Record<ProblemCategoryTitle, string> =
                     {
@@ -189,7 +189,7 @@ export const Favorite = ({
                   return (
                     <div
                       key={index}
-                      className="bg-whiteshadow flex h-[180px] w-[330px] flex-col rounded-lg bg-white shadow-lg transition"
+                      className="bg-whiteshadow flex h-[180px] min-w-[330px] shrink-0 snap-start flex-col rounded-lg bg-white shadow-lg transition"
                     >
                       <div className="flex w-full justify-end p-2">
                         <IoClose
@@ -228,7 +228,7 @@ export const Favorite = ({
                       <div className="w-ful mt-auto h-[30px]">
                         <span
                           onClick={() => handleItemClick(item)}
-                          className="flex justify-end pr-4 text-xs text-[#6E6E6E] underline"
+                          className="flex cursor-pointer justify-end pr-4 text-xs text-[#6E6E6E] underline"
                         >
                           자세히 보기
                         </span>

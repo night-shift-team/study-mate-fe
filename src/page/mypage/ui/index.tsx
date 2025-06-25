@@ -8,7 +8,7 @@ import { LuBookCheck } from 'react-icons/lu';
 import GrassChart from '@/feature/charts/GrassChart';
 import CheckList from './CheckList';
 import { Favorite } from './Favorite';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { userStore } from '@/state/userStore';
 import {
   getUserRankingApi,
@@ -28,6 +28,7 @@ import {
   Star_IMG,
   Universe_IMG,
 } from '../model/img';
+import Arrow from '@public/assets/icons/mypage/check_arrow.svg';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { Problem } from '@/page/adminProblem';
 import { ProblemDetailInfoRes } from '@/page/adminProblem/api';
@@ -42,6 +43,7 @@ const Mypage = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popUpProblemDetail, setPopupProblemDetail] =
     useState<ProblemDetailInfoRes | null>(null);
+  const [slideIndex, setSlideIndex] = useState(0);
 
   useEffect(() => {
     userRanking();
@@ -51,7 +53,7 @@ const Mypage = () => {
 
   useEffect(() => {
     console.log('favoriteList가 업데이트되었습니다:', favoriteList);
-  }, [favoriteList]); // favoriteList가 변경될 때 실행
+  }, [favoriteList]);
 
   const userRanking = async () => {
     try {
@@ -144,6 +146,25 @@ const Mypage = () => {
     },
     { count: totalElements, label: '풀이한 문제', img: <LuBookCheck /> },
   ];
+
+  const favoriteScrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollByCard = (direction: 'left' | 'right') => {
+    const container = favoriteScrollRef.current;
+    if (container) {
+      const scrollAmount = container.offsetWidth * 0.8;
+      container.scrollBy({
+        left: direction === 'right' ? scrollAmount : -scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const handleScroll = (direction: 'left' | 'right') => {
+    setSlideIndex((prev) =>
+      direction === 'right' ? prev + 1 : Math.max(prev - 1, 0)
+    );
+  };
   return (
     <div className="z-1 h-full w-full overflow-y-auto scrollbar-hide md:w-[85%]">
       {isPopupOpen && popUpProblemDetail && (
@@ -185,17 +206,39 @@ const Mypage = () => {
             >
               스크랩 문제
             </button>
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => scrollByCard('left')}
+                className="h-[50px] w-[50px] rounded-[50%] bg-[#FEBA73] p-3"
+              >
+                <Arrow />
+              </button>
+              <button
+                onClick={() => scrollByCard('right')}
+                className="h-[50px] w-[50px] rounded-[50%] bg-[#FEBA73] p-3"
+              >
+                <Arrow className="rotate-180 transform" />
+              </button>
+            </div>
             {typeof favoriteList === 'undefined' ? (
               <Spinner size="md" />
             ) : (
-              <Favorite
-                questionHistory={questionHistory}
-                title=""
-                favoriteList={favoriteList}
-                setPopupProblemDetail={setPopupProblemDetail}
-                isPopupOpen={isPopupOpen}
-                setIsPopupOpen={setIsPopupOpen}
-              />
+              <div
+                ref={favoriteScrollRef}
+                className="no-scrollbar flex gap-4 overflow-x-auto scroll-smooth"
+              >
+                {favoriteList.map((item) => (
+                  <Favorite
+                    key={item.questionId}
+                    questionHistory={questionHistory}
+                    title=""
+                    favoriteList={[item]} // 하나만 넘김
+                    setPopupProblemDetail={setPopupProblemDetail}
+                    isPopupOpen={isPopupOpen}
+                    setIsPopupOpen={setIsPopupOpen}
+                  />
+                ))}
+              </div>
             )}
           </div>
           <div className="flex flex-col gap-4">

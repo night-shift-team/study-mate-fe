@@ -17,17 +17,16 @@ interface ItemProps {
   questionId: string;
   historyId: number;
   score: number;
+  textColorClass?: string;
 }
 
 export const QuestionItem: React.FC<ItemProps> = ({
   index,
   isCorrectAnswer,
-  userAnswer,
-  userId,
-  historyId,
   questionTitle,
   score,
   questionId,
+  textColorClass,
 }) => {
   const [questionDetail, setQuestionDetail] = useState<any | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -80,7 +79,9 @@ export const QuestionItem: React.FC<ItemProps> = ({
           <span className="text-[1.5vh] font-semibold">
             {truncateText(questionTitle, 40)}
           </span>
-          <p className="text-[1.5vh] text-gray-500">난이도 : {score}</p>
+          <p className="text-[1.5vh] text-gray-500">
+            난이도 : {Math.floor(Math.abs(score))}
+          </p>
         </div>
 
         <button
@@ -93,24 +94,26 @@ export const QuestionItem: React.FC<ItemProps> = ({
       </div>
       <div className="flex items-center justify-between gap-4 rounded-lg bg-white p-2 shadow-lg md:hidden">
         <div className="flex items-center gap-5">
-          <span className="ml-2 text-sm font-semibold">{index + 1}</span>
+          <span className={`ml-2 text-sm font-semibold ${textColorClass}`}>
+            {(index + 1).toString().padStart(2, '0')}
+          </span>
+          {isCorrectAnswer ? (
+            <CircleCheck
+              size={20}
+              className="text-green-600"
+              strokeWidth={2.5}
+            />
+          ) : (
+            <CircleX size={20} className="text-red-600" strokeWidth={2.5} />
+          )}
           <div className="flex items-center">
             <span className="text-[1.5vh] font-semibold">
               <h2>문제 제목</h2> {truncateText(questionTitle, 30)}
             </span>
-            {isCorrectAnswer ? (
-              <CircleCheck
-                size={20}
-                className="text-green-600"
-                strokeWidth={2.5}
-              />
-            ) : (
-              <CircleX size={20} className="text-red-600" strokeWidth={2.5} />
-            )}
           </div>
         </div>
 
-        <div className="h-[20px] w-[20px]">
+        <div className="h-[20px] w-[20px]" onClick={() => setIsPopupOpen(true)}>
           <Arrow />
         </div>
       </div>
