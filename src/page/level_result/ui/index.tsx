@@ -232,7 +232,7 @@ const ResultContent = () => {
               <Arrow />
             </div>
           </button>
-          <div className="grid grid-cols-2 flex-col overflow-y-scroll rounded-lg border-pointcolor-beigebrown bg-white p-0.5 shadow-md scrollbar-hide md:flex md:h-[40vh]">
+          <div className="grid grid-cols-2 flex-col gap-[0.1rem] overflow-y-scroll rounded-lg border-pointcolor-beigebrown bg-none p-0.5 scrollbar-hide md:flex md:h-[40vh] md:bg-white md:shadow-md">
             {filteredProblems.map((problem, index) => {
               const title = questionInfos[problem.id]?.title ?? '제목 없음';
               const number = problem.no;
@@ -257,7 +257,7 @@ const ResultContent = () => {
       </div>
       <Button
         size="lg"
-        className="mb-2 flex w-full underline-offset-[3px] hover:bg-black/10 hover:underline md:mb-0 md:w-[20rem]"
+        className="mb-2 flex w-full bg-[#FEBA73] text-white underline-offset-[3px] hover:bg-[#ffa442] md:mb-0 md:w-[20rem]"
         onClick={() => router.push(RouteTo.Home)}
       >
         홈으로

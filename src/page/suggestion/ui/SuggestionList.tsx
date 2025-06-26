@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { Pagination } from '@mui/material';
 import { BoardContent } from '../api';
 import { MobileSuggestionList } from './MobileSuggestionList';
+import { TiArrowSortedDown } from 'react-icons/ti';
+import { TiArrowSortedUp } from 'react-icons/ti';
 
 interface SuggestionItem {
   id: number;
@@ -83,16 +85,37 @@ export const SuggestionList = ({ list }: SuggestionListProps) => {
                       <div className="px-4 py-2">제목</div>
                       <div className="px-4 py-2">작성자</div>
                       <div
-                        className="cursor-pointer px-4 py-2"
+                        className="flex cursor-pointer items-center justify-center px-4 py-2"
                         onClick={() => handleSort('date')}
                       >
-                        날짜
+                        작성 시간
+                        <div className="ml-1 flex flex-col items-center leading-none">
+                          <TiArrowSortedUp
+                            size={16}
+                            className={`mb-[-4px] ${sortKey === 'date' && sortOrder === 'asc' ? 'text-white' : 'text-gray-400'}`}
+                          />
+                          <TiArrowSortedDown
+                            size={16}
+                            className={`mt-[-4px] ${sortKey === 'date' && sortOrder === 'desc' ? 'text-white' : 'text-gray-400'}`}
+                          />
+                        </div>
                       </div>
+
                       <div
-                        className="cursor-pointer px-4 py-2"
+                        className="flex cursor-pointer items-center justify-center px-4 py-2"
                         onClick={() => handleSort('views')}
                       >
                         조회수
+                        <div className="ml-1 flex flex-col items-center leading-none">
+                          <TiArrowSortedUp
+                            size={16}
+                            className={`mb-[-4px] ${sortKey === 'views' && sortOrder === 'asc' ? 'text-white' : 'text-gray-400'}`}
+                          />
+                          <TiArrowSortedDown
+                            size={16}
+                            className={`mt-[-4px] ${sortKey === 'views' && sortOrder === 'desc' ? 'text-white' : 'text-gray-400'}`}
+                          />
+                        </div>
                       </div>
                     </div>
                   </th>
@@ -107,19 +130,19 @@ export const SuggestionList = ({ list }: SuggestionListProps) => {
                   >
                     <td colSpan={5} className="py-2">
                       <div className="grid grid-cols-5 overflow-hidden rounded-md bg-white shadow-md hover:bg-gray-100">
-                        <div className="px-4 py-2 text-center font-medium text-gray-800">
+                        <div className="px-4 py-4 text-center font-medium text-gray-800">
                           {item.id.toString().padStart(2, '0')}
                         </div>
-                        <div className="px-4 py-2 text-center text-gray-800">
+                        <div className="px-4 py-4 text-center text-gray-800">
                           {item.title}
                         </div>
-                        <div className="px-4 py-2 text-center text-gray-800">
+                        <div className="px-4 py-4 text-center text-gray-800">
                           {item.author}
                         </div>
-                        <div className="px-4 py-2 text-center text-gray-800">
+                        <div className="px-4 py-4 text-center text-gray-800">
                           {item.date}
                         </div>
-                        <div className="px-4 py-2 text-center text-gray-800">
+                        <div className="px-4 py-4 text-center text-gray-800">
                           {item.views}
                         </div>
                       </div>

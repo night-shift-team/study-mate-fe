@@ -121,9 +121,6 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
                   className={`hidden h-[3rem] w-[150px] cursor-pointer flex-col items-center justify-center rounded-tr-2xl px-4 pt-2.5 md:flex md:p-4 ${bgColorClass}`}
                 >
                   <div className="flex h-[3rem] justify-center">
-                    {/* <div className="itmes-center relative flex aspect-1 h-full items-center justify-center">
-                      {getCategoriesIcon(category.title)}
-                    </div> */}
                     <span
                       className={`flex items-center text-sm font-bold ${
                         selectedCategory === category.title
@@ -144,14 +141,6 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
           </div>
           <div className="mt-5 grid grid-cols-2 md:hidden">
             {TempCategories.map((category, index) => {
-              const categoryBgColors: Record<ProblemCategoryTitle, string> = {
-                [ProblemCategoryTitle.ALGORITHUM]: 'bg-[#DDEDFB]',
-                [ProblemCategoryTitle.NETWORK]: 'bg-[#EEDDFB]',
-                [ProblemCategoryTitle.DB]: 'bg-[#E3F5E8]',
-                [ProblemCategoryTitle.OS]: 'bg-[#FDDCDE]',
-                [ProblemCategoryTitle.DESIGN]: 'bg-[#FFF5E1]',
-              };
-
               return (
                 <div key={index} className="grid-2 grid md:hidden">
                   <MobileCheckList category={category.title} />

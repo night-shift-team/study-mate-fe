@@ -66,17 +66,29 @@ const CategoryPage = () => {
     DESIGN: 'bg-[#FFF5E1]',
   };
 
+  const categorytextColors: Record<string, string> = {
+    ALGORITHUM: 'text-[#66B8FF]',
+    NETWORK: 'text-[#D38DE8]',
+    DB: 'text-[#98E0AC]',
+    OS: 'text-[#F7A8AC]',
+    DESIGN: 'text-[#FFF5E1]',
+  };
+
   const bgColorClass = categoryBgColors[category] || 'bg-white';
+  const textColorClass = categorytextColors[category] || 'text-white';
 
   return (
     <div className="h-full w-full">
       <div
-        className={`flex h-[200px] w-full items-center justify-between rounded-b-xl p-3 ${bgColorClass}`}
+        className={`flex h-[200px] w-full items-center justify-between rounded-b-xl p-5 ${bgColorClass}`}
       >
-        <div className="flex flex-col">
-          <h1 className="text-xl font-bold">{category}</h1>
-          <span className="text-l font-bold">문제아카이브</span>
+        <div className="ml-5 flex h-full items-end">
+          <div className="flex h-[85px] flex-col justify-center">
+            <h1 className="text-xl font-bold">{category}</h1>
+            <span className="text-l font-bold">문제아카이브</span>
+          </div>
         </div>
+
         <Image
           src="/assets/icons/mypage/icons.png"
           alt="icon"
@@ -84,25 +96,29 @@ const CategoryPage = () => {
           height={50}
         />
       </div>
-      <div className="flex h-[65vh] flex-col justify-between">
-        <div className="flex flex-col gap-4 p-5">
-          {paginatedHistory.length > 0 ? (
-            paginatedHistory.map((history, index) => (
-              <QuestionItem
-                key={history.historyId}
-                index={startIndex + index}
-                isCorrectAnswer={history.isCorrect}
-                userAnswer={history.userAnswer}
-                userId={history.userId}
-                historyId={history.historyId}
-                questionId={history.questionId}
-                questionTitle={history.questionTitle}
-                score={history.score}
-              />
-            ))
-          ) : (
-            <p>해당 카테고리 문제 데이터가 없습니다.</p>
-          )}
+      <div className="h-full w-full overflow-hidden">
+        <div className="flex h-[52vh] flex-col justify-between overflow-auto">
+          {' '}
+          <div className="flex flex-col gap-4 p-5">
+            {paginatedHistory.length > 0 ? (
+              paginatedHistory.map((history, index) => (
+                <QuestionItem
+                  key={history.historyId}
+                  index={startIndex + index}
+                  isCorrectAnswer={history.isCorrect}
+                  userAnswer={history.userAnswer}
+                  userId={history.userId}
+                  historyId={history.historyId}
+                  questionId={history.questionId}
+                  questionTitle={history.questionTitle}
+                  score={history.score}
+                  textColorClass={textColorClass}
+                />
+              ))
+            ) : (
+              <p>해당 카테고리 문제 데이터가 없습니다.</p>
+            )}
+          </div>
         </div>
         {filteredHistory.length > itemsPerPage && (
           <div className="mt-4 flex justify-center">

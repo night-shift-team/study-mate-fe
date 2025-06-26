@@ -43,7 +43,7 @@ export const MobileSuggestionList = ({
   console.log(suggestion);
   return (
     <div className="flex-col">
-      <div className="flex justify-between pb-3 pt-1">
+      <div className="flex justify-between pb-1 pt-3">
         <div className="flex gap-5">
           <div className="font-bold">{id.toString().padStart(2, '0')}</div>
           <div className="flex flex-col gap-1">
@@ -55,7 +55,7 @@ export const MobileSuggestionList = ({
           <div className="text-sm text-gray-600">댓글 {commentCount}</div>
         </div>
       </div>
-      {!isLast && <div className="h-[1.5px] w-full bg-gray-200" />}
+      {!isLast && <div className="mt-2 h-[1.5px] w-full bg-gray-200" />}{' '}
     </div>
   );
 };

@@ -3,6 +3,10 @@ import React from 'react';
 import { MaintenanceCheck } from '@/feature/maintenance/ui';
 import ClientSideWrapper from './clientSideWrapper';
 
+import 'swiper/css';
+import 'swiper/css/navigation'; // 화살표
+import 'swiper/css/pagination'; // 페이지네이션
+
 export const metadata = {
   manifest: '/manifest.ts',
 };
