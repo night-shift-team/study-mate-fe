@@ -1,5 +1,5 @@
 'use client';
-
+import 'swiper/css';
 import Card from './Card';
 import Profile from './Profile';
 import { PiRankingLight } from 'react-icons/pi';
@@ -33,27 +33,25 @@ import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { Problem } from '@/page/adminProblem';
 import { ProblemDetailInfoRes } from '@/page/adminProblem/api';
 import { PopupProblem } from '@/shared/popUp/ui/popupV2';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper as SwiperType } from 'swiper';
 
 const Mypage = () => {
   const [questionHistory, setQuestionHistory] = useState<any[]>([]);
   const { user } = userStore();
+  const swiperRef = useRef<SwiperType | null>(null);
   const [myRanking, setMyRanking] = useState<number>();
   const [totalElements, setTotalElements] = useState<number>();
   const [favoriteList, setFavoriteList] = useState<QuestionFavoriteRes[]>();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popUpProblemDetail, setPopupProblemDetail] =
     useState<ProblemDetailInfoRes | null>(null);
-  const [slideIndex, setSlideIndex] = useState(0);
 
   useEffect(() => {
     userRanking();
     userQuestionHistory();
     userFavoriteApi();
   }, []);
-
-  useEffect(() => {
-    console.log('favoriteList가 업데이트되었습니다:', favoriteList);
-  }, [favoriteList]);
 
   const userRanking = async () => {
     try {
@@ -147,24 +145,15 @@ const Mypage = () => {
     { count: totalElements, label: '풀이한 문제', img: <LuBookCheck /> },
   ];
 
-  const favoriteScrollRef = useRef<HTMLDivElement>(null);
-
   const scrollByCard = (direction: 'left' | 'right') => {
-    const container = favoriteScrollRef.current;
-    if (container) {
-      const scrollAmount = container.offsetWidth * 0.8;
-      container.scrollBy({
-        left: direction === 'right' ? scrollAmount : -scrollAmount,
-        behavior: 'smooth',
-      });
+    if (!swiperRef.current) return;
+    if (direction === 'left') {
+      swiperRef.current.slidePrev();
+    } else {
+      swiperRef.current.slideNext();
     }
   };
 
-  const handleScroll = (direction: 'left' | 'right') => {
-    setSlideIndex((prev) =>
-      direction === 'right' ? prev + 1 : Math.max(prev - 1, 0)
-    );
-  };
   return (
     <div className="z-1 h-full w-full overflow-y-auto scrollbar-hide md:w-[85%]">
       {isPopupOpen && popUpProblemDetail && (
@@ -199,46 +188,47 @@ const Mypage = () => {
             </label>
             <GrassChart />
           </div>
-          <div className="flex flex-col gap-4">
-            <button
-              onClick={() => {}}
-              className="flex w-full text-base font-bold md:text-lg"
-            >
-              스크랩 문제
-            </button>
-            <div className="flex justify-end gap-2">
-              <button
-                onClick={() => scrollByCard('left')}
-                className="h-[50px] w-[50px] rounded-[50%] bg-[#FEBA73] p-3"
-              >
-                <Arrow />
-              </button>
-              <button
-                onClick={() => scrollByCard('right')}
-                className="h-[50px] w-[50px] rounded-[50%] bg-[#FEBA73] p-3"
-              >
-                <Arrow className="rotate-180 transform" />
-              </button>
+          <div className="flex flex-col items-center gap-4">
+            <div className="flex w-full items-center justify-between text-base font-bold md:text-lg">
+              <span>스크랩 문제</span>
+              <div className="flex justify-end gap-2">
+                <button
+                  onClick={() => scrollByCard('left')}
+                  className="h-[45px] w-[45px] rounded-[50%] bg-[#FEBA73] p-3"
+                >
+                  <Arrow />
+                </button>
+                <button
+                  onClick={() => scrollByCard('right')}
+                  className="h-[45px] w-[45px] rounded-[50%] bg-[#FEBA73] p-3"
+                >
+                  <Arrow className="rotate-180 transform" />
+                </button>
+              </div>
             </div>
+
             {typeof favoriteList === 'undefined' ? (
               <Spinner size="md" />
             ) : (
-              <div
-                ref={favoriteScrollRef}
-                className="no-scrollbar flex gap-4 overflow-x-auto scroll-smooth"
+              <Swiper
+                spaceBetween={12}
+                slidesPerView={'auto'}
+                onSwiper={(swiper) => (swiperRef.current = swiper)}
+                className="w-full"
               >
                 {favoriteList.map((item) => (
-                  <Favorite
-                    key={item.questionId}
-                    questionHistory={questionHistory}
-                    title=""
-                    favoriteList={[item]} // 하나만 넘김
-                    setPopupProblemDetail={setPopupProblemDetail}
-                    isPopupOpen={isPopupOpen}
-                    setIsPopupOpen={setIsPopupOpen}
-                  />
+                  <SwiperSlide key={item.questionId} style={{ width: '320px' }}>
+                    <Favorite
+                      questionHistory={questionHistory}
+                      title=""
+                      favoriteList={[item]}
+                      setPopupProblemDetail={setPopupProblemDetail}
+                      isPopupOpen={isPopupOpen}
+                      setIsPopupOpen={setIsPopupOpen}
+                    />
+                  </SwiperSlide>
                 ))}
-              </div>
+              </Swiper>
             )}
           </div>
           <div className="flex flex-col gap-4">

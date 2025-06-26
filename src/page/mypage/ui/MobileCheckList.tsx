@@ -25,14 +25,14 @@ export const MobileCheckList = ({ category }: MobileCheckListProps) => {
 
   return (
     <div className="relative h-[45vw] overflow-hidden md:hidden">
-      {Icon && <Icon className="absolute h-full object-fill" />}
+      {Icon && <Icon className="absolute h-full w-full" />}
 
       <div className="relative left-5 top-10 z-10 text-lg font-semibold text-black">
         {category}
       </div>
 
       <div
-        className="absolute bottom-7 right-4 z-10 flex h-[48px] w-[48px] items-center justify-center"
+        className="absolute bottom-7 right-4 z-10 flex h-[10vw] w-[10vw] items-center justify-center"
         onClick={() => router.push(`/mypage/${category}`)}
       >
         <Arrow />

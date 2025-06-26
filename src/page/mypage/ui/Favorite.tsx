@@ -59,7 +59,6 @@ export const Favorite = ({
   favoriteList,
   title,
   setPopupProblemDetail,
-  isPopupOpen,
   setIsPopupOpen,
   questionHistory,
 }: FavoriteListProps) => {
@@ -72,7 +71,6 @@ export const Favorite = ({
     null
   );
   const [isPending, startTransition] = useTransition();
-  const [solvedStatus, setSolvedStatus] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     setCurrentFavoriteList(favoriteList);
@@ -145,8 +143,8 @@ export const Favorite = ({
       {currentFavoriteList.length !== 0 ? (
         <div>
           <div className="flex flex-col items-center gap-5 overflow-auto bg-pointcolor-yogurt scrollbar-hide">
-            <div className="h-[30vh] w-full overflow-auto rounded-xl scrollbar-hide">
-              <div className="flex w-full snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth px-4 pb-2">
+            <div className="w-full overflow-auto rounded-xl scrollbar-hide">
+              <div className="flex w-full snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth pb-2">
                 {currentFavoriteList.map((item, index) => {
                   const categoryBgColors: Record<ProblemCategoryTitle, string> =
                     {
@@ -189,7 +187,7 @@ export const Favorite = ({
                   return (
                     <div
                       key={index}
-                      className="bg-whiteshadow flex h-[180px] min-w-[330px] shrink-0 snap-start flex-col rounded-lg bg-white shadow-lg transition"
+                      className="bg-whiteshadow flex h-[180px] w-full shrink-0 snap-start flex-col rounded-lg bg-white shadow-lg transition"
                     >
                       <div className="flex w-full justify-end p-2">
                         <IoClose

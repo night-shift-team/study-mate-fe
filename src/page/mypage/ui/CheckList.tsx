@@ -141,14 +141,6 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
           </div>
           <div className="mt-5 grid grid-cols-2 md:hidden">
             {TempCategories.map((category, index) => {
-              const categoryBgColors: Record<ProblemCategoryTitle, string> = {
-                [ProblemCategoryTitle.ALGORITHUM]: 'bg-[#DDEDFB]',
-                [ProblemCategoryTitle.NETWORK]: 'bg-[#EEDDFB]',
-                [ProblemCategoryTitle.DB]: 'bg-[#E3F5E8]',
-                [ProblemCategoryTitle.OS]: 'bg-[#FDDCDE]',
-                [ProblemCategoryTitle.DESIGN]: 'bg-[#FFF5E1]',
-              };
-
               return (
                 <div key={index} className="grid-2 grid md:hidden">
                   <MobileCheckList category={category.title} />
