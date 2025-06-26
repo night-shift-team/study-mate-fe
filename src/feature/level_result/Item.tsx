@@ -21,10 +21,10 @@ const Item: React.FC<ItemProps> = ({
 }) => {
   return (
     <div
-      className="flex h-auto w-[100%] cursor-pointer flex-col gap-2 rounded-lg p-2"
+      className="h-auto w-[100%] cursor-pointer flex-col gap-2 rounded-lg border border-[#FEBA73] bg-white p-2 md:flex md:border-none"
       onClick={() => onClick(index, '2')}
     >
-      <div className="flex w-full items-center justify-between">
+      <div className="flex w-full items-center justify-around md:justify-between">
         <div className="flex items-center gap-1">
           <div className="w-3">
             {isCorrectAnswer ? (
@@ -46,7 +46,7 @@ const Item: React.FC<ItemProps> = ({
       </div>
 
       <div className="hidden text-sm md:flex">{title}</div>
-      <div className="h-[2px] w-full bg-gray-200"></div>
+      <div className="hidden h-[2px] w-full bg-gray-200 md:flex"></div>
     </div>
   );
 };
