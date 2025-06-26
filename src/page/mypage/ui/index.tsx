@@ -142,7 +142,7 @@ const Mypage = () => {
       label: '점수',
       img: <SlNote />,
     },
-    { count: totalElements, label: '풀이한 문제', img: <LuBookCheck /> },
+    { count: totalElements, label: '문제수', img: <LuBookCheck /> },
   ];
 
   const scrollByCard = (direction: 'left' | 'right') => {
@@ -191,16 +191,16 @@ const Mypage = () => {
           <div className="flex flex-col items-center gap-4">
             <div className="flex w-full items-center justify-between text-base font-bold md:text-lg">
               <span>스크랩 문제</span>
-              <div className="flex justify-end gap-2">
+              <div className="flex h-full items-center gap-1.5">
                 <button
                   onClick={() => scrollByCard('left')}
-                  className="h-[45px] w-[45px] rounded-[50%] bg-[#FEBA73] p-3"
+                  className="aspect-1 h-8 rounded-[50%] bg-[#FEBA73] p-[9px] md:h-[40px] md:p-2.5"
                 >
                   <Arrow />
                 </button>
                 <button
                   onClick={() => scrollByCard('right')}
-                  className="h-[45px] w-[45px] rounded-[50%] bg-[#FEBA73] p-3"
+                  className="aspect-1 h-8 rounded-[50%] bg-[#FEBA73] p-[9px] md:h-[40px] md:p-2.5"
                 >
                   <Arrow className="rotate-180 transform" />
                 </button>
