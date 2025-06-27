@@ -18,12 +18,7 @@ export const buyStoreItemApi = async (itemId: string) => {
   const body = {
     itemId: itemId,
   };
-  return await _apiFetch<string>(
-    'POST',
-    `${API_Prefix}/payment/request`,
-    body,
-    'text/plain'
-  );
+  return await _apiFetch<string>('POST', `${API_Prefix}/payment/request`, body);
 };
 
 export type PaymentHistoryApiRes = PageResponseDtoOrderDto;
