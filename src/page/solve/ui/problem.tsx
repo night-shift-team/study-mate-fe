@@ -350,6 +350,12 @@ const Problem = ({ category }: ProblemProps) => {
     getProblem(category);
   }, []);
 
+  useEffect(() => {
+    if (!isPageLoading && category === 'random' && !currentQuestionWithType) {
+      getProblem(category);
+    }
+  }, [isPageLoading]);
+
   return (
     <div className="relative flex h-full w-full justify-center px-[2%] md:px-0">
       <Toaster />
