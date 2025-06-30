@@ -21,6 +21,7 @@ import { getQuestionDetailApi } from '@/page/mypage/api';
 import { categoryGroups } from '../constants';
 import { FaArrowRightLong } from 'react-icons/fa6';
 import Arrow from '@public/assets/icons/leveltest/Arrow 7.svg';
+import { SvgIcon } from '@mui/material';
 
 interface ResultData extends GetLevelTestResultRes {
   userAnswers: number[];
@@ -228,11 +229,15 @@ const ResultContent = () => {
         <div className="flex h-full w-full flex-col gap-5">
           <button className="hidden items-center justify-between rounded-md bg-[#FEBA73] p-3 text-white md:flex">
             자세히 보기
-            <div className="h-auto w-[40px]">
-              <Arrow />
-            </div>
+            {/* <div className="h-auto w-[40px]">
+              <SvgIcon
+                inheritViewBox
+                component={Arrow}
+                sx={{ width: '100%', height: '100%' }}
+              />
+            </div> */}
           </button>
-          <div className="grid grid-cols-2 flex-col gap-[0.1rem] overflow-y-scroll rounded-lg border-pointcolor-beigebrown bg-none p-0.5 scrollbar-hide md:flex md:h-[40vh] md:bg-white md:shadow-md">
+          <div className="grid grid-cols-2 flex-col gap-[0.1rem] overflow-y-scroll rounded-lg bg-none p-0.5 scrollbar-hide md:flex md:h-[40vh] md:bg-white md:shadow-md">
             {filteredProblems.map((problem, index) => {
               const title = questionInfos[problem.id]?.title ?? '제목 없음';
               const number = problem.no;

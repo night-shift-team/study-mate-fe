@@ -2,6 +2,7 @@ import React from 'react';
 import { CircleCheck } from 'lucide-react';
 import { CircleX } from 'lucide-react';
 import Arrow from '@public/assets/icons/leveltest/Arrow 8.svg';
+import { SvgIcon } from '@mui/material';
 
 interface ItemProps {
   index: number;
@@ -21,7 +22,7 @@ const Item: React.FC<ItemProps> = ({
 }) => {
   return (
     <div
-      className="h-auto w-[100%] cursor-pointer flex-col gap-2 rounded-lg border border-[#FEBA73] bg-white p-2 md:flex md:border-none"
+      className="h-auto w-[100%] cursor-pointer flex-col gap-2 rounded-lg bg-white py-3 shadow-lg md:flex md:border-none md:px-4"
       onClick={() => onClick(index, '2')}
     >
       <div className="flex w-full items-center justify-around md:justify-between">
@@ -41,12 +42,15 @@ const Item: React.FC<ItemProps> = ({
         </div>
 
         <span className="flex h-auto w-[20px] md:hidden">
-          <Arrow />
+          <SvgIcon
+            inheritViewBox
+            component={Arrow}
+            sx={{ width: '100%', height: '100%' }}
+          />
         </span>
       </div>
 
       <div className="hidden text-sm md:flex">{title}</div>
-      <div className="hidden h-[2px] w-full bg-gray-200 md:flex"></div>
     </div>
   );
 };
