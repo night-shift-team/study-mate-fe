@@ -21,7 +21,6 @@ import useToast, { ToastType } from '@/shared/toast/toast';
 import { setTokens } from '../model/setTokens';
 import { requestSignIn } from '../model/requestSignIn';
 import { getUserInfo } from '../model/getUserInfo';
-import InstallButton from '@/app/install-button';
 import useTooltip from '@/feature/tooltip/tooltipController';
 import { TooltipContents } from '@/state/tooltip/tooltipContents';
 import { openNewWindowWithoutDuplicate } from '@/shared/window/model/openWindow';
@@ -207,9 +206,6 @@ const Login = () => {
   return (
     <div className="relative z-[1000] flex h-full w-full animate-fade-in flex-col items-center overflow-hidden overflow-y-auto bg-white/60 duration-300 scrollbar-hide md:flex-row md:justify-center md:bg-transparent md:pb-[4rem]">
       <Toaster />
-      <div className="absolute right-0 md:left-[50%] md:right-auto md:top-5 md:-translate-x-[50%]">
-        <InstallButton />
-      </div>
       <div className="md:inner-border-left nd:shadow-xl flex h-full w-full max-w-[900px] flex-col justify-evenly bg-white/60 px-8 py-3 md:h-auto md:flex-row md:justify-around md:gap-6 md:rounded-[1rem] md:border md:p-8">
         <div className="flex flex-col justify-center md:items-center">
           {/* <PushNotificationButton /> */}
