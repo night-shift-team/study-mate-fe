@@ -97,7 +97,7 @@ export const RankPageComponent = () => {
   };
 
   return (
-    <div className="flex h-full w-full max-w-4xl flex-col gap-2 rounded-2xl p-3 md:shadow-lg">
+    <div className="flex h-full w-full max-w-4xl flex-col gap-2 rounded-2xl p-3">
       <div className="mt-2 flex h-[clamp(8rem,30%,12rem)] w-full min-w-[15rem] items-end justify-center gap-[0.1rem] px-[5%]">
         <div className="relative flex h-[86%] w-[10rem] animate-fade-up justify-center delay-500">
           {/* <span className='absolute top-[1.1rem] font-jalnan text-sm'>2</span> */}
@@ -229,7 +229,6 @@ export const RankPageComponent = () => {
               </span>
             </h3>
 
-
             <h3 className="mt-2 animate-fade-up text-sm font-medium text-gray-700 delay-200 md:text-sm">
               유저 랭킹
             </h3>
@@ -237,12 +236,10 @@ export const RankPageComponent = () => {
               {/* 반응형 테이블 컨테이너 */}
               <TableContainer
                 component={Paper}
-                className="scrollbar-hide"
+                className="scrollbar-hide md:shadow-sm"
                 sx={{
-                  maxHeight: '80vh',
                   overflowY: 'auto',
                   borderRadius: 2,
-                  boxShadow: 0,
                   backgroundColor: 'unset',
                 }}
               >
@@ -258,7 +255,6 @@ export const RankPageComponent = () => {
                         align="center"
                       >
                         순위
-
                       </TableCell>
                       <TableCell
                         sx={{ display: { xs: 'none', md: 'table-cell' } }}
@@ -345,7 +341,7 @@ export const RankPageComponent = () => {
 
               <div className="h-full flex-1 pb-0.5" />
               {/* 페이지네이션 */}
-              <div className="flex w-full justify-center pb-2">
+              <div className="mt-4 flex w-full justify-center pb-2">
                 <ProblemPagination
                   page={currentPage}
                   setPage={setCurrentPage}
