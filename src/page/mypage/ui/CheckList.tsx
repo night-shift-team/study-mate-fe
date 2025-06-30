@@ -152,7 +152,7 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
           {selectedCategory && (
             <div
               ref={resultContainerRef}
-              className={`hidden h-[30vh] w-[100%] overflow-auto md:flex ${
+              className={`hidden h-[60vh] w-[100%] flex-col overflow-auto md:flex ${
                 {
                   [ProblemCategoryTitle.ALGORITHUM]: 'bg-[#DDEDFB]',
                   [ProblemCategoryTitle.NETWORK]: 'bg-[#EEDDFB]',
@@ -181,6 +181,7 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
                   <span>No data</span>
                 )}
               </div>
+              <div className="h-2 w-full" />
             </div>
           )}
         </div>

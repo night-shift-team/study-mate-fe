@@ -34,6 +34,7 @@ import { ProblemDetailInfoRes } from '@/page/adminProblem/api';
 import { PopupProblem } from '@/shared/popUp/ui/popupV2';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Swiper as SwiperType } from 'swiper';
+import { SvgIcon } from '@mui/material';
 
 const Mypage = () => {
   const [questionHistory, setQuestionHistory] = useState<any[]>([]);
@@ -193,15 +194,19 @@ const Mypage = () => {
               <div className="flex h-full items-center gap-1.5">
                 <button
                   onClick={() => scrollByCard('left')}
-                  className="aspect-1 h-8 rounded-[50%] bg-[#FEBA73] p-[9px] md:h-[40px] md:p-2.5"
+                  className="flex aspect-1 h-8 items-center justify-center rounded-[50%] bg-[#FEBA73] p-[9px] md:h-[40px] md:p-2.5"
                 >
-                  <Arrow />
+                  <SvgIcon component={Arrow} inheritViewBox />
                 </button>
                 <button
                   onClick={() => scrollByCard('right')}
-                  className="aspect-1 h-8 rounded-[50%] bg-[#FEBA73] p-[9px] md:h-[40px] md:p-2.5"
+                  className="flex aspect-1 h-8 items-center justify-center rounded-[50%] bg-[#FEBA73] p-[9px] md:h-[40px] md:p-2.5"
                 >
-                  <Arrow className="rotate-180 transform" />
+                  <SvgIcon
+                    component={Arrow}
+                    inheritViewBox
+                    className="rotate-180 transform"
+                  />
                 </button>
               </div>
             </div>
