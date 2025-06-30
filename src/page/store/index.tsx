@@ -101,13 +101,14 @@ const StorePage = () => {
           color="#ffffe9"
         />
       ) : null}
-      {purchaseStatus !== 'none' ? (
+      {/* 구매 여부 체크 필요 */}
+      {/* {purchaseStatus !== 'none' ? (
         <Toaster
           status={
             purchaseStatus === 'success' ? ToastType.success : ToastType.error
           }
         />
-      ) : null}
+      ) : null} */}
       <div className="relative flex h-full w-full flex-col overflow-y-auto overflow-x-hidden scrollbar-hide">
         <div className="mt-4 flex h-[8rem] w-full animate-fade-up justify-center">
           <Panel className="h-full w-full scale-[1.45] object-contain" />
