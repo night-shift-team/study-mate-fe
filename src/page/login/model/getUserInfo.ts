@@ -22,7 +22,6 @@ export const getUserInfo = async (
 ) => {
   try {
     const res = await userInfoApi();
-    console.log(res);
     if (!res.ok) {
       const errData = res.payload as ServerErrorResponse;
       if (errData.ecode === Ecode.E0106) {
@@ -55,9 +54,8 @@ export const getUserInfo = async (
     }
   } catch (e: any) {
     const error = handleFetchErrors(e);
-    console.log('error', error);
     if (error === 'TypeError' || error === 'AbortError') {
-      console.log('서버 에러');
+      console.log(e);
     }
   }
 };

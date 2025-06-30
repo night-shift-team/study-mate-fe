@@ -80,7 +80,6 @@ export const RemainTimeSV2 = ({ endDate }: { endDate: Date }) => {
     };
   }, []);
 
-  // console.log(currentTime, date.getTime())
   return (
     <div className="mx-auto max-w-2xl bg-white p-8 font-sans">
       <div className="mb-6 flex items-center justify-center text-lg font-semibold text-black">

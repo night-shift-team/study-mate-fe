@@ -42,7 +42,6 @@ export const RankPageComponent = () => {
     setIsLoading(true);
     try {
       const res = await getUserRankingApi(0, 10000);
-      console.log('랭킹조회', res);
       if (res.ok && res.payload) {
         if ('myRanking' in res.payload && 'otherUsers' in res.payload) {
           setMyRanking(res.payload.myRanking);

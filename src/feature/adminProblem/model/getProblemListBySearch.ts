@@ -20,7 +20,6 @@ export const getProblemListBySearch = async (
         searchText
       );
       if (res.ok) {
-        console.log(res.payload);
         return res.payload as GetAdminMAQListRes;
       }
       throw res.payload;
@@ -32,7 +31,6 @@ export const getProblemListBySearch = async (
         searchText
       );
       if (res.ok) {
-        console.log(res.payload);
         return res.payload as GetAdminSAQListRes;
       }
       throw res.payload;

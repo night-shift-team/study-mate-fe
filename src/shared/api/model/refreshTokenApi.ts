@@ -26,7 +26,6 @@ export const getAccessTokenFromRefreshToken = async (
       return (res.payload as AuthTokenRes).accessToken;
     }
     if ((res.payload as ServerErrorResponse).ecode === Ecode.E0005) {
-      console.log('refresh token expired');
       throw EcodeMessage(Ecode.E0005);
     }
     throw res.payload as ServerErrorResponse;

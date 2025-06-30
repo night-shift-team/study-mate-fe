@@ -71,7 +71,6 @@ const EditorContainer = ({
     editorState.read(() => {
       const root = $getRoot();
       if (setMarkdown) {
-        console.log('transformer');
         const newMarkdown =
           root.getChildrenSize() === 0
             ? ''
@@ -79,7 +78,6 @@ const EditorContainer = ({
         setMarkdown((prevMarkdown) =>
           prevMarkdown !== newMarkdown ? newMarkdown : prevMarkdown
         );
-        console.log(newMarkdown);
       }
     });
   };

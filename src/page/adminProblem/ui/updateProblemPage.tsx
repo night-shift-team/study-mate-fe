@@ -99,7 +99,6 @@ const UpdateProblemPage = () => {
         };
         const res = await updateAdminMAQApi(problemDetailInfo.questionId, body);
         if (res.ok) {
-          console.log(`${problemDetailInfo.questionId} updated`, res.payload);
           setToastIcon(ToastType.success);
           setToastDescription('문제 수정이 완료되었습니다.');
           setToastOpen(true);
@@ -116,7 +115,6 @@ const UpdateProblemPage = () => {
         };
         const res = await updateAdminSAQApi(problemDetailInfo.questionId, body);
         if (res.ok) {
-          console.log(`${problemDetailInfo.questionId} updated`, res.payload);
           setToastIcon(ToastType.success);
           setToastDescription('문제 수정이 완료되었습니다.');
           setToastOpen(true);

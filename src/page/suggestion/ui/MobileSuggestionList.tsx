@@ -40,7 +40,6 @@ export const MobileSuggestionList = ({
   }, [id]);
   const commentCount = suggestion?.comments?.length ?? 0;
 
-  console.log(suggestion);
   return (
     <div className="flex-col">
       <div className="flex justify-between pb-1 pt-3">

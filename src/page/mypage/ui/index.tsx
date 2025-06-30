@@ -56,16 +56,12 @@ const Mypage = () => {
   const userRanking = async () => {
     try {
       const res = await getUserRankingApi(0, 12); // 예제:
-      console.log('rnaking res', res);
       if (res.ok) {
         if (res.payload && 'myRanking' in res.payload) {
           setMyRanking(res.payload.myRanking);
-        } else {
-          console.log(res.payload);
         }
-      } else {
-        console.log('API 요청 실패', res);
       }
+      throw res.payload;
     } catch (error) {
       console.log(error);
     }
@@ -74,17 +70,13 @@ const Mypage = () => {
   const userQuestionHistory = async () => {
     try {
       const res = await getQuestionHistoryApi(100, 100000);
-      console.log('userQuestionHistory res', res);
       if (res.ok) {
         if (res.payload && 'content' in res.payload) {
           setQuestionHistory(res.payload.content);
           setTotalElements(res.payload.totalElements);
-        } else {
-          console.log(res.payload);
         }
-      } else {
-        console.error('API 요청 실패', res);
       }
+      throw res.payload;
     } catch (error) {
       console.error(error);
     }
@@ -93,16 +85,12 @@ const Mypage = () => {
   const userFavoriteApi = async () => {
     try {
       const res = await getQuestionFavoriteApi(0, 12);
-      console.log('즐겨찾기 API 응답:', res);
       if (res.ok) {
         if (Array.isArray(res.payload)) {
           setFavoriteList(res.payload as QuestionFavoriteRes[]);
-        } else {
-          console.error('Payload is not an array');
         }
-      } else {
-        console.log('API 요청 실패', res);
       }
+      throw res.payload;
     } catch (error) {
       console.log(error);
     }

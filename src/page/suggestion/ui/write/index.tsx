@@ -15,8 +15,6 @@ const WritePage = () => {
 
     try {
       const postId = await createQnABoardApi({ title, content });
-      console.log('게시글 생성 성공, ID:', postId);
-
       setSubmitted(true);
       setTitle('');
       setContent('');

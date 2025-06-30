@@ -61,7 +61,6 @@ const AnnouncementPage = () => {
       setPage(1);
       setMaxPage(1);
     }
-    console.log(page);
   }, [currentTab, page]);
 
   return (

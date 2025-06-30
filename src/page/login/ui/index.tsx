@@ -111,7 +111,6 @@ const Login = () => {
         router
       );
     } catch (error) {
-      console.log('loginpage catch error', error);
       if ((error as ServerErrorResponse).ecode !== undefined) {
         switch ((error as ServerErrorResponse).ecode) {
           case Ecode.E0103:
@@ -173,7 +172,6 @@ const Login = () => {
     const formEnterListener = (e: KeyboardEvent) => {
       if (e.key === 'Enter') {
         const activeElement = document.activeElement as HTMLElement;
-        console.log('activeElement', activeElement.tagName);
         if (activeElement.tagName === 'INPUT') {
           e.preventDefault();
           const loginButton = document.getElementById('loginButton');

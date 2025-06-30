@@ -100,7 +100,6 @@ const Problem = ({ category }: ProblemProps) => {
           )
         );
       }
-      console.log([...availabaleSolveData]);
       const randomCategory = getRandomProblemCategory([...availabaleSolveData]);
       await getProblemByCategory(randomCategory);
     } catch (e) {
@@ -111,7 +110,6 @@ const Problem = ({ category }: ProblemProps) => {
   const getProblemByCategory = async (targetCategory: ProblemCategoryTitle) => {
     try {
       const solveType = checkCanSolveProblemType(targetCategory);
-      console.log('solveType', solveType);
       if (!solveType) return;
       const randomType =
         solveType === 'BOTH' ? getRandomProblemType() : solveType;
@@ -162,14 +160,12 @@ const Problem = ({ category }: ProblemProps) => {
         ? JSON.parse(canSolveProblem)
         : DEFAULT_CANSOLVE_PROBLEM_INFO;
       // 현재 category에서 풀수 있는 type 찾기
-      console.log(data);
       const canSolveData:
         | { category: ProblemCategory; canSolve: boolean }[]
         | undefined = data.filter(
         (item: { category: ProblemCategory }) =>
           item.category.split('_')[0] === targetCategory
       );
-      console.log(targetCategory, canSolveData);
       if (canSolveData.length) {
         // MAQ, SAQ
         const first = canSolveData[0].canSolve
@@ -178,7 +174,6 @@ const Problem = ({ category }: ProblemProps) => {
         const second = canSolveData[1].canSolve
           ? (canSolveData[1].category.split('_')[1] as ProblemCategoryType)
           : null;
-        console.log('first, second', first, second);
         if (first && second) {
           return 'BOTH';
         } else if (!first && second) {
@@ -246,7 +241,6 @@ const Problem = ({ category }: ProblemProps) => {
           const data: CanSolveProblemInfo[] = JSON.parse(
             disableCanSolveDataStorage
           );
-          console.log(currentSolveCategoryRef.current);
           const newData = data.map((value: CanSolveProblemInfo) => {
             const [categoryTitle, categoryType] = value.category.split('_');
             if (
@@ -265,7 +259,6 @@ const Problem = ({ category }: ProblemProps) => {
               return value;
             }
           });
-          console.log(newData);
           sessionStorage.setItem('canSolveProblem', JSON.stringify(newData));
         }
         setSelectedAnswer(null);

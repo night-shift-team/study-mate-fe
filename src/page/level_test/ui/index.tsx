@@ -61,42 +61,6 @@ const LevelTest = () => {
     }
   }, [levelTestLists]);
 
-  // const getLevelTestQuestions = async () => {
-  //   try {
-  //     const res = await getLevelTestQuestionsApi();
-  //     if (res.ok) {
-  //       setLevelTestLists(res.payload as ProblemInfoLevelTest[]);
-  //       setIsPageLoading(false);
-  //       return res.payload;
-  //     }
-  //     throw res.payload;
-  //   } catch (e) {
-  //     console.log(e);
-  //     throw e;
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getLevelTestQuestions()
-  //     .then((list) => {
-  //       const problemListWithNo = (list as ProblemInfoLevelTest[]).map(
-  //         (item, index) => {
-  //           return {
-  //             no: index + 1,
-  //             id: item.id,
-  //           };
-  //         }
-  //       );
-  //       sessionStorage.setItem(
-  //         'levelTestListWithNo',
-  //         JSON.stringify(problemListWithNo)
-  //       );
-  //     })
-  //     .catch((e) => {
-  //       console.log(e);
-  //     });
-  // }, []);
-
   const handleAnswerSelect = (index: number) => {
     setSelectedAnswer(index);
     setShowResult(true);

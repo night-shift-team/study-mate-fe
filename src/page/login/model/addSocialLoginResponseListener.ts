@@ -28,7 +28,6 @@ export const addSocialLoginRedirectDataListener = (
     setLoading(true);
     try {
       const res = await googleSignInApi(authData);
-      console.log('res', res);
 
       if (!res.ok || (res.payload && 'ecode' in res.payload)) {
         const errData = res.payload as ServerErrorResponse;
@@ -63,7 +62,6 @@ export const addSocialLoginRedirectDataListener = (
       const { authData } = event.data;
       if (!authData) return;
 
-      console.log('Received authentication code:', authData);
       // 여기서 code를 사용하여 추가적인 처리를 수행합니다.
       googleLogin(authData);
     };

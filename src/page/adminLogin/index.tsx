@@ -12,8 +12,7 @@ const AdminPage = () => {
     toastOpen,
     setToastOpen
   );
-  //TODO: 로그인 상태 일 시 로그아웃
-  console.log(toastOpen);
+
   return (
     <div className="relative flex w-full min-w-[320px] flex-col items-center justify-center p-5 md:w-[80rem] md:flex-row md:p-0">
       <Toaster />

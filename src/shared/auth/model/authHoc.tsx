@@ -14,7 +14,6 @@ const AuthHoc = <P extends object>(WrappedComponent: ComponentType<P>) => {
     const IsAdmin = (user && user.role >= 7) ?? false;
     const path = usePathname();
 
-    console.log('authhoc', user, path);
     useEffect(() => {
       setIsMounted(true);
 

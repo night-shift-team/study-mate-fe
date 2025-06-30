@@ -127,8 +127,6 @@ export const Favorite = ({
     });
   };
 
-  console.log('0000000', questionHistory);
-
   const handleCancelRemoval = () => {
     setIsConfirmOpen(false); // ConfirmPopup 닫기
     setConfirmItem(null); // 삭제할 아이템 초기화

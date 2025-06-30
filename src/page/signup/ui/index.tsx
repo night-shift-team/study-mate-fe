@@ -62,7 +62,6 @@ const SignUp = () => {
   const checkNicknameDuplicate = async (nickname: string) => {
     try {
       const res = await checkDuplicateNicknameApi(nickname);
-      console.log(res);
       return res.payload;
     } catch (e) {
       console.log(e);
@@ -73,7 +72,6 @@ const SignUp = () => {
   const checkEmailDuplicate = async (email: string) => {
     try {
       const res = await checkDuplicateEmailApi(email);
-      console.log(res);
       return res.payload;
     } catch (e) {
       console.log(e);
@@ -143,7 +141,6 @@ const SignUp = () => {
 
       // 회원 가입 요청
       const res = await signUpApi(formData);
-      console.log(res);
       setPopupOpen(true);
     } catch (e) {
       console.error('회원가입 에러:', e);

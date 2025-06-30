@@ -4,7 +4,6 @@ import { localLoginApi, LoginRes } from '../api';
 export const requestSignIn = async (email: string, password: string) => {
   try {
     const res = await localLoginApi(email, password);
-    console.log(res);
     if (res.ok) {
       return res.payload as LoginRes;
     }

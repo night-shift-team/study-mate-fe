@@ -35,7 +35,6 @@ export const openNewWindowWithoutDuplicate = (
 
         if (newWindow.closed) {
           // 필요한 경우 메인 창 새로고침 또는 상태 업데이트
-          console.log('결제 정보 핸들링 필요, 성공,닫기 여부 확인 불가');
           const rootContainer = document.getElementById('root-container');
           if (rootContainer) {
             rootContainer.style.backgroundColor = '';

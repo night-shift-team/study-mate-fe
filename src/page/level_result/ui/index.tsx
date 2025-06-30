@@ -56,7 +56,6 @@ const ResultContent = () => {
       const problems = sessionStorage.getItem('levelTestListWithNo');
       if (problems) {
         try {
-          console.log(JSON.parse(problems));
           setProblemLists(JSON.parse(problems));
         } catch (e) {
           console.log(e);
@@ -67,7 +66,6 @@ const ResultContent = () => {
 
       if (storedData) {
         try {
-          console.log(JSON.parse(storedData));
           setResultData(JSON.parse(storedData));
         } catch (e) {
           console.log(e);

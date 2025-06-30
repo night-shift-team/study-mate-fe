@@ -27,7 +27,6 @@ const ManageUser = () => {
         return user;
       }
     });
-    console.log('targetUsers', targetUsers);
     setUserList(targetUsers);
   };
 

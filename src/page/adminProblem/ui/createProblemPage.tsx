@@ -106,10 +106,6 @@ const CreateProblemPage = () => {
         };
         const res = await createAdminMAQApi(body);
         if (res.ok) {
-          console.log(
-            `${problemDetailInfo.questionTitle} created`,
-            res.payload
-          );
           setToastIcon(ToastType.success);
           setToastDescription('문제 생성이 완료되었습니다.');
           setToastOpen(true);
@@ -133,13 +129,8 @@ const CreateProblemPage = () => {
           keyword2: (problemDetailInfo.options as string[])[1],
           keyword3: (problemDetailInfo.options as string[])[2],
         };
-        console.log(body);
         const res = await createAdminSAQApi(body);
         if (res.ok) {
-          console.log(
-            `${problemDetailInfo.questionTitle} created`,
-            res.payload
-          );
           setToastIcon(ToastType.success);
           setToastDescription('문제 생성이 완료되었습니다.');
           setToastOpen(true);

@@ -22,7 +22,7 @@ export const useChachingLevelTest = () => {
 
         throw res.payload;
       } catch (e) {
-        console.log('레벨 테스트 문제 로딩 실패:', e);
+        console.log(e);
         throw e;
       }
     },

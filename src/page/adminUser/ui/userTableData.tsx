@@ -40,7 +40,6 @@ export const UserTableData = ({
               className={`flex w-[15%] items-center justify-center ${data.deletedDt === null ? 'hover:cursor-pointer active:cursor-grabbing' : ''}`}
               onClick={() => {
                 if (data.deletedDt === null) {
-                  console.log('open popup');
                   setDialogOpen(true);
                 }
               }}

@@ -89,7 +89,6 @@ const ManageProlemPage = () => {
 
   useEffect(() => {
     if (shouldFetch) {
-      console.log(currentPage);
       setIsLoading(true);
       if (problemListStatus === 'latest') {
         getProblemList(problemType, currentPage, PAGE_LIMIT).finally(() => {
@@ -134,8 +133,6 @@ const ManageProlemPage = () => {
     setProblemListStatus('latest');
     setShouldFetch(true);
   }, [problemType]);
-
-  console.log(problemList);
 
   return (
     <div className="relative flex h-full w-full flex-col overflow-y-auto p-4 scrollbar-hide md:px-10 md:pb-10">

@@ -12,7 +12,6 @@ export const getRandomProblemType = () => {
 export const getRandomProblemCategory = (
   availabaleSolveData: ProblemCategoryTitle[]
 ) => {
-  console.log('inrandom', availabaleSolveData);
   const randomCategory = new Date().getTime() % availabaleSolveData.length;
   return availabaleSolveData[randomCategory];
 };

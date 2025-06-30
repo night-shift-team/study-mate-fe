@@ -18,8 +18,6 @@ const Suggestion = () => {
   const router = useRouter();
   const [list, setList] = useState<SuggestionItem[] | null>(null);
 
-  console.log(list);
-
   useEffect(() => {
     const fetchData = async () => {
       try {

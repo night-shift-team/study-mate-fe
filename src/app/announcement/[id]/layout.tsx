@@ -9,7 +9,6 @@ const AnnouncementByIdPage = async ({
   params: Promise<{ id: string }>;
 }) => {
   const { id } = await params;
-  console.log(id);
 
   return <ClientLayout id={id}>{children}</ClientLayout>;
 };
