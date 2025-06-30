@@ -11,7 +11,6 @@ import { LuLayoutDashboard } from 'react-icons/lu';
 import RankingIcon from '@public/assets/icons/header/ranking-factor.png';
 import AnnouncementIcon from '@public/assets/icons/header/announcement.png';
 import MypageIcon from '@public/assets/icons/header/user.png';
-import SuggestionIcon from '@public/assets/icons/header/suggestion.png';
 import Image from 'next/image';
 import StoreIcon from '@public/assets/icons/header/storeIcon.svg';
 import { SvgIcon } from '@mui/material';
@@ -21,7 +20,7 @@ const RightHeaderComponents = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
-  const { setUser } = userStore();
+  const setUser = userStore.getState().setUser;
 
   useEffect(() => {
     const accessTokenWatcher = (e: StorageEvent) => {

@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { IoClose } from 'react-icons/io5';
 import Link from 'next/link';
@@ -17,7 +18,7 @@ interface MobileSliderProps {
 }
 
 const MobileSlider: React.FC<MobileSliderProps> = ({ open, setOpen }) => {
-  const { setUser } = userStore();
+  const setUser = userStore.getState().setUser;
   return (
     <div
       className={`fixed right-0 top-0 z-50 flex h-[100vh] max-h-[100vh] w-full transform flex-col bg-white text-xs ${

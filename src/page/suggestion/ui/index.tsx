@@ -2,7 +2,6 @@
 import { SuggestionList } from './SuggestionList';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { useRouter } from 'next/navigation';
-import { userStore } from '@/state/userStore';
 import { getQnABoardListApi } from '../api';
 import { useEffect, useState } from 'react';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';

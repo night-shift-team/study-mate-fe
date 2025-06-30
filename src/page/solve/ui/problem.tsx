@@ -79,7 +79,7 @@ const Problem = ({ category }: ProblemProps) => {
     toastOpen,
     setToastOpen
   );
-  const { user, setUser } = userStore();
+  const { user, setUser } = userStore.getState();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isPageLoading, setIsPageLoading] = useState(true);

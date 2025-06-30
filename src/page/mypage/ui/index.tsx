@@ -38,7 +38,7 @@ import { Swiper as SwiperType } from 'swiper';
 
 const Mypage = () => {
   const [questionHistory, setQuestionHistory] = useState<any[]>([]);
-  const { user } = userStore();
+  const user = userStore.getState().user;
   const swiperRef = useRef<SwiperType | null>(null);
   const [myRanking, setMyRanking] = useState<number>();
   const [totalElements, setTotalElements] = useState<number>();

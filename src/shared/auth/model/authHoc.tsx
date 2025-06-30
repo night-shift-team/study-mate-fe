@@ -11,8 +11,10 @@ const AuthHoc = <P extends object>(WrappedComponent: ComponentType<P>) => {
     const router = useRouter();
     const [isMounted, setIsMounted] = useState(false);
     const user = userStore.getState().user;
+    const IsAdmin = (user && user.role >= 7) ?? false;
     const path = usePathname();
 
+    console.log('authhoc', user, path);
     useEffect(() => {
       setIsMounted(true);
 
@@ -50,11 +52,11 @@ const AuthHoc = <P extends object>(WrappedComponent: ComponentType<P>) => {
         return;
       }
       // 일반 유저가 어드민 페이지 접근 시 홈으로 리다이렉트
-      if (user && user.role < 7 && path.includes('/admin')) {
+      if (!IsAdmin && path.includes(RouteTo.AdminLogin + '/')) {
         router.push(RouteTo.Home);
         return;
       }
-      if (user && user.role >= 7 && path === RouteTo.AdminLogin) {
+      if (IsAdmin && path === RouteTo.AdminLogin) {
         router.push(RouteTo.AdminDashboard);
         return;
       }
@@ -64,10 +66,10 @@ const AuthHoc = <P extends object>(WrappedComponent: ComponentType<P>) => {
 
     // 어드민 페이지 관련
     // 일반 유저는 어드민 페이지 접근 불가
-    if (user && user.role < 7 && path.includes('/admin')) {
+    if (!IsAdmin && path.includes(RouteTo.AdminLogin + '/')) {
       return null;
     }
-    if (user && user.role >= 7 && path === RouteTo.AdminLogin) {
+    if (IsAdmin && path === RouteTo.AdminLogin) {
       return null;
     }
 

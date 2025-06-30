@@ -37,7 +37,7 @@ const LevelResult = () => {
 export default LevelResult;
 
 const ResultContent = () => {
-  const { setUser } = userStore();
+  const setUser = userStore.getState().setUser;
   const [problemLists, setProblemLists] = useState<
     { no: number; id: string }[]
   >([]);

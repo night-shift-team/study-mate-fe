@@ -11,7 +11,6 @@ import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { setTokens } from './setTokens';
 import { ServerResponse } from 'http';
 import { getUserInfo } from './getUserInfo';
-import { userStore } from '@/state/userStore';
 import { UserInfo } from '@/shared/constants/userInfo';
 import { ToastType } from '@/shared/toast/toast';
 import { LoginToastText } from './loginToastText';

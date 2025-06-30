@@ -1,6 +1,5 @@
 'use client';
 
-import { userStore } from '@/state/userStore';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -11,7 +10,6 @@ import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { ProblemPagination } from '@/feature/pagination';
 
 const CategoryPage = () => {
-  const { user } = userStore();
   const { category } = useParams();
   const [questionHistory, setQuestionHistory] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);

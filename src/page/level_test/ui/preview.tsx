@@ -5,7 +5,7 @@ type PreviewProps = {
 };
 
 export const Preview = ({ onStart }: PreviewProps) => {
-  const { user } = userStore();
+  const user = userStore.getState().user;
   return (
     <div className="flex h-full flex-col items-center justify-center">
       <h3>안녕하세요{user?.nickname} 님!</h3>

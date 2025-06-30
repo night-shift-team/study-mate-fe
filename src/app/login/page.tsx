@@ -4,7 +4,7 @@ import PageAnimationWrapper from '@/shared/style/ui/pageAnimationWrapper';
 const LoginPage = () => {
   return (
     <PageAnimationWrapper>
-      <Login />;
+      <Login />
     </PageAnimationWrapper>
   );
 };

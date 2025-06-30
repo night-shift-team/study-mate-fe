@@ -1,6 +1,5 @@
 import { UserInfo } from '@/shared/constants/userInfo';
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 
 interface UserStore {
   user: UserInfo | null;
@@ -11,14 +10,7 @@ export enum UserStoreStorage {
   userStore = 'userStore',
 }
 
-export const userStore = create(
-  persist<UserStore>(
-    (set) => ({
-      user: null,
-      setUser: (newUser: UserInfo | null) => set({ user: newUser }),
-    }),
-    {
-      name: 'userStore',
-    }
-  )
-);
+export const userStore = create<UserStore>((set) => ({
+  user: null,
+  setUser: (newUser: UserInfo | null) => set({ user: newUser }),
+}));

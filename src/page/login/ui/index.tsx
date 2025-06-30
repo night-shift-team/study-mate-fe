@@ -33,7 +33,6 @@ const Login = () => {
   const [loginLoading, setLoginLoading] = useState(false);
   const [toastOpen, setToastOpen] = useState(false);
 
-  const user = userStore.getState().user;
   const setUser = userStore.getState().setUser;
 
   const emailInputRef = useRef<HTMLInputElement>(null);

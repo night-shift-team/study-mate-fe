@@ -20,14 +20,9 @@ const AdminPage = () => {
       <div className="flex w-full max-w-[30rem] items-end justify-center md:w-[50%] md:max-w-none md:justify-end md:p-[3rem]">
         <div className="relative flex aspect-1 w-[80%] rounded-full border-4 border-[#fafbe7]">
           <div className="flex h-full w-full items-end justify-center">
-            <Image
-              src={Logo}
-              alt="Logo"
-              className="mt-[22%]"
-              fill
-              objectFit="contain"
-              priority
-            />
+            <div className="mt-[22%]">
+              <Logo />
+            </div>
             <div className="flex h-fit w-fit font-serif text-[2rem]">ADMIN</div>
           </div>
         </div>

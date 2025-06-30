@@ -1,11 +1,14 @@
 import LevelTest from '@/page/level_test/ui';
 import PageAnimationWrapper from '@/shared/style/ui/pageAnimationWrapper';
+import UserStateWrapper from '@/state/userStore/model/clientSideWrapper';
 
 const LevelTestPage = () => {
   return (
-    <PageAnimationWrapper>
-      <LevelTest />;
-    </PageAnimationWrapper>
+    <UserStateWrapper>
+      <PageAnimationWrapper>
+        <LevelTest />
+      </PageAnimationWrapper>
+    </UserStateWrapper>
   );
 };
 
