@@ -90,14 +90,14 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
       )
     : [];
 
-  useEffect(() => {
-    if (selectedCategory && resultContainerRef.current) {
-      resultContainerRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
-    }
-  }, [selectedCategory]);
+  // useEffect(() => {
+  //   if (selectedCategory && resultContainerRef.current) {
+  //     resultContainerRef.current.scrollIntoView({
+  //       behavior: 'smooth',
+  //       block: 'start',
+  //     });
+  //   }
+  // }, [selectedCategory]);
 
   return (
     <>

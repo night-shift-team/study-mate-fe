@@ -7,10 +7,6 @@ import 'swiper/css';
 import 'swiper/css/navigation'; // 화살표
 import 'swiper/css/pagination'; // 페이지네이션
 
-export const metadata = {
-  manifest: '/manifest.ts',
-};
-
 export default async function RootLayout({
   children,
 }: Readonly<{
