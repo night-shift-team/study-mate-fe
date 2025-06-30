@@ -2,6 +2,7 @@ import React, { Fragment, JSX, useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import { QuestionDetailRes } from '@/page/mypage/api';
 import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
+import PreventScrollOutsidePopup from '../model/preventParentScroll';
 
 // 팝업 컴포넌트 종류
 // 1. PopupProblem - 문제 내용 팝업 (타이틀, 내용, 유저 답안, 정답, 해설, 닫기)
@@ -77,7 +78,11 @@ export const PopupProblem: React.FC<PopupWithProblemProps> = ({
         </div>
       </PopupHeader>
       {/* 컨텐츠 */}
-      <div className="flex w-full flex-col gap-2 overflow-y-auto px-2">
+      <div
+        id="popup-scroll-body"
+        className="flex w-full flex-col gap-2 overflow-y-auto px-2"
+      >
+        <PreventScrollOutsidePopup />
         <div className="flex w-full flex-1">
           <MarkdownComponent markdown={content} />
         </div>
