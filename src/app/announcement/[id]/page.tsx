@@ -10,6 +10,7 @@ const ClientAnnouncementDetail = () => {
   let data;
   useEffect(() => {
     const noticeData = sessionStorage.getItem('currentNoticeData');
+
     try {
       data = noticeData ? (JSON.parse(noticeData) as Notice) : undefined;
     } catch {
