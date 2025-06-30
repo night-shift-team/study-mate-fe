@@ -12,19 +12,23 @@ const developers = [
 ];
 
 const quickLinks = [
-  { label: '소개', href: RouteTo.Home },
+  { label: '홈', href: RouteTo.Solve },
+  { label: '공지사항', href: RouteTo.Announcement },
+  { label: '랭킹', href: RouteTo.Rank },
+  { label: '상점', href: RouteTo.Store },
+  { label: '마이페이지', href: RouteTo.Mypage },
   { label: '문의하기', href: RouteTo.Suggestion },
 ];
 
 const contacts = [
   {
     icon: <FaEnvelope size={20} />,
-    href: RouteTo.Home,
+    href: 'joodinner@gmail.com',
     label: 'Email',
   },
   {
     icon: <FaGithub size={20} />,
-    href: RouteTo.Home,
+    href: 'https://github.com/night-shift-team',
     label: 'GitHub',
   },
 ];
@@ -52,9 +56,16 @@ const Footer = () => {
             <h3 className="text-sm font-semibold text-gray-500">Contact</h3>
             <div className="mt-2 flex items-center gap-4 text-gray-400">
               {contacts.map((item, index) => (
-                <Link key={index} href={item.href} className="hover:text-white">
+                <a
+                  key={index}
+                  target="_blank"
+                  href={
+                    item.label === 'Email' ? `mailTo:${item.href}` : item.href
+                  }
+                  className="hover:text-white"
+                >
                   {item.icon}
-                </Link>
+                </a>
               ))}
             </div>
           </div>
