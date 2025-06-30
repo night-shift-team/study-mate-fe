@@ -3,7 +3,6 @@
 import React, { useEffect, useState, useTransition } from 'react';
 import { userStore } from '@/state/userStore';
 import { changeNicknameApi } from '../api';
-import Image from 'next/image';
 import Button from '@/components/buttons';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import useToast, { ToastType } from '@/shared/toast/toast';

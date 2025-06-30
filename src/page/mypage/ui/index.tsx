@@ -26,7 +26,6 @@ import {
   Cloud_IMG,
   Strom_IMG,
   Star_IMG,
-  Universe_IMG,
 } from '../model/img';
 import Arrow from '@public/assets/icons/mypage/check_arrow.svg';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';

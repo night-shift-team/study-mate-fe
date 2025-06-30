@@ -9,4 +9,3 @@ export const Range_IMG = GradePath + '/range.png';
 export const Cloud_IMG = GradePath + '/cloud.png';
 export const Strom_IMG = GradePath + '/storm.png';
 export const Star_IMG = GradePath + '/star.png';
-export const Universe_IMG = GradePath + '/universe.png';
