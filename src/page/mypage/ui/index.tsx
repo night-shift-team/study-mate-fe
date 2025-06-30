@@ -154,8 +154,18 @@ const Mypage = () => {
     }
   };
 
+  useEffect(() => {
+    const mypage = document.getElementById('mypage');
+    if (mypage) {
+      mypage.focus();
+    }
+  }, []);
+
   return (
-    <div className="z-1 h-full w-full overflow-y-auto scrollbar-hide md:w-[85%]">
+    <div
+      id="mypage"
+      className="z-1 h-full w-full overflow-y-auto outline-none scrollbar-hide md:w-[85%]"
+    >
       {isPopupOpen && popUpProblemDetail && (
         <PopupProblem
           size="md"
