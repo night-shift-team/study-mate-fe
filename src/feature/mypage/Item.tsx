@@ -7,6 +7,7 @@ import { PopupProblem } from '@/shared/popUp/ui/popupV2';
 import { getWithCache } from '@/entities/apiCacheHook';
 import { FaArrowRightLong } from 'react-icons/fa6';
 import Arrow from '@public/assets/icons/mypage/Arrow.svg';
+import { SvgIcon } from '@mui/material';
 
 interface ItemProps {
   index: number;
@@ -92,7 +93,7 @@ export const QuestionItem: React.FC<ItemProps> = ({
           <FaArrowRightLong />
         </button>
       </div>
-      <div className="flex items-center justify-between gap-4 rounded-lg bg-white p-2 shadow-lg md:hidden">
+      <div className="flex items-center justify-between rounded-lg bg-white p-3 shadow-lg md:hidden">
         <div className="flex items-center gap-5">
           <span className={`ml-2 text-sm font-semibold ${textColorClass}`}>
             {(index + 1).toString().padStart(2, '0')}
@@ -113,8 +114,8 @@ export const QuestionItem: React.FC<ItemProps> = ({
           </div>
         </div>
 
-        <div className="h-[20px] w-[20px]" onClick={() => setIsPopupOpen(true)}>
-          <Arrow />
+        <div className="h-7 w-7" onClick={() => setIsPopupOpen(true)}>
+          <SvgIcon inheritViewBox component={Arrow} />
         </div>
       </div>
       {isPopupOpen && questionDetail && (

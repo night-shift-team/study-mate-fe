@@ -6,6 +6,7 @@ import ALGORITHM_Image from '@public/assets/icons/mypage/ALGORITHM.svg';
 import OS_Image from '@public/assets/icons/mypage/OS.svg';
 import Arrow from '@public/assets/icons/mypage/Arrow.svg';
 import { useRouter } from 'next/navigation';
+import { SvgIcon } from '@mui/material';
 
 interface MobileCheckListProps {
   category: string;
@@ -25,7 +26,13 @@ export const MobileCheckList = ({ category }: MobileCheckListProps) => {
 
   return (
     <div className="relative h-[45vw] overflow-hidden md:hidden">
-      {Icon && <Icon className="absolute h-full w-full" />}
+      {Icon && (
+        <SvgIcon
+          component={Icon}
+          inheritViewBox
+          sx={{ position: 'absolute', width: '100%', height: '100%' }}
+        />
+      )}
 
       <div className="relative left-5 top-10 z-10 text-lg font-semibold text-black">
         {category}
@@ -35,7 +42,11 @@ export const MobileCheckList = ({ category }: MobileCheckListProps) => {
         className="absolute bottom-7 right-4 z-10 flex h-[10vw] w-[10vw] items-center justify-center"
         onClick={() => router.push(`/mypage/${category}`)}
       >
-        <Arrow />
+        <SvgIcon
+          inheritViewBox
+          component={Arrow}
+          sx={{ width: '100%', height: '100%' }}
+        />
       </div>
     </div>
   );

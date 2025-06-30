@@ -14,7 +14,7 @@ const CategoryPage = () => {
   const [questionHistory, setQuestionHistory] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 5;
 
   useEffect(() => {
     if (!category) return;
@@ -76,9 +76,9 @@ const CategoryPage = () => {
   const textColorClass = categorytextColors[category] || 'text-white';
 
   return (
-    <div className="h-full w-full">
+    <div className="flex h-full w-full flex-col pb-8">
       <div
-        className={`flex h-[200px] w-full items-center justify-between rounded-b-xl p-5 ${bgColorClass}`}
+        className={`flex h-44 w-full items-center justify-between rounded-b-xl p-5 ${bgColorClass}`}
       >
         <div className="ml-5 flex h-full items-end">
           <div className="flex h-[85px] flex-col justify-center">
@@ -94,10 +94,10 @@ const CategoryPage = () => {
           height={50}
         />
       </div>
-      <div className="h-full w-full overflow-hidden">
-        <div className="flex h-[52vh] flex-col justify-between overflow-auto">
+      <div className="flex h-full w-full flex-col justify-between">
+        <div className="flex h-[52vh] flex-col justify-between">
           {' '}
-          <div className="flex flex-col gap-4 p-5">
+          <div className="flex flex-col gap-3 p-5">
             {paginatedHistory.length > 0 ? (
               paginatedHistory.map((history, index) => (
                 <QuestionItem

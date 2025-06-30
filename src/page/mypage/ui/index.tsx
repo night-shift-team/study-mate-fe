@@ -194,17 +194,22 @@ const Mypage = () => {
               <div className="flex h-full items-center gap-1.5">
                 <button
                   onClick={() => scrollByCard('left')}
-                  className="flex aspect-1 h-8 items-center justify-center rounded-[50%] bg-[#FEBA73] p-[9px] md:h-[40px] md:p-2.5"
-                >
-                  <SvgIcon component={Arrow} inheritViewBox />
-                </button>
-                <button
-                  onClick={() => scrollByCard('right')}
-                  className="flex aspect-1 h-8 items-center justify-center rounded-[50%] bg-[#FEBA73] p-[9px] md:h-[40px] md:p-2.5"
+                  className="flex h-8 w-8 items-center justify-center rounded-[50%] bg-[#FEBA73] md:h-[40px] md:w-[40px]"
                 >
                   <SvgIcon
                     component={Arrow}
                     inheritViewBox
+                    sx={{ width: '55%', height: '55%' }}
+                  />
+                </button>
+                <button
+                  onClick={() => scrollByCard('right')}
+                  className="flex h-8 w-8 items-center justify-center rounded-[50%] bg-[#FEBA73] md:h-[40px] md:w-[40px]"
+                >
+                  <SvgIcon
+                    component={Arrow}
+                    inheritViewBox
+                    sx={{ width: '55%', height: '55%' }}
                     className="rotate-180 transform"
                   />
                 </button>
