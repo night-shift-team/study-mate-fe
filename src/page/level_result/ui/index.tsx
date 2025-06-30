@@ -22,6 +22,7 @@ import { categoryGroups } from '../constants';
 import { FaArrowRightLong } from 'react-icons/fa6';
 import Arrow from '@public/assets/icons/leveltest/Arrow 7.svg';
 import { SvgIcon } from '@mui/material';
+import { PopupProblem } from '@/shared/popUp/ui/popupV2';
 
 interface ResultData extends GetLevelTestResultRes {
   userAnswers: number[];
@@ -159,6 +160,7 @@ const ResultContent = () => {
   }>(null);
 
   const handleOpenPopup = async (index: number, id: string) => {
+    setSelectedQuestion(null);
     const problemInfo = await getProblemDetailInfo(id);
     if (!problemInfo) {
       setPopup(false);
@@ -268,17 +270,32 @@ const ResultContent = () => {
         홈으로
       </Button>
 
-      {popup && (
-        <Popup
-          index={selectedQuestion?.index}
-          title={selectedQuestion?.title}
-          content={selectedQuestion?.content}
-          userAnswer={selectedQuestion?.userAnswer}
-          correctAnswer={selectedQuestion?.correctAnswer}
-          explanation={selectedQuestion?.explanation}
-          onClose={handleClosePopup}
-        />
-      )}
+      {popup &&
+        // <Popup
+        //   index={selectedQuestion?.index}
+        //   title={selectedQuestion?.title}
+        //   content={selectedQuestion?.content}
+        //   userAnswer={selectedQuestion?.userAnswer}
+        //   correctAnswer={selectedQuestion?.correctAnswer}
+        //   explanation={selectedQuestion?.explanation}
+        //   onClose={handleClosePopup}
+        // />
+        (!selectedQuestion ? (
+          <div className="fixed flex h-full w-full items-center justify-center bg-[#fdfbf3]/50 backdrop:blur-xl">
+            <Spinner size="xl" />
+          </div>
+        ) : (
+          <PopupProblem
+            size="md"
+            onClose={handleClosePopup}
+            difficulty={selectedQuestion?.index.toString() ?? ''}
+            questionTitle={selectedQuestion?.title ?? ''}
+            content={selectedQuestion?.content ?? ''}
+            answer={selectedQuestion?.correctAnswer ?? ''}
+            explanation={selectedQuestion?.explanation ?? ''}
+            userAnswer={selectedQuestion?.userAnswer?.toString() ?? ''}
+          />
+        ))}
     </div>
   );
 };
