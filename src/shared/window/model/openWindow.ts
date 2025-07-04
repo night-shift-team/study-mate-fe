@@ -28,6 +28,7 @@ export const openNewWindowWithoutDuplicate = (
       `width=${windowWidth},height=${windowHeight},top=${top},left=${left}`
     );
     // 창이 닫힘을 감지하는 인터벌 설정
+    let hasAfterCallbackRun = false;
     if (newWindow) {
       const timer = setInterval(async () => {
         const path = newWindow.postMessage('', window.location.origin);
@@ -39,7 +40,8 @@ export const openNewWindowWithoutDuplicate = (
           if (rootContainer) {
             rootContainer.style.backgroundColor = '';
           }
-          if (afterCallback) {
+          if (afterCallback && !hasAfterCallbackRun) {
+            hasAfterCallbackRun = true;
             await afterCallback();
           }
           clearInterval(timer);

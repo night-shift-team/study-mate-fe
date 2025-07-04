@@ -14,8 +14,7 @@ interface ItemCardProps {
   description: string;
   price: number;
   imageUrl: string | StaticImageData;
-  purchaseStatus: PurchaseStatus;
-  afterPaymentCallback: () => void;
+  afterPaymentCallback: () => Promise<void> | void;
 }
 const ItemCard = ({
   index,
@@ -24,7 +23,6 @@ const ItemCard = ({
   description = '24시간,문제풀이,방어',
   price = 999999,
   imageUrl = ShieldIcon,
-  purchaseStatus,
   afterPaymentCallback,
 }: ItemCardProps) => {
   const [isMobile, setIsMobile] = React.useState(false);
