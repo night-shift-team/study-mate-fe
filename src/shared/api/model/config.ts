@@ -16,6 +16,7 @@ export type ContentType =
   | 'text/html'
   | 'application/json'
   | 'text/plain'
+  | 'text/event-stream'
   | 'application/javascript'
   | 'application/x-www-form-urlencoded';
 
@@ -44,6 +45,9 @@ let currentToken: string | null = null;
 export const setTokenToHeader = (token: string | null) => {
   currentToken = token;
 };
+export const getToken = () => {
+  return currentToken;
+};
 
 /**
  * @typedef {(
@@ -52,6 +56,7 @@ export const setTokenToHeader = (token: string | null) => {
  *   "text/plain" |
  *   "application/javascript" |
  *   "application/x-www-form-urlencoded" |
+ *   "text/event-stream" |
  *   string
  * )} ContentType
  */

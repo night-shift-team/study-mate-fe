@@ -32,3 +32,12 @@ export const getStorePaymentHistoryApi = async (
     `${API_Prefix}/payment/orders/my${query}`
   );
 };
+
+export const paymentSSEApi = async () => {
+  return await _apiFetch(
+    'GET',
+    `${API_Prefix}/payment/connect`,
+    undefined,
+    'text/event-stream'
+  );
+};

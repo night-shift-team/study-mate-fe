@@ -13,13 +13,14 @@ import useOutsideClick from '@/shared/routes/model/useOutsideClick';
 
 import CartPopupData from './ui/cartPopup';
 import PurchasePopupData from './ui/purchasePopup';
-import { getStoreItemListApi } from './api';
+import { getStoreItemListApi, paymentSSEApi } from './api';
 import {
   PageResponseDtoStoreItemDto,
   StoreItemDto,
 } from '@/shared/api/autoGenerateTypes';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import useToast, { ToastType } from '@/shared/toast/toast';
+import { getToken } from '@/shared/api/model/config';
 
 export interface StoreItemInfo {
   title: string;
@@ -68,8 +69,43 @@ const StorePage = () => {
     }, 3000);
   };
 
+  const connectSSE = async () => {
+    console.log('start connect');
+    try {
+      const res = await paymentSSEApi();
+      if (res.ok) {
+        console.log(res);
+      }
+      throw res.payload;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
     getStoreItemLists();
+    // connectSSE()
+  }, []);
+
+  useEffect(() => {
+    const token = String(getToken());
+    const paymentSSEListenr = new EventSource(
+      `https://api-dev.study-mate.academy/api/v1/store/payment/connect?token=${token}`
+    );
+
+    paymentSSEListenr.onmessage = (event) => {
+      console.log(event);
+      const data = JSON.parse(event.data);
+      console.log('📥 New event:', data);
+    };
+
+    paymentSSEListenr.onerror = (error) => {
+      console.error('❌ SSE Error:', error);
+    };
+
+    return () => {
+      paymentSSEListenr.close();
+    };
   }, []);
 
   return (
