@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { createQnABoardApi } from '../../api';
 const WritePage = () => {
   const [title, setTitle] = useState('');
@@ -14,7 +14,7 @@ const WritePage = () => {
     e.preventDefault();
 
     try {
-      const postId = await createQnABoardApi({ title, content });
+      await createQnABoardApi({ title, content });
       setSubmitted(true);
       setTitle('');
       setContent('');

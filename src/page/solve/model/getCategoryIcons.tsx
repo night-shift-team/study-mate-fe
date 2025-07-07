@@ -1,12 +1,5 @@
 import { ProblemCategoryTitle } from '@/shared/constants/problemInfo';
-import {
-  FaComputer,
-  FaDatabase,
-  FaNetworkWired,
-  FaAlgolia,
-  FaDelicious,
-} from 'react-icons/fa6';
-import Image from 'next/image';
+import { FaComputer } from 'react-icons/fa6';
 import AlgoliaIcon from '@public/assets/icons/categoryTitleIcon/algorithmIcon.svg';
 import OSIcon from '@public/assets/icons/categoryTitleIcon/osIcon.svg';
 import DBIcon from '@public/assets/icons/categoryTitleIcon/dbIcon.svg';

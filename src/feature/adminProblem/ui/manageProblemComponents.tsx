@@ -1,4 +1,4 @@
-import { CurrentFilter, PAGE_LIMIT, Problem } from '@/page/adminProblem';
+import { CurrentFilter, Problem } from '@/page/adminProblem';
 import { ProblemCategoryType } from '@/shared/constants/problemInfo';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { IoSearch } from 'react-icons/io5';

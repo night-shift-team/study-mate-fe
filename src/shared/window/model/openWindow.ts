@@ -31,11 +31,7 @@ export const openNewWindowWithoutDuplicate = (
     let hasAfterCallbackRun = false;
     if (newWindow) {
       const timer = setInterval(async () => {
-        const path = newWindow.postMessage('', window.location.origin);
-        // CST경로에 도달하면 창꺼질때 aftercallback 수행
-
         if (newWindow.closed) {
-          // 필요한 경우 메인 창 새로고침 또는 상태 업데이트
           const rootContainer = document.getElementById('root-container');
           if (rootContainer) {
             rootContainer.style.backgroundColor = '';

@@ -1,4 +1,3 @@
-import kakao from '@public/assets/icons/social/kakao.png';
 import google from '@public/assets/icons/social/google.png';
 import github from '@public/assets/icons/social/github.png';
 

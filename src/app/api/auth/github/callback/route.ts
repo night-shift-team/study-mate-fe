@@ -45,13 +45,13 @@ export async function GET(request: NextRequest) {
     }
 
     // GitHub 사용자 정보 요청
-    const userResponse = await fetch('https://api.github.com/user', {
-      headers: {
-        Authorization: `Bearer ${tokenData.access_token}`,
-      },
-    });
+    // const userResponse = await fetch('https://api.github.com/user', {
+    //   headers: {
+    //     Authorization: `Bearer ${tokenData.access_token}`,
+    //   },
+    // });
 
-    const userData = await userResponse.json();
+    // const userData = await userResponse.json();
 
     // 쿠키 설정을 위한 응답 생성
     const response = new NextResponse(

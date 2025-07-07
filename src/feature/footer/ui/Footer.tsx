@@ -2,7 +2,6 @@
 
 import { FaGithub, FaEnvelope } from 'react-icons/fa';
 import { FooterSection } from './FooterSection';
-import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 
 const developers = [

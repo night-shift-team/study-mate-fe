@@ -59,7 +59,6 @@ const MarkdownComponent = ({
 
 const EditorContainer = ({
   markdown,
-  editable,
   setMarkdown,
 }: {
   markdown: string;

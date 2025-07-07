@@ -1,10 +1,9 @@
 'use client';
 
-import { RefObject, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import tippy, { Instance, Props } from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
 import { tippyStore } from '@/state/tooltip';
-import { TooltipContents } from '@/state/tooltip/tooltipContents';
 import { usePathname } from 'next/navigation';
 
 const tooltipMountHook = () => {

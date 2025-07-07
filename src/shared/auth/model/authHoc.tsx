@@ -1,8 +1,6 @@
 'use client';
-import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import { UserStoreStorage, userStore } from '@/state/userStore';
-import { Router } from 'lucide-react';
+import { userStore } from '@/state/userStore';
 import { usePathname, useRouter } from 'next/navigation';
 import { ComponentType, useEffect, useState } from 'react';
 

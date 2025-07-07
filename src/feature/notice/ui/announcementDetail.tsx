@@ -1,11 +1,10 @@
 'use client';
 import { useState } from 'react';
-import { getNoticeDetailApi, Notice, NoticeCategory } from '../api';
+import { getNoticeDetailApi, Notice } from '../api';
 import {
   convertNoticeCategoryToString,
   splitNoticeTitle,
 } from '../model/dataConvert';
-import Image from 'next/image';
 import { BsList } from 'react-icons/bs';
 import { useRouter } from 'next/navigation';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';

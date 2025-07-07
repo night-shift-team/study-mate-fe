@@ -1,7 +1,6 @@
 'use client';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { userStore } from '@/state/userStore';
-import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { IoMenu } from 'react-icons/io5';

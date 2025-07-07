@@ -2,8 +2,6 @@
 import Panel from '@public/assets/backgroundImages/store/storePanel2.svg';
 import Image, { StaticImageData } from 'next/image';
 import ItemCard from './ui/storeItemCard';
-import ShieldIcon from '@public/assets/icons/store/shieldIcon3.png';
-import CartIcon from '@public/assets/icons/store/cartIcon.png';
 import PurchaseHistory from '@public/assets/icons/store/purchaseHistory.png';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';

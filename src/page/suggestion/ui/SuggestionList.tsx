@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Pagination } from '@mui/material';
-import { BoardContent } from '../api';
 import { MobileSuggestionList } from './MobileSuggestionList';
 import { TiArrowSortedDown } from 'react-icons/ti';
 import { TiArrowSortedUp } from 'react-icons/ti';

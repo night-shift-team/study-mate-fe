@@ -178,7 +178,7 @@ const ManageProlemPage = () => {
                   <div
                     key={index}
                     className="box-shadow-sm mt-2 flex h-[2.5rem] w-full flex-shrink-0 items-center justify-between rounded-xl border bg-white p-1.5 px-3 shadow-sm transition-shadow duration-300 ease-in-out hover:shadow-md md:h-[2.8rem]"
-                    onClick={(e) => {
+                    onClick={() => {
                       setSelectedProblem(problem);
                     }}
                   >

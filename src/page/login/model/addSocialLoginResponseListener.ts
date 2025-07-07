@@ -1,15 +1,13 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import { googleSignInApi, LoginRes } from '../api';
 import {
   ServerErrorResponse,
   setTokenToHeader,
 } from '@/shared/api/model/config';
 import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
-import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { setTokens } from './setTokens';
-import { ServerResponse } from 'http';
 import { getUserInfo } from './getUserInfo';
 import { UserInfo } from '@/shared/constants/userInfo';
 import { ToastType } from '@/shared/toast/toast';

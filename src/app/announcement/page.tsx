@@ -3,9 +3,7 @@ import { getWithCache } from '@/entities/apiCacheHook';
 import {
   getAllNoticeListApi,
   getAllNoticeListRes,
-  GetValidnoticeListRes,
   Notice,
-  NoticeCategory,
 } from '@/feature/notice/api';
 import {
   convertNoticeCategoryToString,

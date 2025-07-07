@@ -5,7 +5,7 @@ import { getCategoriesIcon } from '../model/getCategoryIcons';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { ProblemCategoryTitle } from '@/shared/constants/problemInfo';
 import { NoticeComponent } from './notice';
-import { Suspense, useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import {
   getQuestionCategoryInfoApi,
   GetQuestionCategoryInfoRes,
@@ -57,7 +57,9 @@ const SolveProblem = () => {
         });
         setMyTodaySolveData(convertedData);
       }
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useLayoutEffect(() => {

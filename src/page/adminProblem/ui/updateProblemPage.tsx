@@ -26,8 +26,6 @@ import {
 import ContentsMarkDown from '@/feature/adminProblem/update/ui/markDownEdit';
 import { Problem } from '..';
 import { updateAttrBox } from '../model/updateAttrBoxContents';
-import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
-import { ServerErrorResponse } from '@/shared/api/model/config';
 import useToast, { ToastType } from '@/shared/toast/toast';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 
@@ -53,18 +51,16 @@ const UpdateProblemPage = () => {
 
   useLayoutEffect(() => {
     if (selectedProblem && !problemDetailInfo) {
-      getProblemDetail(selectedProblem.id, setProblemDetailInfo).then(
-        (data) => {
-          try {
-            setProblemDetailInfo(
-              (prev) =>
-                prev && { ...prev, options: JSON.parse(prev.options as string) }
-            );
-          } catch (e) {
-            console.log(e);
-          }
+      getProblemDetail(selectedProblem.id, setProblemDetailInfo).then(() => {
+        try {
+          setProblemDetailInfo(
+            (prev) =>
+              prev && { ...prev, options: JSON.parse(prev.options as string) }
+          );
+        } catch (e) {
+          console.log(e);
         }
-      );
+      });
       return;
     }
 
@@ -77,7 +73,7 @@ const UpdateProblemPage = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!problemDetailInfo) return;
-    const [_, pType] = problemDetailInfo.category.split('_');
+    const [, pType] = problemDetailInfo.category.split('_');
     setIsLoading(true);
 
     try {

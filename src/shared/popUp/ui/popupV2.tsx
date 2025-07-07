@@ -1,6 +1,5 @@
-import React, { Fragment, JSX, useState } from 'react';
+import React, { JSX } from 'react';
 import { IoMdClose } from 'react-icons/io';
-import { QuestionDetailRes } from '@/page/mypage/api';
 import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
 import PreventScrollOutsidePopup from '../model/preventParentScroll';
 
