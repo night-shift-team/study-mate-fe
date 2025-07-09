@@ -14,7 +14,7 @@ const Popup: React.FC<PopupProps> = ({
   questionTitle,
   questionDetail,
 }) => {
-  const [markdown, _] = useState(`
+  const [markdown] = useState(`
 #### 문제 :  ${questionDetail.content}  
 #### 정답 : ${questionDetail.answer}
 

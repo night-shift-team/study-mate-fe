@@ -1,7 +1,6 @@
 'use client';
-import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import useOutsideClick from '../../routes/model/useOutsideClick';
-import { Router } from 'lucide-react';
 
 export const DialogPopup = ({
   open,

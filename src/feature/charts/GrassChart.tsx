@@ -1,5 +1,5 @@
 'use client';
-import React, { use, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getSolveStatsApi, SolveStats } from '@/page/mypage/api';
 import { Spinner } from '../spinner/ui/spinnerUI';
 import useTooltip from '../tooltip/tooltipController';
@@ -13,13 +13,8 @@ const GrassChart = () => {
   // const grassSize = 1;  잔디 크기 (1rem = h-4)
   // const days = ['월', '화', '수', '목', '금', '토', '일'];
 
-  const { setMountTooltip, clearTargetTippyInstances } = tooltipMountHook();
-  const { showTooltip, updateTooltip, hideTooltip } = useTooltip();
-  const [currentGrassMouseOver, setCurrentGrassMouseOver] =
-    useState<HTMLElement | null>(null);
-  const currentGrassDataRef = useRef<{ date: string; count: number } | null>(
-    null
-  );
+  const { setMountTooltip } = tooltipMountHook();
+  const { hideTooltip } = useTooltip();
 
   useEffect(() => {
     const fetchSolveStats = async () => {
@@ -51,13 +46,6 @@ const GrassChart = () => {
     if (count >= 4 && count <= 7) return 'bg-[#40c463]';
     if (count >= 8 && count <= 12) return 'bg-[#30a14e]';
     return 'bg-[#216e39]';
-  };
-
-  // 현재 날짜 기준으로 1년 전 날짜 계산
-  const getOneYearAgoDate = () => {
-    const now = new Date();
-    now.setFullYear(now.getFullYear() - 1);
-    return now.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 반환
   };
 
   const getMonthLabels = (weekCountByToday: number) => {

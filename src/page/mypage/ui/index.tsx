@@ -29,7 +29,6 @@ import {
 } from '../model/img';
 import Arrow from '@public/assets/icons/mypage/check_arrow.svg';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
-import { Problem } from '@/page/adminProblem';
 import { ProblemDetailInfoRes } from '@/page/adminProblem/api';
 import { PopupProblem } from '@/shared/popUp/ui/popupV2';
 import { Swiper, SwiperSlide } from 'swiper/react';

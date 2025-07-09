@@ -1,8 +1,7 @@
 import { CircleCheck } from 'lucide-react';
 import { CircleX } from 'lucide-react';
-import { getQuestionDetailApi, QuestionDetailRes } from '@/page/mypage/api';
+import { getQuestionDetailApi } from '@/page/mypage/api';
 import { useEffect, useState } from 'react';
-import Popup from './popup';
 import { PopupProblem } from '@/shared/popUp/ui/popupV2';
 import { getWithCache } from '@/entities/apiCacheHook';
 import { FaArrowRightLong } from 'react-icons/fa6';

@@ -1,15 +1,12 @@
-import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
+import { Ecode } from '@/shared/errorApi/ecode';
 import { BatchInterceptor } from '@mswjs/interceptors';
 import { FetchInterceptor } from '@mswjs/interceptors/fetch';
-import { ok } from 'assert';
 import {
   getAccessToken,
   getAccessTokenFromRefreshToken,
 } from './refreshTokenApi';
-import { AuthTokenRes } from '@/shared/user/api';
 import { userStore } from '@/state/userStore';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import { resetUserData } from './resetAuthData';
 
 export type HTTPRequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 export type ContentType =
@@ -111,10 +108,6 @@ export const _apiFetch = async <T = any>(
           true
         );
       }
-      handleServerErrors(
-        response,
-        responseWithData.payload as ServerErrorResponse
-      );
     }
     return responseWithData;
   } catch (e: any) {
@@ -177,9 +170,6 @@ export const handleFetchErrors = (error: Error) => {
   }
   //로그 관리
 };
-export const handleServerErrors = async (
-  res: Response,
-  error: ServerErrorResponse
-) => {
+export const handleServerErrors = async () => {
   //로그 관리
 };

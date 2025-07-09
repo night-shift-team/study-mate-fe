@@ -6,7 +6,7 @@ import {
 } from '@/feature/notice/api';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import Link from 'next/link';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 const tempNotice: Notice = {
   noticeId: 1,

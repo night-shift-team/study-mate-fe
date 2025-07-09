@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { getUserRankingApi, UserRankingRes } from '../api';
-import Pagination from '@mui/material/Pagination';
 import Image from 'next/image';
 import { GOLD_IMG, SLIVER_IMG, BRONZE_IMG } from '../model/img';
 import { FaGithub } from 'react-icons/fa6';
@@ -58,13 +57,6 @@ export const RankPageComponent = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handlePageChange = (
-    event: React.ChangeEvent<unknown>,
-    page: number
-  ) => {
-    setCurrentPage(page);
   };
 
   const displayedUsers = otherUsers.slice(

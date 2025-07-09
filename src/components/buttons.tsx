@@ -1,5 +1,4 @@
 import { ComponentSize } from '@/feature/spinner/ui/spinnerUI';
-import { JSX } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 const Button = ({

@@ -10,7 +10,7 @@ const CartPopupData = ({
   cart: StoreItemInfo[];
   setCart: React.Dispatch<React.SetStateAction<StoreItemInfo[]>>;
 }) => {
-  const [isMobile, setIsMobile] = useState(false);
+  const [, setIsMobile] = useState(false);
   const [totalPrice, setTotalPrice] = useState(
     cart.reduce((acc, item) => acc + item.price * item.count, 0)
   );

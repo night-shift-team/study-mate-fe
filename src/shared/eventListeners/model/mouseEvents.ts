@@ -1,7 +1,7 @@
 export const RootWheelSetStateListener = (callback: () => void) => {
   const rootContainer = document.getElementById('root-container');
   if (!rootContainer) return;
-  const wheelListener = (event: WheelEvent) => {
+  const wheelListener = () => {
     callback();
   };
   rootContainer.addEventListener('wheel', wheelListener);

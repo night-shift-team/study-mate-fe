@@ -2,14 +2,10 @@
 
 import { useEffect, useState, useTransition } from 'react';
 import { QuestionFavoriteRes } from '../api';
-import { PopupProblem } from '@/shared/popUp/ui/popupV2';
-import { Bookmark } from 'lucide-react';
 import { removeFavoriteApi } from '../api';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { ConfirmPopup } from './ConfirmPopup';
 import { ProblemCategoryTitle } from '@/shared/constants/problemInfo';
-import { getQuestionDetailApi } from '../api';
-import { getWithCache } from '@/entities/apiCacheHook';
 import { ProblemDetailInfoRes } from '@/page/adminProblem/api';
 import { IoClose } from 'react-icons/io5';
 
@@ -57,7 +53,6 @@ const AlertPopup = ({
 
 export const Favorite = ({
   favoriteList,
-  title,
   setPopupProblemDetail,
   setIsPopupOpen,
   questionHistory,
@@ -75,11 +70,6 @@ export const Favorite = ({
   useEffect(() => {
     setCurrentFavoriteList(favoriteList);
   }, [favoriteList]);
-
-  const handleClosePopup = () => {
-    setIsPopupOpen(false);
-    setPopupProblemDetail(null);
-  };
 
   const handleItemClick = (item: QuestionFavoriteRes) => {
     setPopupProblemDetail({

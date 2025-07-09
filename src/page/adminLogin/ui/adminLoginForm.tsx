@@ -20,7 +20,6 @@ import { LoginToastText } from '@/page/login/model/loginToastText';
 import { ToastType } from '@/shared/toast/toast';
 
 const AdminLoginForm = ({
-  open,
   setOpen,
   setToastText,
   setToastIcon,

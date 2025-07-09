@@ -6,9 +6,7 @@ import {
   checkDuplicateNicknameApi,
   signUpApi,
 } from '../api';
-import MoonLoader from 'react-spinners/MoonLoader';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
-import { DialogPopup } from '@/shared/popUp/ui/dialogPopup';
 import { useRouter } from 'next/navigation';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import useToast, { ToastType } from '@/shared/toast/toast';
@@ -45,7 +43,6 @@ const SignUp = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
-  const signUpPopupRef = useRef<HTMLElement>(null);
   const { setMountTooltip } = tooltipMountHook();
 
   const router = useRouter();
@@ -140,7 +137,7 @@ const SignUp = () => {
       }
 
       // 회원 가입 요청
-      const res = await signUpApi(formData);
+      await signUpApi(formData);
       setPopupOpen(true);
     } catch (e) {
       console.error('회원가입 에러:', e);

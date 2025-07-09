@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { ProblemCategoryTitle } from '@/shared/constants/problemInfo';
 import { getCategoriesIcon } from '../model/getCategoryIcons';
-import Link from 'next/link';
 
 const TempCategories = [
   {
@@ -39,14 +38,6 @@ const TempCategories = [
 
 export const RecentProblem = () => {
   const [speed, setSpeed] = useState(15); // 기본 속도 설정
-
-  const onStop = () => {
-    setSpeed(0);
-  };
-
-  const onRun = () => {
-    setSpeed(15);
-  };
 
   useEffect(() => {
     if (window.innerWidth < 768) {

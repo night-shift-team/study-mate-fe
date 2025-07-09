@@ -1,12 +1,12 @@
 'use client';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UserData } from './ui/userTableData';
 import { UserTableForm } from './ui/userTableForm';
 
 const ManageUser = () => {
   const [findUserText, setFindUserText] = useState('');
   const [userList, setUserList] = useState<UserData[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage] = useState(1);
 
   const findUsers = (findStr: string) => {
     if (findStr === '') {

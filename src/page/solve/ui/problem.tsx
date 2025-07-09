@@ -3,7 +3,6 @@ import { ChoicedItemResult, ChoiceItem } from '@/feature/level_test/ChoiceItem';
 import {
   ProblemCategory,
   ProblemCategoryTitle,
-  ProblemCategoryTitleLength,
   ProblemCategoryType,
   ProblemInfoMAQ,
   ProblemInfoSAQ,
@@ -30,7 +29,6 @@ import { UserInfo } from '@/shared/constants/userInfo';
 import { PiPaperPlaneTilt } from 'react-icons/pi';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { IoIosArrowForward } from 'react-icons/io';
-import { Bookmark } from 'lucide-react';
 import { BookMarkCircle } from '@/feature/boomMark/ui/bookmarkCircle';
 import { questionBookmarkToggleApi } from '@/feature/boomMark/api';
 

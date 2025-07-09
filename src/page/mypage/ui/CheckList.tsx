@@ -1,8 +1,8 @@
 'use client';
 
 import { ProblemCategoryTitle } from '@/shared/constants/problemInfo';
-import React, { useEffect, useRef, useState } from 'react';
-import { getCategoriesIcon } from '@/page/solve/model/getCategoryIcons';
+import React, { useRef, useState } from 'react';
+
 import { QuestionItem } from '@/feature/mypage/Item';
 import { MobileCheckList } from './MobileCheckList';
 interface QuestionHistory {

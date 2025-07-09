@@ -1,9 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DonutChart } from '@/feature/charts/DonutChart';
 import Item from '@/feature/level_result/Item';
-import Popup from '@/feature/level_result/popup';
 import { GetLevelTestResultRes } from '@/page/level_test/api';
 import { userStore } from '@/state/userStore';
 import { UserInfo } from '@/shared/constants/userInfo';
@@ -19,9 +18,6 @@ import { ServerErrorResponse } from '@/shared/api/model/config';
 import { Category } from './category';
 import { getQuestionDetailApi } from '@/page/mypage/api';
 import { categoryGroups } from '../constants';
-import { FaArrowRightLong } from 'react-icons/fa6';
-import Arrow from '@public/assets/icons/leveltest/Arrow 7.svg';
-import { SvgIcon } from '@mui/material';
 import { PopupProblem } from '@/shared/popUp/ui/popupV2';
 
 interface ResultData extends GetLevelTestResultRes {

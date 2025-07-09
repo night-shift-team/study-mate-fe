@@ -1,4 +1,3 @@
-import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { BoardContent, getQnABoardDetailApi } from '../api';
 
@@ -14,8 +13,6 @@ interface MobileSuggestionListProps {
 export const MobileSuggestionList = ({
   id,
   title,
-  author,
-  views,
   date,
   isLast = false,
 }: MobileSuggestionListProps) => {

@@ -1,9 +1,7 @@
 'use client';
 import { BsStopwatch } from 'react-icons/bs';
-import { AiOutlineClockCircle } from 'react-icons/ai';
 import { FiClock } from 'react-icons/fi';
 import { useLayoutEffect, useState } from 'react';
-import { Router } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 interface RemainTimeProps {

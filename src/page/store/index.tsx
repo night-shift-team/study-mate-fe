@@ -2,8 +2,6 @@
 import Panel from '@public/assets/backgroundImages/store/storePanel2.svg';
 import Image, { StaticImageData } from 'next/image';
 import ItemCard from './ui/storeItemCard';
-import ShieldIcon from '@public/assets/icons/store/shieldIcon3.png';
-import CartIcon from '@public/assets/icons/store/cartIcon.png';
 import PurchaseHistory from '@public/assets/icons/store/purchaseHistory.png';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
@@ -13,13 +11,15 @@ import useOutsideClick from '@/shared/routes/model/useOutsideClick';
 
 import CartPopupData from './ui/cartPopup';
 import PurchasePopupData from './ui/purchasePopup';
-import { getStoreItemListApi } from './api';
+import { getStoreItemListApi, getStorePaymentHistoryApi } from './api';
 import {
+  PageResponseDtoOrderDto,
   PageResponseDtoStoreItemDto,
   StoreItemDto,
 } from '@/shared/api/autoGenerateTypes';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import useToast, { ToastType } from '@/shared/toast/toast';
+import { ServerErrorResponse } from '@/shared/api/model/config';
 
 export interface StoreItemInfo {
   title: string;
@@ -57,10 +57,42 @@ const StorePage = () => {
     }
   };
 
-  const updateBuyingStatusSuccess = () => {
-    setPurchaseStatus('success');
-    setToastDescription(`아이템 구매 완료`);
-    setToastOpen(true);
+  const tryCount = 1;
+  const updateBuyingStatusSuccess = async () => {
+    const currentTime = Date.now();
+    try {
+      for (let i = 0; i < tryCount; i++) {
+        const res = await getStorePaymentHistoryApi(0, 999);
+        if (res.ok) {
+          const historyByLatest = (
+            res.payload as PageResponseDtoOrderDto
+          ).content.sort(
+            (a, b) =>
+              new Date(b.paymentDate).getTime() -
+              new Date(a.paymentDate).getTime()
+          );
+          if (historyByLatest[0]) {
+            const latestPaymentTime = new Date(
+              historyByLatest[0].paymentDate
+            ).getTime();
+            if (currentTime - latestPaymentTime < 30000) {
+              // 결제하고 결제내역 호출했는데 가장 최근 내역이 30초 전보다 더 전이면 데이터가 들어오지 않은걸로 간주
+              setPurchaseStatus('success');
+              setToastDescription(
+                `${historyByLatest[0].itemName} 아이템 구매 완료`
+              );
+              setToastOpen(true);
+              return;
+            }
+          }
+        } else {
+          throw res.payload as ServerErrorResponse;
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
     setTimeout(() => {
       setPurchaseStatus('none');
       setPurchaseOpen(false);
@@ -102,13 +134,13 @@ const StorePage = () => {
         />
       ) : null}
       {/* 구매 여부 체크 필요 */}
-      {/* {purchaseStatus !== 'none' ? (
+      {purchaseStatus !== 'none' ? (
         <Toaster
           status={
             purchaseStatus === 'success' ? ToastType.success : ToastType.error
           }
         />
-      ) : null} */}
+      ) : null}
       <div className="relative flex h-full w-full flex-col overflow-y-auto overflow-x-hidden scrollbar-hide">
         <div className="mt-4 flex h-[8rem] w-full animate-fade-up justify-center">
           <Panel className="h-full w-full scale-[1.45] object-contain" />
@@ -159,9 +191,10 @@ const StorePage = () => {
                 title={item.itemName}
                 description={item.itemDescription}
                 imageUrl={item.itemImage}
-                purchaseStatus={purchaseStatus}
                 price={item.priceKrw}
-                afterPaymentCallback={updateBuyingStatusSuccess}
+                afterPaymentCallback={async () =>
+                  await updateBuyingStatusSuccess()
+                }
               />
             ))}
           </div>

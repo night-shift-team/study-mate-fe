@@ -5,8 +5,6 @@ import React, { useEffect } from 'react';
 import { buyStoreItemApi } from '../api';
 import { openNewWindowWithoutDuplicate } from '@/shared/window/model/openWindow';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
-import { PurchaseStatus } from '..';
-import { after } from 'lodash';
 interface ItemCardProps {
   index: number;
   id: string;
@@ -14,8 +12,7 @@ interface ItemCardProps {
   description: string;
   price: number;
   imageUrl: string | StaticImageData;
-  purchaseStatus: PurchaseStatus;
-  afterPaymentCallback: () => void;
+  afterPaymentCallback: () => Promise<void> | void;
 }
 const ItemCard = ({
   index,
@@ -24,14 +21,13 @@ const ItemCard = ({
   description = '24시간,문제풀이,방어',
   price = 999999,
   imageUrl = ShieldIcon,
-  purchaseStatus,
   afterPaymentCallback,
 }: ItemCardProps) => {
   const [isMobile, setIsMobile] = React.useState(false);
   const [paymentOpen, setPaymentOpen] = React.useState(false);
   const windowReference: Window | null = null;
 
-  const buyItem = async (count: number) => {
+  const buyItem = async () => {
     setPaymentOpen(true);
     try {
       const res = await buyStoreItemApi(id);
@@ -75,7 +71,7 @@ const ItemCard = ({
       <button
         type="button"
         onClick={async () => {
-          await buyItem(1);
+          await buyItem();
           // setPopupOpen(true);
           // setSelectedItem((prev: any) => ({
           //   ...prev,

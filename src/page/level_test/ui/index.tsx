@@ -1,20 +1,10 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { csQuizQuestions } from '@/entities/test';
 import { ChoiceItem } from '@/feature/level_test/ChoiceItem';
 import { useRouter } from 'next/navigation';
-import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
-import {
-  getLevelTestQuestionsApi,
-  getLevelTestResultApi,
-  GetLevelTestResultReq,
-  GetLevelTestResultRes,
-} from '../api';
-import {
-  ProblemInfoLevelTest,
-  ProblemInfoMAQ,
-} from '@/shared/constants/problemInfo';
+import { getLevelTestResultApi, GetLevelTestResultRes } from '../api';
+import { ProblemInfoMAQ } from '@/shared/constants/problemInfo';
 import { PiPaperPlaneTilt } from 'react-icons/pi';
 import { ServerErrorResponse } from '@/shared/api/model/config';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';

@@ -1,6 +1,6 @@
 'use client';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import { Autoplay, Pagination } from 'swiper/modules';
 import 'swiper/swiper-bundle.css'; // Swiper CSS 가져오기
 import { Fragment, useLayoutEffect, useState } from 'react';
 import {
@@ -9,7 +9,6 @@ import {
   Notice,
   NoticeCategory,
 } from '@/feature/notice/api';
-import { getNoticeList } from '../model/getNoticeList';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { getWithCache } from '@/entities/apiCacheHook';

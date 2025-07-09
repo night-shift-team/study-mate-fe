@@ -84,7 +84,7 @@ const CreateProblemPage = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!problemDetailInfo) return;
-    const [_, pType] = problemDetailInfo.category.split('_');
+    const [, pType] = problemDetailInfo.category.split('_')[1];
 
     setIsLoading(true);
     try {

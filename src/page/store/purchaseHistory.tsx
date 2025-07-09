@@ -7,6 +7,7 @@ import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 
 const StorePurchaseHistoryPage = () => {
   const [paymentHistory, setPaymentHistory] = useState<PaymentHistoryApiRes>();
+
   const getMyPaymentHistory = async () => {
     try {
       const res = await getStorePaymentHistoryApi(0, 999);

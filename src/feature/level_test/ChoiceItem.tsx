@@ -1,4 +1,3 @@
-import { SendMAQAnswerRes, SendSAQAnswerRes } from '@/page/solve/api';
 import React from 'react';
 
 interface ChoiceItemProps {

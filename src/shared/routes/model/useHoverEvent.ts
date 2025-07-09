@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useCallback, RefObject } from 'react';
+import { RefObject } from 'react';
 
 export const useHoverEvent = (
   ref: RefObject<HTMLDivElement | null>,
