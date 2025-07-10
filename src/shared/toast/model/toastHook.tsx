@@ -1,7 +1,7 @@
 'use client';
 import { Dispatch, SetStateAction, useLayoutEffect, useState } from 'react';
-import { CircleCheckBig, TriangleAlert, CircleX, Info } from 'lucide-react';
 import { createPortal } from 'react-dom';
+import { getToastBackgroundColor, getToastStatusIcon } from './getToastStyle';
 
 export enum ToastType {
   success = 'success',
@@ -9,7 +9,7 @@ export enum ToastType {
   warning = 'warning',
   info = 'info',
 }
-type ToastStatus = ToastType;
+export type ToastStatus = ToastType;
 
 const useToast = (
   open: boolean,
@@ -52,35 +52,6 @@ const useToast = (
   };
   const setToastIcon = (status: ToastStatus) => {
     setToastType(status);
-  };
-
-  const getToastStatusIcon = (status?: ToastStatus) => {
-    switch (status) {
-      case ToastType.success:
-        return <CircleCheckBig size={18} color="#22c55e" />;
-      case ToastType.error:
-        return <CircleX size={18} color="#ef4444" />;
-      case ToastType.warning:
-        return <TriangleAlert size={18} color="#eab308" />;
-      case ToastType.info:
-        return <Info size={18} color="#3b82f6" />;
-      default:
-        return null;
-    }
-  };
-  const getToastBackgroundColor = (status?: ToastStatus) => {
-    switch (status) {
-      case ToastType.success:
-        return 'bg-[#edf7ed]';
-      case ToastType.error:
-        return 'bg-[#fdeded]';
-      case ToastType.warning:
-        return 'bg-[#fff4e5]';
-      case ToastType.info:
-        return 'bg-[#e5f6fd]';
-      default:
-        return 'bg-white';
-    }
   };
 
   const Toaster = ({

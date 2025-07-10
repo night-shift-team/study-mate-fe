@@ -1,4 +1,4 @@
-import { userStore } from '@/state/userStore';
+import { userStore } from '@/shared/state/userStore';
 
 const redirectHome = () => {
   if (typeof window !== 'undefined') {

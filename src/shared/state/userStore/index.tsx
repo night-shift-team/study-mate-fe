@@ -1,4 +1,4 @@
-import { UserInfo } from '@/shared/constants/userInfo';
+import { UserInfo } from '@/shared/user/model/userInfo.types';
 import { create } from 'zustand';
 
 interface UserStore {
