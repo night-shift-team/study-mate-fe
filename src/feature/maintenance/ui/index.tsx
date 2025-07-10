@@ -5,8 +5,8 @@ import {
 import Image from 'next/image';
 import { RemainTimeSV2 } from './noticeEndtimer';
 import { Suspense } from 'react';
-import Logo from '@public/assets/backgroundImages/main/logo.png';
 import UnderConstruction from '@public/assets/backgroundImages/main/under_construction.png';
+import { FirstLoading } from './firstLoading';
 
 export const MaintenanceCheck = ({
   children,
@@ -71,21 +71,7 @@ export const MaintenanceCheck = ({
   };
 
   return (
-    <Suspense
-      fallback={
-        <div className="flex h-full w-full items-center justify-center">
-          <div className="animate-fade-in">
-            <Image
-              src={Logo}
-              alt="Logo"
-              objectFit="contain"
-              priority
-              width={300}
-            />
-          </div>
-        </div>
-      }
-    >
+    <Suspense fallback={<FirstLoading />}>
       <MaintenanceContent />
     </Suspense>
   );

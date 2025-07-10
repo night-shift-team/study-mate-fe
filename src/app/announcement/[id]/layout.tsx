@@ -1,4 +1,4 @@
-import ClientLayout from './IdContext';
+import ClientLayout from '@/page/announcement/model/idContext';
 
 const AnnouncementByIdPage = async ({
   children,

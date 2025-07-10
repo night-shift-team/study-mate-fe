@@ -1,5 +1,4 @@
 'use client';
-// app/announcement/[id]/IdContext.tsx
 import { createContext, useContext } from 'react';
 
 export const IdContext = createContext<string | undefined>(undefined);

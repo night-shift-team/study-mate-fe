@@ -1,5 +1,3 @@
-'use client';
-
 import Suggestion from '@/page/suggestion/ui';
 import PageAnimationWrapper from '@/shared/style/ui/pageAnimationWrapper';
 

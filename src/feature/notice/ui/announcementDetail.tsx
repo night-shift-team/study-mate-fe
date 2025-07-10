@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getNoticeDetailApi, Notice } from '../api';
 import {
   convertNoticeCategoryToString,
@@ -11,16 +11,23 @@ import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import NoticeFoxBg from '@public/assets/backgroundImages/main/noticeFoxBg.svg';
 import { getWithCache } from '@/entities/apiCacheHook';
 import { SvgIcon } from '@mui/material';
+import { useIdContext } from '@/page/announcement/model/idContext';
 
-const AnnouncemnetByIdDetail = ({
-  id,
-  noticeData,
-}: {
-  id: string;
-  noticeData?: Notice;
-}) => {
+const AnnouncemnetByIdDetail = () => {
   const [noticeDetail, setNoticeDetail] = useState<Notice | null>(null);
   const router = useRouter();
+
+  const id = useIdContext() ?? '1';
+  let noticeData;
+
+  useEffect(() => {
+    const data = sessionStorage.getItem('currentNoticeData');
+    try {
+      noticeData = data ? (JSON.parse(data) as Notice) : undefined;
+    } catch {
+      console.log('notice data error');
+    }
+  }, []);
 
   const getNoticeDetailInfo = async (id: string) => {
     if (isNaN(Number(id))) return;
