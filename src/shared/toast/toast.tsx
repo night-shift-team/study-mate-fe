@@ -1,7 +1,12 @@
 'use client';
 import { Dispatch, SetStateAction, useLayoutEffect, useState } from 'react';
-import { CircleCheckBig, TriangleAlert, CircleX, Info } from 'lucide-react';
 import { createPortal } from 'react-dom';
+import SuccessIcon from '@public/assets/icons/toast/check.svg';
+import ErrorIcon from '@public/assets/icons/toast/error.svg';
+import InfoIcon from '@public/assets/icons/toast/info.svg';
+import WarningIcon from '@public/assets/icons/toast/warning.svg';
+import Image from 'next/image';
+import XIcon from '@public/assets/icons/toast/x.png';
 
 export enum ToastType {
   success = 'success',
@@ -15,6 +20,7 @@ const useToast = (
   open: boolean,
   setOpen: Dispatch<SetStateAction<boolean>>
 ) => {
+  const [changeTitle, setChangeTitle] = useState('');
   const [changeDescription, setChangeDescription] = useState('');
   const [toastType, setToastType] = useState<ToastType>();
   const [animationClass, setAnimationClass] = useState(
@@ -32,13 +38,13 @@ const useToast = (
       // 일정 시간 후 애니메이션 아웃
       timeoutId1 = setTimeout(() => {
         setAnimationClass('animate-toast-out');
-      }, 2000);
+      }, 20000);
 
       // 애니메이션 완료 후 상태 초기화
       timeoutId2 = setTimeout(() => {
         setOpen(false);
         setAnimationClass('opacity-0 -translate-y-full');
-      }, 2500);
+      }, 25000);
     }
 
     return () => {
@@ -50,6 +56,9 @@ const useToast = (
   const setToastDescription = (description: string) => {
     setChangeDescription(description);
   };
+  const setToastTitle = (title: string) => {
+    setChangeTitle(title);
+  };
   const setToastIcon = (status: ToastStatus) => {
     setToastType(status);
   };
@@ -57,13 +66,29 @@ const useToast = (
   const getToastStatusIcon = (status?: ToastStatus) => {
     switch (status) {
       case ToastType.success:
-        return <CircleCheckBig size={18} color="#22c55e" />;
+        return (
+          <div className="h-5 w-5 overflow-hidden rounded-full">
+            <SuccessIcon width={20} height={20} />
+          </div>
+        );
       case ToastType.error:
-        return <CircleX size={18} color="#ef4444" />;
+        return (
+          <div className="h-5 w-5 overflow-hidden rounded-full">
+            <ErrorIcon width={20} height={20} />
+          </div>
+        );
       case ToastType.warning:
-        return <TriangleAlert size={18} color="#eab308" />;
+        return (
+          <div className="h-5 w-5 overflow-hidden rounded-full">
+            <WarningIcon width={20} height={20} />
+          </div>
+        );
       case ToastType.info:
-        return <Info size={18} color="#3b82f6" />;
+        return (
+          <div className="h-5 w-5 overflow-hidden rounded-full">
+            <InfoIcon width={20} height={20} />
+          </div>
+        );
       default:
         return null;
     }
@@ -71,13 +96,13 @@ const useToast = (
   const getToastBackgroundColor = (status?: ToastStatus) => {
     switch (status) {
       case ToastType.success:
-        return 'bg-[#edf7ed]';
+        return 'bg-success-30';
       case ToastType.error:
-        return 'bg-[#fdeded]';
+        return 'bg-error-30';
       case ToastType.warning:
-        return 'bg-[#fff4e5]';
+        return 'bg-point-orange/30';
       case ToastType.info:
-        return 'bg-[#e5f6fd]';
+        return 'bg-notice-30';
       default:
         return 'bg-white';
     }
@@ -86,22 +111,39 @@ const useToast = (
   const Toaster = ({
     status,
     description,
+    title,
   }: {
     status?: ToastStatus;
     description?: string;
+    title?: string;
   }) => {
     return createPortal(
       <div
-        className={`fixed left-1/2 top-[3.5rem] flex h-[2.7rem] w-auto min-w-[5rem] max-w-[95vw] items-center gap-1 rounded-xl py-[1.35rem] text-[0.9rem] md:top-1 ${getToastBackgroundColor(status ?? toastType)} rounded-sm border px-4 shadow-light md:top-16 md:h-[2.9rem] md:justify-center ${animationClass} z-[10000]`}
+        className={`fixed left-1/2 top-[3.5rem] flex w-auto min-w-[290px] max-w-[95vw] items-center justify-between gap-16 rounded-xl p-16 text-[0.9rem] md:top-1 ${getToastBackgroundColor(status ?? toastType)} rounded-sm md:top-16 ${animationClass} z-[10000]`}
       >
-        {status ? getToastStatusIcon(status) : getToastStatusIcon(toastType)}
-        {description ?? changeDescription}
+        <div className="flex items-center gap-16">
+          <div className="flex-shrink-0">
+            {status
+              ? getToastStatusIcon(status)
+              : getToastStatusIcon(toastType)}
+          </div>
+          <div className="flex flex-col gap-0.5">
+            <span className="font-semibold">{title ?? changeTitle}</span>
+            <span className="text-xs text-gray-700">
+              {description ?? changeDescription}
+            </span>
+          </div>
+        </div>
+
+        <div className="overflow-hidden rounded-full">
+          <Image src={XIcon} alt="Close" width={12} height={12} />
+        </div>
       </div>,
       document.body
     );
   };
 
-  return { Toaster, setToastDescription, setToastIcon };
+  return { Toaster, setToastDescription, setToastIcon, setToastTitle };
 };
 
 export default useToast;
