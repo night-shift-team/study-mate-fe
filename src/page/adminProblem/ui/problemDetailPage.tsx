@@ -1,7 +1,5 @@
 'use client';
 
-import { useLayoutEffect, useState } from 'react';
-import { HorizonTalScrollContainer } from '@/shared/eventListeners/model/mouseEvents';
 import { MdCheck } from 'react-icons/md';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
@@ -14,39 +12,10 @@ import {
   TitleBox,
 } from '@/feature/adminProblem/detail/ui/problemDetailComponents';
 import AuthHoc from '@/shared/auth/model/authHoc';
-import { ProblemDetailInfoRes } from '../api';
-import { getProblemDetail } from '../model/getProblemDetailInfo';
-import { Problem } from '..';
+import useProblemDetail from '../model/problemDetailHook';
 
 const ProblemDetailPage = () => {
-  const [selectedProblem, setSelectedProblem] = useState<Problem | null>(null);
-  const [problemDetailInfo, setProblemDetailInfo] =
-    useState<ProblemDetailInfoRes | null>(null);
-
-  useLayoutEffect(() => {
-    if (selectedProblem) {
-      getProblemDetail(selectedProblem.id, setProblemDetailInfo).then(() => {
-        try {
-          setProblemDetailInfo(
-            (prev) =>
-              prev && { ...prev, options: JSON.parse(prev.options as string) }
-          );
-        } catch (e) {
-          console.log(e);
-        }
-      });
-      return;
-    }
-
-    const sessionProblemData = sessionStorage.getItem('selectedProblemInfo');
-    if (sessionProblemData && !selectedProblem) {
-      setSelectedProblem(JSON.parse(sessionProblemData));
-    }
-  }, [selectedProblem]);
-
-  useLayoutEffect(() => {
-    HorizonTalScrollContainer();
-  }, []);
+  const { problemDetailInfo } = useProblemDetail();
 
   return (
     <div className="flex h-full w-full max-w-[80rem] flex-col items-center p-4">

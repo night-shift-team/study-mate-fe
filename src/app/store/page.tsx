@@ -1,4 +1,4 @@
-import StorePage from '@/page/store';
+import StorePage from '@/page/store/ui';
 import PageAnimationWrapper from '@/shared/style/ui/pageAnimationWrapper';
 
 const Store = () => {

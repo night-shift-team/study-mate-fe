@@ -1,39 +1,15 @@
-'use client';
-
-import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import CommentSection from '@/page/suggestion/detail/comment/commentSection';
-import { getQnABoardDetailApi, BoardContent } from '@/page/suggestion/api';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import MoreButton from '../../../../public/assets/icons/suggestion/more.png';
 import Image from 'next/image';
-import { userStore } from '@/state/userStore';
-import { MoreBox } from '@/page/suggestion/detail/moreBox';
 import PageAnimationWrapper from '@/shared/style/ui/pageAnimationWrapper';
-import UserStateWrapper from '@/state/userStore/model/clientSideWrapper';
+import useSuggestionDetailPage from '../model/suggestionDetailPageHook';
+import UserStateWrapper from '@/shared/state/userStore/model/clientSideWrapper';
+import { MoreBox } from './moreBox';
+import CommentSection from './commentSection';
 
 const SuggestionDetailPage = () => {
-  const user = userStore.getState().user;
-  const { id } = useParams();
-  const [suggestion, setSuggestion] = useState<BoardContent | null>(null);
-  const [open, isOpen] = useState(false);
-  useEffect(() => {
-    if (!id) return;
-    const fetchData = async () => {
-      try {
-        const res = await getQnABoardDetailApi(Number(id));
-        if (res.ok) {
-          setSuggestion(res.payload);
-        } else {
-          console.error('상세 데이터 조회 실패', res);
-        }
-      } catch (err) {
-        console.error('API 호출 오류:', err);
-      }
-    };
-
-    fetchData();
-  }, [id]);
+  const { suggestion, user, id, handleMoreClick, open, isOpen } =
+    useSuggestionDetailPage();
 
   if (!suggestion)
     return (
@@ -41,10 +17,6 @@ const SuggestionDetailPage = () => {
         <Spinner />
       </div>
     );
-
-  const handleMoreClick = () => {
-    isOpen(true);
-  };
 
   return (
     <UserStateWrapper>

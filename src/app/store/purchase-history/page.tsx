@@ -1,4 +1,4 @@
-import StorePurchaseHistoryPage from '@/page/store/purchaseHistory';
+import StorePurchaseHistoryPage from '@/page/store/ui/purchaseHistoryPage';
 import PageAnimationWrapper from '@/shared/style/ui/pageAnimationWrapper';
 
 const StorePurchaseHistory = () => {

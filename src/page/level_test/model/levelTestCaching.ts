@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { getLevelTestQuestionsApi } from '../api';
-import { ProblemInfoLevelTest } from '@/shared/constants/problemInfo';
 import { ServerErrorResponse } from '@/shared/api/model/config';
+import { ProblemInfoLevelTest } from '@/shared/problem/model/problemInfo.types';
 
 export type ApiResponse<T> = {
   ok: boolean;
   payload: ServerErrorResponse | T;
 };
 
-export const useChachingLevelTest = () => {
+export const levelTestCaching = () => {
   return useQuery<ProblemInfoLevelTest[], Error>({
     queryKey: ['levelTestQuestions'],
     queryFn: async () => {

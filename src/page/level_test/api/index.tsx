@@ -1,5 +1,5 @@
 import { _apiFetch } from '@/shared/api/model/config';
-import { ProblemCategory } from '@/shared/constants/problemInfo';
+import { ProblemCategory } from '@/shared/problem/model/problemInfo.types';
 
 const API_Prefix = '/api/v1';
 

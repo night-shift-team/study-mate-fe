@@ -1,6 +1,6 @@
 'use client';
 
-import { tippyStore } from '@/state/tooltip';
+import { tippyStore } from '@/shared/state/tooltip';
 
 const useTooltip = () => {
   const tippyInstances = tippyStore((state) => state.tippyInstances);

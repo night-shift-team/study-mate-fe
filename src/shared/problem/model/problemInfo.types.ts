@@ -5,7 +5,6 @@ export enum ProblemCategoryTitle {
   OS = 'OS',
   NETWORK = 'NETWORK',
   DB = 'DB',
-  DESIGN = 'DESIGN',
 }
 
 export enum ProblemCategoryType {
@@ -22,8 +21,6 @@ export enum ProblemCategory {
   NETWORK_SAQ = `${ProblemCategoryTitle.NETWORK}_${ProblemCategoryType.SAQ}`,
   DB_MAQ = `${ProblemCategoryTitle.DB}_${ProblemCategoryType.MAQ}`,
   DB_SAQ = `${ProblemCategoryTitle.DB}_${ProblemCategoryType.SAQ}`,
-  DESIGN_MAQ = `${ProblemCategoryTitle.DESIGN}_${ProblemCategoryType.MAQ}`,
-  DESIGN_SAQ = `${ProblemCategoryTitle.DESIGN}_${ProblemCategoryType.SAQ}`,
   LEVEL_TEST = 'LEVEL_TEST',
 }
 

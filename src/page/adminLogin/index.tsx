@@ -2,8 +2,8 @@
 import Logo from '@public/assets/backgroundImages/main/logo.svg';
 import AdminLoginForm from './ui/adminLoginForm';
 import { useState } from 'react';
-import useToast from '@/shared/toast/toast';
 import AuthHoc from '@/shared/auth/model/authHoc';
+import useToast from '@/shared/toast/model/toastHook';
 
 const AdminPage = () => {
   const [toastOpen, setToastOpen] = useState(false);

@@ -1,50 +1,26 @@
-import { useLayoutEffect, useState } from 'react';
-import { useUpdateProblem } from './updateProblemContext';
-import {
-  outSideClickContainer,
-  RootWheelSetStateListener,
-} from '@/shared/eventListeners/model/mouseEvents';
+'use client';
 import { createPortal } from 'react-dom';
-import { ProblemDetailInfoRes } from '../api';
+import useSelectCategory from '../model/selectCategory';
+import { resetFocus } from '@/shared/dom/model/focus';
 import {
   ProblemCategory,
   ProblemCategoryType,
-} from '@/shared/constants/problemInfo';
-import { resetFocus } from '@/shared/dom/model/focus';
+} from '@/shared/problem/model/problemInfo.types';
 
-const SelectComponent = ({
+const SelectCategory = ({
   list,
   attrString,
 }: {
   list: string[];
   attrString: 'title' | 'type' | 'difficulty';
 }) => {
-  const [openSelect, setOpenSelect] = useState(false);
-  const { updateProblemInfo, setUpdateProblemInfo } = useUpdateProblem();
-
-  useLayoutEffect(() => {
-    outSideClickContainer('category-select-container-' + attrString, () =>
-      setOpenSelect(false)
-    );
-    RootWheelSetStateListener(() => setOpenSelect(false));
-  }, []);
-
-  const getAttrTitle = (
-    updateProblemInfo: ProblemDetailInfoRes | null,
-    attrString: 'title' | 'type' | 'difficulty'
-  ) => {
-    if (!updateProblemInfo) return '';
-    switch (attrString) {
-      case 'title':
-        return updateProblemInfo.category.split('_')[0] ?? '';
-      case 'type':
-        return updateProblemInfo.category.split('_')[1] ?? '';
-      case 'difficulty':
-        return updateProblemInfo.difficulty;
-      default:
-        return '';
-    }
-  };
+  const {
+    openSelect,
+    setOpenSelect,
+    updateProblemInfo,
+    setUpdateProblemInfo,
+    getAttrTitle,
+  } = useSelectCategory(attrString);
 
   return (
     <div
@@ -145,4 +121,4 @@ const SelectComponent = ({
     </div>
   );
 };
-export default SelectComponent;
+export default SelectCategory;

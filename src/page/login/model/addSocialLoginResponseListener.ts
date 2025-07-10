@@ -6,12 +6,13 @@ import {
   ServerErrorResponse,
   setTokenToHeader,
 } from '@/shared/api/model/config';
-import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
 import { setTokens } from './setTokens';
 import { getUserInfo } from './getUserInfo';
-import { UserInfo } from '@/shared/constants/userInfo';
-import { ToastType } from '@/shared/toast/toast';
+
 import { LoginToastText } from './loginToastText';
+import { ToastType } from '@/shared/toast/model/toastHook';
+import { UserInfo } from '@/shared/user/model/userInfo.types';
+import { Ecode, EcodeMessage } from '@/shared/api/model/ecode';
 
 export const addSocialLoginRedirectDataListener = (
   setLoading: Dispatch<SetStateAction<boolean>>,

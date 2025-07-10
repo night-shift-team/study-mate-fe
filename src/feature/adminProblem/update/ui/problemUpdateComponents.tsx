@@ -1,5 +1,5 @@
 import { useUpdateProblem } from '@/page/adminProblem/model/updateProblemContext';
-import { ProblemCategoryType } from '@/shared/constants/problemInfo';
+import { ProblemCategoryType } from '@/shared/problem/model/problemInfo.types';
 import { JSX } from 'react';
 
 export const TitleBox = ({ title }: { title: string }) => {

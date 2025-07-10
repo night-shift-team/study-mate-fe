@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { StoreItemInfo } from '..';
 import Image from 'next/image';
 import { IoCardOutline } from 'react-icons/io5';
+import { StoreItemInfo } from '.';
 
 const CartPopupData = ({
   cart,

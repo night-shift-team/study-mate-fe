@@ -3,7 +3,6 @@ import React from 'react';
 import { IoClose } from 'react-icons/io5';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import { userStore } from '@/state/userStore';
 import Image from 'next/image';
 import RankingIcon from '@public/assets/icons/header/ranking-factor.png';
 import MypageIcon from '@public/assets/icons/header/user.png';
@@ -11,6 +10,7 @@ import AnnouncementIcon from '@public/assets/icons/header/announcement.png';
 import { MdLogout } from 'react-icons/md';
 import StoreIcon from '@public/assets/icons/header/storeIcon.svg';
 import { SvgIcon } from '@mui/material';
+import { userStore } from '@/shared/state/userStore';
 
 interface MobileSliderProps {
   open: boolean;

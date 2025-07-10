@@ -1,62 +1,11 @@
 'use client';
 import { SuggestionList } from './SuggestionList';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import { useRouter } from 'next/navigation';
-import { getQnABoardListApi } from '../api';
-import { useEffect, useState } from 'react';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import useSuggestionPage from '../model/suggestionPageHook';
 
-interface SuggestionItem {
-  id: number;
-  title: string;
-  author: string;
-  views: number;
-  date: string; // MM-DD
-}
-
-const Suggestion = () => {
-  const router = useRouter();
-  const [list, setList] = useState<SuggestionItem[] | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await getQnABoardListApi(0, 10);
-        if (res.ok && Array.isArray(res.payload?.content)) {
-          const mappedList: SuggestionItem[] = res.payload.content.map(
-            (item) => ({
-              id: item.id,
-              title: item.title,
-              author: item.user.nickname || item.user.loginId,
-              views: item.view,
-              date: formatDate(item.createdDt),
-            })
-          );
-          setList(mappedList);
-        } else {
-          setList([]);
-          console.error(
-            'QnA 불러오기 실패: payload.content is not an array',
-            res
-          );
-        }
-      } catch (error) {
-        setList([]);
-        console.error('QnA 불러오기 실패:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  // 날짜 포맷터: ISO 날짜 → MM-DD
-  const formatDate = (isoString: string): string => {
-    const date = new Date(isoString);
-    const month = `${date.getMonth() + 1}`.padStart(2, '0');
-    const day = `${date.getDate()}`.padStart(2, '0');
-    return `${month}-${day}`;
-  };
-
+const SuggestionPage = () => {
+  const { list, router } = useSuggestionPage();
   if (list === null) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -84,4 +33,4 @@ const Suggestion = () => {
   );
 };
 
-export default Suggestion;
+export default SuggestionPage;

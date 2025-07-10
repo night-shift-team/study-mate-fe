@@ -1,8 +1,8 @@
-import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
 import React from 'react';
 import { IoMdClose } from 'react-icons/io';
 import { Spinner } from '../spinner/ui/spinnerUI';
 import Button from '@/shared/design/ui/customButton';
+import MarkdownComponent from '@/shared/lexical/model/markdownConfig';
 
 interface PopupProps {
   index: number | undefined;

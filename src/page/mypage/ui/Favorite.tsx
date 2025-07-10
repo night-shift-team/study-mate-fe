@@ -1,13 +1,13 @@
 'use client';
-
-import { useEffect, useState, useTransition } from 'react';
 import { QuestionFavoriteRes } from '../api';
-import { removeFavoriteApi } from '../api';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { ConfirmPopup } from './ConfirmPopup';
-import { ProblemCategoryTitle } from '@/shared/constants/problemInfo';
 import { ProblemDetailInfoRes } from '@/page/adminProblem/api';
 import { IoClose } from 'react-icons/io5';
+import useFavorite from '../model/favoriteHook';
+import { ProblemCategoryTitle } from '@/shared/problem/model/problemInfo.types';
+import { QuestionHistory } from '../model/checkListHook';
+import { AlertPopup } from './AlertPopup';
 
 interface FavoriteListProps {
   favoriteList: QuestionFavoriteRes[];
@@ -19,108 +19,24 @@ interface FavoriteListProps {
   setIsPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
   questionHistory: QuestionHistory[];
 }
-interface QuestionHistory {
-  historyId: number;
-  questionTitle: string;
-  questionId: string;
-  userId: string;
-  userAnswer: string;
-  score: number;
-  isCorrect: boolean;
-  questionType: string;
-}
-
-// AlertPopup 컴포넌트 정의
-const AlertPopup = ({
-  message,
-  onClose,
-}: {
-  message: string;
-  onClose: () => void;
-}) => (
-  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-    <div className="w-[90%] max-w-sm rounded-lg bg-white p-6 shadow-xl">
-      <p className="mb-4 text-center text-base text-gray-800">{message}</p>
-      <button
-        onClick={onClose}
-        className="mx-auto block rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600"
-      >
-        확인
-      </button>
-    </div>
-  </div>
-);
-
-export const Favorite = ({
+const Favorite = ({
   favoriteList,
   setPopupProblemDetail,
   setIsPopupOpen,
   questionHistory,
 }: FavoriteListProps) => {
-  const [currentFavoriteList, setCurrentFavoriteList] = useState([
-    ...favoriteList,
-  ]);
-  const [alertMessage, setAlertMessage] = useState<string | null>(null);
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [confirmItem, setConfirmItem] = useState<QuestionFavoriteRes | null>(
-    null
-  );
-  const [isPending, startTransition] = useTransition();
-
-  useEffect(() => {
-    setCurrentFavoriteList(favoriteList);
-  }, [favoriteList]);
-
-  const handleItemClick = (item: QuestionFavoriteRes) => {
-    setPopupProblemDetail({
-      questionId: item.questionId,
-      questionTitle: item.questionTitle,
-      content: item.questionTitle,
-      answerExplanation: item.questionExplanation,
-      category: item.questionCategory,
-      answer: item.questionAnswer,
-      difficulty: item.difficulty,
-    } as ProblemDetailInfoRes);
-    setIsPopupOpen(true);
-  };
-
-  const handleBookmarkClick = (
-    event: React.MouseEvent,
-    item: QuestionFavoriteRes
-  ) => {
-    event.stopPropagation();
-    setConfirmItem(item); // 삭제할 아이템 저장
-    setIsConfirmOpen(true); // ConfirmPopup 열기
-  };
-
-  const handleConfirmRemoval = async () => {
-    if (!confirmItem) return;
-
-    setIsConfirmOpen(false); // ConfirmPopup 닫기
-    startTransition(async () => {
-      try {
-        await removeFavoriteApi(confirmItem.questionId);
-        setCurrentFavoriteList((prevList) =>
-          prevList.filter(
-            (favorite) => favorite.questionId !== confirmItem.questionId
-          )
-        );
-        setAlertMessage('즐겨찾기에서 제거되었습니다.');
-      } catch (error) {
-        console.error('Error removing favorite:', error);
-        setAlertMessage(
-          '즐겨찾기 제거 중 오류가 발생했습니다. 나중에 다시 시도하세요.'
-        );
-      } finally {
-        setConfirmItem(null); // 삭제할 아이템 초기화
-      }
-    });
-  };
-
-  const handleCancelRemoval = () => {
-    setIsConfirmOpen(false); // ConfirmPopup 닫기
-    setConfirmItem(null); // 삭제할 아이템 초기화
-  };
+  const {
+    currentFavoriteList,
+    handleBookmarkClick,
+    handleItemClick,
+    isPending,
+    alertMessage,
+    setAlertMessage,
+    isConfirmOpen,
+    confirmItem,
+    handleConfirmRemoval,
+    handleCancelRemoval,
+  } = useFavorite(favoriteList, setPopupProblemDetail, setIsPopupOpen);
 
   const truncateText = (text: string, maxLength: number) => {
     return text.length > maxLength ? `${text.slice(0, maxLength)}` : text;
@@ -140,7 +56,6 @@ export const Favorite = ({
                       [ProblemCategoryTitle.NETWORK]: 'bg-[#EEDDFB]',
                       [ProblemCategoryTitle.DB]: 'bg-[#E3F5E8]',
                       [ProblemCategoryTitle.OS]: 'bg-[#FDDCDE]',
-                      [ProblemCategoryTitle.DESIGN]: 'bg-[#FFF5E1]',
                     };
                   const categoryTextColors: Record<
                     ProblemCategoryTitle,
@@ -150,7 +65,6 @@ export const Favorite = ({
                     [ProblemCategoryTitle.NETWORK]: 'text-[#8F1EE5]',
                     [ProblemCategoryTitle.DB]: 'text-[#41B963]',
                     [ProblemCategoryTitle.OS]: 'text-[#FF969C]',
-                    [ProblemCategoryTitle.DESIGN]: 'text-white',
                   };
 
                   const categoryKey = item.questionCategory.split(
@@ -253,3 +167,5 @@ export const Favorite = ({
     </div>
   );
 };
+
+export default Favorite;

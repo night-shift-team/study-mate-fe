@@ -1,7 +1,7 @@
 import { FirstLoading } from '@/feature/maintenance/ui/firstLoading';
 import AdminPage from '@/page/adminLogin/index';
+import UserStateWrapper from '@/shared/state/userStore/model/clientSideWrapper';
 import { updateUser } from '@/shared/user/model/updateUser';
-import UserStateWrapper from '@/state/userStore/model/clientSideWrapper';
 import { Suspense } from 'react';
 
 const Admin = async () => {

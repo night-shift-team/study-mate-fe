@@ -13,7 +13,7 @@ import { SvgIcon } from '@mui/material';
 import { useIdContext } from '@/page/announcement/model/idContext';
 import { getWithCache } from '@/shared/api/model/apiCacheHook';
 
-const AnnouncemnetByIdDetail = () => {
+const AnnouncemnetByIdDetailPage = () => {
   const [noticeDetail, setNoticeDetail] = useState<Notice | null>(null);
   const router = useRouter();
 
@@ -92,4 +92,4 @@ const AnnouncemnetByIdDetail = () => {
     </div>
   );
 };
-export default AnnouncemnetByIdDetail;
+export default AnnouncemnetByIdDetailPage;

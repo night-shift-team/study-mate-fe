@@ -1,6 +1,6 @@
-import AnnouncemnetByIdDetail from '@/feature/notice/ui/announcementDetail';
+import AnnouncemnetByIdDetailPage from '@/feature/notice/ui/announcementDetail';
 
 const ClientAnnouncementDetail = () => {
-  return <AnnouncemnetByIdDetail />;
+  return <AnnouncemnetByIdDetailPage />;
 };
 export default ClientAnnouncementDetail;

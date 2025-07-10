@@ -1,12 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
-import {
-  createAdminMAQApi,
-  CreateAdminMAQReq,
-  createAdminSAQApi,
-  CreateAdminSAQReq,
-  ProblemDetailInfoRes,
-} from '../api';
+
 import { UpdateProblemProvider } from '../model/updateProblemContext';
 import {
   Answer,
@@ -15,20 +8,15 @@ import {
   Solution,
   TitleBox,
 } from '@/feature/adminProblem/update/ui/problemUpdateComponents';
-import SelectComponent from '../model/selectCategoryComponent';
 import ContentsMarkDown from '@/feature/adminProblem/update/ui/markDownEdit';
+import { updateAttrBox } from '../model/updateAttrBoxContents';
+import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import useCreateProblem from '../model/createProblemHook';
 import {
-  ProblemCategory,
   ProblemCategoryTitle,
   ProblemCategoryType,
-} from '@/shared/constants/problemInfo';
-import { updateAttrBox } from '../model/updateAttrBoxContents';
-import { ServerErrorResponse } from '@/shared/api/model/config';
-import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
-import useToast, { ToastType } from '@/shared/toast/toast';
-import { useRouter } from 'next/navigation';
-import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+} from '@/shared/problem/model/problemInfo.types';
+import SelectCategory from './selectCategory';
 
 enum ProblemAttributeTitle {
   Category = 'Category',
@@ -38,126 +26,13 @@ enum ProblemAttributeTitle {
 }
 
 const CreateProblemPage = () => {
-  const router = useRouter();
-  const [problemDetailInfo, setProblemDetailInfo] =
-    useState<ProblemDetailInfoRes | null>({
-      questionId: '',
-      questionTitle: '',
-      content: '',
-      difficulty: 0,
-      options: ['', '', '', ''],
-      category: '' as ProblemCategory,
-      answer: '',
-      answerExplanation: '',
-    });
-
-  const [toastOpen, setToastOpen] = useState(false);
-  const { Toaster, setToastDescription, setToastIcon } = useToast(
-    toastOpen,
-    setToastOpen
-  );
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (problemDetailInfo?.category) {
-      if (
-        problemDetailInfo.category.split('_')[1] === ProblemCategoryType.MAQ
-      ) {
-        setProblemDetailInfo((prev) =>
-          prev
-            ? { ...prev, options: prev.options.slice(0, 3).concat('') }
-            : null
-        );
-        return;
-      }
-      if (
-        problemDetailInfo.category.split('_')[1] === ProblemCategoryType.SAQ
-      ) {
-        setProblemDetailInfo((prev) =>
-          prev ? { ...prev, options: prev.options.slice(0, 3) } : null
-        );
-        return;
-      }
-    }
-  }, [problemDetailInfo?.category]);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!problemDetailInfo) return;
-    const [, pType] = problemDetailInfo.category.split('_')[1];
-
-    setIsLoading(true);
-    try {
-      const commontBody = {
-        questionTitle: problemDetailInfo.questionTitle,
-        questionContent: problemDetailInfo.content,
-        answer: problemDetailInfo.answer,
-        answerExplanation: problemDetailInfo.answerExplanation,
-        difficulty: problemDetailInfo.difficulty,
-        category: problemDetailInfo.category,
-      };
-      if (pType === ProblemCategoryType.MAQ) {
-        const body: CreateAdminMAQReq = {
-          ...commontBody,
-          choice1: (problemDetailInfo.options as string[])[0],
-          choice2: (problemDetailInfo.options as string[])[1],
-          choice3: (problemDetailInfo.options as string[])[2],
-          choice4: (problemDetailInfo.options as string[])[3],
-        };
-        const res = await createAdminMAQApi(body);
-        if (res.ok) {
-          setToastIcon(ToastType.success);
-          setToastDescription('문제 생성이 완료되었습니다.');
-          setToastOpen(true);
-          setTimeout(() => {
-            router.push(RouteTo.AdminManagementProblem);
-          }, 2500);
-          return;
-        }
-        if ((res.payload as ServerErrorResponse).ecode === Ecode.E0405) {
-          setToastIcon(ToastType.error);
-          setToastDescription(EcodeMessage(Ecode.E0405));
-          setToastOpen(true);
-          return;
-        }
-        throw res.payload;
-      }
-      if (pType === ProblemCategoryType.SAQ) {
-        const body: CreateAdminSAQReq = {
-          ...commontBody,
-          keyword1: (problemDetailInfo.options as string[])[0],
-          keyword2: (problemDetailInfo.options as string[])[1],
-          keyword3: (problemDetailInfo.options as string[])[2],
-        };
-        const res = await createAdminSAQApi(body);
-        if (res.ok) {
-          setToastIcon(ToastType.success);
-          setToastDescription('문제 생성이 완료되었습니다.');
-          setToastOpen(true);
-          setTimeout(() => {
-            router.push(RouteTo.AdminManagementProblem);
-          }, 2500);
-          return;
-        }
-        if ((res.payload as ServerErrorResponse).ecode === Ecode.E0405) {
-          setToastIcon(ToastType.error);
-          setToastDescription(EcodeMessage(Ecode.E0405));
-          setToastOpen(true);
-          return;
-        }
-        throw res.payload;
-      }
-      return;
-    } catch (e) {
-      console.log(e);
-      setToastIcon(ToastType.error);
-      setToastDescription('문제 생성에 실패했습니다.');
-      setToastOpen(true);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+  const {
+    problemDetailInfo,
+    setProblemDetailInfo,
+    Toaster,
+    isLoading,
+    handleSubmit,
+  } = useCreateProblem();
   return (
     <form
       onSubmit={async (e) => await handleSubmit(e)}
@@ -189,7 +64,7 @@ const CreateProblemPage = () => {
             className="grid w-full shrink-0 grid-flow-col grid-cols-3 grid-rows-2 gap-2 md:min-h-16 md:grid-cols-[repeat(5,min-content)] md:grid-rows-1 md:overflow-y-visible md:overflow-x-scroll md:scrollbar-hide"
           >
             <AttrBox title={ProblemAttributeTitle.Category}>
-              <SelectComponent
+              <SelectCategory
                 list={Object.values(ProblemCategoryTitle)}
                 attrString={'title'}
               />
@@ -217,7 +92,7 @@ const CreateProblemPage = () => {
               />
             </AttrBox>
             <AttrBox title={ProblemAttributeTitle.Type}>
-              <SelectComponent
+              <SelectCategory
                 list={Object.values(ProblemCategoryType)}
                 attrString={'type'}
               />

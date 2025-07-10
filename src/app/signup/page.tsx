@@ -1,12 +1,12 @@
-import SignUp from '@/page/signup/ui';
+import SignUpPage from '@/page/signup/ui';
 import PageAnimationWrapper from '@/shared/style/ui/pageAnimationWrapper';
 
-const SignUpPage = () => {
+const SignUp = () => {
   return (
     <PageAnimationWrapper>
-      <SignUp />
+      <SignUpPage />
     </PageAnimationWrapper>
   );
 };
 
-export default SignUpPage;
+export default SignUp;

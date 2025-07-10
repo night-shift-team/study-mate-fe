@@ -1,10 +1,10 @@
-import { ProblemCategoryTitle } from '@/shared/constants/problemInfo';
 import { FaComputer } from 'react-icons/fa6';
 import AlgoliaIcon from '@public/assets/icons/categoryTitleIcon/algorithmIcon.svg';
 import OSIcon from '@public/assets/icons/categoryTitleIcon/osIcon.svg';
 import DBIcon from '@public/assets/icons/categoryTitleIcon/dbIcon.svg';
 import NetworkIcon from '@public/assets/icons/categoryTitleIcon/networkIcon.svg';
 import { SvgIcon } from '@mui/material';
+import { ProblemCategoryTitle } from '@/shared/problem/model/problemInfo.types';
 
 export const getCategoriesIcon = (title: ProblemCategoryTitle) => {
   switch (title) {

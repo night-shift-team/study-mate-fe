@@ -1,6 +1,6 @@
 import { accessTokenRefreshApi, AuthTokenRes } from '@/shared/user/api';
 import { ServerErrorResponse, setTokenToHeader } from './config';
-import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
+import { Ecode, EcodeMessage } from './ecode';
 
 export const getAccessToken = async () => {
   try {

@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { usePathname } from 'next/navigation';
 import { FaArrowLeft } from 'react-icons/fa';
-import UserStateWrapper from '@/state/userStore/model/clientSideWrapper';
+import UserStateWrapper from '@/shared/state/userStore/model/clientSideWrapper';
 
 const Header = () => {
   const path = usePathname();

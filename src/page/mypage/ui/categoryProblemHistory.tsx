@@ -1,34 +1,24 @@
 'use client';
 
-import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-
 import Image from 'next/image';
-import { getQuestionHistoryApi } from '@/page/mypage/api';
 import { QuestionItem } from '@/feature/mypage/Item';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { ProblemPagination } from '@/feature/pagination';
+import useCategoryProblemHistory from '../model/categoryProblemHistoryHook';
 
 const CategoryProblemHistoryPage = () => {
-  const { category } = useParams();
-  const [questionHistory, setQuestionHistory] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
-  const itemsPerPage = 5;
-
-  useEffect(() => {
-    if (!category) return;
-
-    setLoading(true);
-    getQuestionHistoryApi(100, 100000)
-      .then((res) => {
-        if (res.ok && res.payload && 'content' in res.payload) {
-          setQuestionHistory(res.payload.content);
-        }
-      })
-      .catch(console.error)
-      .finally(() => setLoading(false));
-  }, [category]);
+  const {
+    bgColorClass,
+    category,
+    paginatedHistory,
+    startIndex,
+    textColorClass,
+    filteredHistory,
+    itemsPerPage,
+    page,
+    setPage,
+    loading,
+  } = useCategoryProblemHistory();
 
   if (!category || typeof category !== 'string') {
     return (
@@ -45,36 +35,6 @@ const CategoryProblemHistoryPage = () => {
       </div>
     );
   }
-
-  const filteredHistory = questionHistory.filter(
-    (history) =>
-      history.questionType === `${category}_MAQ` ||
-      history.questionType === `${category}_SAQ`
-  );
-
-  const startIndex = (page - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedHistory = filteredHistory.slice(startIndex, endIndex);
-
-  const categoryBgColors: Record<string, string> = {
-    ALGORITHUM: 'bg-[#DDEDFB]',
-    NETWORK: 'bg-[#EEDDFB]',
-    DB: 'bg-[#E3F5E8]',
-    OS: 'bg-[#FDDCDE]',
-    DESIGN: 'bg-[#FFF5E1]',
-  };
-
-  const categorytextColors: Record<string, string> = {
-    ALGORITHUM: 'text-[#66B8FF]',
-    NETWORK: 'text-[#D38DE8]',
-    DB: 'text-[#98E0AC]',
-    OS: 'text-[#F7A8AC]',
-    DESIGN: 'text-[#FFF5E1]',
-  };
-
-  const bgColorClass = categoryBgColors[category] || 'bg-white';
-  const textColorClass = categorytextColors[category] || 'text-white';
-
   return (
     <div className="flex h-full w-full flex-col pb-8">
       <div

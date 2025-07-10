@@ -1,15 +1,15 @@
-import LevelTest from '@/page/level_test/ui';
+import LevelTestPage from '@/page/level_test/ui';
+import UserStateWrapper from '@/shared/state/userStore/model/clientSideWrapper';
 import PageAnimationWrapper from '@/shared/style/ui/pageAnimationWrapper';
-import UserStateWrapper from '@/state/userStore/model/clientSideWrapper';
 
-const LevelTestPage = () => {
+const LevelTest = () => {
   return (
     <UserStateWrapper>
       <PageAnimationWrapper>
-        <LevelTest />
+        <LevelTestPage />
       </PageAnimationWrapper>
     </UserStateWrapper>
   );
 };
 
-export default LevelTestPage;
+export default LevelTest;

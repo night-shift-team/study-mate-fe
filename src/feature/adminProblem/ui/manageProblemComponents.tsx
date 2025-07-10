@@ -1,10 +1,10 @@
-import { CurrentFilter, Problem } from '@/page/adminProblem';
-import { ProblemCategoryType } from '@/shared/constants/problemInfo';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { IoSearch } from 'react-icons/io5';
 import { LuArrowDownUp } from 'react-icons/lu';
 import UnfoldMoreRoundedIcon from '@mui/icons-material/UnfoldMoreRounded';
 import { getProblemListBySearch } from '../model/getProblemListBySearch';
+import { ProblemCategoryType } from '@/shared/problem/model/problemInfo.types';
+import { CurrentFilter, Problem } from '@/page/adminProblem/ui';
 
 export const ProblemTypeSelectionComponent = ({
   problemType,

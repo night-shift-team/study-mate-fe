@@ -1,11 +1,11 @@
-import Suggestion from '@/page/suggestion/ui';
+import SuggestionPage from '@/page/suggestion/ui';
 import PageAnimationWrapper from '@/shared/style/ui/pageAnimationWrapper';
 
-const SuggestionPage = () => {
+const Suggestion = () => {
   return (
     <PageAnimationWrapper>
-      <Suggestion />
+      <SuggestionPage />
     </PageAnimationWrapper>
   );
 };
-export default SuggestionPage;
+export default Suggestion;

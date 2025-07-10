@@ -1,21 +1,8 @@
 'use client';
-import { FormEvent, useLayoutEffect, useState } from 'react';
 
 import { UpdateProblemProvider } from '../model/updateProblemContext';
-import SelectComponent from '../model/selectCategoryComponent';
 import AuthHoc from '@/shared/auth/model/authHoc';
-import { getProblemDetail } from '../model/getProblemDetailInfo';
-import {
-  CreateAdminMAQReq,
-  CreateAdminSAQReq,
-  ProblemDetailInfoRes,
-  updateAdminMAQApi,
-  updateAdminSAQApi,
-} from '../api';
-import {
-  ProblemCategoryTitle,
-  ProblemCategoryType,
-} from '@/shared/constants/problemInfo';
+
 import {
   Answer,
   AttrBox,
@@ -24,10 +11,11 @@ import {
   TitleBox,
 } from '@/feature/adminProblem/update/ui/problemUpdateComponents';
 import ContentsMarkDown from '@/feature/adminProblem/update/ui/markDownEdit';
-import { Problem } from '..';
 import { updateAttrBox } from '../model/updateAttrBoxContents';
-import useToast, { ToastType } from '@/shared/toast/toast';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import useUpdateProblem from '../model/updateProblemHook';
+import { ProblemCategoryTitle } from '@/shared/problem/model/problemInfo.types';
+import SelectCategory from './selectCategory';
 
 enum ProblemAttributeTitle {
   Category = 'Category',
@@ -38,96 +26,13 @@ enum ProblemAttributeTitle {
 }
 
 const UpdateProblemPage = () => {
-  const [selectedProblem, setSelectedProblem] = useState<Problem | null>(null);
-  const [problemDetailInfo, setProblemDetailInfo] =
-    useState<ProblemDetailInfoRes | null>(null);
-
-  const [toastOpen, setToastOpen] = useState(false);
-  const { Toaster, setToastDescription, setToastIcon } = useToast(
-    toastOpen,
-    setToastOpen
-  );
-  const [isLoading, setIsLoading] = useState(false);
-
-  useLayoutEffect(() => {
-    if (selectedProblem && !problemDetailInfo) {
-      getProblemDetail(selectedProblem.id, setProblemDetailInfo).then(() => {
-        try {
-          setProblemDetailInfo(
-            (prev) =>
-              prev && { ...prev, options: JSON.parse(prev.options as string) }
-          );
-        } catch (e) {
-          console.log(e);
-        }
-      });
-      return;
-    }
-
-    const sessionProblemData = sessionStorage.getItem('selectedProblemInfo');
-    if (sessionProblemData && !selectedProblem) {
-      setSelectedProblem(JSON.parse(sessionProblemData));
-    }
-  }, [selectedProblem]);
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!problemDetailInfo) return;
-    const [, pType] = problemDetailInfo.category.split('_');
-    setIsLoading(true);
-
-    try {
-      const commontBody = {
-        questionTitle: problemDetailInfo.questionTitle,
-        questionContent: problemDetailInfo.content,
-        answer: problemDetailInfo.answer,
-        answerExplanation: problemDetailInfo.answerExplanation,
-        difficulty: problemDetailInfo.difficulty,
-        category: problemDetailInfo.category,
-      };
-      if (pType === ProblemCategoryType.MAQ) {
-        const body: CreateAdminMAQReq = {
-          ...commontBody,
-          choice1: (problemDetailInfo.options as string[])[0],
-          choice2: (problemDetailInfo.options as string[])[1],
-          choice3: (problemDetailInfo.options as string[])[2],
-          choice4: (problemDetailInfo.options as string[])[3],
-        };
-        const res = await updateAdminMAQApi(problemDetailInfo.questionId, body);
-        if (res.ok) {
-          setToastIcon(ToastType.success);
-          setToastDescription('문제 수정이 완료되었습니다.');
-          setToastOpen(true);
-          return;
-        }
-        throw res.payload;
-      }
-      if (pType === ProblemCategoryType.SAQ) {
-        const body: CreateAdminSAQReq = {
-          ...commontBody,
-          keyword1: (problemDetailInfo.options as string[])[0],
-          keyword2: (problemDetailInfo.options as string[])[1],
-          keyword3: (problemDetailInfo.options as string[])[2],
-        };
-        const res = await updateAdminSAQApi(problemDetailInfo.questionId, body);
-        if (res.ok) {
-          setToastIcon(ToastType.success);
-          setToastDescription('문제 수정이 완료되었습니다.');
-          setToastOpen(true);
-          return;
-        }
-        throw res.payload;
-      }
-      return;
-    } catch (e) {
-      console.log(e);
-      setToastIcon(ToastType.error);
-      setToastDescription('문제 수정에 실패했습니다.');
-      setToastOpen(true);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const {
+    problemDetailInfo,
+    setProblemDetailInfo,
+    handleSubmit,
+    Toaster,
+    isLoading,
+  } = useUpdateProblem();
 
   return (
     <form
@@ -161,7 +66,7 @@ const UpdateProblemPage = () => {
             className="grid w-full shrink-0 grid-flow-col grid-cols-3 grid-rows-2 gap-2 md:min-h-16 md:grid-cols-[repeat(5,min-content)] md:grid-rows-1 md:overflow-y-visible md:overflow-x-scroll md:scrollbar-hide"
           >
             <AttrBox title={ProblemAttributeTitle.Category}>
-              <SelectComponent
+              <SelectCategory
                 list={Object.values(ProblemCategoryTitle)}
                 attrString={'title'}
               />

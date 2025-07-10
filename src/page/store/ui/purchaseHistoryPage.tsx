@@ -1,56 +1,11 @@
 'use client';
 import Image from 'next/image';
-import { getStorePaymentHistoryApi, PaymentHistoryApiRes } from './api';
 import { OrderDtoStatus } from '@/shared/api/autoGenerateTypes';
-import { useEffect, useState } from 'react';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import usePurchaseHistoryPage from '../model/purchaseHistoryPageHook';
 
 const StorePurchaseHistoryPage = () => {
-  const [paymentHistory, setPaymentHistory] = useState<PaymentHistoryApiRes>();
-
-  const getMyPaymentHistory = async () => {
-    try {
-      const res = await getStorePaymentHistoryApi(0, 999);
-      if (res.ok) {
-        const data = res.payload as PaymentHistoryApiRes;
-        data.content.sort(
-          (a, b) =>
-            new Date(b.paymentDate).getTime() -
-            new Date(a.paymentDate).getTime()
-        );
-        setPaymentHistory(data);
-      }
-      throw res.payload;
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const getOrderStatusStringKr = (status: OrderDtoStatus) => {
-    switch (status) {
-      case OrderDtoStatus.PAID:
-        return '구매 완료';
-      case OrderDtoStatus.PENDING:
-        return '구매 대기';
-      case OrderDtoStatus.REQUEST:
-        return '결제 요청';
-      case OrderDtoStatus.PAY_ALL_CANCELLED:
-        return '결제 취소';
-      case OrderDtoStatus.PAY_PARTIAL_CANCELLED:
-        return '부분 취소';
-      case OrderDtoStatus.REQ_CANCELLED:
-        return '요청 취소';
-      case OrderDtoStatus.FAILED:
-        return '결제 취소';
-      default:
-        return '구매 대기';
-    }
-  };
-
-  useEffect(() => {
-    getMyPaymentHistory();
-  }, []);
-
+  const { paymentHistory, getOrderStatusStringKr } = usePurchaseHistoryPage();
   return (
     <div className="absolute inset-0 z-[1] h-screen w-screen overflow-auto bg-storeBg bg-cover pt-[3.2rem] md:pt-[3.5rem]">
       <div className="flex w-full flex-col justify-center">

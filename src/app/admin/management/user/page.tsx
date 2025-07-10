@@ -1,6 +1,6 @@
-import ManageUser from '@/page/adminUser';
+import ManageUserPage from '@/page/adminUser/ui';
 
-const ManageUserPage = () => {
-  return <ManageUser />;
+const ManageUser = () => {
+  return <ManageUserPage />;
 };
-export default ManageUserPage;
+export default ManageUser;

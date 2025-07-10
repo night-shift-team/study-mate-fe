@@ -1,6 +1,6 @@
 import { _apiFetch } from '@/shared/api/model/config';
 import { SignUpFormData } from '../ui';
-import { UserLoginType, UserStatus } from '@/shared/constants/userInfo';
+import { UserLoginType, UserStatus } from '@/shared/user/model/userInfo.types';
 
 const API_Prefix = '/api/v1/users';
 

@@ -7,12 +7,16 @@ import OS_Image from '@public/assets/icons/mypage/OS.svg';
 import Arrow from '@public/assets/icons/mypage/Arrow.svg';
 import { useRouter } from 'next/navigation';
 import { SvgIcon } from '@mui/material';
+import { ProblemCategoryTitle } from '@/shared/problem/model/problemInfo.types';
 
 interface MobileCheckListProps {
-  category: string;
+  category: ProblemCategoryTitle;
 }
 
-const imageMap: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
+const imageMap: Record<
+  ProblemCategoryTitle,
+  React.FC<React.SVGProps<SVGSVGElement>>
+> = {
   NETWORK: NETWORK_Image,
   DB: DATABASE_Image,
   ALGORITHUM: ALGORITHM_Image,

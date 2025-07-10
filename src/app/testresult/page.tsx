@@ -1,15 +1,15 @@
-import LevelResult from '@/page/level_result/ui';
+import TestResultPage from '@/page/level_result/ui';
+import UserStateWrapper from '@/shared/state/userStore/model/clientSideWrapper';
 import PageAnimationWrapper from '@/shared/style/ui/pageAnimationWrapper';
-import UserStateWrapper from '@/state/userStore/model/clientSideWrapper';
 
-const TestResultPage = () => {
+const TestResult = () => {
   return (
     <UserStateWrapper>
       <PageAnimationWrapper>
-        <LevelResult />
+        <TestResultPage />
       </PageAnimationWrapper>
     </UserStateWrapper>
   );
 };
 
-export default TestResultPage;
+export default TestResult;

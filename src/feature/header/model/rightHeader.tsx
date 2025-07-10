@@ -1,6 +1,5 @@
 'use client';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import { userStore } from '@/state/userStore';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { IoMenu } from 'react-icons/io5';
@@ -13,6 +12,7 @@ import MypageIcon from '@public/assets/icons/header/user.png';
 import Image from 'next/image';
 import StoreIcon from '@public/assets/icons/header/storeIcon.svg';
 import { SvgIcon } from '@mui/material';
+import { userStore } from '@/shared/state/userStore';
 
 const RightHeaderComponents = () => {
   const routePath = usePathname();

@@ -3,8 +3,8 @@
 import { useEffect } from 'react';
 import tippy, { Instance, Props } from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
-import { tippyStore } from '@/state/tooltip';
 import { usePathname } from 'next/navigation';
+import { tippyStore } from '@/shared/state/tooltip';
 
 const tooltipMountHook = () => {
   const {

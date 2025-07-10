@@ -1,35 +1,21 @@
 'use client';
 import { IoMdClose } from 'react-icons/io';
-import { deleteQnABoardApi } from '../api';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 import { BoardAlertPopup } from './AlertPopup';
+import useMoreBox from '../model/moreBoxHook';
 interface MoreBoxProps {
   onClose: () => void;
   boardId: number;
 }
 
 export const MoreBox = ({ onClose, boardId }: MoreBoxProps) => {
-  const router = useRouter();
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
-  const [showAlert, setShowAlert] = useState(false);
-
-  const handleDelete = async () => {
-    setShowConfirm(false);
-    try {
-      await deleteQnABoardApi(boardId);
-      setAlertMessage('게시글이 삭제되었습니다.');
-      setShowAlert(true);
-      setTimeout(() => {
-        setShowAlert(false);
-        router.push('/suggestion');
-      }, 1500);
-    } catch (error: any) {
-      setAlertMessage(`삭제 실패: ${error.message}`);
-      setShowAlert(true);
-    }
-  };
+  const {
+    showConfirm,
+    showAlert,
+    alertMessage,
+    handleDelete,
+    setShowConfirm,
+    setShowAlert,
+  } = useMoreBox(boardId);
 
   return (
     <>

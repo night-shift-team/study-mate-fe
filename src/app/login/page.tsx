@@ -1,12 +1,12 @@
-import Login from '@/page/login/ui';
+import LoginPage from '@/page/login/ui';
 import PageAnimationWrapper from '@/shared/style/ui/pageAnimationWrapper';
 
-const LoginPage = () => {
+const Login = () => {
   return (
     <PageAnimationWrapper>
-      <Login />
+      <LoginPage />
     </PageAnimationWrapper>
   );
 };
 
-export default LoginPage;
+export default Login;

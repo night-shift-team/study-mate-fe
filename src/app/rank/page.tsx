@@ -1,12 +1,12 @@
-import { RankPageComponent } from '@/page/rank/ui';
+import RankPage from '@/page/rank/ui';
 import PageAnimationWrapper from '@/shared/style/ui/pageAnimationWrapper';
 
-const RankPage = () => {
+const Rank = () => {
   return (
     <PageAnimationWrapper>
-      <RankPageComponent />
+      <RankPage />
     </PageAnimationWrapper>
   );
 };
 
-export default RankPage;
+export default Rank;

@@ -1,5 +1,5 @@
 import { _apiFetch } from '@/shared/api/model/config';
-import { UserLoginType, UserStatus } from '@/shared/constants/userInfo';
+import { UserLoginType, UserStatus } from '@/shared/user/model/userInfo.types';
 
 const Api_Prefix = '/api/v1/users';
 export interface UserInfoRes {

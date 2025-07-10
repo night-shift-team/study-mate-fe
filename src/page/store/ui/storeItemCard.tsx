@@ -1,10 +1,8 @@
 'use client';
 import Image, { StaticImageData } from 'next/image';
 import ShieldIcon from '@public/assets/icons/store/shieldIcon3.png';
-import React, { useEffect } from 'react';
-import { buyStoreItemApi } from '../api';
-import { openNewWindowWithoutDuplicate } from '@/shared/window/model/openWindow';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import useItemCard from '../model/itemCardHook';
 interface ItemCardProps {
   index: number;
   id: string;
@@ -23,32 +21,10 @@ const ItemCard = ({
   imageUrl = ShieldIcon,
   afterPaymentCallback,
 }: ItemCardProps) => {
-  const [isMobile, setIsMobile] = React.useState(false);
-  const [paymentOpen, setPaymentOpen] = React.useState(false);
-  const windowReference: Window | null = null;
-
-  const buyItem = async () => {
-    setPaymentOpen(true);
-    try {
-      const res = await buyStoreItemApi(id);
-      if (res.ok) {
-        const link = res.payload as string;
-        openNewWindowWithoutDuplicate(
-          windowReference,
-          link,
-          afterPaymentCallback
-        );
-      }
-    } catch (e) {
-      console.log(e);
-    } finally {
-      setPaymentOpen(false);
-    }
-  };
-  useEffect(() => {
-    setIsMobile(typeof window !== 'undefined' && window.innerWidth < 768);
-  }, []);
-
+  const { isMobile, buyItem, paymentOpen } = useItemCard(
+    id,
+    afterPaymentCallback
+  );
   return (
     <div
       className={`group flex h-60 w-[150px] animate-fade-up ${'delay-' + (index + 1) * 100} flex-col items-center justify-between rounded-[4rem] border-2 border-orange-200 bg-[#feefd8] py-5 pb-6 hover:cursor-pointer md:h-80 md:w-60 md:hover:border-orange-500`}

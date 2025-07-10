@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import { QuestionDetailRes } from '@/page/mypage/api';
-import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
+import MarkdownComponent from '@/shared/lexical/model/markdownConfig';
 
 interface PopupProps {
   questionTitle: string;
