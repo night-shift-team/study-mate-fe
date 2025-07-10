@@ -3,10 +3,10 @@ import { CircleX } from 'lucide-react';
 import { getQuestionDetailApi } from '@/page/mypage/api';
 import { useEffect, useState } from 'react';
 import { PopupProblem } from '@/shared/popUp/ui/popupV2';
-import { getWithCache } from '@/entities/apiCacheHook';
 import { FaArrowRightLong } from 'react-icons/fa6';
 import Arrow from '@public/assets/icons/mypage/Arrow.svg';
 import { SvgIcon } from '@mui/material';
+import { getWithCache } from '@/shared/api/model/apiCacheHook';
 
 interface ItemProps {
   index: number;

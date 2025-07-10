@@ -1,5 +1,4 @@
 'use client';
-import { getWithCache } from '@/entities/apiCacheHook';
 import {
   getAllNoticeListApi,
   getAllNoticeListRes,
@@ -10,6 +9,7 @@ import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 
 import { useEffect, useState } from 'react';
 import AnnouncementList from './announcementList';
+import { getWithCache } from '@/shared/api/model/apiCacheHook';
 
 enum AnnouncementType {
   Anouncement,

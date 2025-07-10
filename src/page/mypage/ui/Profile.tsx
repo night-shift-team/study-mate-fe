@@ -3,10 +3,10 @@
 import React, { useEffect, useState, useTransition } from 'react';
 import { userStore } from '@/state/userStore';
 import { changeNicknameApi } from '../api';
-import Button from '@/components/buttons';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import useToast, { ToastType } from '@/shared/toast/toast';
 import { ProfileImage } from '@/shared/user/ui/profileImage';
+import Button from '@/shared/design/ui/customButton';
 
 const Profile = () => {
   const { user, setUser } = userStore.getState();

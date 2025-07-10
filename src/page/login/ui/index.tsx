@@ -3,7 +3,6 @@
 import Logo from '@public/assets/backgroundImages/main/studyMate_logo.png';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
-import { LoginButton } from '@/entities';
 import Link from 'next/link';
 import { addSocialLoginRedirectDataListener } from '../model/addSocialLoginResponseListener';
 import { useRouter } from 'next/navigation';
@@ -25,6 +24,7 @@ import useTooltip from '@/feature/tooltip/tooltipController';
 import { TooltipContents } from '@/state/tooltip/tooltipContents';
 import { openNewWindowWithoutDuplicate } from '@/shared/window/model/openWindow';
 import tooltipMountHook from '@/feature/tooltip/tooltipMount';
+import { LoginButton } from '../model/loginButtonMeta';
 
 const Login = () => {
   const router = useRouter();

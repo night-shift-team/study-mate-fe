@@ -11,7 +11,7 @@ import {
 } from '@/feature/notice/api';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import { getWithCache } from '@/entities/apiCacheHook';
+import { getWithCache } from '@/shared/api/model/apiCacheHook';
 
 export const NoticeComponent = () => {
   const [noticeList, setNoticeList] = useState<Notice[]>([]);

@@ -9,9 +9,9 @@ import { BsList } from 'react-icons/bs';
 import { useRouter } from 'next/navigation';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import NoticeFoxBg from '@public/assets/backgroundImages/main/noticeFoxBg.svg';
-import { getWithCache } from '@/entities/apiCacheHook';
 import { SvgIcon } from '@mui/material';
 import { useIdContext } from '@/page/announcement/model/idContext';
+import { getWithCache } from '@/shared/api/model/apiCacheHook';
 
 const AnnouncemnetByIdDetail = () => {
   const [noticeDetail, setNoticeDetail] = useState<Notice | null>(null);
