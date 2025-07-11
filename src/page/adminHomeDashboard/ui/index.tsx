@@ -1,5 +1,4 @@
 'use client';
-
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import AuthHoc from '@/shared/auth/model/authHoc';
 import { DashboardCard } from '@/feature/adminDashboard/ui/adminHomeDashboardComponents';
