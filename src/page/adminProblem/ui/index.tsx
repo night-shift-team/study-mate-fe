@@ -4,15 +4,13 @@ import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import AuthHoc from '@/shared/auth/model/authHoc';
 
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
-import {
-  ProblemFilterComponent,
-  ProblemSearchComponent,
-  ProblemTypeSelectionComponent,
-} from '@/feature/adminProblem/ui/manageProblemComponents';
-import { ProblemPagination } from '@/feature/pagination';
 import { GetAdminMAQ, GetAdminSAQ } from '../api';
 import useManageProblem from '../model/manageProblemHook';
 import MarkdownComponent from '@/shared/lexical/model/markdownConfig';
+import { ProblemTypeSelection } from '@/feature/adminProblem/ui/probelmTypeSelection';
+import { ProblemFilter } from '@/feature/adminProblem/ui/problemFilter';
+import { ProblemSearch } from '@/feature/adminProblem/ui/problemSearch';
+import { ProblemPagination } from '@/feature/pagination/ui';
 
 export type CurrentFilter = '최신 순' | '오래된 순';
 export type Problem = GetAdminMAQ | GetAdminSAQ;
@@ -53,17 +51,17 @@ const ManageProblemPage = () => {
             문제 관리
           </span>
           <div className="mt-4 flex w-full justify-center">
-            <ProblemTypeSelectionComponent
+            <ProblemTypeSelection
               problemType={problemType}
               setProblemType={setProblemType}
             />
           </div>
           <div className="mt-4 flex w-full justify-between">
-            <ProblemFilterComponent
+            <ProblemFilter
               currentFilter={currentFilter}
               setCurrentFilter={setCurrentFilter}
             />
-            <ProblemSearchComponent
+            <ProblemSearch
               problemType={problemType}
               setProblemList={setProblemList}
               setCurrentPage={setCurrentPage}

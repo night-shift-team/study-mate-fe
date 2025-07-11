@@ -2,7 +2,6 @@
 import 'swiper/css';
 import Card from './Card';
 import Profile from './Profile';
-import GrassChart from '@/feature/charts/GrassChart';
 import CheckList from './CheckList';
 
 import Arrow from '@public/assets/icons/mypage/check_arrow.svg';
@@ -12,6 +11,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { SvgIcon } from '@mui/material';
 import useMyPage from '../model/myPageHook';
 import Favorite from './Favorite';
+import GrassChart from '@/feature/charts/ui/GrassChart';
 
 const Mypage = () => {
   const {

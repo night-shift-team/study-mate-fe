@@ -3,6 +3,9 @@
 import { MdCheck } from 'react-icons/md';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
+
+import AuthHoc from '@/shared/auth/model/authHoc';
+import useProblemDetail from '../model/problemDetailHook';
 import {
   Answer,
   AttrBox,
@@ -10,9 +13,7 @@ import {
   ModelAnswer,
   Solution,
   TitleBox,
-} from '@/feature/adminProblem/detail/ui/problemDetailComponents';
-import AuthHoc from '@/shared/auth/model/authHoc';
-import useProblemDetail from '../model/problemDetailHook';
+} from '@/feature/adminProblem/ui/problemDetailComponents';
 
 const ProblemDetailPage = () => {
   const { problemDetailInfo } = useProblemDetail();

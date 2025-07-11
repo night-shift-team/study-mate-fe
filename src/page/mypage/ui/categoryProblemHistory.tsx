@@ -1,10 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-import { QuestionItem } from '@/feature/mypage/Item';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
-import { ProblemPagination } from '@/feature/pagination';
 import useCategoryProblemHistory from '../model/categoryProblemHistoryHook';
+import { QuestionItem } from '@/feature/mypage/ui/Item';
+import { ProblemPagination } from '@/feature/pagination/ui';
 
 const CategoryProblemHistoryPage = () => {
   const {

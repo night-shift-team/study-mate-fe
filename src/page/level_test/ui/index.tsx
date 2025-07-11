@@ -1,6 +1,5 @@
 'use client';
 
-import { ChoiceItem } from '@/feature/level_test/ChoiceItem';
 import { PiPaperPlaneTilt } from 'react-icons/pi';
 import AuthHoc from '@/shared/auth/model/authHoc';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
@@ -9,6 +8,7 @@ import { Preview } from './preview';
 import useLevelTest from '../model/levelTestHook';
 import { ProblemInfoMAQ } from '@/shared/problem/model/problemInfo.types';
 import MarkdownComponent from '@/shared/lexical/model/markdownConfig';
+import { ChoiceItem } from '@/feature/level_test/ui/ChoiceItem';
 
 export type ChoiceAttrs = Pick<
   ProblemInfoMAQ,

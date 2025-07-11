@@ -1,11 +1,11 @@
 'use client';
 import { createPortal } from 'react-dom';
-import useSelectCategory from '../model/selectCategory';
 import { resetFocus } from '@/shared/dom/model/focus';
 import {
   ProblemCategory,
   ProblemCategoryType,
 } from '@/shared/problem/model/problemInfo.types';
+import useSelectCategory from '../model/selectCategoryHook';
 
 const SelectCategory = ({
   list,

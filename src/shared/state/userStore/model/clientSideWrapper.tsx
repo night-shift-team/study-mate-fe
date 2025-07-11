@@ -1,6 +1,6 @@
 'use client';
 import { GetUserInfoRes } from '@/page/signup/api';
-import { userStore } from '..';
+import { userStore } from '.';
 
 const UserStateWrapper = ({
   user,

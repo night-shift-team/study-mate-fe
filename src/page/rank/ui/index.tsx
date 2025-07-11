@@ -16,10 +16,10 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { ProblemPagination } from '@/feature/pagination';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 
 import useRankPage from '../model/rankPageHook';
+import { ProblemPagination } from '@/feature/pagination/ui';
 
 const RankPage = () => {
   const {

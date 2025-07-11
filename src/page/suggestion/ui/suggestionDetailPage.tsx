@@ -1,3 +1,4 @@
+'use client';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import MoreButton from '../../../../public/assets/icons/suggestion/more.png';
 import Image from 'next/image';

@@ -1,11 +1,11 @@
-import { DonutChart } from '@/feature/charts/DonutChart';
 import useTestResultContent from '../model/testResultHook';
 import { Category } from './category';
-import Item from '@/feature/level_result/Item';
 import Button from '@/shared/design/ui/customButton';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { PopupProblem } from '@/shared/popUp/ui/popupV2';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import { DonutChart } from '@/feature/charts/ui/DonutChart';
+import Item from '@/feature/level_result/ui/Item';
 
 const TestResultContent = () => {
   const {

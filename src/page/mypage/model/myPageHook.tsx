@@ -1,4 +1,3 @@
-import { userStore } from '@/shared/state/userStore';
 import { useEffect, useRef, useState } from 'react';
 import {
   getQuestionFavoriteApi,
@@ -22,6 +21,7 @@ import { PiRankingLight } from 'react-icons/pi';
 import { SlNote } from 'react-icons/sl';
 import { Swiper as SwiperType } from 'swiper';
 import { getUserRankingApi } from '@/page/rank/api';
+import { userStore } from '@/shared/state/userStore/model';
 
 const useMyPage = () => {
   const [questionHistory, setQuestionHistory] = useState<any[]>([]);
@@ -46,6 +46,7 @@ const useMyPage = () => {
       if (res.ok) {
         if (res.payload && 'myRanking' in res.payload) {
           setMyRanking(res.payload.myRanking);
+          return;
         }
       }
       throw res.payload;
@@ -61,11 +62,12 @@ const useMyPage = () => {
         if (res.payload && 'content' in res.payload) {
           setQuestionHistory(res.payload.content);
           setTotalElements(res.payload.totalElements);
+          return;
         }
       }
       throw res.payload;
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 
@@ -75,6 +77,7 @@ const useMyPage = () => {
       if (res.ok) {
         if (Array.isArray(res.payload)) {
           setFavoriteList(res.payload as QuestionFavoriteRes[]);
+          return;
         }
       }
       throw res.payload;

@@ -1,6 +1,6 @@
 'use client';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import { userStore } from '@/shared/state/userStore';
+import { userStore } from '@/shared/state/userStore/model';
 import { usePathname, useRouter } from 'next/navigation';
 import { ComponentType, useEffect, useState } from 'react';
 

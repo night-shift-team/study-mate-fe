@@ -1,8 +1,8 @@
 import React from 'react';
-import { QuestionItem } from '@/feature/mypage/Item';
 import { MobileCheckList } from './MobileCheckList';
 import useCheckList, { QuestionHistory } from '../model/checkListHook';
 import { ProblemCategoryTitle } from '@/shared/problem/model/problemInfo.types';
+import { QuestionItem } from '@/feature/mypage/ui/Item';
 
 interface CheckListProps {
   questionHistory?: QuestionHistory[];

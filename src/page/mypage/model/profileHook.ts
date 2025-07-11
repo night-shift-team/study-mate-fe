@@ -1,7 +1,7 @@
-import { userStore } from '@/shared/state/userStore';
 import useToast from '@/shared/toast/model/toastHook';
 import { useEffect, useState, useTransition } from 'react';
 import { changeNicknameApi } from '../api';
+import { userStore } from '@/shared/state/userStore/model';
 
 const useProfile = () => {
   const { user, setUser } = userStore.getState();

@@ -1,5 +1,4 @@
 'use client';
-import { ChoicedItemResult, ChoiceItem } from '@/feature/level_test/ChoiceItem';
 
 import { PiPaperPlaneTilt } from 'react-icons/pi';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
@@ -13,6 +12,10 @@ import {
   ProblemInfoMAQ,
 } from '@/shared/problem/model/problemInfo.types';
 import { SendMAQAnswerRes, SendSAQAnswerRes } from '../api';
+import {
+  ChoicedItemResult,
+  ChoiceItem,
+} from '@/feature/level_test/ui/ChoiceItem';
 
 export interface ProblemProps {
   category: 'random' | ProblemCategoryTitle;

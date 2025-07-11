@@ -5,8 +5,8 @@ import {
   getAccessTokenFromRefreshToken,
 } from './refreshTokenApi';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import { userStore } from '@/shared/state/userStore';
 import { Ecode } from './ecode';
+import { userStore } from '@/shared/state/userStore/model';
 
 export type HTTPRequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 export type ContentType =

@@ -1,10 +1,10 @@
 'use client';
 
-import { ProblemPagination } from '@/feature/pagination';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 
 import AnnouncementList from './announcementList';
-import useAnnouncement from '../model/announcementHook';
+import useAnnouncementPage from '../model/announcementPageHook';
+import { ProblemPagination } from '@/feature/pagination/ui';
 
 export enum AnnouncementType {
   Anouncement,
@@ -20,7 +20,7 @@ const AnnouncementPage = () => {
     setPage,
     maxPage,
     currentTab,
-  } = useAnnouncement();
+  } = useAnnouncementPage();
 
   return (
     <div className="flex h-full w-full flex-col overflow-y-auto p-7 scrollbar-hide md:p-20">

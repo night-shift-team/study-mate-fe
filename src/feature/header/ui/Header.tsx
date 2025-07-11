@@ -2,7 +2,7 @@
 import React from 'react';
 import Logo from '@public/assets/icons/header/mascotIcon.svg';
 import TextLogo from '@public/assets/backgroundImages/main/logo.svg';
-import RightHeaderComponents from '../model/rightHeader';
+import RightHeader from '../ui/rightHeader';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { usePathname } from 'next/navigation';
@@ -57,7 +57,7 @@ const Header = () => {
 
         {/* 우측 메뉴 */}
         <div className="flex h-full w-full items-center justify-end pr-4 md:w-auto">
-          <RightHeaderComponents />
+          <RightHeader />
         </div>
       </div>
     </UserStateWrapper>
