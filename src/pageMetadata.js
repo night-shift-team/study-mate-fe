@@ -2,7 +2,7 @@ const baseUrl = 'https://developer-dev.study-mate.academy';
 
 export const pageMetadata = {
   home: {
-    title: '스터디메이트 - 개발자를 위한 문제풀이 플랫폼',
+    title: '스터디메이트',
     description:
       '스터디메이트는 개발자를 위한 문제 풀이 기반 학습 플랫폼입니다. CS 지식을 자연스럽게 익히고 개발 실력을 쌓아보세요. 푼 문제와 오답, 스크랩까지 나의 공부 이력도 함께 정리해보세요.',
     openGraph: {
