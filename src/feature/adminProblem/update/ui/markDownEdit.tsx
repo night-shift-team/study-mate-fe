@@ -1,5 +1,5 @@
 import { useUpdateProblem } from '@/page/adminProblem/model/updateProblemContext';
-import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
+import MarkdownComponent from '@/shared/lexical/model/markdownConfig';
 import { useLayoutEffect, useRef, useState } from 'react';
 
 const ContentsMarkDown = () => {

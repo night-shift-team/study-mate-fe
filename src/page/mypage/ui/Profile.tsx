@@ -1,77 +1,25 @@
 'use client';
 
-import React, { useEffect, useState, useTransition } from 'react';
-import { userStore } from '@/state/userStore';
-import { changeNicknameApi } from '../api';
-import Button from '@/components/buttons';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
-import useToast, { ToastType } from '@/shared/toast/toast';
+
 import { ProfileImage } from '@/shared/user/ui/profileImage';
+import Button from '@/shared/design/ui/customButton';
+import useProfile from '../model/profileHook';
+import { ToastType } from '@/shared/toast/model/toastHook';
 
 const Profile = () => {
-  const { user, setUser } = userStore.getState();
-  const [imageUrl] = useState<string>(user ? user.profileImg : '');
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newNickname, setNewNickname] = useState<string>(user?.nickname || '');
-  const [isPending, startTransition] = useTransition();
-  const [isNicknameChanged, setIsNicknameChanged] = useState(false);
-
-  const [isToastOpen, setIsToastOpen] = useState(false);
-  const { Toaster, setToastDescription } = useToast(
-    isToastOpen,
-    setIsToastOpen
-  );
-
-  // 닉네임 변경 처리
-  const handleNicknameChange = async () => {
-    if (user?.nickname === newNickname) {
-      setErrorMessage('현재와 다른 닉네임을 입력해주세요.');
-      return;
-    }
-    if (!newNickname) {
-      setErrorMessage('닉네임을 입력해주세요.');
-      return;
-    }
-
-    startTransition(async () => {
-      try {
-        const response = await changeNicknameApi(newNickname);
-
-        if (response.ok && user) {
-          setUser({
-            ...user,
-            nickname: newNickname,
-            profileImg: user.profileImg,
-          });
-          setIsModalOpen(false);
-          setErrorMessage('');
-          setIsNicknameChanged(true);
-          setToastDescription('닉네임이 변경되었습니다.');
-        } else {
-          if (
-            'message' in response.payload &&
-            response.payload.message === 'nickname already exist'
-          ) {
-            setErrorMessage('중복된 닉네임입니다. 다른 닉네임을 입력해주세요.');
-          } else {
-            setErrorMessage('닉네임 변경에 실패했습니다. 다시 시도해주세요.');
-          }
-        }
-      } catch (error) {
-        console.error('닉네임 변경 실패:', error);
-        setErrorMessage('서버 오류가 발생했습니다. 나중에 다시 시도해주세요.');
-      }
-    });
-  };
-
-  useEffect(() => {
-    if (isNicknameChanged) {
-      setIsToastOpen(true);
-      setIsNicknameChanged(false);
-    }
-  }, [isNicknameChanged]);
-
+  const {
+    Toaster,
+    imageUrl,
+    user,
+    newNickname,
+    setNewNickname,
+    handleNicknameChange,
+    isModalOpen,
+    setIsModalOpen,
+    isPending,
+    errorMessage,
+  } = useProfile();
   return (
     <div className="flex items-center gap-3">
       {/* Toast 컴포넌트 */}

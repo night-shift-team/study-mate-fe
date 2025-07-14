@@ -1,11 +1,11 @@
-import { PAGE_LIMIT } from '@/page/adminProblem';
 import {
   GetAdminMAQListRes,
   GetAdminSAQListRes,
   searchAdminMAQListApi,
   searchAdminSAQListApi,
 } from '@/page/adminProblem/api';
-import { ProblemCategoryType } from '@/shared/constants/problemInfo';
+import { PAGE_LIMIT } from '@/page/adminProblem/model/manageProblemHook';
+import { ProblemCategoryType } from '@/shared/problem/model/problemInfo.types';
 
 export const getProblemListBySearch = async (
   problemType: ProblemCategoryType,

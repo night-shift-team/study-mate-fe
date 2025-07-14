@@ -1,23 +1,14 @@
 'use client';
 import { FaArrowRightLong } from 'react-icons/fa6';
-import { useRouter } from 'next/navigation';
-import {
-  ServerErrorResponse,
-  setTokenToHeader,
-} from '@/shared/api/model/config';
-import { Dispatch, SetStateAction, useRef, useState } from 'react';
-import { Ecode } from '@/shared/errorApi/ecode';
+import { Dispatch, SetStateAction } from 'react';
 import {
   checkEmailValidate,
   checkPasswordValidate,
 } from '@/page/login/model/checkInputValidate';
-import { setTokens } from '@/page/login/model/setTokens';
-import { requestSignIn } from '@/page/login/model/requestSignIn';
-import { getUserInfo } from '@/page/login/model/getUserInfo';
-import { userStore } from '@/state/userStore';
+
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
-import { LoginToastText } from '@/page/login/model/loginToastText';
-import { ToastType } from '@/shared/toast/toast';
+import useAdminLogin from '../model/adminLoginHook';
+import { ToastType } from '@/shared/toast/model/toastHook';
 
 const AdminLoginForm = ({
   setOpen,
@@ -29,54 +20,12 @@ const AdminLoginForm = ({
   setToastText: (description: string) => void;
   setToastIcon: (status: ToastType) => void;
 }) => {
-  const router = useRouter();
-  //TODO: 로그인 후 롤 체크 후 사용자면 홈, 관리자면 관리 홈으로 이동
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const { adminLogin, emailRef, passwordRef, isLoading } = useAdminLogin(
+    setOpen,
+    setToastText,
+    setToastIcon
+  );
 
-  const setUser = userStore.getState().setUser;
-  const [isLoading, setIsLoading] = useState(false);
-
-  const adminLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
-    try {
-      const form = e.target as HTMLFormElement;
-      const email = (form[0] as HTMLInputElement).value;
-      const password = (form[1] as HTMLInputElement).value;
-      if (email.length === 0 || password.length === 0) return;
-      const res = await requestSignIn(email, password);
-      setTokens({
-        accessToken: res.accessToken,
-        refreshToken: res.refreshToken,
-      });
-      setTokenToHeader(localStorage.getItem('accessToken'));
-      await getUserInfo(
-        setToastText,
-        setOpen,
-        setToastIcon,
-        setUser,
-        router,
-        true
-      );
-    } catch (error) {
-      if ((error as ServerErrorResponse).ecode === Ecode.E0103) {
-        emailRef.current?.focus();
-        checkEmailValidate(emailRef, false);
-        return;
-      }
-      if ((error as ServerErrorResponse).ecode === Ecode.E0104) {
-        passwordRef.current?.focus();
-        checkPasswordValidate(passwordRef, false);
-        return;
-      }
-      console.error('로그인 에러:', error);
-      setToastText(LoginToastText.LOGIN_FAILED);
-      setOpen(true);
-    } finally {
-      setIsLoading(false);
-    }
-  };
   return (
     <form
       onSubmit={adminLogin}

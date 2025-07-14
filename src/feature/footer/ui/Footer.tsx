@@ -1,38 +1,11 @@
 'use client';
 
-import { FaGithub, FaEnvelope } from 'react-icons/fa';
+import useFooterMeta from '../model/footerMetaHook';
 import { FooterSection } from './FooterSection';
-import { RouteTo } from '@/shared/routes/model/getRoutePath';
-
-const developers = [
-  { label: '이한동' },
-  { label: '주정혁' },
-  { label: '고연수' },
-];
-
-const quickLinks = [
-  { label: '홈', href: RouteTo.Solve },
-  { label: '공지사항', href: RouteTo.Announcement },
-  { label: '랭킹', href: RouteTo.Rank },
-  { label: '상점', href: RouteTo.Store },
-  { label: '마이페이지', href: RouteTo.Mypage },
-  { label: '문의하기', href: RouteTo.Suggestion },
-];
-
-const contacts = [
-  {
-    icon: <FaEnvelope size={20} />,
-    href: 'joodinner@gmail.com',
-    label: 'Email',
-  },
-  {
-    icon: <FaGithub size={20} />,
-    href: 'https://github.com/night-shift-team',
-    label: 'GitHub',
-  },
-];
 
 const Footer = () => {
+  const { developers, quickLinks, contacts } = useFooterMeta();
+
   return (
     <footer className="flex h-auto w-full bg-gray-100 py-5 text-gray-300">
       <div className="mx-auto w-full px-4 sm:px-6 lg:px-8">

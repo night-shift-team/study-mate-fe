@@ -4,7 +4,7 @@ import {
   ProblemCategoryTitle,
   ProblemCategoryType,
   ProblemInfoMAQ,
-} from '@/shared/constants/problemInfo';
+} from '@/shared/problem/model/problemInfo.types';
 
 const API_Prefix = '/api/v1/question';
 

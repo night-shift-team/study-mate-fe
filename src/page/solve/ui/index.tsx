@@ -3,74 +3,19 @@ import AuthHoc from '@/shared/auth/model/authHoc';
 import Link from 'next/link';
 import { getCategoriesIcon } from '../model/getCategoryIcons';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import { ProblemCategoryTitle } from '@/shared/constants/problemInfo';
-import { NoticeComponent } from './notice';
-import { useLayoutEffect, useState } from 'react';
-import {
-  getQuestionCategoryInfoApi,
-  GetQuestionCategoryInfoRes,
-  QuestionCategoryInfoDetail,
-} from '../api';
 import RandomIcon from '@public/assets/icons/categoryTitleIcon/randomIcon.svg';
 import { SvgIcon } from '@mui/material';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import Footer from '@/feature/footer/ui/Footer';
+import useSolveMainPage from '../model/solveMainPageHook';
+import NoticeSection from './notice';
 
-interface ProblemCategoryInfo
-  extends Omit<
-    QuestionCategoryInfoDetail,
-    'categoryOriginName' | 'categoryViewName'
-  > {
-  categoryName: ProblemCategoryTitle;
-}
-
-const SolveProblem = () => {
-  const [myTodaySolveData, setMyTodaySolveData] =
-    useState<ProblemCategoryInfo[]>();
-
-  const getQuestionCategoryInfo = async () => {
-    try {
-      const res = await getQuestionCategoryInfoApi();
-      if (res.ok) {
-        const data = (res.payload as GetQuestionCategoryInfoRes).detail;
-        const convertedData: ProblemCategoryInfo[] = [];
-        data.map((category) => {
-          const isTrue = convertedData.findIndex(
-            (item) =>
-              item.categoryName ===
-              (category.categoryOriginName.split(
-                '_'
-              )[0] as ProblemCategoryTitle)
-          );
-          if (isTrue >= 0) {
-            convertedData[isTrue].userSolvingCount += category.userSolvingCount;
-            convertedData[isTrue].solvingLimit += category.solvingLimit;
-          } else {
-            convertedData.push({
-              categoryName: category.categoryOriginName.split(
-                '_'
-              )[0] as ProblemCategoryTitle,
-              userSolvingCount: category.userSolvingCount,
-              solvingLimit: category.solvingLimit,
-            });
-          }
-        });
-        setMyTodaySolveData(convertedData);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  useLayoutEffect(() => {
-    getQuestionCategoryInfo();
-  }, []);
-
+const SolveMainPage = () => {
+  const { myTodaySolveData } = useSolveMainPage();
   return (
     <div className="flex h-full w-full flex-shrink-0 flex-col items-center justify-between overflow-y-auto scrollbar-hide">
       <div className="flex w-full flex-col gap-4 px-[1rem] pb-[5rem] md:gap-6 md:px-[2.5rem]">
-        <NoticeComponent />
-        {/* <RecentProblem /> */}
+        <NoticeSection />
         <div className="mt-6 flex flex-col gap-2 pt-2">
           <span className="text-center text-xl font-bold">CATEGORY</span>
           <span className="w-full text-center text-sm">
@@ -168,4 +113,4 @@ const SolveProblem = () => {
     </div>
   );
 };
-export default AuthHoc(SolveProblem);
+export default AuthHoc(SolveMainPage);

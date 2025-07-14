@@ -1,4 +1,4 @@
-import ManageProblemPage from '@/page/adminProblem/index';
+import ManageProblemPage from '@/page/adminProblem/ui';
 
 const ManageProblem = () => {
   return <ManageProblemPage />;

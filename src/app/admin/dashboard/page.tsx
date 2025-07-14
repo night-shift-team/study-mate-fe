@@ -1,5 +1,5 @@
-import AdminHomeDashboardPage from '@/page/adminHomeDashboard/index';
-import UserStateWrapper from '@/state/userStore/model/clientSideWrapper';
+import AdminHomeDashboardPage from '@/page/adminHomeDashboard/ui';
+import UserStateWrapper from '@/shared/state/userStore/model/clientSideWrapper';
 
 const AdminDashboard = () => {
   return (

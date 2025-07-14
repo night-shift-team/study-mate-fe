@@ -1,20 +1,6 @@
 import { _apiFetch } from '@/shared/api/model/config';
-import { ProblemCategory } from '@/shared/constants/problemInfo';
+import { ProblemCategory } from '@/shared/problem/model/problemInfo.types';
 const API_Prefix = '/api/v1';
-
-export interface UserRankingRes {
-  myRanking: number;
-  otherUsers: {
-    userId: string;
-    loginId: string;
-    nickname: string;
-    profileImg: string;
-    userScore: number;
-    rankNo: number;
-  }[];
-  pageSize: number;
-  pageNumber: number;
-}
 
 export interface QuestionHistoryRes {
   payload: any;
@@ -76,14 +62,6 @@ export interface QuestionFavoriteRes {
   difficulty: number;
   createdDt: number;
 }
-
-export const getUserRankingApi = async (page: number, limit: number) => {
-  const query = `?page=${page}&limit=${limit}`;
-  return await _apiFetch<UserRankingRes>(
-    'GET',
-    `${API_Prefix}/users/rank${query}`
-  );
-};
 
 export const getQuestionHistoryApi = async (
   monthBefore: number,

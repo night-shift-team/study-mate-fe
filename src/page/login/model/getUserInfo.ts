@@ -3,14 +3,15 @@ import {
   ServerErrorResponse,
 } from '@/shared/api/model/config';
 import { userInfoApi, UserInfoRes } from '../api';
-import { Ecode, EcodeMessage } from '@/shared/errorApi/ecode';
-import { UserStoreStorage } from '@/state/userStore';
+
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { Dispatch, SetStateAction } from 'react';
-import { UserInfo } from '@/shared/constants/userInfo';
 import { LoginToastText } from './loginToastText';
-import { ToastType } from '@/shared/toast/toast';
+import { ToastType } from '@/shared/toast/model/toastHook';
+import { Ecode, EcodeMessage } from '@/shared/api/model/ecode';
+import { UserInfo } from '@/shared/user/model/userInfo.types';
+import { UserStoreStorage } from '@/shared/state/userStore/model';
 
 export const getUserInfo = async (
   setToastText: (description: string) => void,

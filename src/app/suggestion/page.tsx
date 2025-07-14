@@ -1,13 +1,14 @@
-'use client';
-
-import Suggestion from '@/page/suggestion/ui';
+import SuggestionPage from '@/page/suggestion/ui';
 import PageAnimationWrapper from '@/shared/style/ui/pageAnimationWrapper';
+import { pageMetadata } from '@/pageMetadata';
 
-const SuggestionPage = () => {
+export const metadata = pageMetadata.suggestion;
+
+const Suggestion = () => {
   return (
     <PageAnimationWrapper>
-      <Suggestion />
+      <SuggestionPage />
     </PageAnimationWrapper>
   );
 };
-export default SuggestionPage;
+export default Suggestion;

@@ -1,7 +1,7 @@
 import {
   ProblemCategoryTitle,
   ProblemCategoryType,
-} from '@/shared/constants/problemInfo';
+} from '@/shared/problem/model/problemInfo.types';
 
 export const getRandomProblemType = () => {
   return new Date().getTime() % 2

@@ -2,7 +2,7 @@ import { _apiFetch } from '@/shared/api/model/config';
 import {
   ProblemCategory,
   ProblemCategoryType,
-} from '@/shared/constants/problemInfo';
+} from '@/shared/problem/model/problemInfo.types';
 
 const API_PREFIX = '/api/v1/question';
 

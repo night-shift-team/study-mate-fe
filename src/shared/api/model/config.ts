@@ -1,12 +1,12 @@
-import { Ecode } from '@/shared/errorApi/ecode';
 import { BatchInterceptor } from '@mswjs/interceptors';
 import { FetchInterceptor } from '@mswjs/interceptors/fetch';
 import {
   getAccessToken,
   getAccessTokenFromRefreshToken,
 } from './refreshTokenApi';
-import { userStore } from '@/state/userStore';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import { Ecode } from './ecode';
+import { userStore } from '@/shared/state/userStore/model';
 
 export type HTTPRequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 export type ContentType =

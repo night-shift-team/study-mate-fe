@@ -1,7 +1,7 @@
 import React, { JSX } from 'react';
 import { IoMdClose } from 'react-icons/io';
-import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
 import PreventScrollOutsidePopup from '../model/preventParentScroll';
+import MarkdownComponent from '@/shared/lexical/model/markdownConfig';
 
 // 팝업 컴포넌트 종류
 // 1. PopupProblem - 문제 내용 팝업 (타이틀, 내용, 유저 답안, 정답, 해설, 닫기)

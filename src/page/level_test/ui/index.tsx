@@ -1,112 +1,34 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { ChoiceItem } from '@/feature/level_test/ChoiceItem';
-import { useRouter } from 'next/navigation';
-import { getLevelTestResultApi, GetLevelTestResultRes } from '../api';
-import { ProblemInfoMAQ } from '@/shared/constants/problemInfo';
 import { PiPaperPlaneTilt } from 'react-icons/pi';
-import { ServerErrorResponse } from '@/shared/api/model/config';
-import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import AuthHoc from '@/shared/auth/model/authHoc';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
-import MarkdownComponent from '@/shared/lexical/ui/showMarkdownData';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { Preview } from './preview';
-import { useChachingLevelTest } from '../hooks';
+import useLevelTest from '../model/levelTestHook';
+import { ProblemInfoMAQ } from '@/shared/problem/model/problemInfo.types';
+import MarkdownComponent from '@/shared/lexical/model/markdownConfig';
+import { ChoiceItem } from '@/feature/level_test/ui/ChoiceItem';
 
-type ChoiceAttrs = Pick<
+export type ChoiceAttrs = Pick<
   ProblemInfoMAQ,
   'choice1' | 'choice2' | 'choice3' | 'choice4'
 >;
 
-const LevelTest = () => {
-  const router = useRouter();
-  const [currentQuestionNo, setCurrentQuestionNo] = useState<number>(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [showResult, setShowResult] = useState<boolean>(false);
-  const [userAnswers, setUserAnswers] = useState<number[]>([]);
-  const [isStarted, setIsStarted] = useState(false);
-
-  // const [levelTestLists, setLevelTestLists] = useState<ProblemInfoLevelTest[]>(
-  //   []
-  // );
-  // const [isPageLoading, setIsPageLoading] = useState<boolean>(true);
-  const [isGetResultApiLoading, setIsGetResultApiLoading] =
-    useState<boolean>(false);
-
-  const { data: levelTestLists = [], isLoading: isPageLoading } =
-    useChachingLevelTest();
-
-  useEffect(() => {
-    if (levelTestLists.length > 0) {
-      const questionList = levelTestLists.map((item, index) => ({
-        no: index + 1,
-        id: item.id,
-      }));
-      sessionStorage.setItem(
-        'levelTestListWithNo',
-        JSON.stringify(questionList)
-      );
-    }
-  }, [levelTestLists]);
-
-  const handleAnswerSelect = (index: number) => {
-    setSelectedAnswer(index);
-    setShowResult(true);
-  };
-
-  const getLevelTestResult = async (updateAnswer: number[]) => {
-    try {
-      const reqData = updateAnswer.map((answer, index) => ({
-        id: levelTestLists[index].id,
-        answer: answer.toString() as '1' | '2' | '3' | '4',
-      }));
-      const res = await getLevelTestResultApi(reqData);
-      if (!res.ok) throw res.payload as ServerErrorResponse;
-      return res.payload as GetLevelTestResultRes;
-    } catch (e) {
-      console.log(e);
-      throw e;
-    }
-  };
-
-  const handlePrevQuestion = () => {
-    if (currentQuestionNo <= 0) return;
-    setSelectedAnswer(userAnswers[currentQuestionNo - 1]);
-    setCurrentQuestionNo((prev) => prev - 1);
-  };
-
-  const handleNextQuestion = async () => {
-    if (!selectedAnswer) return;
-    let updateAnswer: number[] = [];
-    if (currentQuestionNo <= levelTestLists.length - 1) {
-      if (!userAnswers[currentQuestionNo]) {
-        updateAnswer = [...userAnswers, selectedAnswer];
-        setUserAnswers(updateAnswer);
-      } else {
-        updateAnswer = [...userAnswers];
-        updateAnswer[currentQuestionNo] = selectedAnswer;
-        setUserAnswers(updateAnswer);
-      }
-      if (currentQuestionNo < levelTestLists.length - 1) {
-        setSelectedAnswer(userAnswers[currentQuestionNo + 1] ?? null);
-        setCurrentQuestionNo((prev) => prev + 1);
-        setShowResult(false);
-        return;
-      }
-    }
-    // 마지막 문제일 경우
-    try {
-      setIsGetResultApiLoading(true);
-      const res = await getLevelTestResult(updateAnswer);
-      const userData = { ...res, userAnswers: updateAnswer };
-      sessionStorage.setItem('levelTestResult', JSON.stringify(userData));
-      router.push(RouteTo.LevelTestResult);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+const LevelTestPage = () => {
+  const {
+    isPageLoading,
+    isStarted,
+    setIsStarted,
+    currentQuestionNo,
+    levelTestLists,
+    isGetResultApiLoading,
+    selectedAnswer,
+    showResult,
+    handleAnswerSelect,
+    handleNextQuestion,
+    handlePrevQuestion,
+  } = useLevelTest();
 
   return (
     <div className="flex h-full w-full items-center justify-center px-[2%] md:px-[10%]">
@@ -215,4 +137,4 @@ const LevelTest = () => {
   );
 };
 
-export default AuthHoc(LevelTest);
+export default AuthHoc(LevelTestPage);

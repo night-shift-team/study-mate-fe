@@ -1,16 +1,18 @@
-'use client';
-import SolveProblem from '@/page/solve/ui';
+import SolveProblemPage from '@/page/solve/ui';
+import UserStateWrapper from '@/shared/state/userStore/model/clientSideWrapper';
 import PageAnimationWrapper from '@/shared/style/ui/pageAnimationWrapper';
-import UserStateWrapper from '@/state/userStore/model/clientSideWrapper';
 import React from 'react';
+import { pageMetadata } from '@/pageMetadata';
 
-const SolveProblemPage = () => {
+export const metadata = pageMetadata.solve;
+
+const SolveProblem = () => {
   return (
     <UserStateWrapper>
       <PageAnimationWrapper>
-        <SolveProblem />
+        <SolveProblemPage />
       </PageAnimationWrapper>
     </UserStateWrapper>
   );
 };
-export default SolveProblemPage;
+export default SolveProblem;

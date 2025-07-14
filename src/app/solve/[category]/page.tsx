@@ -1,5 +1,5 @@
-import Problem from '@/page/solve/ui/problem';
-import { ProblemCategoryTitle } from '@/shared/constants/problemInfo';
+import SolvingProblemPage from '@/page/solve/ui/solvingProblemPage';
+import { ProblemCategoryTitle } from '@/shared/problem/model/problemInfo.types';
 import PageAnimationWrapper from '@/shared/style/ui/pageAnimationWrapper';
 
 const ProblemPage = async ({
@@ -11,7 +11,9 @@ const ProblemPage = async ({
 
   return (
     <PageAnimationWrapper>
-      <Problem category={category as 'random' | ProblemCategoryTitle} />
+      <SolvingProblemPage
+        category={category as 'random' | ProblemCategoryTitle}
+      />
     </PageAnimationWrapper>
   );
 };

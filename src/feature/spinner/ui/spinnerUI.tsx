@@ -1,4 +1,5 @@
 import PulseLoader from 'react-spinners/PulseLoader';
+import { getSpinnerSize } from '../model/getSpinnerSize';
 
 export type ComponentSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 /**
@@ -14,24 +15,6 @@ export const Spinner = ({
   color?: string;
   size?: ComponentSize;
 }) => {
-  const getSize = (size?: ComponentSize) => {
-    switch (size) {
-      case 'xxs':
-        return 2;
-      case 'xs':
-        return 4;
-      case 'sm':
-        return 6;
-      case 'md':
-        return 8;
-      case 'lg':
-        return 12;
-      case 'xl':
-        return 18;
-      default:
-        return 8;
-    }
-  };
   return (
     <div
       className={`items-cneter flex h-full min-h-[5px] min-w-[5px] justify-center`}
@@ -39,7 +22,7 @@ export const Spinner = ({
       <PulseLoader
         color={color ?? '#e8d7b9'}
         className="flex items-center justify-center"
-        size={getSize(size)}
+        size={getSpinnerSize(size)}
       />
     </div>
   );

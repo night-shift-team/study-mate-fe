@@ -1,6 +1,6 @@
 'use client';
-import { Dispatch, SetStateAction, useEffect } from 'react';
-import useOutsideClick from '../../routes/model/useOutsideClick';
+import { Dispatch, SetStateAction } from 'react';
+import useAdminDialogPopup from '../model/adminDialogPopupHook';
 
 export const DialogPopup = ({
   open,
@@ -17,16 +17,12 @@ export const DialogPopup = ({
   setDialogOpen: Dispatch<SetStateAction<boolean>>;
   disableX?: boolean;
 }) => {
-  const dialogRef = useOutsideClick(() => {
-    setDialogOpen(false);
-    if (disableX) execFunc();
-  });
-
-  useEffect(() => {
-    if (open) {
-      (document.activeElement as HTMLElement).blur(); // 포커스 해제
-    }
-  }, [open]);
+  const { dialogRef } = useAdminDialogPopup(
+    open,
+    setDialogOpen,
+    execFunc,
+    disableX
+  );
 
   return (
     <>
