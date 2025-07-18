@@ -22,7 +22,7 @@ export const CountDown = ({ time }: CountDownProps) => {
   }, [secondsLeft]);
 
   return (
-    <div className="flex h-10 w-10 items-center justify-center rounded-[12px] bg-point-purple text-white">
+    <div className="flex h-[40px] w-[40px] items-center justify-center rounded-[12px] bg-point-orange text-white">
       {secondsLeft > 0 ? String(secondsLeft).padStart(2, '0') : '00'}
     </div>
   );
