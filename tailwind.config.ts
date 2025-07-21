@@ -37,9 +37,33 @@ module.exports = {
   ],
   theme: {
     extend: {
+      container: {
+        center: true,
+        padding: {
+          DEFAULT: '1rem',
+          sm: '16px',
+          lg: '120px',
+        },
+      },
       screens: {
         '3xl': '1920px',
+        desktop: '1440px',
+        mobile: '390px',
       },
+      spacing: {
+        '8': '8px',
+        '16': '16px',
+        '24': '24px',
+        '32': '32px',
+        '40': '40px',
+        '48': '48px',
+        '56': '56px',
+        '64': '64px',
+        '72': '72px',
+        '80': '80px',
+        '88': '88px',
+      },
+
       backgroundSize: {
         '110': '110%',
         '120': '120%',
@@ -123,6 +147,25 @@ module.exports = {
         parkdahyun: ['Parkdahyun', 'sans-serif'],
         gmarketsans: ['GmarketSans', 'sans-serif'],
         notosans: ['NotoSansKR', 'sans-serif'],
+        pixel: ['PixelOperator', 'sans-serif'],
+        pretandard: ['Pretandard', 'sans-serif'],
+      },
+      fontSize: {
+        'title-main': ['48px', { lineHeight: '52px', fontWeight: '700' }],
+        'title-page': ['32px', { lineHeight: '44px', fontWeight: '700' }],
+        'title-section': ['24px', { lineHeight: '36px', fontWeight: '700' }],
+
+        'body-primary': ['18px', { lineHeight: '28px', fontWeight: '500' }],
+        'body-secondary': ['16px', { lineHeight: '26px', fontWeight: '400' }],
+        'body-small': ['14px', { lineHeight: '24px', fontWeight: '400' }],
+
+        'quiz-question': ['16px', { lineHeight: '24px', fontWeight: '700' }],
+        'quiz-option': ['15px', { lineHeight: '22px', fontWeight: '400' }],
+        'quiz-explanation': ['14px', { lineHeight: '20px', fontWeight: '400' }],
+
+        'button-1': ['16px', { lineHeight: '26px', fontWeight: '700' }],
+        'button-2': ['14px', { lineHeight: '24px', fontWeight: '700' }],
+        label: ['13px', { lineHeight: '18px', fontWeight: '400' }],
       },
       colors: {
         pointcolor: {
@@ -133,6 +176,36 @@ module.exports = {
           apricot: '#ECCDB4',
           coral: '#FEA1A1',
           deepcoral: '#ec857e',
+        },
+        gray: {
+          900: '#101010',
+          800: '#2F3036',
+          600: '#8F9098',
+          400: '#D3D3D3',
+          100: '#F8F9FE',
+          white: '#FFFFFF',
+        },
+        error: {
+          DEFAULT: '#FF4A4A',
+          50: 'rgba(255, 74, 74, 0.5)',
+          30: 'rgba(255, 74, 74, 0.3)',
+        },
+        success: {
+          DEFAULT: '#7CFC00',
+          50: 'rgba(124, 252, 0, 0.5)',
+          30: 'rgba(124, 252, 0, 0.3)',
+        },
+        notice: {
+          DEFAULT: '#006FFD',
+          50: 'rgba(0, 111, 253, 0.5)',
+          30: 'rgba(0, 111, 253, 0.3)',
+        },
+        point: {
+          pink: '#FFB8FF',
+          yellow: '#FFD900',
+          orange: '#FFB852',
+          purple: '#5500FF',
+          cyan: '#00FFFF',
         },
         correctGreen: '#d4edda',
         wrongRed: '#f8d7da',
@@ -183,6 +256,7 @@ module.exports = {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      countdown: {},
     },
   },
   plugins: [

@@ -117,6 +117,11 @@ body {
     font-family: 'CustomFontDoodle';
     src: url('/assets/fonts/beachday.regular.ttf') format('truetype');
   }
+
+  @font-face {
+    font-family: 'PixelOperator';
+    src: url('/assets/fonts/PixelOperator.ttf') format('truetype');
+  }
   @font-face {
     font-family: 'Jalnan';
     src: url('/assets/fonts/Jalnan2TTF.ttf') format('truetype');
