@@ -36,7 +36,10 @@ const getIcon = (status: LabelStatus) => {
   }
 };
 
-export const LabelButton = ({ label, status = 'off' }: LabelButtonProps) => {
+export const QuestionSelectionLabel = ({
+  label,
+  status = 'off',
+}: LabelButtonProps) => {
   const [currentStatus, setCurrentStatus] = useState<LabelStatus>(status);
 
   const baseClasses =

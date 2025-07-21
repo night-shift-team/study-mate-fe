@@ -1,4 +1,5 @@
-import { InputStatus } from './useInput';
+'use client';
+import { InputStatus, useInput } from './useInput';
 
 interface InputButtonProps {
   label: string;
@@ -15,8 +16,9 @@ export const InputButton = ({
   status,
   onChange,
 }: InputButtonProps) => {
+  const { value: useValue, status: useStatus } = useInput(value, status);
   const baseClasses =
-    'w-full px-3 py-2 rounded-[12px] border outline-none transition-all';
+    'w-full px-6p py-2 rounded-[12px] border outline-none transition-all';
 
   const statusClasses = {
     empty: 'border-gray-400 text-gray-900 placeholder-gray-400 bg-white',
@@ -33,11 +35,11 @@ export const InputButton = ({
       <label className="text-sm text-gray-700">{label}</label>
       <input
         type="text"
-        value={value}
+        value={useValue}
         placeholder={placeholder}
         disabled={isDisabled}
         onChange={(e) => onChange(e.target.value)}
-        className={`${baseClasses} ${statusClasses[status]}`}
+        className={`${baseClasses} ${statusClasses[useStatus]}`}
       />
     </div>
   );
