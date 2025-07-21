@@ -12,7 +12,6 @@ import { SvgIcon } from '@mui/material';
 import useMyPage from '../model/myPageHook';
 import Favorite from './Favorite';
 import GrassChart from '@/feature/charts/ui/GrassChart';
-import { QuestionSelectionLabel } from '@/shared/components/label/QuestionSelectionLabel';
 
 const Mypage = () => {
   const {
@@ -43,7 +42,6 @@ const Mypage = () => {
       <div className="flex flex-col items-center">
         <div className="z-1 flex h-[25vh] w-full flex-col items-center bg-[#77a46d] px-6 pt-2 md:flex-row md:justify-between md:gap-4 md:rounded-t-3xl md:py-6">
           <Profile />
-
           <div className="flex w-[100%] justify-center gap-4 pt-2 md:max-w-[60%] md:justify-end md:pt-0">
             {cardData.map((item, index) => (
               <Card
