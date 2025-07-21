@@ -8,7 +8,7 @@ interface StatusButtonProps {
 
 export const YellowButton = ({ label, status, onClick }: StatusButtonProps) => {
   const baseClasses =
-    'min-w-[130px] p-8  rounded-[12px] font-semibold text-center transition-all font-pixel text-[20px]';
+    'min-w-[130px] p-8p  rounded-12p font-semibold text-center transition-all font-pixel text-[20px]';
 
   const statusClasses = {
     default: 'text-black bg-point-orange',
