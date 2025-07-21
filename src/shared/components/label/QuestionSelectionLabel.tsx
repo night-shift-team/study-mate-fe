@@ -43,7 +43,7 @@ export const QuestionSelectionLabel = ({
   const [currentStatus, setCurrentStatus] = useState<LabelStatus>(status);
 
   const baseClasses =
-    'flex items-center justify-between p-16 rounded-[20px] font-medium transition-colors min-w-[340px] text-[12px]';
+    'flex items-center justify-between p-16p rounded-16p font-medium transition-colors min-w-[320px] text-[12px]';
 
   const statusClasses = {
     on: 'bg-black border-2 border-point-orange text-white',

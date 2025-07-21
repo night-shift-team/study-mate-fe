@@ -21,9 +21,10 @@ export const InputButton = ({
     'w-full px-6p py-2 rounded-[12px] border outline-none transition-all';
 
   const statusClasses = {
-    empty: 'border-gray-400 text-gray-900 placeholder-gray-400 bg-white',
+    empty:
+      'border-grayscale-400 text-gray-900 placeholder-grayscale-400 bg-white',
     typing: 'border-blue-500 text-gray-900 bg-white',
-    filled: 'border-gray-300 text-gray-900 bg-white',
+    filled: 'border-grayscale-400 text-gray-900 bg-white',
     error: 'border-error text-gray-900 bg-white',
     inactive: 'border-gray-200 text-gray-400 bg-gray-50 cursor-not-allowed',
   };
