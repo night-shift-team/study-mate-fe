@@ -11,7 +11,7 @@ const TabBarList = [
   { id: 5, title: 'Notice', icon: BarIcon, link: '/announcement' },
 ];
 
-export const TabBar = () => {
+export const TabBarComponent = () => {
   const [selectedId, setSelectedId] = useState<number>(3);
 
   return (
