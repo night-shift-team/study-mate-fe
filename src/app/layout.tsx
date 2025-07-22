@@ -17,7 +17,7 @@ export default async function RootLayout({
       <link rel="icon" type="image/x-icon" href="/favicon.ico" />
       <body
         id="root-container"
-        className={`flex h-full w-full bg-pointcolor-yogurt font-spoqa antialiased`}
+        className={`flex h-full w-full font-spoqa antialiased`}
       >
         <MaintenanceCheck>
           <ClientSideWrapper>{children}</ClientSideWrapper>
