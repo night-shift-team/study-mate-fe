@@ -6,7 +6,11 @@ const QueryProvider = dynamic(
   }
 );
 import Header from '@/feature/header/ui/Header';
-
+const TabBarComponent = dynamic(
+  () =>
+    import('@/shared/components/bar/TabBar').then((mod) => mod.TabBarComponent),
+  { ssr: false }
+);
 import dynamic from 'next/dynamic';
 
 const ClientSideWrapper = ({ children }: { children: React.ReactNode }) => {
@@ -19,6 +23,7 @@ const ClientSideWrapper = ({ children }: { children: React.ReactNode }) => {
         <div className="mt-[3.2rem] flex h-[calc(100%-3.2rem)] w-full justify-center md:mt-[3.5rem] md:h-[calc(100%-3.5rem)]">
           {children}
         </div>
+        <TabBarComponent />
       </div>
     </QueryProvider>
   );
