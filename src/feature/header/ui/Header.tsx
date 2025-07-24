@@ -6,15 +6,17 @@ import TextLogo from '@public/assets/backgroundImages/main/logo.svg';
 import RightHeader from '../ui/rightHeader';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import { usePathname } from 'next/navigation';
-import { FaArrowLeft } from 'react-icons/fa';
+import { usePathname, useRouter } from 'next/navigation';
 import UserStateWrapper from '@/shared/state/userStore/model/clientSideWrapper';
 import { userStore } from '@/shared/state/userStore/model';
 import Image from 'next/image';
+import backButton from '@public/assets/icons/header/backButton.svg';
+import { SvgIcon } from '@mui/material';
 
 const Header = () => {
   const path = usePathname();
   const user = userStore.getState().user;
+  const router = useRouter();
 
   return (
     <UserStateWrapper>
@@ -50,18 +52,29 @@ const Header = () => {
         {path === RouteTo.Home ||
         path === RouteTo.Login ||
         path === RouteTo.Solve ||
+        path === RouteTo.Announcement ||
         path === RouteTo.AdminLogin ||
         path === RouteTo.AdminDashboard ? null : (
-          <Link
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              window.history.back();
-            }}
-            className="relative flex h-full w-[6.5rem] items-center pl-4 md:ml-8 md:hidden md:w-[8rem]"
+          // <Link
+          //   href="#"
+          //   onClick={(e) => {
+          //     e.preventDefault();
+          //     window.history.back();
+          //   }}
+          //   className="relative flex h-full w-[6.5rem] cursor-pointer items-center pl-4 md:ml-8 md:hidden md:w-[8rem]"
+          // >
+          //   <FaArrowLeft fill="white" />
+          // </Link>
+          <button
+            onClick={() => router.back()}
+            className="relative z-[10000] flex h-full w-[6.5rem] cursor-pointer items-center pl-4 md:ml-8 md:hidden md:w-[8rem]"
           >
-            <FaArrowLeft />
-          </Link>
+            <SvgIcon
+              inheritViewBox
+              component={backButton}
+              sx={{ width: '30%', height: '30%' }}
+            />
+          </button>
         )}
 
         <div className="hidden h-full w-full items-center justify-end pr-4 md:flex md:w-auto">

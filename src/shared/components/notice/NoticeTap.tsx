@@ -1,8 +1,11 @@
-import { useState } from 'react';
+'use client';
 
-export const NoticeTap = () => {
-  const [activeTab, setActiveTab] = useState<'공지' | '문의'>('공지');
+interface NoticeTapProps {
+  activeTab: '공지' | '문의';
+  setActiveTab: (tab: '공지' | '문의') => void;
+}
 
+export const NoticeTap = ({ activeTab, setActiveTab }: NoticeTapProps) => {
   const tabs: ('공지' | '문의')[] = ['공지', '문의'];
   const tabWidth = 120;
 
@@ -12,7 +15,7 @@ export const NoticeTap = () => {
         {tabs.map((tab) => (
           <button
             key={tab}
-            className={`w-[${tabWidth}px] py-4 text-lg font-bold ${
+            className={`w-[120px] py-2 text-lg ${
               activeTab === tab ? 'text-point-yellow' : 'text-gray-300'
             }`}
             onClick={() => setActiveTab(tab)}

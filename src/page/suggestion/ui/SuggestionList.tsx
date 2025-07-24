@@ -5,27 +5,26 @@ import { MobileSuggestionList } from './MobileSuggestionList';
 import { TiArrowSortedDown } from 'react-icons/ti';
 import { TiArrowSortedUp } from 'react-icons/ti';
 import useSuggestionList, { SuggestionItem } from '../model/suggestionListHook';
+import { NoticeList } from '@/shared/components/notice/NoticeList';
+import useSuggestionDetailPage from '../model/suggestionDetailPageHook';
 
 interface SuggestionListProps {
   list: SuggestionItem[];
+  suggestionListHook: ReturnType<typeof useSuggestionList>;
 }
 
-export const SuggestionList = ({ list }: SuggestionListProps) => {
+export const SuggestionList = ({ suggestionListHook }: SuggestionListProps) => {
   const {
     paginatedSuggestions,
-    totalPages,
     currentPage,
-    sortKey,
-    sortOrder,
+    totalPages,
     handleChangePage,
     handleClick,
-    handleSort,
-  } = useSuggestionList(list);
+  } = suggestionListHook;
 
   return (
     <>
-      {/* ✅ 데스크톱 전용 테이블 */}
-      <div className="hidden h-[80vh] flex-col justify-center rounded-lg p-4 md:flex">
+      {/* <div className="hidden h-[80vh] flex-col justify-center rounded-lg p-4 md:flex">
         <h2 className="mb-4 text-lg font-bold">건의사항</h2>
         <div className="rounded-lgp-4 flex h-[80vh] flex-col justify-center">
           <div className="mx-auto flex h-[100%] w-full flex-col justify-between">
@@ -118,23 +117,21 @@ export const SuggestionList = ({ list }: SuggestionListProps) => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/*모바일 */}
-      <div className="mt-5 block rounded-xl bg-white px-2 shadow-lg md:hidden">
+      <div className="flex flex-col gap-2">
         {paginatedSuggestions.map((item, index) => (
           <div
             key={item.id}
             onClick={() => handleClick(item.id)}
-            className="w-full px-4 py-2"
+            className="flex flex-col gap-4"
           >
-            <MobileSuggestionList
-              id={item.id}
+            <NoticeList
+              status="Q"
               title={item.title}
-              author={item.author}
-              views={item.views}
-              date={item.date}
-              isLast={index === paginatedSuggestions.length - 1}
+              content={item.content}
+              createdAt={item.date}
             />
           </div>
         ))}

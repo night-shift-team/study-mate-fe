@@ -148,7 +148,7 @@ const SolveMainPage = () => {
           </div>
         )}
       </div>
-      <TabBarComponent />
+      {/* <TabBarComponent /> */}
     </div>
   );
 };
