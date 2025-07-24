@@ -207,6 +207,7 @@ module.exports = {
           orange: '#FFB852',
           purple: '#5500FF',
           cyan: '#00FFFF',
+          logo: '#e7924a',
         },
         correctGreen: '#d4edda',
         wrongRed: '#f8d7da',
