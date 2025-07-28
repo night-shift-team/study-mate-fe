@@ -12,17 +12,7 @@ import { ProblemPagination } from '@/feature/pagination/ui';
 import { TopRankUser } from './topRankUser';
 
 const RankPage = () => {
-  const {
-    myRanking,
-    otherUsers,
-    displayedUsers,
-    userRankingDisplay,
-    getScoreColor,
-    currentPage,
-    setCurrentPage,
-    totalPages,
-    isLoading,
-  } = useRankPage();
+  const { displayedUsers } = useRankPage();
 
   // 캐릭터 이미지는 임의로 넣음
   return (

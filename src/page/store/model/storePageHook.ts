@@ -75,11 +75,11 @@ const useStorePage = () => {
       console.log(e);
     }
 
-    setTimeout(() => {
-      setPurchaseStatus('none');
-      setPurchaseOpen(false);
-      setSelectedItem(null);
-    }, 3000);
+    // setTimeout(() => {
+    //   setPurchaseStatus('none');
+    //   setPurchaseOpen(false);
+    //   setSelectedItem(null);
+    // }, 300000);
   };
 
   useEffect(() => {
