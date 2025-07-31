@@ -6,6 +6,9 @@ import { ProfileImage } from '@/shared/user/ui/profileImage';
 import Button from '@/shared/design/ui/customButton';
 import useProfile from '../model/profileHook';
 import { ToastType } from '@/shared/toast/model/toastHook';
+import Level1Icon from '@public/assets/icons/character/Lv1.svg';
+import ArrowIcon from '@public/assets/icons/button/check/Polygon.svg';
+import { SvgIcon } from '@mui/material';
 
 const Profile = () => {
   const {
@@ -21,15 +24,19 @@ const Profile = () => {
     errorMessage,
   } = useProfile();
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex gap-16p font-pixel">
       {/* Toast 컴포넌트 */}
       <Toaster status={ToastType.success} />
 
       {/* 프로필 이미지 */}
-      <label htmlFor="profile-upload" className="block h-full w-full">
-        <div className="flex h-[12vh] w-[12vh] items-center justify-center lg:w-[15vh]">
-          <div className="relative aspect-1 w-[8vh] md:w-[10vh]">
-            <ProfileImage src={imageUrl} fill={true} />
+      <label htmlFor="profile-upload" className="">
+        <div className="flex h-[12vh] w-[12vh]">
+          <div className="">
+            <SvgIcon
+              inheritViewBox
+              component={Level1Icon}
+              sx={{ width: '100%', height: '100%' }}
+            />
           </div>
         </div>
         <input
@@ -42,18 +49,24 @@ const Profile = () => {
       </label>
 
       {/* 닉네임 및 버튼 */}
-      <div className="flex w-full flex-col gap-3 text-nowrap md:flex-col">
-        <div className="flex gap-1 text-[2vh] text-white">
-          <span>닉네임:</span>{' '}
+      <div className="flex flex-col">
+        <div className="text-white">
           {user ? (
-            <p className="animate-fade-up font-bold">{user.nickname}</p>
+            <p className="text-[32px] font-bold">{user.nickname}</p>
           ) : null}
         </div>
         <button
-          className="rounded-lg bg-white p-1 text-[1.8vh] shadow-xl"
+          className="flex gap-2 text-[20px] font-bold text-white"
           onClick={() => setIsModalOpen(true)}
         >
-          닉네임 변경
+          Edit Nickname
+          <div className="h-[15px] w-[15px]">
+            <SvgIcon
+              inheritViewBox
+              component={ArrowIcon}
+              sx={{ width: '100%', height: '100%' }}
+            />
+          </div>
         </button>
       </div>
 

@@ -1,28 +1,11 @@
 import React from 'react';
-import { CardProps, scaleImage } from '../model/userInfoCard';
+import { CardProps } from '../model/userInfoCard';
 
-const Card: React.FC<CardProps> = ({ count, label, img }) => {
+const Card: React.FC<CardProps> = ({ count, label }) => {
   return (
-    <div className="flex h-[8vh] w-[10rem] flex-col items-center rounded-xl bg-white p-2 shadow-md md:h-[12vh] md:gap-1 md:rounded-3xl md:pt-5">
-      <div
-        className={`flex items-center ${label === '문제수' ? 'gap-1' : 'gap-2'}`}
-      >
-        <span
-          className={`flex items-center justify-center ${scaleImage(label)} text-[#FEA1A1]`}
-        >
-          {img}
-        </span>
-        <span
-          className={`text-[1.8vh] text-gray-600 md:text-sm ${label === '문제수' ? 'text-[tracking-[-0.1em] md:tracking-tighter' : ''} `}
-        >
-          {label}
-        </span>
-      </div>
-      <span
-        className={`text-[1.8vh] md:text-[1.2rem] ${label === '점수' ? 'text-[3vh]' : 'md: pt-0.5'}`}
-      >
-        {count}
-      </span>
+    <div className="flex w-[120px] flex-col items-center font-pixel text-white">
+      <span>{label}</span>
+      <span>{count}</span>
     </div>
   );
 };

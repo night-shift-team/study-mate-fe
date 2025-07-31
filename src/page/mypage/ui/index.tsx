@@ -3,15 +3,12 @@ import 'swiper/css';
 import Card from './Card';
 import Profile from './Profile';
 import CheckList from './CheckList';
-
-import Arrow from '@public/assets/icons/mypage/check_arrow.svg';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { PopupProblem } from '@/shared/popUp/ui/popupV2';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { SvgIcon } from '@mui/material';
 import useMyPage from '../model/myPageHook';
 import Favorite from './Favorite';
-import GrassChart from '@/feature/charts/ui/GrassChart';
+import GrassChart from '@/feature/charts/ui/GassCalnerder';
 
 const Mypage = () => {
   const {
@@ -27,7 +24,7 @@ const Mypage = () => {
   } = useMyPage();
 
   return (
-    <div className="z-1 h-full w-full outline-none scrollbar-hide md:w-[85%]">
+    <div className="h-[100vh] w-full bg-black">
       {isPopupOpen && popUpProblemDetail && (
         <PopupProblem
           size="md"
@@ -40,50 +37,36 @@ const Mypage = () => {
         />
       )}
       <div className="flex flex-col items-center">
-        <div className="z-1 flex h-[25vh] w-full flex-col items-center bg-[#77a46d] px-6 pt-2 md:flex-row md:justify-between md:gap-4 md:rounded-t-3xl md:py-6">
+        <div className="z-1 flex h-[25vh] w-full flex-col px-6 pt-2 md:flex-row md:justify-between md:gap-4 md:rounded-t-3xl md:py-6">
           <Profile />
-          <div className="flex w-[100%] justify-center gap-4 pt-2 md:max-w-[60%] md:justify-end md:pt-0">
+          <div className="font-white flex justify-around text-[24px] font-bold">
             {cardData.map((item, index) => (
-              <Card
-                key={index}
-                count={item.count}
-                label={item.label}
-                img={item.img}
-              />
+              <Card key={index} count={item.count} label={item.label} />
             ))}
           </div>
         </div>
-        <div className="flex w-full flex-col gap-6 px-4 py-6 md:border md:px-8">
-          <div className="flex flex-col gap-4">
-            <label className="flex w-full text-base font-bold md:text-lg">
-              활동 기록
+        <div className="flex w-full flex-col gap-6 bg-black px-4 py-6 pb-[70px] md:border md:px-8">
+          <div className="flex flex-col items-center gap-1">
+            <label className="flex w-full font-pixel text-[24px] font-bold text-white md:text-lg">
+              My Activity
             </label>
             <GrassChart />
           </div>
           <div className="flex flex-col items-center gap-4">
             <div className="flex w-full items-center justify-between text-base font-bold md:text-lg">
-              <span>스크랩 문제</span>
+              <span className="font-pixel text-white">My Scraps</span>
               <div className="flex h-full items-center gap-1.5">
                 <button
                   onClick={() => scrollByCard('left')}
-                  className="flex h-8 w-8 items-center justify-center rounded-[50%] bg-[#FEBA73] md:h-[40px] md:w-[40px]"
+                  className="text-white"
                 >
-                  <SvgIcon
-                    component={Arrow}
-                    inheritViewBox
-                    sx={{ width: '55%', height: '55%' }}
-                  />
+                  ◀
                 </button>
                 <button
                   onClick={() => scrollByCard('right')}
-                  className="flex h-8 w-8 items-center justify-center rounded-[50%] bg-[#FEBA73] md:h-[40px] md:w-[40px]"
+                  className="text-white"
                 >
-                  <SvgIcon
-                    component={Arrow}
-                    inheritViewBox
-                    sx={{ width: '55%', height: '55%' }}
-                    className="rotate-180 transform"
-                  />
+                  ▶
                 </button>
               </div>
             </div>
@@ -98,7 +81,7 @@ const Mypage = () => {
                 className="w-full"
               >
                 {favoriteList.map((item) => (
-                  <SwiperSlide key={item.questionId} style={{ width: '320px' }}>
+                  <SwiperSlide key={item.questionId} style={{ width: '200px' }}>
                     <Favorite
                       questionHistory={questionHistory}
                       title=""
@@ -112,13 +95,10 @@ const Mypage = () => {
               </Swiper>
             )}
           </div>
-          <div className="flex flex-col gap-4">
-            <button
-              onClick={() => {}}
-              className="flex w-full text-base font-bold md:text-lg"
-            >
-              풀이한 문제
-            </button>
+          <div className="flex flex-col">
+            <span className="flex w-full font-pixel text-[24px] font-bold text-white md:text-lg">
+              Solution Archive
+            </span>
             <CheckList title="1" questionHistory={questionHistory} />
           </div>
         </div>

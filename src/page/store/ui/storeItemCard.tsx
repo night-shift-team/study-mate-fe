@@ -44,7 +44,7 @@ const ItemCard = ({
           height={isMobile ? 55 : 80}
         />
       </div>
-      {/* <button
+      <button
         type="button"
         onClick={async () => {
           await buyItem();
@@ -73,7 +73,7 @@ const ItemCard = ({
             </span>
           </>
         )}
-      </button> */}
+      </button>
     </div>
   );
 };

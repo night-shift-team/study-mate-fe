@@ -18,20 +18,21 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
     filteredHistory,
   } = useCheckList(questionHistory);
 
+  const categoryBgColors: Record<ProblemCategoryTitle, string> = {
+    [ProblemCategoryTitle.ALGORITHUM]: 'bg-point-pink',
+    [ProblemCategoryTitle.NETWORK]: 'bg-point-cyan',
+    [ProblemCategoryTitle.DB]: 'bg-point-orange',
+    [ProblemCategoryTitle.OS]: 'bg-success',
+  };
+
   return (
     <>
-      <div className="flex flex-col items-center overflow-auto bg-pointcolor-yogurt">
+      <div className="flex flex-col items-center overflow-auto">
         <div className="w-[100%] overflow-auto scrollbar-hide">
           <div className="flex">
             {TempCategories.map((category, index) => {
-              const categoryBgColors: Record<ProblemCategoryTitle, string> = {
-                [ProblemCategoryTitle.ALGORITHUM]: 'bg-[#DDEDFB]',
-                [ProblemCategoryTitle.NETWORK]: 'bg-[#EEDDFB]',
-                [ProblemCategoryTitle.DB]: 'bg-[#E3F5E8]',
-                [ProblemCategoryTitle.OS]: 'bg-[#FDDCDE]',
-              };
-              const bgColorClass =
-                categoryBgColors[category.title] ?? 'bg-white';
+              const bgColorClass = categoryBgColors[category.title] ?? '';
+
               return (
                 <div
                   key={index}
@@ -57,11 +58,16 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
               );
             })}
           </div>
-          <div className="mt-5 grid grid-cols-2 md:hidden">
+          <div className="grid grid-cols-2 gap-3 md:hidden">
             {TempCategories.map((category, index) => {
+              const bgColorClass = categoryBgColors[category.title] ?? '';
+
               return (
                 <div key={index} className="grid-2 grid md:hidden">
-                  <MobileCheckList category={category.title} />
+                  <MobileCheckList
+                    category={category.title}
+                    bgColorClass={bgColorClass}
+                  />
                 </div>
               );
             })}
@@ -76,7 +82,7 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
                   [ProblemCategoryTitle.NETWORK]: 'bg-[#EEDDFB]',
                   [ProblemCategoryTitle.DB]: 'bg-[#E3F5E8]',
                   [ProblemCategoryTitle.OS]: 'bg-[#FDDCDE]',
-                }[selectedCategory as ProblemCategoryTitle] ?? 'bg-white'
+                }[selectedCategory as ProblemCategoryTitle] ?? 'b'
               } p-4 scrollbar-hide`}
             >
               <div className="flex w-full flex-col gap-2">
