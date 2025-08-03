@@ -44,36 +44,6 @@ const ItemCard = ({
           height={isMobile ? 55 : 80}
         />
       </div>
-      <button
-        type="button"
-        onClick={async () => {
-          await buyItem();
-          // setPopupOpen(true);
-          // setSelectedItem((prev: any) => ({
-          //   ...prev,
-          //   title: title,
-          //   imageUrl: imageUrl,
-          //   price: price,
-          //   count: 1,
-          // }));
-        }}
-        className="flex h-[2.4rem] w-[6rem] items-center justify-between rounded-2xl bg-amber-300 px-4 font-parkdahyun hover:border hover:border-white md:h-[2.8rem] md:w-[8rem] md:px-6 md:text-xl"
-      >
-        {paymentOpen ? (
-          <div className="flex w-full justify-center">
-            <Spinner color="#fff" />
-          </div>
-        ) : (
-          <>
-            <span>₩</span>
-            <span
-              className={String(price).length >= 6 ? `tracking-tighter` : ''}
-            >
-              {price.toLocaleString('ko-KR')}
-            </span>
-          </>
-        )}
-      </button>
     </div>
   );
 };

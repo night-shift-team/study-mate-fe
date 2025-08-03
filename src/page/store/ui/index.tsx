@@ -9,6 +9,8 @@ import useStorePage from '../model/storePageHook';
 import PurchasePopupData from './purchasePopup';
 import ItemCard from './storeItemCard';
 import useItemCard from '../model/itemCardHook';
+import { SvgIcon } from '@mui/material';
+import Arrow from '@public/assets/icons/button/check/Polygon.svg';
 
 export interface StoreItemInfo {
   id?: string;
@@ -95,16 +97,25 @@ const StorePage = () => {
             <div className="flex w-full flex-col text-white">
               <div className="flex w-full justify-between font-pixel text-[32px] font-bold">
                 Welcome to store!
-                <Link
-                  aria-label="purchase_history"
-                  href={RouteTo.StorePurchaseHistory}
-                >
-                  <span className="text-[16px]">Storage</span>
-                </Link>
               </div>
               <span className="w-[200px]">
                 아이템을 모아 레벨업! 당신의 학습 여정을 강화하세요.
               </span>
+              <Link
+                aria-label="purchase_history"
+                href={RouteTo.StorePurchaseHistory}
+                className="w-full text-right"
+              >
+                <span className="font-pixel text-[20px] font-bold">
+                  Go to Storage
+                  <SvgIcon
+                    inheritViewBox
+                    component={Arrow}
+                    sx={{ width: '5%', height: '50%' }}
+                    className="ml-2"
+                  />
+                </span>
+              </Link>
             </div>
           </div>
         )}
@@ -180,45 +191,43 @@ const StorePage = () => {
             </Link>
           )}
 
-          {purchaseStatus === 'none' && (
-            <>
-              {storeItems.length > 0 ? (
-                <div className="mt-5 flex gap-3">
-                  {storeItems.map((item, index) => (
-                    <ItemCard
-                      key={index}
-                      index={index}
-                      id={item.itemId}
-                      title={item.itemName}
-                      description={item.itemDescription}
-                      imageUrl={item.itemImage}
-                      price={item.priceKrw}
-                      afterPaymentCallback={async () =>
-                        await updateBuyingStatusSuccess()
-                      }
-                      isSelected={selectedItem?.title === item.itemName}
-                      onClick={() =>
-                        setSelectedItem({
-                          id: item.itemId,
-                          title: item.itemName,
-                          imageUrl: item.itemImage,
-                          price: item.priceKrw,
-                          description: item.itemDescription,
-                          afterPaymentCallback: async () => {
-                            await updateBuyingStatusSuccess();
-                          },
-                        })
-                      }
-                    />
-                  ))}
-                </div>
-              ) : (
-                <div className="flex h-full w-full justify-center pb-[10%]">
-                  <Spinner size="lg" color="#fff" />
-                </div>
-              )}
-            </>
-          )}
+          <>
+            {storeItems.length > 0 ? (
+              <div className="mt-5 flex gap-3">
+                {storeItems.map((item, index) => (
+                  <ItemCard
+                    key={index}
+                    index={index}
+                    id={item.itemId}
+                    title={item.itemName}
+                    description={item.itemDescription}
+                    imageUrl={item.itemImage}
+                    price={item.priceKrw}
+                    afterPaymentCallback={async () =>
+                      await updateBuyingStatusSuccess()
+                    }
+                    isSelected={selectedItem?.title === item.itemName}
+                    onClick={() =>
+                      setSelectedItem({
+                        id: item.itemId,
+                        title: item.itemName,
+                        imageUrl: item.itemImage,
+                        price: item.priceKrw,
+                        description: item.itemDescription,
+                        afterPaymentCallback: async () => {
+                          await updateBuyingStatusSuccess();
+                        },
+                      })
+                    }
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="flex h-full w-full justify-center pb-[10%]">
+                <Spinner size="lg" color="#fff" />
+              </div>
+            )}
+          </>
         </div>
       </div>
     </div>

@@ -31,21 +31,21 @@ const SolveMainPage = () => {
 
   return (
     <div className="flex h-full w-full flex-shrink-0 flex-col items-center justify-between overflow-y-auto scrollbar-hide">
-      <div className="flex w-full flex-col gap-4 px-[1rem] pb-[5rem] md:gap-6 md:px-[2.5rem]">
+      <div className="flex w-full flex-col gap-4 px-[1rem] pb-[5rem]">
         <NoticeSection />
         <UserSection />
         <div className="flex flex-col gap-2 pt-2">
-          <span className="text-left font-pixel text-xl font-bold text-white md:text-2xl">
+          <span className="text-left font-pixel text-[24px] font-bold text-white">
             Quiz Categories
           </span>
         </div>
         {!myTodaySolveData ? (
-          <div className="pt-10">
+          <div className="pt-8p">
             <Spinner size="lg" />
           </div>
         ) : (
           <div className="grid w-full place-items-center gap-[0.5rem] md:w-auto md:grid-flow-row md:grid-cols-2 md:gap-10 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6">
-            <div className="hidden h-[7rem] w-full min-w-[240px] flex-shrink-0 animate-fade-up md:flex md:h-[12rem] md:max-w-[480px]">
+            {/* <div className="hidden h-[7rem] w-full min-w-[240px] flex-shrink-0 animate-fade-up md:flex md:h-[12rem] md:max-w-[480px]">
               <Link
                 href={RouteTo.SolveRandom}
                 className="relative flex w-full flex-col items-center justify-center p-2 px-4 transition-all duration-300 ease-in-out active:scale-[0.95] md:rounded-sm md:border md:p-4 md:pt-2.5 md:hover:translate-y-[-5px] md:hover:shadow-lg active:md:scale-100"
@@ -62,7 +62,7 @@ const SolveMainPage = () => {
                 </span>
                 <span className="mt-1 text-xs text-gray-600 no-underline md:mt-3">{`모든 카테고리`}</span>
               </Link>
-            </div>
+            </div> */}
             {myTodaySolveData.map((category, index) => {
               return (
                 <div
@@ -99,7 +99,7 @@ const SolveMainPage = () => {
                           </span>
                         </div>
                         <span
-                          className="flex items-center text-[0.7rem] text-white"
+                          className="flex items-center text-[16px] text-white"
                           style={{
                             letterSpacing:
                               category.categoryName.length > 20
@@ -132,7 +132,7 @@ const SolveMainPage = () => {
                         ).toFixed(1) + '%'}
                       </p> */}
                     </div>
-                    <div className="flex items-center justify-center gap-2 font-pixel text-[16px] font-bold text-white md:hidden">
+                    <div className="flex items-center justify-center gap-2 font-pixel text-[20px] font-bold text-white md:hidden">
                       START
                       <SvgIcon
                         className="h-[15px] w-[15px]"

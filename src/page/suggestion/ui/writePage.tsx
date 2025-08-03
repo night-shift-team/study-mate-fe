@@ -9,7 +9,7 @@ const WriteSuggestionPage = () => {
   const user = userStore.getState().user;
 
   return (
-    <div className="flex h-screen w-[90vw] flex-col">
+    <div className="flex w-[90vw] flex-col">
       <div className="relative w-full flex-col items-center">
         <div
           className={`absolute left-1/2 top-4 z-50 w-[90%] max-w-md -translate-x-1/2 transform rounded-md bg-green-500 px-4 py-3 text-center text-white shadow-lg transition-all duration-500 ease-in-out ${
@@ -20,8 +20,8 @@ const WriteSuggestionPage = () => {
         >
           건의사항이 제출되었습니다!
         </div>
-        <div className="w-[200px] font-pixel text-[30px] font-bold leading-7 text-white">
-          Hey {user?.nickname},<br /> What can I help you with
+        <div className="w-[200px] font-pixel text-title-page leading-7 text-white">
+          Hey {user?.nickname},<br /> What can I help you with?
         </div>
         <div className="mt-2 text-white">
           <form className="space-y-4">
@@ -51,7 +51,7 @@ const WriteSuggestionPage = () => {
       <div className="mt-3 w-full">
         <button
           onClick={handleSubmit}
-          className="w-full rounded-xl bg-point-orange px-6 py-2 font-pixel font-semibold text-black transition-colors duration-200 hover:bg-orange-500"
+          className="w-full rounded-xl bg-point-orange px-6 py-2 font-pixel text-button-1 text-black transition-colors duration-200 hover:bg-orange-500"
         >
           Submit
         </button>

@@ -21,7 +21,7 @@ const StorePurchaseHistoryPage = () => {
                   time={order.paymentDate.split('T').join(' ')}
                   price={order.price.toLocaleString()}
                   count="1"
-                  status={getOrderStatusStringKr(order.status)}
+                  // status={getOrderStatusStringKr(order.status)}
                 />
               </div>
             ))

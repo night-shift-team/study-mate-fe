@@ -41,7 +41,7 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
                 >
                   <div className="flex h-[3rem] justify-center">
                     <span
-                      className={`flex items-center text-sm font-bold ${
+                      className={`flex items-center text-title-section font-bold ${
                         selectedCategory === category.title
                           ? 'text-black'
                           : 'text-gray-500'

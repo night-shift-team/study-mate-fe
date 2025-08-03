@@ -52,11 +52,11 @@ const Profile = () => {
       <div className="flex flex-col">
         <div className="text-white">
           {user ? (
-            <p className="text-[32px] font-bold">{user.nickname}</p>
+            <p className="text-title-page font-bold">{user.nickname}</p>
           ) : null}
         </div>
         <button
-          className="flex gap-2 text-[20px] font-bold text-white"
+          className="flex gap-2 text-button-1 font-bold text-white"
           onClick={() => setIsModalOpen(true)}
         >
           Edit Nickname

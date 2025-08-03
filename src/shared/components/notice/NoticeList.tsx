@@ -20,18 +20,20 @@ export const NoticeList: FC<NoticeListProps> = ({
 
   return (
     <div
-      className={`user-select-none flex cursor-pointer flex-col gap-1 rounded-sm p-8p ${
+      className={`user-select-none flex cursor-pointer flex-col gap-1 rounded-sm pb-[12px] pl-16p pr-16p pt-[12px] ${
         isQuestion ? 'bg-gray-300/30' : 'bg-point-purple/30'
       } text-white`}
     >
-      <div className="flex items-center space-x-1">
+      <div className="flex items-center gap-1 text-body-primary">
         <span className="text-point-yellow">
           {status === 'Q' ? 'Q.' : '공지'}
         </span>
         <span className="text-[18px]">{title}</span>
       </div>
 
-      {content && <p className="text-[14px] font-thin text-white">{content}</p>}
+      {content && (
+        <p className="text-[12px] font-light text-white">{content}</p>
+      )}
 
       {createdAt && (
         <div className="text-left text-xs text-gray-300">{createdAt}</div>

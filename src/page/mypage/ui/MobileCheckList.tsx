@@ -33,7 +33,7 @@ export const MobileCheckList = ({
   const Icon = imageMap[category];
 
   return (
-    <div className="relative h-[45vw] overflow-hidden font-pixel text-[24px] md:hidden">
+    <div className="text- relative h-[45vw] overflow-hidden font-pixel md:hidden">
       {Icon && (
         <SvgIcon
           component={Icon}
@@ -43,7 +43,7 @@ export const MobileCheckList = ({
       )}
 
       <div
-        className={`relative left-7 top-14 z-10 w-[120px] text-center text-lg font-semibold text-black ${bgColorClass}`}
+        className={`relative left-7 top-14 z-10 w-[120px] text-center text-title-section font-semibold text-black ${bgColorClass}`}
       >
         {category}
       </div>

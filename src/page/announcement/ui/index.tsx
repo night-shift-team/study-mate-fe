@@ -48,7 +48,7 @@ const AnnouncementPage = () => {
       <span className="font-jalnan text-2xl md:text-3xl">News</span>
       <div className="flex h-full w-full flex-col gap-4 md:gap-6">
         <div className="flex items-center justify-between px-16p font-pixel text-[32px] font-bold text-white">
-          <span className="text-[32px]">Notice</span>
+          <span className="text-title-page">Notice</span>
           {activeTab === '문의' && (
             <span
               className="cursor-pointer border-white text-[20px] hover:border-b"

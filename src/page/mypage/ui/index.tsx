@@ -44,17 +44,24 @@ const Mypage = () => {
               <Card key={index} count={item.count} label={item.label} />
             ))}
           </div>
+          <div className="mt-2 flex w-full gap-2">
+            {Array.from({ length: 30 }).map((_, idx) => (
+              <div key={idx} className="h-1 w-1 rounded-full bg-white" />
+            ))}
+          </div>
         </div>
         <div className="flex w-full flex-col gap-6 bg-black px-4 py-6 pb-[70px] md:border md:px-8">
           <div className="flex flex-col items-center gap-1">
-            <label className="flex w-full font-pixel text-[24px] font-bold text-white md:text-lg">
+            <label className="flex w-full font-pixel text-title-section font-bold text-white md:text-lg">
               My Activity
             </label>
             <GrassChart />
           </div>
           <div className="flex flex-col items-center gap-4">
             <div className="flex w-full items-center justify-between text-base font-bold md:text-lg">
-              <span className="font-pixel text-white">My Scraps</span>
+              <span className="font-pixel text-title-section text-white">
+                My Scraps
+              </span>
               <div className="flex h-full items-center gap-1.5">
                 <button
                   onClick={() => scrollByCard('left')}
@@ -96,7 +103,7 @@ const Mypage = () => {
             )}
           </div>
           <div className="flex flex-col">
-            <span className="flex w-full font-pixel text-[24px] font-bold text-white md:text-lg">
+            <span className="flex w-full font-pixel text-title-section font-bold text-white md:text-lg">
               Solution Archive
             </span>
             <CheckList title="1" questionHistory={questionHistory} />

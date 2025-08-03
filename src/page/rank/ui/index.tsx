@@ -41,7 +41,7 @@ const RankPage = () => {
         />
       </div>
       <>
-        <div className="mt-12 flex flex-col gap-2">
+        <div className="mt-[80px] flex flex-col gap-16p">
           {displayedUsers.map((user, index) => (
             <>
               {index > 2 && (
@@ -49,11 +49,17 @@ const RankPage = () => {
                   <span className="w-[25px] text-[20px]">{user.rankNo}</span>
                   <div className="flex w-full items-center justify-between rounded-full border border-white px-16p py-8p text-[20px]">
                     <div className="flex items-center gap-3">
-                      <SvgIcon component={Lv4Image} inheritViewBox />
+                      <SvgIcon
+                        component={Lv4Image}
+                        inheritViewBox
+                        sx={{ width: '40px', height: '40px' }}
+                      />
                       <span>{user.nickname}</span>
                     </div>
 
-                    <span className="text-point-yellow">{user.userScore}</span>
+                    <span className="mr-8p text-point-yellow">
+                      {user.userScore}
+                    </span>
                   </div>
                 </div>
               )}

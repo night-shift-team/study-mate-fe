@@ -16,7 +16,7 @@ import dynamic from 'next/dynamic';
 const ClientSideWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <QueryProvider>
-      <div className="base relative h-full w-full bg-black">
+      <div className="base relative h-full w-full max-w-[450px] bg-black">
         <div className="fixed z-[100] flex h-[3.2rem] w-full max-w-[450px] bg-black md:h-[3.5rem]">
           <Header />
         </div>

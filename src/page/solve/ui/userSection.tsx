@@ -20,12 +20,12 @@ export const UserSection = () => {
   return (
     <div className="flex w-full flex-col text-white md:hidden">
       <div className="font-pixel text-[40px] font-bold">{user?.nickname}!</div>
-      <div className="flex justify-between gap-2 p-8p">
-        <div className="flex flex-col gap-2">
-          <span>현재 보유 포인트</span>
-          <span>성장한 만큼, 즐기세요!</span>
+      <div className="flex justify-between gap-2 p-16p">
+        <div className="flex flex-col">
+          <span className="text-[18px]">현재 보유 포인트</span>
+          <span className="mt-8p text-[16px]">성장한 만큼, 즐기세요!</span>
           <Link href={RouteTo.Store}>
-            <span className="flex items-center gap-2 font-pixel text-[16px] font-bold">
+            <span className="flex items-center gap-2 font-pixel text-[20px] font-bold">
               Go to store
               <SvgIcon
                 className="h-[15px] w-[15px]"
