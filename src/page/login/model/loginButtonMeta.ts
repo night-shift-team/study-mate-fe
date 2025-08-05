@@ -1,5 +1,5 @@
-import google from '@public/assets/icons/social/google.png';
-import github from '@public/assets/icons/social/github.png';
+import google from '@public/assets/icons/login/google.svg';
+import github from '@public/assets/icons/login/github.svg';
 
 export const LoginButton = [
   {
