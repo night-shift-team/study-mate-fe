@@ -4,6 +4,8 @@ import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { PopupConfirm } from '@/shared/popUp/ui/popupV2';
 import useSignUpPage from '../model/signUpPageHook';
+import InputForm from '@/shared/input/inputForm';
+import ButtonPixel from '@/shared/button/buttonPixel';
 
 export interface SignUpFormData {
   name: string;
@@ -27,7 +29,7 @@ const SignUpPage = () => {
     isLoading,
   } = useSignUpPage();
   return (
-    <div className="relative flex h-full w-full items-center justify-center p-4">
+    <div className="relative flex h-full w-full flex-col items-center justify-center px-4">
       <Toaster />
       {popupOpen && (
         <PopupConfirm
@@ -39,94 +41,78 @@ const SignUpPage = () => {
           }}
         />
       )}
-      <div className="flex w-full max-w-[550px] flex-col justify-center gap-8 rounded-[1rem] bg-white p-4 shadow-lg md:p-8">
-        <div className="flex flex-col items-center gap-6">
-          <h1 className="mt-5 text-xl font-semibold">이메일 회원가입</h1>
-          <form
-            onSubmit={handleSubmit}
-            className="w-full max-w-[400px]"
-            noValidate
-          >
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-col gap-2">
-                <label className="flex items-center gap-1 pl-1 text-sm text-gray-600">
-                  이름 <span className="text-red-500">&#9913;</span>
-                </label>
-                <input
-                  ref={nameRef}
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="이름을 입력하세요"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FEA1A1]"
-                />
-              </div>
+      <span className="text-title-main">Register</span>
+      <div className="mt-12 flex w-full flex-col gap-4">
+        <form
+          onSubmit={handleSubmit}
+          className="w-full max-w-[400px]"
+          noValidate
+        >
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <InputForm
+                ref={nameRef}
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Nickname"
+                status="empty"
+                className="font-pretandard text-label"
+              />
+            </div>
 
-              <div className="flex flex-col gap-2">
-                <label className="flex items-center gap-1 pl-1 text-sm text-gray-600">
-                  이메일 <span className="text-red-500">&#9913;</span>
-                </label>
-                <input
-                  ref={emailRef}
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="이메일을 입력하세요"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FEA1A1]"
-                />
-              </div>
+            <div className="flex flex-col gap-2">
+              <InputForm
+                ref={emailRef}
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter your Email"
+                status="empty"
+                className="font-pretandard text-label"
+              />
+            </div>
 
-              <div className="flex flex-col gap-2">
-                <label className="flex items-center gap-1 pl-1 text-sm text-gray-600">
-                  비밀번호 <span className="text-red-500">&#9913;</span>
-                </label>
-                <input
-                  ref={passwordRef}
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="비밀번호를 입력하세요"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FEA1A1]"
-                />
-              </div>
+            <div className="flex flex-col gap-2">
+              <InputForm
+                ref={passwordRef}
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Password"
+                status="empty"
+                className="font-pretandard text-label"
+              />
+            </div>
 
-              <div className="flex flex-col gap-2">
-                <label className="flex items-center gap-1 pl-1 text-sm text-gray-600">
-                  비밀번호 확인 <span className="text-red-500">&#9913;</span>
-                </label>
-                <input
-                  ref={confirmPasswordRef}
-                  type="password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  placeholder="비밀번호를 확인해주세요"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FEA1A1]"
-                />
-              </div>
-
+            <div className="flex flex-col gap-2">
+              <InputForm
+                ref={confirmPasswordRef}
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder="Check Password"
+                status="empty"
+                className="font-pretandard text-label"
+              />
+            </div>
+            <div className="mt-4">
               {isLoading ? (
-                <button
-                  type="submit"
-                  disabled
-                  className="mt-4 flex h-[42px] w-full items-center justify-center rounded-lg bg-gray-400 p-2 text-white"
-                >
+                <ButtonPixel type="submit" disabled status="inactive">
                   <Spinner color="#ffffff" />
-                </button>
+                </ButtonPixel>
               ) : (
-                <button
-                  type="submit"
-                  className="mt-4 h-[42px] rounded-lg bg-pointcolor-sand/80 py-2 text-gray-600 transition-colors inner-border-pointcolor-beigebrown hover:bg-[#F0EDD4] hover:text-black hover:inner-border-[1.2px]"
-                >
-                  회원가입
-                </button>
+                <ButtonPixel type="submit" status="default">
+                  Sign Up
+                </ButtonPixel>
               )}
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     </div>
   );
