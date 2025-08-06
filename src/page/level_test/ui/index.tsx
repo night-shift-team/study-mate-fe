@@ -1,14 +1,21 @@
 'use client';
 
-import { PiPaperPlaneTilt } from 'react-icons/pi';
-import AuthHoc from '@/shared/auth/model/authHoc';
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
-import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
-import { Preview } from './preview';
+// import AuthHoc from '@/shared/auth/model/authHoc';
+
 import useLevelTest from '../model/levelTestHook';
 import { ProblemInfoMAQ } from '@/shared/problem/model/problemInfo.types';
 import MarkdownComponent from '@/shared/lexical/model/markdownConfig';
-import { ChoiceItem } from '@/feature/level_test/ui/ChoiceItem';
+import NewHeader from '@/feature/header/ui/newheader';
+import Cancel from '@public/assets/icons/leveltest/cancel.svg';
+import ButtonPixel from '@/shared/button/buttonPixel';
+import { Icon } from '@iconify/react';
+import arrow from '@iconify/icons-mdi/play-arrow';
+import SelectAnswerRow from './levelTestAnswer';
+import CircleCheck from '@public/assets/icons/leveltest/checkedCircle.svg';
+import dynamic from 'next/dynamic';
+const AnswerListForm = dynamic(() => import('./answerListForm'), {
+  ssr: false,
+});
 
 export type ChoiceAttrs = Pick<
   ProblemInfoMAQ,
@@ -17,124 +24,150 @@ export type ChoiceAttrs = Pick<
 
 const LevelTestPage = () => {
   const {
-    isPageLoading,
-    isStarted,
-    setIsStarted,
+    // isPageLoading,
+    // isStarted,
+    // setIsStarted,
+    answerFormRef,
     currentQuestionNo,
     levelTestLists,
     isGetResultApiLoading,
     selectedAnswer,
-    showResult,
     handleAnswerSelect,
     handleNextQuestion,
     handlePrevQuestion,
+    answerListOpen,
+    openAnswerList,
+    closeAnswerList,
+    answerClosedFormRef,
   } = useLevelTest();
 
   return (
-    <div className="flex h-full w-full items-center justify-center px-[2%] md:px-[10%]">
-      {isPageLoading ? (
-        <Spinner size="xl" />
-      ) : !isStarted ? (
-        <Preview
-          onStart={() => {
-            setIsStarted(true);
-          }}
-        />
-      ) : (
-        <div className="flex h-full w-full max-w-[1200px] flex-col rounded-xl px-[2%] pb-[2%] pt-[1%] md:max-h-full md:min-h-[50vh]">
-          <div className="flex h-full w-full flex-col gap-4 pb-4 md:pb-0">
-            <div className="flex w-full items-center justify-between">
-              <span className="pl-2">문제 {currentQuestionNo + 1}</span>{' '}
-              <button className="rounded-lg bg-pointcolor-beigebrown p-2 hover:cursor-auto">
-                {currentQuestionNo + 1}/{levelTestLists.length ?? 1}
-              </button>
-            </div>
-            <div className="pl-2 font-bold">
-              {levelTestLists[currentQuestionNo]?.questionTitle}
-            </div>
-            <div className="h-full rounded-3xl bg-white p-2 shadow-md">
-              <MarkdownComponent
-                markdown={levelTestLists[currentQuestionNo].content}
-              />
-            </div>
-            <div className="flex h-auto w-full flex-col justify-end">
-              <div className="flex flex-col gap-2.5 md:gap-4">
-                {Array.from(
-                  {
-                    length: Object.keys(
-                      levelTestLists[currentQuestionNo]
-                    ).filter(
-                      (keyValue) => keyValue.startsWith('choice') === true
-                    ).length,
-                  },
-                  (_, i) => i
-                ).map((index) => {
-                  return (
-                    <ChoiceItem
-                      key={index}
-                      text={
-                        (levelTestLists[currentQuestionNo] as ProblemInfoMAQ)[
-                          `choice${index + 1}` as keyof ChoiceAttrs
-                        ]
-                      }
+    <div className="flex h-full w-full flex-col">
+      <NewHeader
+        left={<Cancel className="aspect-1 w-6 opacity-0" />}
+        center={
+          <div className="flex h-40p w-40p items-center justify-center rounded-12p bg-point-orange">
+            <span className="flex items-center justify-center font-plusJakarta">
+              {String(currentQuestionNo + 1).padStart(2, '0') ?? ''}
+            </span>
+          </div>
+        }
+        right={<div className="h-40p w-40p rounded-16p opacity-0" />}
+      />
+      <div className="mt-2 flex h-full w-full overflow-y-auto bg-grayscale-800 scrollbar-hide">
+        <div className="flex h-full w-full flex-col">
+          <span className="mt-6 flex w-full justify-center px-4 text-[28px] font-bold leading-[20px] text-[#FFD900]">
+            Lv. {levelTestLists[currentQuestionNo]?.difficulty ?? ''}
+          </span>{' '}
+          <div className="mt-4 flex justify-center font-pretandard text-quiz-question">
+            {levelTestLists[currentQuestionNo]?.questionTitle}
+          </div>
+          <div className="h-full p-1">
+            <MarkdownComponent
+              markdown={levelTestLists[currentQuestionNo]?.content ?? ''}
+            />
+          </div>
+          <div className="flex h-[18rem] w-full flex-col gap-6 bg-grayscale-900 px-4">
+            <div ref={answerClosedFormRef} className="relative h-auto w-full">
+              <>
+                {selectedAnswer !== null ? (
+                  <div className="mt-6 h-[62px] w-full">
+                    <SelectAnswerRow
+                      selected={true}
                       onClick={() => {
-                        if (isGetResultApiLoading) {
-                          return;
-                        } else {
-                          handleAnswerSelect(index + 1);
-                        }
+                        if (answerListOpen) closeAnswerList();
+                        else openAnswerList();
                       }}
-                      isSelected={selectedAnswer === index + 1}
-                      showResult={showResult}
-                    />
-                  );
-                })}
-              </div>
-              <div className="flex w-full justify-end gap-2 md:gap-3">
-                <button
-                  disabled={isGetResultApiLoading || currentQuestionNo <= 0}
-                  className={`mt-4 flex h-[40px] w-[40px] items-center justify-center rounded-full transition-all duration-200 ease-in-out md:h-[45px] md:w-[45px] ${
-                    isGetResultApiLoading || currentQuestionNo <= 0
-                      ? 'cursor-not-allowed bg-gray-400 opacity-50'
-                      : 'bg-pointcolor-deepcoral hover:bg-pointcolor-deepcoral active:scale-95'
-                  } text-white`}
-                  onClick={handlePrevQuestion}
-                >
-                  <IoIosArrowBack
-                    color="white"
-                    className="h-[20px] w-[20px] md:h-[24px] md:w-[24px]"
-                  />
-                </button>
-                <button
-                  disabled={isGetResultApiLoading || selectedAnswer === null}
-                  className={`mt-4 flex h-[40px] w-[40px] items-center justify-center rounded-full transition-all duration-200 ease-in-out md:h-[45px] md:w-[45px] ${
-                    isGetResultApiLoading || selectedAnswer === null
-                      ? 'cursor-not-allowed bg-gray-400 opacity-50'
-                      : 'bg-pointcolor-deepcoral hover:bg-pointcolor-deepcoral active:scale-95'
-                  } text-white`}
-                  onClick={handleNextQuestion}
-                >
-                  {currentQuestionNo === levelTestLists.length - 1 ? (
-                    isGetResultApiLoading ? (
-                      <Spinner color="white" size={'xs'} />
-                    ) : (
-                      <PiPaperPlaneTilt className="h-[18px] w-[18px] md:h-[23px] md:w-[23px]" />
-                    )
-                  ) : (
-                    // <FaArrowRight />
-                    <IoIosArrowForward
-                      color="white"
-                      className="h-[20px] w-[20px] md:h-[24px] md:w-[24px]"
-                    />
-                  )}
-                </button>
-              </div>
+                    >
+                      <span className="font-pretandard text-quiz-option">
+                        {
+                          (levelTestLists[currentQuestionNo] as ProblemInfoMAQ)[
+                            `choice${selectedAnswer}` as keyof ChoiceAttrs
+                          ]
+                        }
+                      </span>
+                      <div className="h-[20px] w-[20px] rounded-full">
+                        <CircleCheck className="h-full w-full" />
+                      </div>
+                    </SelectAnswerRow>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => {
+                      if (answerListOpen) closeAnswerList();
+                      else openAnswerList();
+                    }}
+                    className="relative mt-6 flex h-[62px] w-full items-center justify-between rounded-[18px] bg-[#1F1F1F] px-4"
+                  >
+                    <span className="font-pretandard text-quiz-option">
+                      답 고르기
+                    </span>
+                    <div className="h-24p w-24p shrink-0">
+                      <Icon
+                        icon={arrow}
+                        className="h-full w-full rotate-[270deg]"
+                      />
+                    </div>
+                  </button>
+                )}
+                <AnswerListForm
+                  key={selectedAnswer}
+                  answerFormRef={answerFormRef}
+                  answerClosedFormRef={answerClosedFormRef}
+                  answerListOpen={answerListOpen}
+                  levelTestLists={levelTestLists}
+                  currentQuestionNo={currentQuestionNo}
+                  isGetResultApiLoading={isGetResultApiLoading}
+                  handleAnswerSelect={handleAnswerSelect}
+                  openAnswerList={openAnswerList}
+                  closeAnswerList={closeAnswerList}
+                  selectedAnswer={selectedAnswer}
+                />
+              </>
+            </div>
+            <div className="flex w-full gap-2 pb-4">
+              {currentQuestionNo === levelTestLists.length - 1 ? (
+                <ButtonPixel status="default" onClick={handleNextQuestion}>
+                  Submit
+                </ButtonPixel>
+              ) : (
+                <>
+                  <div className="flex h-40p w-1/2">
+                    <ButtonPixel
+                      status={
+                        isGetResultApiLoading || currentQuestionNo <= 0
+                          ? 'inactive'
+                          : 'default'
+                      }
+                      disabled={isGetResultApiLoading || currentQuestionNo <= 0}
+                      onClick={handlePrevQuestion}
+                    >
+                      Back
+                    </ButtonPixel>
+                  </div>
+                  <div className="flex h-40p w-1/2">
+                    <ButtonPixel
+                      status={
+                        isGetResultApiLoading || selectedAnswer === null
+                          ? 'inactive'
+                          : 'default'
+                      }
+                      disabled={
+                        isGetResultApiLoading || selectedAnswer === null
+                      }
+                      onClick={handleNextQuestion}
+                    >
+                      Next
+                    </ButtonPixel>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
 
-export default AuthHoc(LevelTestPage);
+export default LevelTestPage;

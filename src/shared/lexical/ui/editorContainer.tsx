@@ -21,7 +21,7 @@ const EditorContainer = ({
     <div className="h-full w-full overflow-scroll scrollbar-hide">
       <RichTextPlugin
         contentEditable={
-          <ContentEditable className="editor-input prose prose-lg min-w-full !border-none !p-4 focus:outline-none" />
+          <ContentEditable className="editor-input min-w-full !border-none !p-4 font-pretandard !text-body-secondary focus:outline-none" />
         }
         placeholder={<div></div>}
         ErrorBoundary={({ children }) => children}

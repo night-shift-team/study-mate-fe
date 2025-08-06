@@ -19,7 +19,7 @@ const MarkdownComponent = ({
 }) => {
   const theme: EditorThemeClasses = {
     text: {
-      bold: 'font-semibold',
+      bold: 'font-semibold ',
       italic: 'italic',
     },
     paragraph: 'whitespace-pre-wrap',
