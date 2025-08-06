@@ -13,6 +13,8 @@ import arrow from '@iconify/icons-mdi/play-arrow';
 import SelectAnswerRow from './levelTestAnswer';
 import CircleCheck from '@public/assets/icons/leveltest/checkedCircle.svg';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
 const AnswerListForm = dynamic(() => import('./answerListForm'), {
   ssr: false,
 });
@@ -44,15 +46,23 @@ const LevelTestPage = () => {
   return (
     <div className="flex h-full w-full flex-col">
       <NewHeader
-        left={<Cancel className="aspect-1 w-6 opacity-0" />}
+        left={
+          <Link href={RouteTo.Home}>
+            <Cancel className="mt-1 h-6 w-6" />
+          </Link>
+        }
         center={
           <div className="flex h-40p w-40p items-center justify-center rounded-12p bg-point-orange">
-            <span className="flex items-center justify-center font-plusJakarta">
+            <span className="mt-1 flex h-full w-auto items-center justify-center text-center font-plusJakarta">
               {String(currentQuestionNo + 1).padStart(2, '0') ?? ''}
             </span>
           </div>
         }
-        right={<div className="h-40p w-40p rounded-16p opacity-0" />}
+        right={
+          <span className="mt-1 flex h-full w-auto items-center font-plusJakarta text-[16px] font-semibold leading-none">
+            {currentQuestionNo + 1}/{levelTestLists.length}
+          </span>
+        }
       />
       <div className="mt-2 flex h-full w-full overflow-y-auto bg-grayscale-800 scrollbar-hide">
         <div className="flex h-full w-full flex-col">
