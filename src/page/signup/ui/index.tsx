@@ -42,7 +42,7 @@ const SignUpPage = () => {
         />
       )}
       <span className="text-title-main">Register</span>
-      <div className="mt-12 flex w-full flex-col gap-4">
+      <div className="mt-12 flex w-full flex-col items-center gap-4">
         <form
           onSubmit={handleSubmit}
           className="w-full max-w-[400px]"
