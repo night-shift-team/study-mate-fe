@@ -2,7 +2,6 @@
 import Logo from '@public/assets/backgroundImages/main/studyMate_logo.png';
 import Image from 'next/image';
 import Link from 'next/link';
-import AuthHoc from '@/shared/auth/model/authHoc';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { openNewWindowWithoutDuplicate } from '@/shared/window/model/openWindow';
 import { LoginButton } from '../model/loginButtonMeta';
@@ -182,4 +181,4 @@ const LoginPage = () => {
   );
 };
 
-export default AuthHoc(LoginPage);
+export default LoginPage;
