@@ -4,6 +4,7 @@ export enum RouteTo {
   Signup = '/signup',
   LevelTest = '/leveltest',
   LevelTestResult = '/testresult',
+
   Solve = '/solve',
   Mypage = '/mypage',
   Rank = '/rank',

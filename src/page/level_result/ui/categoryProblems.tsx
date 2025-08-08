@@ -1,15 +1,20 @@
 'use client';
+import { UserAnswerWithId } from '@/page/level_test/model/levelTestHook';
 import { ProblemCategoryTitle } from '@/shared/problem/model/problemInfo.types';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import CheckCircle from '@public/assets/icons/leveltest/checkedCircle.svg';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 const LevelTestCategoryProblems = ({
   correctIds,
   problemsIdWithTitle,
+  userAnswers,
 }: {
   correctIds: Set<string>;
   wrongIds: Set<string>;
   problemsIdWithTitle: { id: string; title: string; category: string }[];
+  userAnswers: UserAnswerWithId[];
 }) => {
   const [category, setCategory] = useState<ProblemCategoryTitle>(
     ProblemCategoryTitle.ALGORITHUM
@@ -66,22 +71,31 @@ const LevelTestCategoryProblems = ({
       <div className="flex w-full flex-col gap-3 py-7">
         {currentProblemList.map((problem) => {
           const isCorrect = correctIds.has(problem.id);
-          console.log(problem, isCorrect);
+          const myAnswer = userAnswers.find((value) => value.id === problem.id);
           return (
-            <button
+            <Link
               key={problem.id}
-              className={`flex h-48p w-full items-center justify-between rounded-12p ${isCorrect ? 'bg-success-50' : 'bg-error-50'} px-5`}
+              href={{
+                pathname:
+                  RouteTo.LevelTestResult +
+                  `/${problem.id}-${myAnswer?.answer ?? 'null'}`,
+              }}
             >
-              <span className="font-pretandard text-quiz-option leading-none">
-                {problem.title}
-              </span>
-              {isCorrect ? (
-                <CheckCircle className="h-5 w-5 fill-success" />
-              ) : null}
-              {!isCorrect ? (
-                <CheckCircle className="h-5 w-5 fill-error" />
-              ) : null}
-            </button>
+              <button
+                key={problem.id}
+                className={`flex h-48p w-full items-center justify-between rounded-12p ${isCorrect ? 'bg-success-50' : 'bg-error-50'} px-5`}
+              >
+                <span className="font-pretandard text-quiz-option leading-none">
+                  {problem.title}
+                </span>
+                {isCorrect ? (
+                  <CheckCircle className="h-5 w-5 fill-success" />
+                ) : null}
+                {!isCorrect ? (
+                  <CheckCircle className="h-5 w-5 fill-error" />
+                ) : null}
+              </button>
+            </Link>
           );
         })}
       </div>

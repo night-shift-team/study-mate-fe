@@ -10,7 +10,7 @@ const NewHeader = ({
   right: React.ReactNode;
 }) => {
   return (
-    <div className="flex h-56p w-full items-center justify-between px-4 pt-2">
+    <div className="flex h-56p w-full shrink-0 items-center justify-between px-4 py-2">
       {left}
       {center}
       {right}

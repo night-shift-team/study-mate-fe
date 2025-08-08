@@ -5,6 +5,11 @@ import { getLevelTestResultApi, GetLevelTestResultRes } from '../api';
 import { ServerErrorResponse } from '@/shared/api/model/config';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 
+export interface UserAnswerWithId {
+  id: string;
+  answer: '1' | '2' | '3' | '4';
+}
+
 const useLevelTest = () => {
   const router = useRouter();
   const [currentQuestionNo, setCurrentQuestionNo] = useState<number>(0);
@@ -50,6 +55,10 @@ const useLevelTest = () => {
         id: levelTestLists[index].id,
         answer: answer.toString() as '1' | '2' | '3' | '4',
       }));
+      sessionStorage.setItem(
+        'levelTestUserAnswersWithId',
+        JSON.stringify(reqData)
+      );
       const res = await getLevelTestResultApi(reqData);
       if (!res.ok) throw res.payload as ServerErrorResponse;
       return res.payload as GetLevelTestResultRes;

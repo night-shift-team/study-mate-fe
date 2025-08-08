@@ -8,6 +8,8 @@ import LevelTestCategoryProblems from './categoryProblems';
 import ResultSummary from './resultSummary';
 import useTestResultContent from '../model/testResultHook';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import { useEffect, useState } from 'react';
+import { UserAnswerWithId } from '@/page/level_test/model/levelTestHook';
 
 export interface ResultData extends GetLevelTestResultRes {
   userAnswers: number[];
@@ -15,6 +17,7 @@ export interface ResultData extends GetLevelTestResultRes {
 
 const TestResultPage = () => {
   const { questionInfos, resultData } = useTestResultContent();
+  const [userAnswers, setUserAnswers] = useState<UserAnswerWithId[]>([]);
 
   const correct = resultData?.correctQuestions.length ?? 0;
   const total = resultData?.requestedQuestionCount ?? 1;
@@ -31,6 +34,25 @@ const TestResultPage = () => {
   const correctIds = new Set(resultData?.correctQuestions ?? []);
   const wrongIds = new Set(resultData?.wrongQuestions ?? []);
 
+  const getUserSolveHistory = () => {
+    const userLevelTestSolveHistory = sessionStorage.getItem(
+      'levelTestUserAnswersWithId'
+    );
+    if (!userLevelTestSolveHistory) return;
+    try {
+      const userAnswersWithId: UserAnswerWithId[] = JSON.parse(
+        userLevelTestSolveHistory
+      );
+      return userAnswersWithId;
+    } catch (e) {
+      console.log(e);
+      return;
+    }
+  };
+  useEffect(() => {
+    setUserAnswers(getUserSolveHistory() ?? []);
+  }, []);
+
   if (problemListsArray.length === 0) {
     return <Spinner size="lg" />;
   }
@@ -44,6 +66,7 @@ const TestResultPage = () => {
         correctIds={correctIds}
         wrongIds={wrongIds}
         problemsIdWithTitle={problemListsArray}
+        userAnswers={userAnswers}
       />
       <ButtonPixel status="default">
         <Link href={RouteTo.Home}> Go to Home </Link>

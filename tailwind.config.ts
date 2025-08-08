@@ -155,7 +155,7 @@ module.exports = {
       fontSize: {
         'title-main': ['40px', { lineHeight: '40px', fontWeight: '700' }],
         'title-page': ['32px', { lineHeight: '30px', fontWeight: '700' }],
-        'title-section': ['24px', { lineHeight: '36px', fontWeight: '700' }],
+        'title-section': ['24px', { lineHeight: '20px', fontWeight: '700' }],
 
         'body-primary': ['18px', { lineHeight: '28px', fontWeight: '500' }],
         'body-secondary': ['16px', { lineHeight: '26px', fontWeight: '400' }],

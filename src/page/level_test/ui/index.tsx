@@ -72,7 +72,7 @@ const LevelTestPage = () => {
           <div className="mt-4 flex justify-center font-pretandard text-quiz-question">
             {levelTestLists[currentQuestionNo]?.questionTitle}
           </div>
-          <div className="h-full p-1">
+          <div className="flex h-full w-full p-1">
             <MarkdownComponent
               markdown={levelTestLists[currentQuestionNo]?.content ?? ''}
             />

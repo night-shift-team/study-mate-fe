@@ -18,10 +18,10 @@ const EditorContainer = ({
 }) => {
   const { onChange } = useLexical(setMarkdown);
   return (
-    <div className="h-full w-full overflow-scroll scrollbar-hide">
+    <div className="flex h-full w-full shrink-0">
       <RichTextPlugin
         contentEditable={
-          <ContentEditable className="editor-input min-w-full !border-none !p-4 font-pretandard !text-body-secondary focus:outline-none" />
+          <ContentEditable className="editor-input min-h-full !border-none !p-4 font-pretandard !text-body-secondary focus:outline-none" />
         }
         placeholder={<div></div>}
         ErrorBoundary={({ children }) => children}
