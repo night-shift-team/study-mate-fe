@@ -103,6 +103,9 @@ importers:
       react:
         specifier: ^19.1.0
         version: 19.1.0
+      react-countup:
+        specifier: ^6.5.3
+        version: 6.5.3(react@19.1.0)
       react-dom:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
@@ -4496,6 +4499,12 @@ packages:
       typescript:
         optional: true
 
+  countup.js@2.9.0:
+    resolution:
+      {
+        integrity: sha512-llqrvyXztRFPp6+i8jx25phHWcVWhrHO4Nlt0uAOSKHB8778zzQswa4MU3qKBvkXfJKftRYFJuVHez67lyKdHg==,
+      }
+
   create-require@1.1.1:
     resolution:
       {
@@ -8086,6 +8095,14 @@ packages:
         integrity: sha512-RmkhL8CAyCRPXCE28MMH0z2PNWQBNk2Q09ZdxM9IOOXwxwZbN+qbWaatPkdkWIKL2ZVDImrN/pK5HTRz2PcS4g==,
       }
     engines: { node: '>= 0.8' }
+
+  react-countup@6.5.3:
+    resolution:
+      {
+        integrity: sha512-udnqVQitxC7QWADSPDOxVWULkLvKUWrDapn5i53HE4DPRVgs+Y5rr4bo25qEl8jSh+0l2cToJgGMx+clxPM3+w==,
+      }
+    peerDependencies:
+      react: '>= 16.3.0'
 
   react-dom@19.1.0:
     resolution:
@@ -12706,6 +12723,8 @@ snapshots:
     optionalDependencies:
       typescript: 5.8.3
 
+  countup.js@2.9.0: {}
+
   create-require@1.1.1: {}
 
   cross-spawn@7.0.6:
@@ -15042,6 +15061,11 @@ snapshots:
       http-errors: 2.0.0
       iconv-lite: 0.6.3
       unpipe: 1.0.0
+
+  react-countup@6.5.3(react@19.1.0):
+    dependencies:
+      countup.js: 2.9.0
+      react: 19.1.0
 
   react-dom@19.1.0(react@19.1.0):
     dependencies:
