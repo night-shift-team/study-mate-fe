@@ -13,9 +13,10 @@ import { addSocialLoginRedirectDataListener } from './addSocialLoginResponseList
 
 import { useRouter } from 'next/navigation';
 import tooltipMountHook from '@/feature/tooltip/model/tooltipMount';
-import useTooltip from '@/feature/tooltip/model/tooltipController';
+// import useTooltip from '@/feature/tooltip/model/tooltipController';
 import { userStore } from '@/shared/state/userStore/model';
 import { TooltipContents } from '@/shared/state/tooltip/model/tooltipContents';
+import { InputStatus } from '@/shared/button/useInput';
 
 const useLoginPage = () => {
   const router = useRouter();
@@ -32,6 +33,16 @@ const useLoginPage = () => {
     toastOpen,
     setToastOpen
   );
+  const [validationStatus, setValidationStatus] = useState({
+    email: {
+      status: 'empty' as InputStatus,
+      message: TooltipContents.TypingEmail,
+    },
+    password: {
+      status: 'empty' as InputStatus,
+      message: TooltipContents.TypingPassword,
+    },
+  });
   // 인증 response 리스너
   addSocialLoginRedirectDataListener(
     setLoginLoading,
@@ -40,7 +51,7 @@ const useLoginPage = () => {
     setToastIcon,
     setUser
   );
-  const { showTooltip, hideTooltip, updateTooltip } = useTooltip();
+  // const { showTooltip, hideTooltip, updateTooltip } = useTooltip();
 
   const [formData, setFormData] = useState({
     email: '',
@@ -53,6 +64,13 @@ const useLoginPage = () => {
       ...prev,
       [name]: value,
     }));
+    setValidationStatus((prev) => ({
+      ...prev,
+      [name]: {
+        status: 'filled',
+        message: '',
+      },
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -61,30 +79,42 @@ const useLoginPage = () => {
     // 이메일 유효성 검사
 
     if (emailInputRef.current && !emailInputRef.current.value) {
-      updateTooltip(emailInputRef.current, TooltipContents.TypingEmail);
-      showTooltip(emailInputRef.current);
+      // updateTooltip(emailInputRef.current, TooltipContents.TypingEmail);
+      // showTooltip(emailInputRef.current);
+      setValidationStatus((prev) => ({
+        ...prev,
+        email: { status: 'error', message: TooltipContents.TypingEmail },
+      }));
       emailInputRef.current.focus();
       return;
     }
 
     if (emailInputRef.current && !emailInputRef.current.value.includes('@')) {
-      updateTooltip(emailInputRef.current, TooltipContents.NotEmailForm);
-      showTooltip(emailInputRef.current);
+      // updateTooltip(emailInputRef.current, TooltipContents.NotEmailForm);
+      // showTooltip(emailInputRef.current)
+      setValidationStatus((prev) => ({
+        ...prev,
+        email: { status: 'error', message: TooltipContents.NotEmailForm },
+      }));
       emailInputRef.current.focus();
       return;
     }
 
     // 비밀번호 유효성 검사
     if (passwordInputRef.current && !passwordInputRef.current.value) {
-      updateTooltip(passwordInputRef.current, TooltipContents.TypingPassword);
-      showTooltip(passwordInputRef.current);
+      // updateTooltip(passwordInputRef.current, TooltipContents.TypingPassword);
+      // showTooltip(passwordInputRef.current);
+      setValidationStatus((prev) => ({
+        ...prev,
+        password: { status: 'error', message: TooltipContents.TypingPassword },
+      }));
       passwordInputRef.current.focus();
       return;
     }
 
     // 모든 유효성 검사를 통과한 경우
-    hideTooltip(emailInputRef.current!);
-    hideTooltip(passwordInputRef.current!);
+    // hideTooltip(emailInputRef.current!);
+    // hideTooltip(passwordInputRef.current!);
 
     setLoginLoading(true);
     try {
@@ -105,22 +135,36 @@ const useLoginPage = () => {
           case Ecode.E0103:
             if (emailInputRef.current) {
               emailInputRef.current.focus();
-              updateTooltip(
-                emailInputRef.current,
-                TooltipContents.InvalidEmail
-              );
-              showTooltip(emailInputRef.current);
+              // updateTooltip(
+              //   emailInputRef.current,
+              //   TooltipContents.InvalidEmail
+              // );
+              // showTooltip(emailInputRef.current);
+              setValidationStatus((prev) => ({
+                ...prev,
+                email: {
+                  status: 'error',
+                  message: TooltipContents.InvalidEmail,
+                },
+              }));
               emailInputRef.current.focus();
             }
             break;
           case Ecode.E0104:
             if (passwordInputRef.current) {
               passwordInputRef.current.focus();
-              updateTooltip(
-                passwordInputRef.current,
-                TooltipContents.InvalidPassword
-              );
-              showTooltip(passwordInputRef.current);
+              // updateTooltip(
+              //   passwordInputRef.current,
+              //   TooltipContents.InvalidPassword
+              // );
+              // showTooltip(passwordInputRef.current);
+              setValidationStatus((prev) => ({
+                ...prev,
+                password: {
+                  status: 'error',
+                  message: TooltipContents.InvalidPassword,
+                },
+              }));
               passwordInputRef.current.focus();
             }
             break;
@@ -197,10 +241,11 @@ const useLoginPage = () => {
     passwordInputRef,
     formData,
     handleChange,
-    hideTooltip,
+    // hideTooltip,
     testToast,
     loginLoading,
     windowReference,
+    validationStatus,
   };
 };
 export default useLoginPage;

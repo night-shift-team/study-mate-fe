@@ -18,10 +18,11 @@ const LoginPage = () => {
     passwordInputRef,
     formData,
     handleChange,
-    hideTooltip,
+    // hideTooltip,
     testToast,
     loginLoading,
     windowReference,
+    validationStatus,
   } = useLoginPage();
 
   return (
@@ -35,40 +36,51 @@ const LoginPage = () => {
           className="flex w-full flex-col gap-4"
           noValidate
         >
-          <div className="flex w-full flex-col gap-4">
-            <InputForm
-              ref={emailInputRef}
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={(e) => {
-                e.preventDefault();
-                handleChange(e);
-                if (emailInputRef.current) {
-                  hideTooltip(emailInputRef.current);
-                }
-              }}
-              placeholder="Enter your Email"
-              className="mt-20 font-pretandard text-label"
-              status="empty"
-            />
-
-            <InputForm
-              ref={passwordInputRef}
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={(e) => {
-                e.preventDefault();
-                handleChange(e);
-                if (passwordInputRef.current) {
-                  hideTooltip(passwordInputRef.current);
-                }
-              }}
-              placeholder="Password"
-              className="font-pretandard text-label"
-              status="empty"
-            />
+          <div className="flex w-full flex-col gap-2">
+            <div className="flex w-full flex-col">
+              <InputForm
+                ref={emailInputRef}
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={(e) => {
+                  e.preventDefault();
+                  handleChange(e);
+                  // if (emailInputRef.current) {
+                  //   hideTooltip(emailInputRef.current);
+                  // }
+                }}
+                placeholder="Enter your Email"
+                className="mt-20 font-pretandard text-label"
+                status={validationStatus.email.status}
+              />
+              <span className="mt-2 pl-2 text-[11px] text-[#ED3241]">
+                {validationStatus.email.status !== 'empty' &&
+                  validationStatus.email.message}
+              </span>
+            </div>
+            <div className="flex w-full flex-col">
+              <InputForm
+                ref={passwordInputRef}
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={(e) => {
+                  e.preventDefault();
+                  handleChange(e);
+                  // if (passwordInputRef.current) {
+                  //   hideTooltip(passwordInputRef.current);
+                  // }
+                }}
+                placeholder="Password"
+                className="font-pretandard text-label"
+                status={validationStatus.password.status}
+              />
+              <span className="mt-2 pl-2 text-[11px] text-[#ED3241]">
+                {validationStatus.password.status !== 'empty' &&
+                  validationStatus.password.message}
+              </span>
+            </div>
 
             <div className="flex w-full justify-between">
               <div className="flex items-center">

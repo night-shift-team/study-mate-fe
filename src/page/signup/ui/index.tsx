@@ -22,15 +22,17 @@ const SignUpPage = () => {
     confirmPasswordRef,
     formData,
     handleChange,
-    Toaster,
+    // Toaster,
     popupOpen,
     router,
     handleSubmit,
     isLoading,
+    validationStatus,
   } = useSignUpPage();
+
   return (
     <div className="relative flex h-full w-full flex-col items-center justify-center px-4">
-      <Toaster />
+      {/* <Toaster /> */}
       {popupOpen && (
         <PopupConfirm
           size="sm"
@@ -48,8 +50,8 @@ const SignUpPage = () => {
           className="w-full max-w-[400px]"
           noValidate
         >
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-col">
               <InputForm
                 ref={nameRef}
                 type="text"
@@ -57,12 +59,16 @@ const SignUpPage = () => {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Nickname"
-                status="empty"
+                status={validationStatus.name.status}
                 className="font-pretandard text-label"
               />
+              <span className="mt-2 pl-2 text-[11px] text-[#ED3241]">
+                {validationStatus.name.status !== 'empty' &&
+                  validationStatus.name.message}
+              </span>
             </div>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col">
               <InputForm
                 ref={emailRef}
                 type="email"
@@ -70,12 +76,16 @@ const SignUpPage = () => {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="Enter your Email"
-                status="empty"
+                status={validationStatus.email.status}
                 className="font-pretandard text-label"
               />
+              <span className="mt-2 pl-2 text-[11px] text-[#ED3241]">
+                {validationStatus.email.status !== 'empty' &&
+                  validationStatus.email.message}
+              </span>
             </div>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col">
               <InputForm
                 ref={passwordRef}
                 type="password"
@@ -83,9 +93,13 @@ const SignUpPage = () => {
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="Password"
-                status="empty"
+                status={validationStatus.password.status}
                 className="font-pretandard text-label"
               />
+              <span className="mt-2 pl-2 text-[11px] text-[#ED3241]">
+                {validationStatus.password.status !== 'empty' &&
+                  validationStatus.password.message}
+              </span>
             </div>
 
             <div className="flex flex-col gap-2">
@@ -96,9 +110,13 @@ const SignUpPage = () => {
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 placeholder="Check Password"
-                status="empty"
+                status={validationStatus.confirmPassword.status}
                 className="font-pretandard text-label"
               />
+              <span className="mt-2 pl-2 text-[11px] text-[#ED3241]">
+                {validationStatus.confirmPassword.status !== 'empty' &&
+                  validationStatus.confirmPassword.message}
+              </span>
             </div>
             <div className="mt-4">
               {isLoading ? (

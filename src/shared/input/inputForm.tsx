@@ -27,7 +27,7 @@ const InputForm = ({
   return (
     <input
       ref={ref}
-      className={`${baseClasses} ${statusClasses[status]} ${className}`}
+      className={`${baseClasses} ${statusClasses[status]} ${className} shrink-0`}
       disabled={isDisabled}
       {...props}
     />
