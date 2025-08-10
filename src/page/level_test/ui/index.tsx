@@ -53,7 +53,7 @@ const LevelTestPage = () => {
         }
         center={
           <div className="flex h-40p w-40p items-center justify-center rounded-12p bg-point-orange">
-            <span className="mt-1 flex h-full w-auto items-center justify-center text-center font-plusJakarta">
+            <span className="mt-1 flex h-full w-auto items-center justify-center text-center font-plusJakarta font-bold">
               {String(currentQuestionNo + 1).padStart(2, '0') ?? ''}
             </span>
           </div>
