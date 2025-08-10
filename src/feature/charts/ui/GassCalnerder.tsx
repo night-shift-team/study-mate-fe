@@ -83,7 +83,7 @@ const GrassChart = () => {
           cell ? (
             <div
               key={idx}
-              className={`flex h-[48px] items-center justify-center rounded-full ${cell.count === 0 ? 'text-white' : 'text-black'} transition-colors ${getColorByCount(
+              className={`flex h-[50px] items-center justify-center rounded-full ${cell.count === 0 ? 'text-white' : 'text-black'} transition-colors ${getColorByCount(
                 cell.count
               )}`}
             >

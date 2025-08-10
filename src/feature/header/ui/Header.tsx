@@ -21,20 +21,9 @@ const Header = () => {
   return (
     <UserStateWrapper>
       <div
-        className={`relative flex h-full w-full items-center justify-between px-0 md:px-4 md:shadow-sm`}
+        className={`relative flex h-full w-full items-center justify-between px-0`}
       >
-        {/* 데스크탑 좌측 로고 */}
-        <Link
-          href={RouteTo.Home}
-          className="relative hidden h-full md:flex md:w-[8rem]"
-        >
-          <Logo className="flex object-contain py-2.5 pl-2.5" />
-          <TextLogo
-            className={`h-auto w-full p-2 ${path.startsWith(RouteTo.Store) ? 'text-white' : 'text-black'}`}
-          />
-        </Link>
-        {/* 모바일 가운데 로고 */}
-        <div className="absolute left-0 top-0 z-10 flex h-full w-full items-center justify-center md:hidden">
+        <div className="absolute left-0 top-0 z-10 flex h-full w-full items-center justify-center">
           <Link
             href={RouteTo.Home}
             className="relative flex h-full w-[6.5rem] p-0"
@@ -52,22 +41,11 @@ const Header = () => {
         {path === RouteTo.Home ||
         path === RouteTo.Login ||
         path === RouteTo.Solve ||
-        path === RouteTo.Announcement ||
         path === RouteTo.AdminLogin ||
         path === RouteTo.AdminDashboard ? null : (
-          // <Link
-          //   href="#"
-          //   onClick={(e) => {
-          //     e.preventDefault();
-          //     window.history.back();
-          //   }}
-          //   className="relative flex h-full w-[6.5rem] cursor-pointer items-center pl-4 md:ml-8 md:hidden md:w-[8rem]"
-          // >
-          //   <FaArrowLeft fill="white" />
-          // </Link>
           <button
             onClick={() => router.back()}
-            className="relative z-[10000] flex h-full w-[6.5rem] cursor-pointer items-center pl-4 md:ml-8 md:hidden md:w-[8rem]"
+            className="relative z-[10000] flex h-full w-[6.5rem] cursor-pointer items-center pl-4"
           >
             <SvgIcon
               inheritViewBox
@@ -77,9 +55,9 @@ const Header = () => {
           </button>
         )}
 
-        <div className="hidden h-full w-full items-center justify-end pr-4 md:flex md:w-auto">
+        {/* <div className="hidden h-full w-full items-center justify-end pr-4 md:flex md:w-auto">
           <RightHeader />
-        </div>
+        </div> */}
       </div>
     </UserStateWrapper>
   );

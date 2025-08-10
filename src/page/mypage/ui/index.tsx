@@ -37,22 +37,22 @@ const Mypage = () => {
         />
       )}
       <div className="flex flex-col items-center">
-        <div className="z-1 flex h-[25vh] w-full flex-col px-6 pt-2 md:flex-row md:justify-between md:gap-4 md:rounded-t-3xl md:py-6">
+        <div className="z-1 flex h-[25vh] w-full flex-col px-6 pt-2">
           <Profile />
-          <div className="font-white flex justify-around text-[24px] font-bold">
+          <div className="custom-dotted-border flex justify-around text-[24px] font-bold text-white">
             {cardData.map((item, index) => (
               <Card key={index} count={item.count} label={item.label} />
             ))}
           </div>
-          <div className="mt-2 flex w-full gap-2">
+          {/* <div className="mt-2 flex w-full gap-2">
             {Array.from({ length: 30 }).map((_, idx) => (
               <div key={idx} className="h-1 w-1 rounded-full bg-white" />
             ))}
-          </div>
+          </div> */}
         </div>
-        <div className="flex w-full flex-col gap-6 bg-black px-4 py-6 pb-[70px] md:border md:px-8">
+        <div className="flex w-full flex-col gap-6 bg-black px-4 py-6 pb-[70px]">
           <div className="flex flex-col items-center gap-1">
-            <label className="flex w-full font-pixel text-title-section font-bold text-white md:text-lg">
+            <label className="flex w-full font-pixel text-title-section font-bold text-white">
               My Activity
             </label>
             <GrassChart />
@@ -103,7 +103,7 @@ const Mypage = () => {
             )}
           </div>
           <div className="flex flex-col">
-            <span className="flex w-full font-pixel text-title-section font-bold text-white md:text-lg">
+            <span className="flex w-full font-pixel text-title-section font-bold text-white">
               Solution Archive
             </span>
             <CheckList title="1" questionHistory={questionHistory} />

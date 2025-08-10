@@ -16,7 +16,13 @@ const RankPage = () => {
 
   // 캐릭터 이미지는 임의로 넣음
   return (
-    <div className="flex w-full flex-col overflow-auto p-16p pb-[5rem] font-pixel font-bold text-white">
+    <div
+      className="flex w-full flex-col overflow-scroll p-16p pb-[5rem] font-pixel font-bold text-white"
+      style={{
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none',
+      }}
+    >
       <span className="text-[32px]">Ranking</span>
       <div className="flex h-[clamp(8rem,30%,12rem)] w-full min-w-[15rem] items-end justify-center gap-[0.1rem] px-[5%]">
         <TopRankUser
@@ -42,29 +48,27 @@ const RankPage = () => {
       </div>
       <>
         <div className="mt-[80px] flex flex-col gap-16p">
-          {displayedUsers.map((user, index) => (
-            <>
-              {index > 2 && (
-                <div className="flex items-center gap-1">
-                  <span className="w-[25px] text-[20px]">{user.rankNo}</span>
-                  <div className="flex w-full items-center justify-between rounded-full border border-white px-16p py-8p text-[20px]">
-                    <div className="flex items-center gap-3">
-                      <SvgIcon
-                        component={Lv4Image}
-                        inheritViewBox
-                        sx={{ width: '40px', height: '40px' }}
-                      />
-                      <span>{user.nickname}</span>
-                    </div>
-
-                    <span className="mr-8p text-point-yellow">
-                      {user.userScore}
-                    </span>
+          {displayedUsers.map((user, index) =>
+            index > 2 ? (
+              <div key={user.rankNo} className="flex items-center gap-1">
+                <span className="w-[25px] text-[20px]">{user.rankNo}</span>
+                <div className="flex w-full items-center justify-between rounded-full border border-white px-16p py-8p text-[20px]">
+                  <div className="flex items-center gap-3">
+                    <SvgIcon
+                      component={Lv4Image}
+                      inheritViewBox
+                      sx={{ width: '40px', height: '40px' }}
+                    />
+                    <span>{user.nickname}</span>
                   </div>
+
+                  <span className="mr-8p text-point-yellow">
+                    {user.userScore}
+                  </span>
                 </div>
-              )}
-            </>
-          ))}
+              </div>
+            ) : null
+          )}
         </div>
       </>
     </div>

@@ -32,7 +32,7 @@ const SolveMainPage = () => {
   return (
     <div className="flex h-full w-full flex-shrink-0 flex-col items-center justify-between overflow-y-auto scrollbar-hide">
       <div className="flex w-full flex-col gap-4 px-[1rem] pb-[5rem]">
-        <NoticeSection />
+        {/* <NoticeSection /> */}
         <UserSection />
         <div className="flex flex-col gap-2 pt-2">
           <span className="text-left font-pixel text-[24px] font-bold text-white">
@@ -44,47 +44,24 @@ const SolveMainPage = () => {
             <Spinner size="lg" />
           </div>
         ) : (
-          <div className="grid w-full place-items-center gap-[0.5rem] md:w-auto md:grid-flow-row md:grid-cols-2 md:gap-10 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6">
-            {/* <div className="hidden h-[7rem] w-full min-w-[240px] flex-shrink-0 animate-fade-up md:flex md:h-[12rem] md:max-w-[480px]">
-              <Link
-                href={RouteTo.SolveRandom}
-                className="relative flex w-full flex-col items-center justify-center p-2 px-4 transition-all duration-300 ease-in-out active:scale-[0.95] md:rounded-sm md:border md:p-4 md:pt-2.5 md:hover:translate-y-[-5px] md:hover:shadow-lg active:md:scale-100"
-              >
-                <div className="relative flex aspect-1 h-[2rem] items-center justify-center md:h-[3rem]">
-                  <SvgIcon
-                    component={RandomIcon}
-                    inheritViewBox
-                    sx={{ width: '100%', height: '100%' }}
-                  />
-                </div>
-                <span className="text-[1.1rem] font-bold underline-offset-8 md:mt-3">
-                  랜덤 문제 풀기
-                </span>
-                <span className="mt-1 text-xs text-gray-600 no-underline md:mt-3">{`모든 카테고리`}</span>
-              </Link>
-            </div> */}
+          <div className="grid w-full place-items-center gap-[0.5rem]">
             {myTodaySolveData.map((category, index) => {
               return (
                 <div
                   key={index}
-                  className={`flex h-auto w-full min-w-[240px] flex-shrink-0 md:h-[12rem] md:border-hidden md:pt-0 ${'animate-fade-up ' + 'delay-' + String((index + 1) * 100)}`}
+                  className={`flex h-auto w-full min-w-[240px] flex-shrink-0 ${'animate-fade-up ' + 'delay-' + String((index + 1) * 100)}`}
                 >
                   <Link
                     href={`${RouteTo.Solve}/${category.categoryName}`}
-                    className={`md: flex w-full flex-shrink-0 bg-point-purple/30 p-16p transition-all duration-300 ease-in-out active:scale-[0.97] md:rounded-sm md:border md:bg-transparent md:px-7 md:py-4 md:hover:translate-y-[-5px] md:hover:shadow-lg md:hover:inner-border active:md:scale-100`}
+                    className={`md: flex w-full flex-shrink-0 bg-point-purple/30 p-16p transition-all duration-300 ease-in-out active:scale-[0.97]`}
                   >
                     <div className="relative flex h-full w-full flex-col">
-                      <div
-                        className={`flex flex-col justify-start font-pixel md:text-black`}
-                      >
-                        {/* <div className="itmes-center relative hidden aspect-1 h-full items-center justify-center md:flex">
-                          {getCategoriesIcon(category.categoryName)}
-                        </div> */}
+                      <div className={`flex flex-col justify-start font-pixel`}>
                         <div
-                          className={`flex items-center gap-2 ${changeCategoryColor[category.categoryName]} md:font-pretandard md:text-black`}
+                          className={`flex items-center gap-2 ${changeCategoryColor[category.categoryName]}`}
                         >
                           <span
-                            className="flex items-center text-[32px] font-bold md:mt-1 md:h-[2.5rem] md:text-[24px] md:font-medium"
+                            className="flex items-center text-[32px] font-bold"
                             style={{
                               letterSpacing:
                                 category.categoryName.length > 20
@@ -94,7 +71,7 @@ const SolveMainPage = () => {
                           >
                             {category.categoryName}
                           </span>
-                          <span className="ml-2 flex text-[24px] font-bold md:hidden">
+                          <span className="ml-2 flex text-[24px] font-bold">
                             {category.userSolvingCount}/{category.solvingLimit}
                           </span>
                         </div>
@@ -132,7 +109,7 @@ const SolveMainPage = () => {
                         ).toFixed(1) + '%'}
                       </p> */}
                     </div>
-                    <div className="flex items-center justify-center gap-2 font-pixel text-[20px] font-bold text-white md:hidden">
+                    <div className="flex items-center justify-center gap-2 font-pixel text-[20px] font-bold text-white">
                       START
                       <SvgIcon
                         className="h-[15px] w-[15px]"

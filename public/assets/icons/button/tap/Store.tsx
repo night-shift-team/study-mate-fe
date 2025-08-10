@@ -3,7 +3,7 @@ export const StoreIcon = (props: React.SVGProps<SVGSVGElement>) => (
     width="19"
     height="18"
     viewBox="0 0 19 18"
-    fill="currentColor"
+    fill=""
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >

@@ -18,7 +18,7 @@ export const UserSection = () => {
 
   const { user } = userStore.getState();
   return (
-    <div className="flex w-full flex-col text-white md:hidden">
+    <div className="flex w-full flex-col text-white">
       <div className="font-pixel text-[40px] font-bold">{user?.nickname}!</div>
       <div className="flex justify-between gap-2 p-16p">
         <div className="flex flex-col">

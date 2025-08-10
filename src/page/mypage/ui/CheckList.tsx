@@ -29,7 +29,7 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
     <>
       <div className="flex flex-col items-center overflow-auto">
         <div className="w-[100%] overflow-auto scrollbar-hide">
-          <div className="flex">
+          {/* <div className="flex">
             {TempCategories.map((category, index) => {
               const bgColorClass = categoryBgColors[category.title] ?? '';
 
@@ -57,13 +57,13 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
                 </div>
               );
             })}
-          </div>
-          <div className="grid grid-cols-2 gap-3 md:hidden">
+          </div> */}
+          <div className="grid grid-cols-2 gap-3 pb-10">
             {TempCategories.map((category, index) => {
               const bgColorClass = categoryBgColors[category.title] ?? '';
 
               return (
-                <div key={index} className="grid-2 grid md:hidden">
+                <div key={index} className="grid-2 grid">
                   <MobileCheckList
                     category={category.title}
                     bgColorClass={bgColorClass}
@@ -73,7 +73,7 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
             })}
           </div>
 
-          {selectedCategory && (
+          {/* {selectedCategory && (
             <div
               ref={resultContainerRef}
               className={`hidden h-[60vh] w-[100%] flex-col overflow-auto md:flex ${
@@ -106,7 +106,7 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
               </div>
               <div className="h-2 w-full" />
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </>

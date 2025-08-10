@@ -36,7 +36,7 @@ const ItemCard = ({
         isSelected ? '' : 'opacity-50'
       }`}
     >
-      <div className="flex w-full flex-col items-center justify-center md:mt-4">
+      <div className="flex w-full flex-col items-center justify-center">
         <Image
           src={imageUrl as string}
           alt={title}
