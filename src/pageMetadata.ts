@@ -48,29 +48,6 @@ export const pageMetadata = {
       canonical: `${baseUrl}/suggestion`,
     },
   } as Metadata,
-  rank: {
-    applicationName: 'StudyMate',
-    title: '랭킹',
-    description:
-      '문제를 얼마나 풀었는지, 얼마나 꾸준히 했는지 랭킹으로 확인해보세요.',
-    openGraph: {
-      siteName: '스터디메이트',
-      title: '랭킹 - 함께 공부하는 동료들을 만나보세요',
-      description:
-        '같은 목표를 향해 가는 다른 개발자들의 학습 상황을 확인해보세요.',
-      url: `${baseUrl}/rank`,
-      type: 'website',
-      images: [
-        {
-          url: `${baseUrl}/assets/backgroundImages/trophy/goldTrophy.jpeg`,
-          alt: '랭킹 페이지 이미지',
-        },
-      ],
-    },
-    alternates: {
-      canonical: `${baseUrl}/rank`,
-    },
-  },
   announcement: {
     applicationName: 'StudyMate',
     title: '공지 사항',

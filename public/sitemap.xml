@@ -8,11 +8,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://developer-dev.study-mate.academy/rank</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://developer-dev.study-mate.academy/announcement</loc>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
 </urlset>
