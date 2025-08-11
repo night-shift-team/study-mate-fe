@@ -15,10 +15,6 @@ import {
   Star_IMG,
   Strom_IMG,
 } from './img';
-import Image from 'next/image';
-import { LuBookCheck } from 'react-icons/lu';
-import { PiRankingLight } from 'react-icons/pi';
-import { SlNote } from 'react-icons/sl';
 import { Swiper as SwiperType } from 'swiper';
 import { getUserRankingApi } from '@/page/rank/api';
 import { userStore } from '@/shared/state/userStore/model';
@@ -98,29 +94,25 @@ const useMyPage = () => {
     return { img: Dust_IMG };
   };
 
+  const getRankInfo = (myRanking: number) => {
+    if (myRanking === 1) return 'st';
+    if (myRanking === 2) return 'nd';
+    if (myRanking === 1) return 'rd';
+    return 'th';
+  };
+
   const cardData = [
     {
-      count: (!myRanking ? '-' : myRanking) + '등',
-      label: '순위',
-      img: <PiRankingLight />,
+      count: (!myRanking ? '-' : myRanking) + getRankInfo(myRanking ?? 0),
+      label: 'Rank',
     },
     {
       count: (
-        <div className="relative aspect-1 w-6 md:w-8">
-          {user ? (
-            <Image
-              src={getScoreTierInfo(user.userScore ?? 0).img}
-              alt="Score Tier"
-              onError={(e) => (e.currentTarget.src = Dust_IMG)}
-              fill
-            />
-          ) : null}
-        </div>
+        <div className="relative aspect-1 w-6 md:w-8">{user?.userScore}</div>
       ),
-      label: '점수',
-      img: <SlNote />,
+      label: 'Score',
     },
-    { count: totalElements, label: '문제수', img: <LuBookCheck /> },
+    { count: totalElements, label: 'Sloved' },
   ];
 
   const scrollByCard = (direction: 'left' | 'right') => {

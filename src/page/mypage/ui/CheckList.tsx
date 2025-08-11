@@ -18,20 +18,21 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
     filteredHistory,
   } = useCheckList(questionHistory);
 
+  const categoryBgColors: Record<ProblemCategoryTitle, string> = {
+    [ProblemCategoryTitle.ALGORITHUM]: 'bg-point-pink',
+    [ProblemCategoryTitle.NETWORK]: 'bg-point-cyan',
+    [ProblemCategoryTitle.DB]: 'bg-point-orange',
+    [ProblemCategoryTitle.OS]: 'bg-success',
+  };
+
   return (
     <>
-      <div className="flex flex-col items-center overflow-auto bg-pointcolor-yogurt">
+      <div className="flex flex-col items-center overflow-auto">
         <div className="w-[100%] overflow-auto scrollbar-hide">
-          <div className="flex">
+          {/* <div className="flex">
             {TempCategories.map((category, index) => {
-              const categoryBgColors: Record<ProblemCategoryTitle, string> = {
-                [ProblemCategoryTitle.ALGORITHUM]: 'bg-[#DDEDFB]',
-                [ProblemCategoryTitle.NETWORK]: 'bg-[#EEDDFB]',
-                [ProblemCategoryTitle.DB]: 'bg-[#E3F5E8]',
-                [ProblemCategoryTitle.OS]: 'bg-[#FDDCDE]',
-              };
-              const bgColorClass =
-                categoryBgColors[category.title] ?? 'bg-white';
+              const bgColorClass = categoryBgColors[category.title] ?? '';
+
               return (
                 <div
                   key={index}
@@ -40,7 +41,7 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
                 >
                   <div className="flex h-[3rem] justify-center">
                     <span
-                      className={`flex items-center text-sm font-bold ${
+                      className={`flex items-center text-title-section font-bold ${
                         selectedCategory === category.title
                           ? 'text-black'
                           : 'text-gray-500'
@@ -56,18 +57,23 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
                 </div>
               );
             })}
-          </div>
-          <div className="mt-5 grid grid-cols-2 md:hidden">
+          </div> */}
+          <div className="grid grid-cols-2 gap-3 pb-10">
             {TempCategories.map((category, index) => {
+              const bgColorClass = categoryBgColors[category.title] ?? '';
+
               return (
-                <div key={index} className="grid-2 grid md:hidden">
-                  <MobileCheckList category={category.title} />
+                <div key={index} className="grid-2 grid">
+                  <MobileCheckList
+                    category={category.title}
+                    bgColorClass={bgColorClass}
+                  />
                 </div>
               );
             })}
           </div>
 
-          {selectedCategory && (
+          {/* {selectedCategory && (
             <div
               ref={resultContainerRef}
               className={`hidden h-[60vh] w-[100%] flex-col overflow-auto md:flex ${
@@ -76,7 +82,7 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
                   [ProblemCategoryTitle.NETWORK]: 'bg-[#EEDDFB]',
                   [ProblemCategoryTitle.DB]: 'bg-[#E3F5E8]',
                   [ProblemCategoryTitle.OS]: 'bg-[#FDDCDE]',
-                }[selectedCategory as ProblemCategoryTitle] ?? 'bg-white'
+                }[selectedCategory as ProblemCategoryTitle] ?? 'b'
               } p-4 scrollbar-hide`}
             >
               <div className="flex w-full flex-col gap-2">
@@ -100,7 +106,7 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
               </div>
               <div className="h-2 w-full" />
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </>

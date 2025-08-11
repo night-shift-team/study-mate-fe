@@ -11,6 +11,7 @@ const useWriteSuggestionPage = () => {
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log('handleSubmit');
     e.preventDefault();
 
     try {
@@ -28,7 +29,7 @@ const useWriteSuggestionPage = () => {
     if (submitted) {
       const timer = setTimeout(() => {
         setSubmitted(false);
-        router.push(RouteTo.Suggestion);
+        router.push(RouteTo.Announcement);
       }, 2000);
 
       return () => clearTimeout(timer);

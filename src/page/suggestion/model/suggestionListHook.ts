@@ -4,6 +4,7 @@ import { useState } from 'react';
 export interface SuggestionItem {
   id: number;
   title: string;
+  content: string;
   author: string;
   views: number;
   date: string; // MM-DD

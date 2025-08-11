@@ -9,7 +9,7 @@ import useNoticeSection from '../model/noticeSectionHook';
 const NoticeSection = () => {
   const { noticeList } = useNoticeSection();
   return (
-    <div className="relative mx-[-1.5rem] flex h-[10rem] w-[calc(100%+2.5rem)] flex-shrink-0 bg-main-notice bg-[length:150%] bg-[10%_center] bg-no-repeat md:mx-[-2.5rem] md:h-[22rem] md:w-[calc(100%+5rem)] md:bg-cover md:bg-left">
+    <div className="relative mx-[-1.5rem] hidden h-[10rem] w-[calc(100%+2.5rem)] flex-shrink-0 bg-main-notice bg-[length:150%] bg-[10%_center] bg-no-repeat md:mx-[-2.5rem] md:flex md:h-[22rem] md:w-[calc(100%+5rem)] md:bg-cover md:bg-left">
       <div className="flex h-full w-full">
         {noticeList.length ? (
           <Swiper

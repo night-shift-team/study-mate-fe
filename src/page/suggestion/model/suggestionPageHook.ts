@@ -6,6 +6,7 @@ interface SuggestionItem {
   title: string;
   author: string;
   views: number;
+  content: string;
   date: string; // MM-DD
 }
 
@@ -22,6 +23,7 @@ const useSuggestionPage = () => {
             (item) => ({
               id: item.id,
               title: item.title,
+              content: item.content,
               author: item.user.nickname || item.user.loginId,
               views: item.view,
               date: formatDate(item.createdDt),
@@ -47,11 +49,11 @@ const useSuggestionPage = () => {
   // 날짜 포맷터: ISO 날짜 → MM-DD
   const formatDate = (isoString: string): string => {
     const date = new Date(isoString);
+    const year = date.getFullYear();
     const month = `${date.getMonth() + 1}`.padStart(2, '0');
     const day = `${date.getDate()}`.padStart(2, '0');
-    return `${month}-${day}`;
+    return `${year}-${month}-${day}`;
   };
-
   return { list, router };
 };
 export default useSuggestionPage;

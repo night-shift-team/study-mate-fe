@@ -1,9 +1,6 @@
-import { JSX } from 'react';
-
 export interface CardProps {
   count: any;
   label: string;
-  img: JSX.Element | undefined;
 }
 
 export const scaleImage = (label: string) => {
