@@ -1,9 +1,14 @@
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { levelTestCaching } from './levelTestCaching';
 import { getLevelTestResultApi, GetLevelTestResultRes } from '../api';
 import { ServerErrorResponse } from '@/shared/api/model/config';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
+
+export interface UserAnswerWithId {
+  id: string;
+  answer: '1' | '2' | '3' | '4';
+}
 
 const useLevelTest = () => {
   const router = useRouter();
@@ -12,6 +17,9 @@ const useLevelTest = () => {
   const [showResult, setShowResult] = useState<boolean>(false);
   const [userAnswers, setUserAnswers] = useState<number[]>([]);
   const [isStarted, setIsStarted] = useState(false);
+  const [answerListOpen, setAnswerListOpen] = useState(false);
+  const answerFormRef = useRef<HTMLDivElement>(null);
+  const answerClosedFormRef = useRef<HTMLDivElement>(null);
 
   // const [levelTestLists, setLevelTestLists] = useState<ProblemInfoLevelTest[]>(
   //   []
@@ -47,6 +55,10 @@ const useLevelTest = () => {
         id: levelTestLists[index].id,
         answer: answer.toString() as '1' | '2' | '3' | '4',
       }));
+      sessionStorage.setItem(
+        'levelTestUserAnswersWithId',
+        JSON.stringify(reqData)
+      );
       const res = await getLevelTestResultApi(reqData);
       if (!res.ok) throw res.payload as ServerErrorResponse;
       return res.payload as GetLevelTestResultRes;
@@ -92,6 +104,27 @@ const useLevelTest = () => {
       console.log(e);
     }
   };
+  const closeAnswerList = () => {
+    setAnswerListOpen(false);
+  };
+  const openAnswerList = () => {
+    setAnswerListOpen(true);
+  };
+
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (
+        answerFormRef.current &&
+        !answerFormRef.current.contains(event.target as Node)
+      ) {
+        closeAnswerList();
+      }
+    };
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, []);
 
   return {
     isPageLoading,
@@ -105,6 +138,11 @@ const useLevelTest = () => {
     handleAnswerSelect,
     handlePrevQuestion,
     handleNextQuestion,
+    answerListOpen,
+    openAnswerList,
+    closeAnswerList,
+    answerFormRef,
+    answerClosedFormRef,
   };
 };
 export default useLevelTest;

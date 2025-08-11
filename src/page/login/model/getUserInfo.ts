@@ -46,8 +46,8 @@ export const getUserInfo = async (
           router.push(RouteTo.AdminDashboard);
           return;
         }
-        if (!userData.userScore) {
-          router.push(RouteTo.LevelTest);
+        if (userData.userScore === 0) {
+          router.push(RouteTo.Onboarding);
         } else {
           router.push(RouteTo.Solve);
         }

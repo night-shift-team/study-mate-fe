@@ -1,4 +1,4 @@
-import useToast, { ToastType } from '@/shared/toast/model/toastHook';
+// import useToast, { ToastType } from '@/shared/toast/model/toastHook';
 import { useEffect, useRef, useState } from 'react';
 import {
   checkDuplicateEmailApi,
@@ -7,10 +7,10 @@ import {
 } from '../api';
 import { useRouter } from 'next/navigation';
 import { SignUpFormData } from '../ui';
-import useTooltip from '@/feature/tooltip/model/tooltipController';
+// import useTooltip from '@/feature/tooltip/model/tooltipController';
 import tooltipMountHook from '@/feature/tooltip/model/tooltipMount';
 import { TooltipContents } from '@/shared/state/tooltip/model/tooltipContents';
-
+import { InputStatus } from '@/shared/button/useInput';
 const useSignUpPage = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -19,12 +19,12 @@ const useSignUpPage = () => {
     confirmPassword: '',
   } as SignUpFormData);
 
-  const [toastOpen, setToastOpen] = useState(false);
-  const { Toaster, setToastDescription, setToastIcon } = useToast(
-    toastOpen,
-    setToastOpen
-  );
-  const { showTooltip, updateTooltip, hideTooltip } = useTooltip();
+  // const [toastOpen, setToastOpen] = useState(false);
+  // const { Toaster, setToastDescription, setToastIcon } = useToast(
+  //   toastOpen,
+  //   setToastOpen
+  // );
+  // const { showTooltip, updateTooltip, hideTooltip } = useTooltip();
 
   const [isLoading, setIsLoading] = useState(false);
   const [popupOpen, setPopupOpen] = useState(false);
@@ -32,17 +32,45 @@ const useSignUpPage = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
+
+  const [validationStatus, setValidationStatus] = useState({
+    name: {
+      status: 'empty' as InputStatus,
+      message: TooltipContents.TypingName,
+    },
+    email: {
+      status: 'empty' as InputStatus,
+      message: TooltipContents.TypingEmail,
+    },
+    password: {
+      status: 'empty' as InputStatus,
+      message: TooltipContents.TypingPassword,
+    },
+    confirmPassword: {
+      status: 'empty' as InputStatus,
+      message: TooltipContents.TypingConfirmPassword,
+    },
+  });
+
   const { setMountTooltip } = tooltipMountHook();
 
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    console.log('handleChange called with:', name, value);
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-    hideTooltip(e.target);
+    // hideTooltip(e.target);
+    setValidationStatus((prev) => ({
+      ...prev,
+      [name]: {
+        status: 'filled',
+        message: '',
+      },
+    }));
   };
 
   const checkNicknameDuplicate = async (nickname: string) => {
@@ -72,28 +100,54 @@ const useSignUpPage = () => {
     try {
       // 프론트 검증
       if (nameRef.current && !formData.name.length) {
-        showTooltip(nameRef.current);
+        // showTooltip(nameRef.current);
+        setValidationStatus((prev) => ({
+          ...prev,
+          name: { status: 'error', message: TooltipContents.TypingName },
+        }));
         nameRef.current.focus();
         return;
       }
       if (emailRef.current && !formData.email.length) {
-        showTooltip(emailRef.current);
+        // showTooltip(emailRef.current);
+        setValidationStatus((prev) => ({
+          ...prev,
+          email: { status: 'error', message: TooltipContents.TypingEmail },
+        }));
         emailRef.current.focus();
         return;
       }
       if (emailRef.current && !emailRef.current?.value.includes('@')) {
-        updateTooltip(emailRef.current, TooltipContents.NotEmailForm);
-        showTooltip(emailRef.current);
+        // updateTooltip(emailRef.current, TooltipContents.NotEmailForm);
+        // showTooltip(emailRef.current);
+        setValidationStatus((prev) => ({
+          ...prev,
+          email: { status: 'error', message: TooltipContents.NotEmailForm },
+        }));
         emailRef.current.focus();
         return;
       }
       if (passwordRef.current && !formData.password.length) {
-        showTooltip(passwordRef.current);
+        // showTooltip(passwordRef.current);
+        setValidationStatus((prev) => ({
+          ...prev,
+          password: {
+            status: 'error',
+            message: TooltipContents.TypingPassword,
+          },
+        }));
         passwordRef.current.focus();
         return;
       }
       if (confirmPasswordRef.current && !formData.confirmPassword.length) {
-        showTooltip(confirmPasswordRef.current);
+        // showTooltip(confirmPasswordRef.current);
+        setValidationStatus((prev) => ({
+          ...prev,
+          confirmPassword: {
+            status: 'error',
+            message: TooltipContents.TypingConfirmPassword,
+          },
+        }));
         confirmPasswordRef.current.focus();
         return;
       }
@@ -102,26 +156,47 @@ const useSignUpPage = () => {
         confirmPasswordRef.current &&
         formData.password !== formData.confirmPassword
       ) {
-        updateTooltip(
-          confirmPasswordRef.current,
-          TooltipContents.InvalidConfirmPassword
-        );
-        showTooltip(confirmPasswordRef.current);
+        // updateTooltip(
+        //   confirmPasswordRef.current,
+        //   TooltipContents.InvalidConfirmPassword
+        // );
+        // showTooltip(confirmPasswordRef.current);
+        setValidationStatus((prev) => ({
+          ...prev,
+          confirmPassword: {
+            status: 'error',
+            message: TooltipContents.InvalidConfirmPassword,
+          },
+        }));
         confirmPasswordRef.current.focus();
         return;
       }
 
       // 서버 검증
       if (await checkNicknameDuplicate(formData.name)) {
-        setToastIcon(ToastType.warning);
-        setToastDescription('이미 사용중인 닉네임입니다.');
-        setToastOpen(true);
+        setValidationStatus((prev) => ({
+          ...prev,
+          name: {
+            status: 'error',
+            message: TooltipContents.DuplicateName,
+          },
+        }));
+        // setToastIcon(ToastType.warning);
+        // setToastDescription('이미 사용중인 닉네임입니다.');
+        // setToastOpen(true);
         return;
       }
       if (await checkEmailDuplicate(formData.email)) {
-        setToastIcon(ToastType.warning);
-        setToastDescription('이미 사용중인 이메일입니다.');
-        setToastOpen(true);
+        // setToastIcon(ToastType.warning);
+        // setToastDescription('이미 사용중인 이메일입니다.');
+        // setToastOpen(true);
+        setValidationStatus((prev) => ({
+          ...prev,
+          email: {
+            status: 'error',
+            message: TooltipContents.DuplicateEmail,
+          },
+        }));
         return;
       }
 
@@ -158,11 +233,12 @@ const useSignUpPage = () => {
     confirmPasswordRef,
     formData,
     handleChange,
-    Toaster,
+    // Toaster,
     popupOpen,
     router,
     handleSubmit,
     isLoading,
+    validationStatus,
   };
 };
 export default useSignUpPage;

@@ -9,4 +9,7 @@ export enum TooltipContents {
   TypingConfirmPassword = '비밀번호 확인을 입력해주세요',
 
   NotEmailForm = '이메일 형식이 아닙니다',
+
+  DuplicateName = '이미 사용 중인 이름입니다',
+  DuplicateEmail = '이미 사용 중인 이메일입니다',
 }
