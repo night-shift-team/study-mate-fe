@@ -6,9 +6,8 @@ import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { usePathname, useRouter } from 'next/navigation';
 import UserStateWrapper from '@/shared/state/userStore/model/clientSideWrapper';
 import { userStore } from '@/shared/state/userStore/model';
-import backButton from '@public/assets/icons/header/backButton.svg';
+import BackButton from '@public/assets/icons/header/left_arrow.svg';
 import ProfileIcon from '@public/assets/icons/header/Avatar.svg';
-import { SvgIcon } from '@mui/material';
 
 const Header = () => {
   const path = usePathname();
@@ -35,9 +34,9 @@ const Header = () => {
           <div className="absolute left-0 top-0 z-10 flex h-full w-full items-center justify-center">
             <Link
               href={RouteTo.Home}
-              className="relative flex h-full w-[6.5rem] p-0"
+              className="relative flex h-full w-[6.5rem] items-center justify-center p-0"
             >
-              <MobileLogo className="w-full p-2" />
+              <MobileLogo className="w-[60px]" />
             </Link>
           </div>
           <div className="absolute right-4 rounded-lg">
@@ -56,13 +55,9 @@ const Header = () => {
           path === RouteTo.AdminDashboard ? null : (
             <button
               onClick={() => router.back()}
-              className="relative z-[10000] flex h-full w-[6.5rem] cursor-pointer items-center pl-4"
+              className="z-[10000] flex h-full w-[6.5rem] cursor-pointer items-center pl-4"
             >
-              <SvgIcon
-                inheritViewBox
-                component={backButton}
-                sx={{ width: '30%', height: '30%' }}
-              />
+              <BackButton className="h-[20px] w-[20px]" />
             </button>
           )}
 
