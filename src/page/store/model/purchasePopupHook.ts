@@ -32,7 +32,10 @@ const usePurchasePopup = (
       const newCart = prev.map((cartItem) => {
         if (cartItem.title === item.title) {
           cartUpdated = true;
-          return { ...cartItem, count: cartItem.count + item.count };
+          return {
+            ...cartItem,
+            count: Number(cartItem.count) + Number(item.count),
+          };
         }
         return cartItem;
       });

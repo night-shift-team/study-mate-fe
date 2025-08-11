@@ -8,6 +8,7 @@ import { RankingIcon } from '@public/assets/icons/button/tap/Ranking';
 import { NoticeIcon } from '@public/assets/icons/button/tap/Notice';
 import { MypageIcon } from '@public/assets/icons/button/tap/Mypage';
 import { userStore } from '@/shared/state/userStore/model';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
 
 const TabBarList = [
   { id: 1, title: 'Store', icon: StoreIcon, link: '/store' },
@@ -20,6 +21,17 @@ const TabBarList = [
 export const TabBarComponent = () => {
   const pathname = usePathname();
   const user = userStore.getState().user;
+
+  if (
+    pathname === RouteTo.Home ||
+    pathname === RouteTo.Login ||
+    pathname === RouteTo.Signup ||
+    pathname === RouteTo.Onboarding ||
+    pathname === RouteTo.LevelTest ||
+    pathname.startsWith(RouteTo.LevelTestResult)
+  ) {
+    return null;
+  }
 
   return (
     <>

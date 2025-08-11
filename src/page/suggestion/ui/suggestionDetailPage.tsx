@@ -1,16 +1,13 @@
 'use client';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
-import MoreButton from '../../../../public/assets/icons/suggestion/more.png';
 import PageAnimationWrapper from '@/shared/style/ui/pageAnimationWrapper';
 import useSuggestionDetailPage from '../model/suggestionDetailPageHook';
 import UserStateWrapper from '@/shared/state/userStore/model/clientSideWrapper';
-import { MoreBox } from './moreBox';
 import CommentSection from './commentSection';
 import { userStore } from '@/shared/state/userStore/model';
 
 const SuggestionDetailPage = () => {
-  const { suggestion, user, id, handleMoreClick, open, isOpen } =
-    useSuggestionDetailPage();
+  const { suggestion, user } = useSuggestionDetailPage();
   const isuser = userStore.getState().user;
 
   if (!suggestion)

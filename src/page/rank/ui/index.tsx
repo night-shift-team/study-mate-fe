@@ -1,14 +1,11 @@
 'use client';
-import Image from 'next/image';
 import { SvgIcon } from '@mui/material';
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
-import Lv1Image from '@public/assets/icons/character/Lv1.svg';
+
 import Lv2Image from '@public/assets/icons/character/Lv2.svg';
 import Lv3Image from '@public/assets/icons/character/Lv3.svg';
 import Lv4Image from '@public/assets/icons/character/Lv4.svg';
 
 import useRankPage from '../model/rankPageHook';
-import { ProblemPagination } from '@/feature/pagination/ui';
 import { TopRankUser } from './topRankUser';
 
 const RankPage = () => {

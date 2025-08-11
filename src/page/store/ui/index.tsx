@@ -29,11 +29,9 @@ const StorePage = () => {
     outSideClickRef,
     selectedItem,
     setSelectedItem,
-    cartOpen,
-    setCartOpen,
+
     storeItems,
     updateBuyingStatusSuccess,
-    cart,
     setCart,
     setPurchaseOpen,
     purchaseStatus,

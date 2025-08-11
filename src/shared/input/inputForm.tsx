@@ -1,4 +1,4 @@
-import { InputStatus } from '../button/useInput';
+import { InputStatus } from '../components/input/useInput';
 
 const InputForm = ({
   status,

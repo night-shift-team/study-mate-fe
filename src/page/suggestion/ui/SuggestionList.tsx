@@ -1,12 +1,7 @@
 'use client';
 
-import { Pagination } from '@mui/material';
-import { MobileSuggestionList } from './MobileSuggestionList';
-import { TiArrowSortedDown } from 'react-icons/ti';
-import { TiArrowSortedUp } from 'react-icons/ti';
 import useSuggestionList, { SuggestionItem } from '../model/suggestionListHook';
 import { NoticeList } from '@/shared/components/notice/NoticeList';
-import useSuggestionDetailPage from '../model/suggestionDetailPageHook';
 
 interface SuggestionListProps {
   list: SuggestionItem[];
@@ -16,9 +11,7 @@ interface SuggestionListProps {
 export const SuggestionList = ({ suggestionListHook }: SuggestionListProps) => {
   const {
     paginatedSuggestions,
-    currentPage,
-    totalPages,
-    handleChangePage,
+
     handleClick,
   } = suggestionListHook;
 
@@ -121,7 +114,7 @@ export const SuggestionList = ({ suggestionListHook }: SuggestionListProps) => {
 
       {/*모바일 */}
       <div className="flex flex-col gap-2">
-        {paginatedSuggestions.map((item, index) => (
+        {paginatedSuggestions.map((item) => (
           <div
             key={item.id}
             onClick={() => handleClick(item.id)}

@@ -83,9 +83,9 @@ const LevelTestCategoryProblems = ({
             >
               <button
                 key={problem.id}
-                className={`flex h-48p w-full items-center justify-between rounded-12p ${isCorrect ? 'bg-success-50' : 'bg-error-50'} px-5`}
+                className={`flex h-48p w-full items-center justify-between rounded-12p px-[12px] py-[8px] ${isCorrect ? 'bg-success-50' : 'bg-error-50'} px-5`}
               >
-                <span className="font-pretandard text-quiz-option leading-none">
+                <span className="flex h-full w-full items-center overflow-y-auto font-pretandard text-quiz-option leading-none">
                   {problem.title}
                 </span>
                 {isCorrect ? (

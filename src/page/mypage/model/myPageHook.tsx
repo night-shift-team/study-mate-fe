@@ -5,16 +5,7 @@ import {
   QuestionFavoriteRes,
 } from '../api';
 import { ProblemDetailInfoRes } from '@/page/adminProblem/api';
-import {
-  Cloud_IMG,
-  Dust_IMG,
-  Grain_IMG,
-  Peddle_IMG,
-  Range_IMG,
-  Rock_IMG,
-  Star_IMG,
-  Strom_IMG,
-} from './img';
+
 import { Swiper as SwiperType } from 'swiper';
 import { getUserRankingApi } from '@/page/rank/api';
 import { userStore } from '@/shared/state/userStore/model';
@@ -82,17 +73,17 @@ const useMyPage = () => {
     }
   };
 
-  const getScoreTierInfo = (score: number) => {
-    if (score >= 256000) return { img: Star_IMG };
-    if (score >= 128000) return { img: Strom_IMG };
-    if (score >= 32000) return { img: Cloud_IMG };
-    if (score >= 16000) return { img: Range_IMG };
-    if (score >= 8000) return { img: Rock_IMG };
-    if (score >= 4000) return { img: Peddle_IMG };
-    if (score >= 2000) return { img: Grain_IMG };
-    if (score >= 1000) return { img: Dust_IMG };
-    return { img: Dust_IMG };
-  };
+  // const getScoreTierInfo = (score: number) => {
+  //   if (score >= 256000) return { img: Star_IMG };
+  //   if (score >= 128000) return { img: Strom_IMG };
+  //   if (score >= 32000) return { img: Cloud_IMG };
+  //   if (score >= 16000) return { img: Range_IMG };
+  //   if (score >= 8000) return { img: Rock_IMG };
+  //   if (score >= 4000) return { img: Peddle_IMG };
+  //   if (score >= 2000) return { img: Grain_IMG };
+  //   if (score >= 1000) return { img: Dust_IMG };
+  //   return { img: Dust_IMG };
+  // };
 
   const getRankInfo = (myRanking: number) => {
     if (myRanking === 1) return 'st';

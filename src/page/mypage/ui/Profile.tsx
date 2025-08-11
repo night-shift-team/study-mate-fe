@@ -2,7 +2,6 @@
 
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 
-import { ProfileImage } from '@/shared/user/ui/profileImage';
 import Button from '@/shared/design/ui/customButton';
 import useProfile from '../model/profileHook';
 import { ToastType } from '@/shared/toast/model/toastHook';
@@ -13,7 +12,6 @@ import { SvgIcon } from '@mui/material';
 const Profile = () => {
   const {
     Toaster,
-    imageUrl,
     user,
     newNickname,
     setNewNickname,

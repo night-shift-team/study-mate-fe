@@ -18,15 +18,7 @@ export enum AnnouncementType {
 }
 
 const AnnouncementPage = () => {
-  const {
-    isLoading,
-    setCurrentTab,
-    announcementList,
-    page,
-    setPage,
-    maxPage,
-    currentTab,
-  } = useAnnouncementPage();
+  const { announcementList, page, setPage, maxPage } = useAnnouncementPage();
 
   const { list, router } = useSuggestionPage();
   const suggestionListHook = useSuggestionList(list ?? []);

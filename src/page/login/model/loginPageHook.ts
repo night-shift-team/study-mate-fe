@@ -16,7 +16,7 @@ import tooltipMountHook from '@/feature/tooltip/model/tooltipMount';
 // import useTooltip from '@/feature/tooltip/model/tooltipController';
 import { userStore } from '@/shared/state/userStore/model';
 import { TooltipContents } from '@/shared/state/tooltip/model/tooltipContents';
-import { InputStatus } from '@/shared/button/useInput';
+import { InputStatus } from '@/shared/components/input/useInput';
 
 const useLoginPage = () => {
   const router = useRouter();

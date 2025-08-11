@@ -1,17 +1,12 @@
 'use client';
 import AuthHoc from '@/shared/auth/model/authHoc';
 import Link from 'next/link';
-import { getCategoriesIcon } from '../model/getCategoryIcons';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import RandomIcon from '@public/assets/icons/categoryTitleIcon/randomIcon.svg';
 import { SvgIcon } from '@mui/material';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
-import Footer from '@/feature/footer/ui/Footer';
 import useSolveMainPage from '../model/solveMainPageHook';
-import NoticeSection from './notice';
 import { UserSection } from './userSection';
 import Polygon from '@public/assets/icons/button/check/Polygon.svg';
-import { TabBarComponent } from '@/shared/components/bar/TabBar';
 
 const SolveMainPage = () => {
   const { myTodaySolveData } = useSolveMainPage();

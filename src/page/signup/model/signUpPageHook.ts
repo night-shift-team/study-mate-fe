@@ -10,7 +10,7 @@ import { SignUpFormData } from '../ui';
 // import useTooltip from '@/feature/tooltip/model/tooltipController';
 import tooltipMountHook from '@/feature/tooltip/model/tooltipMount';
 import { TooltipContents } from '@/shared/state/tooltip/model/tooltipContents';
-import { InputStatus } from '@/shared/button/useInput';
+import { InputStatus } from '@/shared/components/input/useInput';
 const useSignUpPage = () => {
   const [formData, setFormData] = useState({
     name: '',

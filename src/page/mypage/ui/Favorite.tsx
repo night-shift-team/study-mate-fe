@@ -5,9 +5,8 @@ import { ConfirmPopup } from './ConfirmPopup';
 import { ProblemDetailInfoRes } from '@/page/adminProblem/api';
 import Arrow from '@public/assets/icons/button/check/Polygon.svg';
 import { SvgIcon } from '@mui/material';
-import { IoClose } from 'react-icons/io5';
 import useFavorite from '../model/favoriteHook';
-import { ProblemCategoryTitle } from '@/shared/problem/model/problemInfo.types';
+// import { ProblemCategoryTitle } from '@/shared/problem/model/problemInfo.types';
 import { QuestionHistory } from '../model/checkListHook';
 import { AlertPopup } from './AlertPopup';
 
@@ -25,11 +24,10 @@ const Favorite = ({
   favoriteList,
   setPopupProblemDetail,
   setIsPopupOpen,
-  questionHistory,
+  // questionHistory,
 }: FavoriteListProps) => {
   const {
     currentFavoriteList,
-    handleBookmarkClick,
     handleItemClick,
     isPending,
     alertMessage,
@@ -52,41 +50,41 @@ const Favorite = ({
             <div className="w-full overflow-auto rounded-xl scrollbar-hide">
               <div className="flex w-full gap-1 overflow-x-auto scroll-smooth pb-2">
                 {currentFavoriteList.map((item, index) => {
-                  const categoryBgColors: Record<ProblemCategoryTitle, string> =
-                    {
-                      [ProblemCategoryTitle.ALGORITHUM]: 'bg-[#DDEDFB]',
-                      [ProblemCategoryTitle.NETWORK]: 'bg-[#EEDDFB]',
-                      [ProblemCategoryTitle.DB]: 'bg-[#E3F5E8]',
-                      [ProblemCategoryTitle.OS]: 'bg-[#FDDCDE]',
-                    };
-                  const categoryTextColors: Record<
-                    ProblemCategoryTitle,
-                    string
-                  > = {
-                    [ProblemCategoryTitle.ALGORITHUM]: 'text-[#1E88E5]',
-                    [ProblemCategoryTitle.NETWORK]: 'text-[#8F1EE5]',
-                    [ProblemCategoryTitle.DB]: 'text-[#41B963]',
-                    [ProblemCategoryTitle.OS]: 'text-[#FF969C]',
-                  };
+                  // const categoryBgColors: Record<ProblemCategoryTitle, string> =
+                  //   {
+                  //     [ProblemCategoryTitle.ALGORITHUM]: 'bg-[#DDEDFB]',
+                  //     [ProblemCategoryTitle.NETWORK]: 'bg-[#EEDDFB]',
+                  //     [ProblemCategoryTitle.DB]: 'bg-[#E3F5E8]',
+                  //     [ProblemCategoryTitle.OS]: 'bg-[#FDDCDE]',
+                  //   };
+                  // const categoryTextColors: Record<
+                  //   ProblemCategoryTitle,
+                  //   string
+                  // > = {
+                  //   [ProblemCategoryTitle.ALGORITHUM]: 'text-[#1E88E5]',
+                  //   [ProblemCategoryTitle.NETWORK]: 'text-[#8F1EE5]',
+                  //   [ProblemCategoryTitle.DB]: 'text-[#41B963]',
+                  //   [ProblemCategoryTitle.OS]: 'text-[#FF969C]',
+                  // };
 
-                  const categoryKey = item.questionCategory.split(
-                    '_'
-                  )[0] as ProblemCategoryTitle;
-                  const bgColorClass =
-                    categoryBgColors[categoryKey] ?? 'bg-white';
+                  // const categoryKey = item.questionCategory.split(
+                  //   '_'
+                  // )[0] as ProblemCategoryTitle;
+                  // const bgColorClass =
+                  //   categoryBgColors[categoryKey] ?? 'bg-white';
 
-                  const textColorCss =
-                    categoryTextColors[categoryKey] ?? 'text-white';
+                  // const textColorCss =
+                  //   categoryTextColors[categoryKey] ?? 'text-white';
 
-                  const history = questionHistory.find(
-                    (h) => h.questionId === item.questionId
-                  );
-                  const solveStatus =
-                    history?.isCorrect === true
-                      ? '완료'
-                      : history
-                        ? '미완료'
-                        : '-';
+                  // const history = questionHistory.find(
+                  //   (h) => h.questionId === item.questionId
+                  // );
+                  // const solveStatus =
+                  //   history?.isCorrect === true
+                  //     ? '완료'
+                  //     : history
+                  //       ? '미완료'
+                  //       : '-';
 
                   return (
                     <div

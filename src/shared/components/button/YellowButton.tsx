@@ -19,7 +19,7 @@ export const YellowButton = ({ label, status, onClick }: StatusButtonProps) => {
   return (
     <button
       onClick={onClick}
-      className={`${baseClasses} ${statusClasses[status]} `}
+      className={`${baseClasses} ${statusClasses[status]} select-none`}
     >
       <span>{label}</span>
     </button>
