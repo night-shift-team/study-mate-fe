@@ -3,6 +3,8 @@ import { userStore } from '@/shared/state/userStore/model';
 import CharacterImage from '@public/assets/icons/character/Lv1.svg';
 import { SvgIcon } from '@mui/material';
 import Polygon from '@public/assets/icons/button/check/Polygon.svg';
+import DarkPolygon from '@public/assets/icons/button/check/DarkPolygon.svg';
+
 import useSolveMainPage from '../model/solveMainPageHook';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import Link from 'next/link';
@@ -18,7 +20,7 @@ export const UserSection = () => {
 
   const { user } = userStore.getState();
   return (
-    <div className="flex w-full flex-col text-white">
+    <div className="flex w-full flex-col text-black dark:text-white">
       <div className="font-pixel text-[40px] font-bold">{user?.nickname}!</div>
       <div className="flex justify-between gap-2 p-16p">
         <div className="flex flex-col">
@@ -27,12 +29,17 @@ export const UserSection = () => {
           <Link href={RouteTo.Store}>
             <span className="flex items-center gap-2 font-pixel text-[20px] font-bold">
               Go to store
-              <SvgIcon
-                className="h-[15px] w-[15px]"
-                component={Polygon}
-                inheritViewBox
-                sx={{ width: '15px', height: '15px' }}
-              />
+              <span className="relative h-[15px] w-[15px]">
+                <SvgIcon
+                  inheritViewBox
+                  component={
+                    window.matchMedia('(prefers-color-scheme: dark)').matches
+                      ? Polygon
+                      : DarkPolygon
+                  }
+                  sx={{ width: '15px', height: '15px' }}
+                />
+              </span>
             </span>
           </Link>
 
@@ -43,10 +50,10 @@ export const UserSection = () => {
         </div>
         <div>
           <SvgIcon
-            className="h-[100px] w-[100px]"
+            className="h-[120px] w-[120px]"
             component={CharacterImage}
             inheritViewBox
-            sx={{ width: '100px', height: '100px' }}
+            sx={{ width: '120px', height: '120px' }}
           />
         </div>
       </div>

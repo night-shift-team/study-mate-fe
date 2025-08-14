@@ -11,6 +11,7 @@ import ItemCard from './storeItemCard';
 import useItemCard from '../model/itemCardHook';
 import { SvgIcon } from '@mui/material';
 import Arrow from '@public/assets/icons/button/check/Polygon.svg';
+import DarkPolygon from '@public/assets/icons/button/check/DarkPolygon.svg';
 
 export interface StoreItemInfo {
   id?: string;
@@ -92,7 +93,7 @@ const StorePage = () => {
         ) : (
           <div className="mt-4 flex h-[8rem] w-full animate-fade-up">
             {/* <Panel className="h-full w-full scale-[1.45] object-contain" /> */}
-            <div className="flex w-full flex-col text-white">
+            <div className="flex w-full flex-col text-black dark:text-white">
               <div className="flex w-full justify-between font-pixel text-[32px] font-bold">
                 Welcome to store!
               </div>
@@ -106,19 +107,27 @@ const StorePage = () => {
               >
                 <span className="font-pixel text-[20px] font-bold">
                   Go to Storage
-                  <SvgIcon
-                    inheritViewBox
-                    component={Arrow}
-                    sx={{ width: '5%', height: '50%' }}
-                    className="ml-2"
-                  />
+                  <span className="relative h-[15px] w-[15px]">
+                    <SvgIcon
+                      className="dark:none absolute left-1 top-1 hidden h-[15px] w-[15px]"
+                      component={Arrow}
+                      inheritViewBox
+                      sx={{ width: '15px', height: '15px' }}
+                    />
+                    <SvgIcon
+                      className="absolute left-1 top-1 h-[15px] w-[15px] dark:hidden"
+                      component={DarkPolygon}
+                      inheritViewBox
+                      sx={{ width: '15px', height: '15px' }}
+                    />
+                  </span>
                 </span>
               </Link>
             </div>
           </div>
         )}
 
-        <div className="flex w-full flex-col justify-center p-16p">
+        <div className="flex w-full flex-col justify-center">
           <div className="w-full rounded-xl bg-white">
             {purchaseStatus !== 'none' ? (
               <>
@@ -143,8 +152,8 @@ const StorePage = () => {
             ) : (
               <>
                 {selectedItem ? (
-                  <div className="flex w-full flex-col gap-4 p-32p">
-                    <div className="flex flex-col text-left">
+                  <div className="flex w-full flex-col gap-4 rounded-xl border border-black p-32p">
+                    <div className="flex flex-col text-left text-black">
                       <h2 className="text-[24px] text-lg font-bold">
                         {selectedItem.title}
                       </h2>
@@ -160,7 +169,7 @@ const StorePage = () => {
                     </div>
 
                     <button
-                      className="h-[40px] rounded-xl bg-point-orange font-pixel text-[20px] font-bold"
+                      className="h-[40px] rounded-xl bg-point-orange font-pixel text-[20px] font-bold text-black dark:text-white"
                       onClick={async () => {
                         if (!selectedItem) return;
                         await buyItem();

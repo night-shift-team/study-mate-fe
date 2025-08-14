@@ -89,7 +89,7 @@ const Favorite = ({
                   return (
                     <div
                       key={index}
-                      className="flex h-[140px] w-[200px] shrink-0 snap-start flex-col rounded-lg bg-point-purple bg-opacity-60 transition"
+                      className="flex h-[140px] w-[200px] shrink-0 snap-start flex-col rounded-lg bg-[#451E81] font-pretandard transition dark:bg-point-purple dark:bg-opacity-60"
                     >
                       {/* <div className="flex w-full justify-end p-2">
                         <IoClose
@@ -100,7 +100,7 @@ const Favorite = ({
 
                       <div className="flex h-[50px] w-full items-center justify-between gap-4">
                         <div className="flex flex-col truncate pl-4 text-sm">
-                          <span className="font-semibold text-white">
+                          <span className="text-[16px] text-white">
                             {truncateText(item.questionTitle, 20)}
                           </span>
                         </div>

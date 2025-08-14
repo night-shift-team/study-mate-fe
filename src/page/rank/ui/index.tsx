@@ -20,7 +20,7 @@ const RankPage = () => {
         msOverflowStyle: 'none',
       }}
     >
-      <span className="text-[32px]">Ranking</span>
+      <span className="text-[32px] text-black dark:text-white">Ranking</span>
       <div className="flex h-[clamp(8rem,30%,12rem)] w-full min-w-[15rem] items-end justify-center gap-[0.1rem] px-[5%]">
         <TopRankUser
           user={displayedUsers[1]}
@@ -48,15 +48,19 @@ const RankPage = () => {
           {displayedUsers.map((user, index) =>
             index > 2 ? (
               <div key={user.rankNo} className="flex items-center gap-1">
-                <span className="w-[25px] text-[20px]">{user.rankNo}</span>
-                <div className="flex w-full items-center justify-between rounded-full border border-white px-16p py-8p text-[20px]">
+                <span className="w-[25px] text-[20px] text-black dark:text-white">
+                  {user.rankNo}
+                </span>
+                <div className="flex w-full items-center justify-between rounded-full border border-black px-16p py-8p text-[20px] dark:border-white">
                   <div className="flex items-center gap-3">
                     <SvgIcon
                       component={Lv4Image}
                       inheritViewBox
                       sx={{ width: '40px', height: '40px' }}
                     />
-                    <span>{user.nickname}</span>
+                    <span className="text-black dark:text-white">
+                      {user.nickname}
+                    </span>
                   </div>
 
                   <span className="mr-8p text-point-yellow">

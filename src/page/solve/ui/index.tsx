@@ -30,7 +30,7 @@ const SolveMainPage = () => {
         {/* <NoticeSection /> */}
         <UserSection />
         <div className="flex flex-col gap-2 pt-2">
-          <span className="text-left font-pixel text-[24px] font-bold text-white">
+          <span className="text-left font-pixel text-[24px] font-bold text-black dark:text-white">
             Quiz Categories
           </span>
         </div>
@@ -48,7 +48,7 @@ const SolveMainPage = () => {
                 >
                   <Link
                     href={`${RouteTo.Solve}/${category.categoryName}`}
-                    className={`md: flex w-full flex-shrink-0 bg-point-purple/30 p-16p transition-all duration-300 ease-in-out active:scale-[0.97]`}
+                    className={`md: flex w-full flex-shrink-0 bg-[#451E81] p-16p transition-all duration-300 ease-in-out active:scale-[0.97] dark:bg-point-purple/30`}
                   >
                     <div className="relative flex h-full w-full flex-col">
                       <div className={`flex flex-col justify-start font-pixel`}>

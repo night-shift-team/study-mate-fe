@@ -28,7 +28,7 @@ const ItemCard = ({
   return (
     <div
       onClick={onClick}
-      className={`rounded-lg border border-white p-2 ${
+      className={`rounded-lg border border-point-yellow p-2 dark:border-white ${
         isSelected ? '' : 'opacity-50'
       }`}
     >

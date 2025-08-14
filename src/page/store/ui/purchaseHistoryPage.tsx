@@ -8,13 +8,15 @@ const StorePurchaseHistoryPage = () => {
   const { paymentHistory } = usePurchaseHistoryPage();
   return (
     <div
-      className="flex w-full flex-col gap-2 overflow-scroll p-16p"
+      className="flex h-[100vh] w-full flex-col gap-2 overflow-scroll p-16p"
       style={{
         scrollbarWidth: 'none',
         msOverflowStyle: 'none',
       }}
     >
-      <div className="font-pixel text-3xl font-bold text-white">My Orders</div>
+      <div className="font-pixel text-3xl font-bold text-black dark:text-white">
+        My Orders
+      </div>
 
       <div className="mb-6 flex flex-col gap-2">
         {paymentHistory ? (
