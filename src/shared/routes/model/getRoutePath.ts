@@ -15,6 +15,7 @@ export enum RouteTo {
   WriteSuggestion = '/suggestion/write',
   Store = '/store',
   StorePurchaseHistory = '/store/purchase-history',
+  MypageScrap = 'mypage/scrap-list',
 
   AdminLogin = '/admin',
   AdminDashboard = '/admin/dashboard',

@@ -43,11 +43,14 @@ const Header = () => {
           <div className="absolute right-4 rounded-lg">
             {user?.loginId && (
               <div className="h-[40px] w-[40px] rounded-16p">
-                <ProfileIcon className="h-full w-full" />
+                {path === RouteTo.Mypage ? (
+                  <DarkModeButton />
+                ) : (
+                  <ProfileIcon className="h-full w-full" />
+                )}
               </div>
             )}
           </div>
-          <DarkModeButton />
           {/* 모바일 좌측 뒤로가기 버튼 */}
           {path === RouteTo.Home ||
           path === RouteTo.Login ||

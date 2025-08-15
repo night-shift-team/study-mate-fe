@@ -2,13 +2,15 @@
 import 'swiper/css';
 import Card from './Card';
 import Profile from './Profile';
-import CheckList from './CheckList';
+import CheckList from './list/CheckList';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { PopupProblem } from '@/shared/popUp/ui/popupV2';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import useMyPage from '../model/myPageHook';
 import Favorite from './Favorite';
 import GrassChart from '@/feature/charts/ui/GassCalnerder';
+import Link from 'next/link';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
 
 const Mypage = () => {
   const {
@@ -57,21 +59,24 @@ const Mypage = () => {
               <span className="font-pixel text-title-section text-black dark:text-white">
                 My Scraps
               </span>
-              <div className="flex h-full items-center gap-1.5 text-black dark:text-white">
-                {/* <button
+
+              <Link href={RouteTo.MypageScrap}>
+                <div className="flex h-full items-center gap-1.5 text-black dark:text-white">
+                  {/* <button
                   onClick={() => scrollByCard('left')}
                   className="text-white"
                 >
                   ◀
                 </button> */}
-                See more
-                <button
-                  onClick={() => scrollByCard('right')}
-                  className="text-black dark:text-white"
-                >
-                  ▶
-                </button>
-              </div>
+                  See more
+                  <button
+                    onClick={() => scrollByCard('right')}
+                    className="text-black dark:text-white"
+                  >
+                    ▶
+                  </button>
+                </div>
+              </Link>
             </div>
 
             {typeof favoriteList === 'undefined' ? (

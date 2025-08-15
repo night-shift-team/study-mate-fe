@@ -1,6 +1,6 @@
 import React from 'react';
-import { MobileCheckList } from './MobileCheckList';
-import useCheckList, { QuestionHistory } from '../model/checkListHook';
+import { MobileCheckList } from '../list/MobileCheckList';
+import useCheckList, { QuestionHistory } from '../../model/checkListHook';
 import { ProblemCategoryTitle } from '@/shared/problem/model/problemInfo.types';
 
 interface CheckListProps {
