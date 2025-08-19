@@ -19,10 +19,9 @@ const SuggestionDetailPage = () => {
 
   return (
     <UserStateWrapper>
-      <PageAnimationWrapper>
-        <div className="mt-5 flex w-full flex-col">
-          <div className="flex-1 p-16p text-white">
-            {/* <div className="mb-2 flex w-[100%] items-center justify-between text-sm text-gray-500">
+      <div className="flex w-full flex-col bg-point-logo font-pretandard">
+        <div className="bg-black p-16p text-white">
+          {/* <div className="mb-2 flex w-[100%] items-center justify-between text-sm text-gray-500">
               #{suggestion.id}
               <span className="relative">
                 {user?.userId === suggestion.user.userId && (
@@ -48,31 +47,28 @@ const SuggestionDetailPage = () => {
               </span>
             </div> */}
 
-            <div className="flex flex-col gap-16p">
-              <div className="flex gap-2">
-                <span className="w-[30px]">Q</span>
-                <h1 className="mb-4t ext-xl font-semibold">
-                  {suggestion.title}
-                </h1>
-              </div>
-
-              <div className="whitespace-pre-wrap">{suggestion.content}</div>
+          <div className="flex flex-col gap-16p">
+            <div className="flex gap-2">
+              <span className="w-[30px]">Q</span>
+              <h1 className="mb-4t ext-xl font-semibold">{suggestion.title}</h1>
             </div>
-          </div>
 
-          <CommentSection
-            initialComments={suggestion.comments.map((c) => ({
-              id: c.id,
-              author: c.writer,
-              content: c.content,
-              date: new Date(c.createdDt).toISOString().split('T')[0],
-            }))}
-            role={isuser?.role}
-            currentUserNickname={user?.loginId ?? ''}
-            boardId={suggestion.id}
-          />
+            <div className="whitespace-pre-wrap">{suggestion.content}</div>
+          </div>
         </div>
-      </PageAnimationWrapper>
+
+        <CommentSection
+          initialComments={suggestion.comments.map((c) => ({
+            id: c.id,
+            author: c.writer,
+            content: c.content,
+            date: new Date(c.createdDt).toISOString().split('T')[0],
+          }))}
+          role={isuser?.role}
+          currentUserNickname={user?.loginId ?? ''}
+          boardId={suggestion.id}
+        />
+      </div>
     </UserStateWrapper>
   );
 };

@@ -6,6 +6,7 @@ import { FaArrowRightLong } from 'react-icons/fa6';
 import Arrow from '@public/assets/icons/mypage/Arrow.svg';
 import { SvgIcon } from '@mui/material';
 import useQuestionItem from '../model/questionItemHook';
+import { ProblemCategory } from '@/shared/problem/model/problemInfo.types';
 
 interface ItemProps {
   index: number;
@@ -17,6 +18,7 @@ interface ItemProps {
   historyId: number;
   score: number;
   textColorClass?: string;
+  category: string;
 }
 
 export const QuestionItem: React.FC<ItemProps> = ({
@@ -26,6 +28,7 @@ export const QuestionItem: React.FC<ItemProps> = ({
   score,
   questionId,
   textColorClass,
+  category,
 }) => {
   const {
     questionDetail,
@@ -34,9 +37,18 @@ export const QuestionItem: React.FC<ItemProps> = ({
     handleClosePopup,
     truncateText,
   } = useQuestionItem(questionId);
+  console.log(questionDetail, 'questionDetail');
+
+  const BgColors: Record<string, string> = {
+    OS: '#7CFC00',
+    DB: '#FFB852',
+    ALGORITHUM: '#FFB8FF',
+    NETWORK: '#00FFFF',
+  };
+
   return (
     <>
-      <div className="hidden items-center justify-between gap-4 rounded-lg bg-white p-2 shadow-lg md:flex">
+      {/* <div className="rounded-lg bg-[#5500FF] opacity-[40%]">
         <div className="flex gap-5">
           <span className="text-[1.5vh] font-semibold">
             {truncateText(questionTitle, 40)}
@@ -78,6 +90,21 @@ export const QuestionItem: React.FC<ItemProps> = ({
         <div className="h-7 w-7" onClick={() => setIsPopupOpen(true)}>
           <SvgIcon inheritViewBox component={Arrow} />
         </div>
+      </div> */}
+      <div className="flex h-[100px] w-full flex-col rounded-lg bg-[#5500FF] bg-opacity-40 pb-8p pl-16p pr-16p pt-8p">
+        <div className="flex gap-1">
+          <span
+            className="rounded-sm pl-16p pr-16p text-center text-[16px] font-semibold text-black"
+            style={{ backgroundColor: BgColors[category] }}
+          >
+            {category}
+          </span>
+          <span className="font-semibold text-point-yellow">
+            Lv.{questionDetail?.difficulty}
+          </span>
+        </div>
+        <div className="font-pretandard text-body-primary">{questionTitle}</div>
+        <div></div>
       </div>
       {isPopupOpen && questionDetail && (
         <PopupProblem

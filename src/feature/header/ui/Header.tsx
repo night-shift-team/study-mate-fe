@@ -6,9 +6,11 @@ import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { usePathname, useRouter } from 'next/navigation';
 import UserStateWrapper from '@/shared/state/userStore/model/clientSideWrapper';
 import { userStore } from '@/shared/state/userStore/model';
-import BackButton from '@public/assets/icons/header/left_arrow.svg';
+import BackButton from '@public/assets/icons/header/backButton.svg';
+import DarkBackButton from '@public/assets/icons/header/dark_backButton.svg';
 import ProfileIcon from '@public/assets/icons/header/Avatar.svg';
 import { DarkModeButton } from '@/shared/button/DarkModeButton';
+import { IoIosArrowBack } from 'react-icons/io';
 const Header = () => {
   const path = usePathname();
   const user = userStore.getState().user;
@@ -27,7 +29,7 @@ const Header = () => {
 
   return (
     <UserStateWrapper>
-      <div className="dark:bg-grayscale-900md:h-[3.5rem] bg-[#FAFAFA ] fixed z-[100] flex h-[3.2rem] w-full max-w-[450px]">
+      <div className="fixed z-[100] flex h-[3.2rem] w-full max-w-[450px] items-center bg-[#FAFAFA] dark:bg-grayscale-900 md:h-[3.5rem]">
         <div
           className={`relative flex h-full w-full items-center justify-between px-0`}
         >
@@ -59,9 +61,12 @@ const Header = () => {
           path === RouteTo.AdminDashboard ? null : (
             <button
               onClick={() => router.back()}
-              className="z-[10000] flex h-full w-[6.5rem] cursor-pointer items-center pl-4"
+              className="relative z-[10000] flex cursor-pointer items-center"
             >
-              <BackButton className="h-[20px] w-[20px]" />
+              <IoIosArrowBack
+                size={24}
+                className="ml-[20px] text-black dark:text-white"
+              />
             </button>
           )}
 

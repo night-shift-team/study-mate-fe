@@ -8,7 +8,6 @@ import { ProblemPagination } from '@/feature/pagination/ui';
 
 const CategoryProblemHistoryPage = () => {
   const {
-    bgColorClass,
     category,
     paginatedHistory,
     startIndex,
@@ -27,7 +26,7 @@ const CategoryProblemHistoryPage = () => {
       </div>
     );
   }
-
+  console.log(category, 'category');
   if (loading) {
     return (
       <div>
@@ -36,28 +35,14 @@ const CategoryProblemHistoryPage = () => {
     );
   }
   return (
-    <div className="flex h-full w-full flex-col pb-8">
-      <div
-        className={`flex h-44 w-full items-center justify-between rounded-b-xl p-5 ${bgColorClass}`}
-      >
-        <div className="ml-5 flex h-full items-end">
-          <div className="flex h-[85px] flex-col justify-center">
-            <h1 className="text-xl font-bold">{category}</h1>
-            <span className="text-l font-bold">문제아카이브</span>
-          </div>
-        </div>
-
-        <Image
-          src="/assets/icons/mypage/icons.png"
-          alt="icon"
-          width={120}
-          height={50}
-        />
-      </div>
-      <div className="flex h-full w-full flex-col justify-between">
+    <div className="flex h-full w-full flex-col p-8p">
+      <span className="text-title-page text-black dark:text-white">
+        Solution Archive
+      </span>
+      <div className="mt-[20px] flex h-full w-full flex-col justify-between">
         <div className="flex h-[52vh] flex-col justify-between">
           {' '}
-          <div className="flex flex-col gap-3 p-5">
+          <div className="flex flex-col gap-3">
             {paginatedHistory.length > 0 ? (
               paginatedHistory.map((history, index) => (
                 <QuestionItem
@@ -71,6 +56,7 @@ const CategoryProblemHistoryPage = () => {
                   questionTitle={history.questionTitle}
                   score={history.score}
                   textColorClass={textColorClass}
+                  category={category}
                 />
               ))
             ) : (
