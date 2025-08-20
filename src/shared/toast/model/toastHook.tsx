@@ -1,5 +1,5 @@
 'use client';
-import { Dispatch, SetStateAction, useLayoutEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { getToastBackgroundColor, getToastStatusIcon } from './getToastStyle';
 
@@ -21,7 +21,7 @@ const useToast = (
     'opacity-0 -translate-y-full'
   );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     let timeoutId1: NodeJS.Timeout;
     let timeoutId2: NodeJS.Timeout;
 
@@ -61,6 +61,9 @@ const useToast = (
     status?: ToastStatus;
     description?: string;
   }) => {
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => setMounted(true), []);
+    if (!mounted) return null;
     return createPortal(
       <div
         className={`fixed left-1/2 top-[3.5rem] flex h-[2.7rem] w-auto min-w-[5rem] max-w-[95vw] items-center gap-1 rounded-xl py-[1.35rem] text-[0.9rem] md:top-1 ${getToastBackgroundColor(status ?? toastType)} rounded-sm border px-4 shadow-light md:top-16 md:h-[2.9rem] md:justify-center ${animationClass} z-[10000]`}

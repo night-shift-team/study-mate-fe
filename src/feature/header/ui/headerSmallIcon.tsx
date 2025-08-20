@@ -1,3 +1,4 @@
+'use client';
 export const HeaderSmallIcon = ({
   title,
   onClick,

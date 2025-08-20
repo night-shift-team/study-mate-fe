@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+
 import Logo from '@public/assets/icons/header/mascotIcon.svg';
 import TextLogo from '@public/assets/backgroundImages/main/logo.svg';
 import RightHeader from '../ui/rightHeader';
