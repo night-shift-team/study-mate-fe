@@ -15,7 +15,13 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="h-screen w-screen">
-      <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+      <head>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <meta
+          name="naver-site-verification"
+          content="8fbbf0128751d08eea5fedd5e452f36afa920cc0"
+        />
+      </head>
       <body
         id="root-container"
         className={`flex h-full w-full bg-pointcolor-yogurt font-spoqa antialiased`}
