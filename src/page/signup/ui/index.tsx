@@ -6,6 +6,7 @@ import { PopupConfirm } from '@/shared/popUp/ui/popupV2';
 import useSignUpPage from '../model/signUpPageHook';
 import InputForm from '@/shared/input/inputForm';
 import ButtonPixel from '@/shared/button/buttonPixel';
+import Link from 'next/link';
 
 export interface SignUpFormData {
   name: string;
@@ -128,6 +129,12 @@ const SignUpPage = () => {
                   Sign Up
                 </ButtonPixel>
               )}
+            </div>
+            <div className="mt-12 flex justify-center whitespace-pre-wrap font-pretandard text-label">
+              <span>{'Already have an account? '}</span>
+              <Link href={RouteTo.Login}>
+                <span className="text-point-orange">Login here</span>
+              </Link>
             </div>
           </div>
         </form>
