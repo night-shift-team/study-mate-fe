@@ -26,6 +26,7 @@ export const TabBarComponent = () => {
     pathname === RouteTo.Home ||
     pathname === RouteTo.Login ||
     pathname === RouteTo.Signup ||
+    pathname === RouteTo.SignupComplete ||
     pathname === RouteTo.Onboarding ||
     pathname === RouteTo.LevelTest ||
     pathname.startsWith(RouteTo.LevelTestResult)

@@ -11,6 +11,12 @@ import { SignUpFormData } from '../ui';
 import tooltipMountHook from '@/feature/tooltip/model/tooltipMount';
 import { TooltipContents } from '@/shared/state/tooltip/model/tooltipContents';
 import { InputStatus } from '@/shared/components/input/useInput';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import { userInfoApi, UserInfoRes } from '@/page/login/api';
+import { setTokenToHeader } from '@/shared/api/model/config';
+import { requestSignIn } from '@/page/login/model/requestSignIn';
+import { setTokens } from '@/page/login/model/setTokens';
+import { userStore } from '@/shared/state/userStore/model';
 const useSignUpPage = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -27,7 +33,6 @@ const useSignUpPage = () => {
   // const { showTooltip, updateTooltip, hideTooltip } = useTooltip();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [popupOpen, setPopupOpen] = useState(false);
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -199,14 +204,48 @@ const useSignUpPage = () => {
         }));
         return;
       }
-
-      // 회원 가입 요청
-      await signUpApi(formData);
-      setPopupOpen(true);
     } catch (e) {
-      console.error('회원가입 에러:', e);
+      console.warn('회원 가입 불가:', e);
+      return;
     } finally {
       setIsLoading(false);
+    }
+
+    // 회원 가입 요청
+    setIsLoading(true);
+    try {
+      const signUpRes = await signUpApi(formData);
+      console.log('회원가입 결과:', signUpRes);
+      if (signUpRes.ok) {
+        // 로그인 요청
+        await signInAndSetUser(formData.email, formData.password);
+      }
+    } catch (e) {
+      console.error('회원가입 에러:', e);
+    }
+  };
+
+  const signInAndSetUser = async (email: string, password: string) => {
+    const setUser = userStore.getState().setUser;
+
+    try {
+      // 여기에 실제 로그인 API 호출 로직 구현
+      const tokens = await requestSignIn(email, password);
+      console.log('tokens:', tokens);
+      setTokens(tokens);
+      setTokenToHeader(localStorage.getItem('accessToken'));
+      const res = await userInfoApi();
+      console.log('userInfoApi:', res);
+      if (res.ok) {
+        const userData = res.payload as UserInfoRes;
+        setUser(userData);
+        router.push(RouteTo.SignupComplete);
+        return;
+      }
+      throw new Error('유저 로그인 실패');
+    } catch (error) {
+      console.error('로그인 에러:', error);
+      router.push(RouteTo.Home);
     }
   };
 
@@ -234,7 +273,6 @@ const useSignUpPage = () => {
     formData,
     handleChange,
     // Toaster,
-    popupOpen,
     router,
     handleSubmit,
     isLoading,
