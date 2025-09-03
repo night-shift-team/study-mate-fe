@@ -47,7 +47,7 @@ export const getUserInfo = async (
           return;
         }
         if (userData.userScore === 0) {
-          router.push(RouteTo.SignupComplete);
+          router.push(RouteTo.Onboarding);
         } else {
           router.push(RouteTo.Solve);
         }
