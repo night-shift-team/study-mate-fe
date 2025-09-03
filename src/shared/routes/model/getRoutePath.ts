@@ -11,6 +11,7 @@ export enum RouteTo {
   Mypage = '/mypage',
   Rank = '/rank',
   SolveRandom = '/solve/random',
+  SolveSolution = '/solve/solution',
   Announcement = '/announcement',
   Suggestion = '/suggestion',
   WriteSuggestion = '/suggestion/write',

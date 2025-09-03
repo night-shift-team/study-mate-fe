@@ -21,7 +21,8 @@ const Header = () => {
     path === RouteTo.Onboarding ||
     path === RouteTo.SignupComplete ||
     path === RouteTo.LevelTest ||
-    path.startsWith(RouteTo.LevelTestResult)
+    path.startsWith(RouteTo.LevelTestResult) ||
+    path.startsWith(RouteTo.Solve + '/')
   ) {
     return null;
   }
@@ -53,6 +54,7 @@ const Header = () => {
           path === RouteTo.Login ||
           path === RouteTo.Solve ||
           path === RouteTo.AdminLogin ||
+          path.startsWith(RouteTo.Solve + '/') ||
           path === RouteTo.AdminDashboard ? null : (
             <button
               onClick={() => router.back()}

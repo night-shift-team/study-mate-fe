@@ -29,7 +29,8 @@ export const TabBarComponent = () => {
     pathname === RouteTo.SignupComplete ||
     pathname === RouteTo.Onboarding ||
     pathname === RouteTo.LevelTest ||
-    pathname.startsWith(RouteTo.LevelTestResult)
+    pathname.startsWith(RouteTo.LevelTestResult) ||
+    pathname.startsWith(RouteTo.Solve + '/')
   ) {
     return null;
   }

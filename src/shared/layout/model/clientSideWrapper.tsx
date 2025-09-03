@@ -1,23 +1,13 @@
 'use client';
-const QueryProvider = dynamic(
-  () => import('@/shared/layout/model/queryProvider'),
-  {
-    ssr: false,
-  }
-);
+
 import Header from '@/feature/header/ui/Header';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-const TabBarComponent = dynamic(
-  () =>
-    import('@/shared/components/bar/TabBar').then((mod) => mod.TabBarComponent),
-  { ssr: false }
-);
-import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
+import QueryProvider from './queryProvider';
+import { TabBarComponent } from '@/shared/components/bar/TabBar';
 
 const ClientSideWrapper = ({ children }: { children: React.ReactNode }) => {
   const path = usePathname();
-
   const isNeccessaryOldHeader = (path: string) => {
     if (
       path === RouteTo.Home ||
@@ -26,6 +16,7 @@ const ClientSideWrapper = ({ children }: { children: React.ReactNode }) => {
       path === RouteTo.Onboarding ||
       path === RouteTo.SignupComplete ||
       path === RouteTo.LevelTest ||
+      path.startsWith(RouteTo.Solve + '/') ||
       path.startsWith(RouteTo.LevelTestResult)
     ) {
       return false;
