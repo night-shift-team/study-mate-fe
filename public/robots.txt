@@ -6,9 +6,7 @@ Disallow: /leveltest/
 Disallow: /login/
 Disallow: /rank/
 Disallow: /mypage/
-Disallow: /signup/
 Disallow: /testresult/
 Disallow: /solve/
-Disallow: /store/
 
 Sitemap: https://developer-dev.study-mate.academy/sitemap.xml

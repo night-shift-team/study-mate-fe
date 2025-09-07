@@ -1,7 +1,10 @@
 import { Metadata } from 'next';
 
 const baseUrl = 'https://developer-dev.study-mate.academy';
-export const pageMetadata = {
+export const pageMetadata: Record<
+  'home' | 'suggestion' | 'announcement' | 'login' | 'signup' | 'store',
+  Metadata
+> = {
   home: {
     applicationName: 'StudyMate',
     title: '스터디메이트',
@@ -24,7 +27,7 @@ export const pageMetadata = {
     alternates: {
       canonical: baseUrl,
     },
-  } as Metadata,
+  },
   suggestion: {
     applicationName: 'StudyMate',
     title: '건의 사항',
@@ -47,7 +50,7 @@ export const pageMetadata = {
     alternates: {
       canonical: `${baseUrl}/suggestion`,
     },
-  } as Metadata,
+  },
   announcement: {
     applicationName: 'StudyMate',
     title: '공지 사항',
@@ -69,5 +72,74 @@ export const pageMetadata = {
     alternates: {
       canonical: `${baseUrl}/announcement`,
     },
-  } as Metadata,
+  },
+  login: {
+    applicationName: 'StudyMate',
+    title: '로그인',
+    description:
+      '스터디메이트에 오신 것을 환영합니다! 구글로그인 또는 이메일로 간편하게 로그인하세요.',
+    openGraph: {
+      siteName: '스터디메이트',
+      title: '로그인',
+      description:
+        '스터디메이트에 오신 것을 환영합니다! 구글로그인 또는 이메일로 간편하게 로그인하세요!',
+      url: `${baseUrl}/login`,
+      type: 'website',
+      images: [
+        {
+          url: `${baseUrl}/assets/backgroundImages/main/studyMate_logo.png`,
+          alt: 'StudyMate 로고',
+        },
+      ],
+    },
+    alternates: {
+      canonical: `${baseUrl}/login`,
+    },
+  },
+  signup: {
+    applicationName: 'StudyMate',
+    title: '회원 가입',
+    description:
+      '스터디메이트에 오신 것을 환영합니다! 구글로그인 또는 이메일로 간편하게 회원가입하세요.',
+    openGraph: {
+      siteName: '스터디메이트',
+      title: '회원 가입',
+      description:
+        '스터디메이트에 오신 것을 환영합니다! 구글로그인 또는 이메일로 간편하게 회원가입하세요!',
+      url: `${baseUrl}/signup`,
+      type: 'website',
+      images: [
+        {
+          url: `${baseUrl}/assets/backgroundImages/main/studyMate_logo.png`,
+          alt: 'StudyMate 로고',
+        },
+      ],
+    },
+    alternates: {
+      canonical: `${baseUrl}/signup`,
+    },
+  },
+  store: {
+    applicationName: 'StudyMate',
+    title: '상점',
+    description:
+      '스터디메이트 상점에서 다양한 아이템을 구매하고, 학습 동기부여를 높여보세요!',
+    openGraph: {
+      siteName: '스터디메이트',
+      title: '상점',
+      description:
+        '스터디메이트 상점에서 다양한 아이템을 구매하고, 학습 동기부여를 높여보세요!',
+      url: `${baseUrl}/store`,
+      type: 'website',
+      images: [
+        {
+          url: `${baseUrl}/assets/backgroundImages/store/storePanel2.svg`,
+          alt: 'StudyMate 상점 로고',
+        },
+      ],
+    },
+    alternates: {
+      canonical: `${baseUrl}/store`,
+    },
+  },
 };
