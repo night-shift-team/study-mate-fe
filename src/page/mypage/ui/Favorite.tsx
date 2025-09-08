@@ -1,7 +1,6 @@
 'use client';
 import { QuestionFavoriteRes } from '../api';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
-import { ConfirmPopup } from './ConfirmPopup';
 import { ProblemDetailInfoRes } from '@/page/adminProblem/api';
 import Arrow from '@public/assets/icons/button/check/Polygon.svg';
 import { SvgIcon } from '@mui/material';
@@ -9,6 +8,10 @@ import useFavorite from '../model/favoriteHook';
 // import { ProblemCategoryTitle } from '@/shared/problem/model/problemInfo.types';
 import { QuestionHistory } from '../model/checkListHook';
 import { AlertPopup } from './AlertPopup';
+import dynamic from 'next/dynamic';
+const ConfirmPopup = dynamic(() => import('@/page/mypage/ui/ConfirmPopup'), {
+  ssr: false,
+});
 
 interface FavoriteListProps {
   favoriteList: QuestionFavoriteRes[];

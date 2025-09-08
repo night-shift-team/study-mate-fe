@@ -1,5 +1,5 @@
 import { resetFocus } from '@/shared/dom/model/focus';
-import useToast, { ToastType } from '@/shared/toast/model/toastHook';
+import useToast from '@/shared/toast/model/toastHook';
 import { useEffect, useRef, useState } from 'react';
 import { setTokens } from './setTokens';
 import {
@@ -17,6 +17,11 @@ import tooltipMountHook from '@/feature/tooltip/model/tooltipMount';
 import { userStore } from '@/shared/state/userStore/model';
 import { TooltipContents } from '@/shared/state/tooltip/model/tooltipContents';
 import { InputStatus } from '@/shared/components/input/useInput';
+import { ToastType } from '@/shared/toast/model/getToastStyle';
+import dynamic from 'next/dynamic';
+const Toaster = dynamic(() => import('@/shared/toast/ui/toaster'), {
+  ssr: false,
+});
 
 const useLoginPage = () => {
   const router = useRouter();
@@ -29,7 +34,7 @@ const useLoginPage = () => {
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
   const { setMountTooltip } = tooltipMountHook();
-  const { Toaster, setToastIcon, setToastDescription } = useToast(
+  const { animationClass, setToastIcon, setToastDescription } = useToast(
     toastOpen,
     setToastOpen
   );
@@ -244,6 +249,7 @@ const useLoginPage = () => {
     // hideTooltip,
     testToast,
     loginLoading,
+    animationClass,
     windowReference,
     validationStatus,
   };

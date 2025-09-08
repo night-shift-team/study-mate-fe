@@ -7,7 +7,7 @@ import {
   ProblemInfoMAQ,
   ProblemInfoSAQ,
 } from '@/shared/problem/model/problemInfo.types';
-import useToast, { ToastType } from '@/shared/toast/model/toastHook';
+import useToast from '@/shared/toast/model/toastHook';
 import { useEffect, useRef, useState } from 'react';
 import {
   getMAQbyCategoryApi,
@@ -27,7 +27,11 @@ import { UserInfo } from '@/shared/user/model/userInfo.types';
 import { ProblemProps } from '../ui/solvingProblemPage';
 import { userStore } from '@/shared/state/userStore/model';
 import { useRouter } from 'next/navigation';
-
+import dynamic from 'next/dynamic';
+import { ToastType } from '@/shared/toast/model/getToastStyle';
+const Toaster = dynamic(() => import('@/shared/toast/ui/toaster'), {
+  ssr: false,
+});
 export interface QuestionType extends ProblemInfoMAQ, ProblemInfoSAQ {
   problemType: ProblemCategoryType;
 }
@@ -65,7 +69,7 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
 
   const currentSolveCategoryRef = useRef<ProblemCategory | null>(null);
   const [toastOpen, setToastOpen] = useState(false);
-  const { Toaster, setToastDescription, setToastIcon } = useToast(
+  const { animationClass, setToastDescription, setToastIcon } = useToast(
     toastOpen,
     setToastOpen
   );
@@ -382,6 +386,7 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
     Toaster,
     user,
     router,
+    animationClass,
     answerFormRef,
     answerListOpen,
     openAnswerList,

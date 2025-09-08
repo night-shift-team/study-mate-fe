@@ -8,7 +8,7 @@ import {
 
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import useAdminLogin from '../model/adminLoginHook';
-import { ToastType } from '@/shared/toast/model/toastHook';
+import { ToastType } from '@/shared/toast/model/getToastStyle';
 
 const AdminLoginForm = ({
   setOpen,

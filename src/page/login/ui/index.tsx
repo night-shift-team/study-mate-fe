@@ -23,11 +23,12 @@ const LoginPage = () => {
     loginLoading,
     windowReference,
     validationStatus,
+    animationClass,
   } = useLoginPage();
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center px-4">
-      <Toaster />
+      <Toaster animationClass={animationClass} />
       <span className="text-title-main">Sign In</span>
       <div className="flex w-full flex-col justify-center">
         <form

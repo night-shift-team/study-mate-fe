@@ -10,7 +10,10 @@ import { getStoreItemListApi, getStorePaymentHistoryApi } from '../api';
 import useToast from '@/shared/toast/model/toastHook';
 import { PurchaseStatus, StoreItemInfo } from '../ui';
 import useOutsideClick from '@/shared/routes/model/useOutsideClick';
-
+import dynamic from 'next/dynamic';
+const Toaster = dynamic(() => import('@/shared/toast/ui/toaster'), {
+  ssr: false,
+});
 const useStorePage = () => {
   const [purchaseOpen, setPurchaseOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
@@ -23,7 +26,10 @@ const useStorePage = () => {
   const [selectedItem, setSelectedItem] = useState<StoreItemInfo | null>(null);
   const [cart, setCart] = useState<StoreItemInfo[]>([]);
   const [storeItems, setStoreItems] = useState<StoreItemDto[]>([]);
-  const { Toaster, setToastDescription } = useToast(toastOpen, setToastOpen);
+  const { animationClass, setToastDescription } = useToast(
+    toastOpen,
+    setToastOpen
+  );
 
   const getStoreItemLists = async () => {
     try {
@@ -99,6 +105,7 @@ const useStorePage = () => {
     setCart,
     setPurchaseOpen,
     purchaseStatus,
+    animationClass,
     Toaster,
   };
 };

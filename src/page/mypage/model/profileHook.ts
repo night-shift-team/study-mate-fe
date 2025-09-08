@@ -2,6 +2,10 @@ import useToast from '@/shared/toast/model/toastHook';
 import { useEffect, useState, useTransition } from 'react';
 import { changeNicknameApi } from '../api';
 import { userStore } from '@/shared/state/userStore/model';
+import dynamic from 'next/dynamic';
+const Toaster = dynamic(() => import('@/shared/toast/ui/toaster'), {
+  ssr: false,
+});
 
 const useProfile = () => {
   const { user, setUser } = userStore.getState();
@@ -13,7 +17,7 @@ const useProfile = () => {
   const [isNicknameChanged, setIsNicknameChanged] = useState(false);
 
   const [isToastOpen, setIsToastOpen] = useState(false);
-  const { Toaster, setToastDescription } = useToast(
+  const { animationClass, setToastDescription } = useToast(
     isToastOpen,
     setIsToastOpen
   );
@@ -75,6 +79,7 @@ const useProfile = () => {
     setNewNickname,
     handleNicknameChange,
     isModalOpen,
+    animationClass,
     setIsModalOpen,
     isPending,
     errorMessage,
