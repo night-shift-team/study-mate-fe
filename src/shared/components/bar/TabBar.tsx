@@ -1,6 +1,4 @@
 'use client';
-
-import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { HomeIcon } from '@public/assets/icons/button/home';
 import { StoreIcon } from '@public/assets/icons/button/tap/Store';
@@ -18,8 +16,7 @@ const TabBarList = [
   { id: 5, title: 'Mypage', icon: MypageIcon, link: '/mypage' },
 ];
 
-export const TabBarComponent = () => {
-  const pathname = usePathname();
+export const TabBarComponent = ({ path: pathname }: { path: string }) => {
   const user = userStore.getState().user;
 
   if (

@@ -27,13 +27,13 @@ const ClientSideWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <QueryProvider>
       <div className="base relative h-full w-full max-w-[450px] bg-grayscale-900">
-        <Header />
+        <Header path={path} />
         <div
           className={`${isNeccessaryOldHeader(path) ? 'mt-[3.2rem] flex h-[calc(100%-3.2rem)] w-full justify-center md:mt-[3.5rem] md:h-[calc(100%-3.5rem)]' : 'flex h-full w-full flex-col'}`}
         >
           {children}
         </div>
-        <TabBarComponent />
+        <TabBarComponent path={path} />
       </div>
     </QueryProvider>
   );

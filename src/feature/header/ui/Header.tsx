@@ -3,17 +3,16 @@ import React from 'react';
 import MobileLogo from '@public/assets/icons/header/mobile_logo.svg';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import UserStateWrapper from '@/shared/state/userStore/model/clientSideWrapper';
 import { userStore } from '@/shared/state/userStore/model';
 import BackButton from '@public/assets/icons/header/left_arrow.svg';
 import ProfileIcon from '@public/assets/icons/header/Avatar.svg';
 
-const Header = () => {
-  const path = usePathname();
+const Header = ({ path }: { path: string }) => {
   const user = userStore.getState().user;
   const router = useRouter();
-
+  console.log('path: ', path);
   if (
     path === RouteTo.Home ||
     path === RouteTo.Login ||
