@@ -162,29 +162,31 @@ const SolvingProblemPage = ({ category }: ProblemProps) => {
                       </div>
                     </button>
                   )}
-                  <AnswerListForm
-                    key={selectedAnswer}
-                    answerFormRef={answerFormRef}
-                    answerClosedFormRef={answerClosedFormRef}
-                    answerListOpen={answerListOpen}
-                    levelTestLists={[]}
-                    currentQuestionNo={0}
-                    isGetResultApiLoading={false}
-                    handleAnswerSelect={handleAnswerSelect}
-                    openAnswerList={openAnswerList}
-                    closeAnswerList={closeAnswerList}
-                    selectedAnswer={Number(selectedAnswer)}
-                    problemInfo={
-                      currentQuestionWithType
-                        ? (Object.fromEntries(
-                            Object.entries(currentQuestionWithType).filter(
-                              ([attr]) =>
-                                attr !== ('problemType' as keyof QuestionType)
-                            )
-                          ) as ProblemInfoMAQ)
-                        : undefined
-                    }
-                  />
+                  {answerListOpen && (
+                    <AnswerListForm
+                      key={selectedAnswer}
+                      answerFormRef={answerFormRef}
+                      answerClosedFormRef={answerClosedFormRef}
+                      answerListOpen={answerListOpen}
+                      levelTestLists={[]}
+                      currentQuestionNo={0}
+                      isGetResultApiLoading={false}
+                      handleAnswerSelect={handleAnswerSelect}
+                      openAnswerList={openAnswerList}
+                      closeAnswerList={closeAnswerList}
+                      selectedAnswer={Number(selectedAnswer)}
+                      problemInfo={
+                        currentQuestionWithType
+                          ? (Object.fromEntries(
+                              Object.entries(currentQuestionWithType).filter(
+                                ([attr]) =>
+                                  attr !== ('problemType' as keyof QuestionType)
+                              )
+                            ) as ProblemInfoMAQ)
+                          : undefined
+                      }
+                    />
+                  )}
                 </>
               </div>
               <div className="flex w-full gap-2 pb-4">
