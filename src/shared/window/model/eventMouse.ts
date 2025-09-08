@@ -1,4 +1,5 @@
 export const RootWheelSetStateListener = (callback: () => void) => {
+  if (typeof document === 'undefined') return;
   const rootContainer = document.getElementById('root-container');
   if (!rootContainer) return;
   const wheelListener = () => {
@@ -9,6 +10,8 @@ export const RootWheelSetStateListener = (callback: () => void) => {
 };
 
 export const HorizonTalScrollContainer = () => {
+  if (typeof document === 'undefined') return;
+
   const container = document.getElementById('horizontal-scroll-container');
   if (!container) return;
 
@@ -24,6 +27,8 @@ export const outSideClickContainer = (
   idString: string,
   callback: () => void
 ) => {
+  if (typeof document === 'undefined') return;
+
   const container = document.getElementById('root-container');
   if (!container) return;
 

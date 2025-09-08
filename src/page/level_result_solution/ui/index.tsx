@@ -12,10 +12,6 @@ import CircleCancel from '@public/assets/icons/leveltest/Subtract.svg';
 import ButtonPixel from '@/shared/button/buttonPixel';
 import { useRouter } from 'next/navigation';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import NewHeader from '@/feature/header/ui/newheader';
-import Link from 'next/link';
-import HomeLogo from '@public/assets/icons/header/mobile_logo.svg';
-import Avatar from '@public/assets/icons/header/Avatar.svg';
 
 const TestResultSolutionPage = ({
   type,

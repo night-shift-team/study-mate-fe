@@ -8,6 +8,9 @@ export const openNewWindowWithoutDuplicate = (
   link: string,
   afterCallback?: () => Promise<void> | void
 ) => {
+  if (typeof document === 'undefined') {
+    return;
+  }
   const windowWidth = 400;
   const windowHeight = 650;
 
