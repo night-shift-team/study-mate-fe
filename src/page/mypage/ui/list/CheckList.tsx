@@ -1,6 +1,6 @@
 import React from 'react';
-import { MobileCheckList } from './MobileCheckList';
-import useCheckList, { QuestionHistory } from '../model/checkListHook';
+import { MobileCheckList } from '../list/MobileCheckList';
+import useCheckList, { QuestionHistory } from '../../model/checkListHook';
 import { ProblemCategoryTitle } from '@/shared/problem/model/problemInfo.types';
 
 interface CheckListProps {
@@ -20,7 +20,7 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
 
   return (
     <>
-      <div className="flex flex-col items-center overflow-auto">
+      <div className="flex h-[60vh] flex-col items-center overflow-auto pt-[20px]">
         <div className="w-[100%] overflow-auto scrollbar-hide">
           {/* <div className="flex">
             {TempCategories.map((category, index) => {

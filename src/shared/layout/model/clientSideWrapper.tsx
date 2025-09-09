@@ -1,10 +1,16 @@
 'use client';
 
+import dynamic from 'next/dynamic';
+
 import Header from '@/feature/header/ui/Header';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
+const TabBarComponent = dynamic(
+  () =>
+    import('@/shared/components/bar/TabBar').then((mod) => mod.TabBarComponent),
+  { ssr: false }
+);
 import { usePathname } from 'next/navigation';
 import QueryProvider from './queryProvider';
-import { TabBarComponent } from '@/shared/components/bar/TabBar';
 
 const ClientSideWrapper = ({ children }: { children: React.ReactNode }) => {
   const path = usePathname();
@@ -26,7 +32,7 @@ const ClientSideWrapper = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <QueryProvider>
-      <div className="base relative h-full w-full max-w-[450px] bg-grayscale-900">
+      <div className="base relative h-full w-full max-w-[450px] bg-[#FAFAFA] dark:bg-grayscale-900">
         <Header path={path} />
         <div
           className={`${isNeccessaryOldHeader(path) ? 'mt-[3.2rem] flex h-[calc(100%-3.2rem)] w-full justify-center md:mt-[3.5rem] md:h-[calc(100%-3.5rem)]' : 'flex h-full w-full flex-col'}`}

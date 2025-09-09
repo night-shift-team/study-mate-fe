@@ -8,11 +8,11 @@ import UserStateWrapper from '@/shared/state/userStore/model/clientSideWrapper';
 import { userStore } from '@/shared/state/userStore/model';
 import BackButton from '@public/assets/icons/header/left_arrow.svg';
 import ProfileIcon from '@public/assets/icons/header/Avatar.svg';
-
+import { DarkModeButton } from '@/shared/button/DarkModeButton';
 const Header = ({ path }: { path: string }) => {
   const user = userStore.getState().user;
   const router = useRouter();
-  console.log('path: ', path);
+
   if (
     path === RouteTo.Home ||
     path === RouteTo.Login ||
@@ -28,7 +28,7 @@ const Header = ({ path }: { path: string }) => {
 
   return (
     <UserStateWrapper>
-      <div className="fixed z-[100] flex h-[3.2rem] w-full max-w-[450px] bg-grayscale-900 md:h-[3.5rem]">
+      <div className="dark:bg-grayscale-900md:h-[3.5rem] bg-[#FAFAFA ] fixed z-[100] flex h-[3.2rem] w-full max-w-[450px]">
         <div
           className={`relative flex h-full w-full items-center justify-between px-0`}
         >
@@ -40,14 +40,18 @@ const Header = ({ path }: { path: string }) => {
               <MobileLogo className="w-[60px]" />
             </Link>
           </div>
+
           <div className="absolute right-4 rounded-lg">
             {user?.loginId && (
               <div className="h-[40px] w-[40px] rounded-16p">
-                <ProfileIcon className="h-full w-full" />
+                {path === RouteTo.Mypage ? (
+                  <DarkModeButton />
+                ) : (
+                  <ProfileIcon className="h-full w-full" />
+                )}
               </div>
             )}
           </div>
-
           {/* 모바일 좌측 뒤로가기 버튼 */}
           {path === RouteTo.Home ||
           path === RouteTo.Login ||

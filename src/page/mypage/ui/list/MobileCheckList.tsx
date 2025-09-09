@@ -8,6 +8,7 @@ import Arrow from '@public/assets/icons/button/check/Polygon.svg';
 import { useRouter } from 'next/navigation';
 import { SvgIcon } from '@mui/material';
 import { ProblemCategoryTitle } from '@/shared/problem/model/problemInfo.types';
+import DarkPolygon from '@public/assets/icons/button/check/DarkPolygon.svg';
 
 interface MobileCheckListProps {
   category: ProblemCategoryTitle;
@@ -42,13 +43,18 @@ export const MobileCheckList = ({
         {category}
       </div>
       <div
-        className="absolute bottom-[20%] right-[5%] z-10 flex items-center justify-center gap-4 text-[20px] text-white"
+        className="absolute bottom-[20%] right-[5%] z-10 flex items-center justify-center gap-4 text-[20px] font-semibold text-black dark:text-white"
         onClick={() => router.push(`/mypage/${category}`)}
       >
         <span>Go to</span>
         <SvgIcon
           inheritViewBox
-          component={Arrow}
+          component={
+            typeof window !== 'undefined' &&
+            window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? Arrow
+              : DarkPolygon
+          }
           sx={{ width: '8%', height: '8%' }}
         />
       </div>

@@ -7,7 +7,7 @@ interface OrderListProps {
 
 export const OrderList = ({ title, time, price, count }: OrderListProps) => {
   return (
-    <div className="relative rounded-[8px] pb-8p pl-16p pr-16p pt-8p text-white">
+    <div className="relative rounded-[8px] pb-8p pl-16p pr-16p pt-8p text-black dark:text-white">
       <div className="absolute inset-0 z-0 rounded-md bg-[#E7924A] opacity-60" />
       <div className="relative z-10 space-y-2">
         <div>
@@ -19,7 +19,7 @@ export const OrderList = ({ title, time, price, count }: OrderListProps) => {
           <span className="text-[18px]">{title}</span>
           <span className="mr-16p text-[16px] text-yellow-300">{count}개</span>
         </div>
-        <div className="flex justify-between text-sm text-white">
+        <div className="flex justify-between text-sm text-black dark:text-white">
           <span className="text-grayscale-400">{time}</span>
           <span>₩{price}</span>
         </div>

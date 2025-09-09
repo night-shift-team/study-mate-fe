@@ -22,14 +22,16 @@ export const TopRankUser = ({
       className={`relative flex ${heightClass} w-[10rem] animate-fade-up justify-center ${delayClass}`}
     >
       <div className="flex flex-col items-center">
-        <span className="text-[20px]">{rank}</span>
+        <span className="text-[20px] text-black dark:text-white">{rank}</span>
         <SvgIcon
           component={levelIcon}
           inheritViewBox
           sx={{ width: 60, height: 60 }}
           className="mt-4"
         />
-        <div className="text-[20px]">{user.nickname}</div>
+        <div className="text-[20px] text-black dark:text-white">
+          {user.nickname}
+        </div>
         <div className="text-[20px] text-point-yellow">{user.userScore}</div>
       </div>
     </div>

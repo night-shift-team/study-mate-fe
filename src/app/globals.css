@@ -219,7 +219,6 @@
 }
 
 .custom-dotted-border {
-  border-bottom-style: dotted;
-  border-bottom-width: 4px;
-  border-bottom-color: white;
+  border-bottom-style: dotted !important;
+  border-bottom-width: 4px !important;
 }

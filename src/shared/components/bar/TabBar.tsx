@@ -19,6 +19,7 @@ const TabBarList = [
 export const TabBarComponent = ({ path: pathname }: { path: string }) => {
   const user = userStore.getState().user;
 
+  // 특정 페이지에서는 TabBar 숨김
   if (
     pathname === RouteTo.Home ||
     pathname === RouteTo.Login ||
@@ -35,9 +36,14 @@ export const TabBarComponent = ({ path: pathname }: { path: string }) => {
   return (
     <>
       {user?.loginId && (
-        <div className="fixed bottom-0 flex h-[80px] w-full max-w-[450px] items-center justify-around bg-black font-pixel text-xs font-semibold">
+        <div className="fixed bottom-0 z-[10000] flex h-[80px] w-full max-w-[450px] items-center justify-around bg-[#FAFAFA] font-pixel text-xs font-semibold dark:bg-black">
           {TabBarList.map(({ id, title, icon: IconComponent, link }) => {
             const isSelected = pathname === link;
+
+            // 선택/비선택 색상 공통 클래스
+            const iconColor = isSelected
+              ? 'text-black dark:text-white'
+              : 'text-[#8F9098] hover:text-black group-hover:text-black dark:text-gray-600 dark:hover:text-white dark:group-hover:text-white';
 
             return (
               <Link
@@ -45,22 +51,15 @@ export const TabBarComponent = ({ path: pathname }: { path: string }) => {
                 href={link}
                 className="group flex cursor-pointer flex-col items-center justify-center"
               >
+                {/* 아이콘 */}
                 <IconComponent
-                  className={`mb-1 transition-colors ${
-                    isSelected
-                      ? 'text-white'
-                      : 'text-gray-600 group-hover:text-white'
-                  }`}
+                  className={`mb-1 transition-colors ${iconColor}`}
                   width={24}
                   height={24}
                 />
-                <span
-                  className={`transition-colors ${
-                    isSelected
-                      ? 'text-white'
-                      : 'text-gray-600 group-hover:text-white'
-                  }`}
-                >
+
+                {/* 텍스트 */}
+                <span className={`text-[10px] transition-colors ${iconColor}`}>
                   {title}
                 </span>
               </Link>

@@ -6,7 +6,8 @@ import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import useGrassChart from '../model/grassChartHook';
 
 const getColorByCount = (count: number) => {
-  if (count === 0) return 'bg-grass border border-white';
+  if (count === 0)
+    return 'bg-grass border border-[#D3D3D3]/70 dark:border-white';
   if (count <= 2) return 'bg-grass-100';
   if (count <= 4) return 'bg-grass-200';
   if (count <= 7) return 'bg-grass-300';
@@ -53,7 +54,7 @@ const GrassChart = () => {
         <span className="font-pixel text-[20px] font-semibold">
           {currentDate.format('MMMM YYYY')}
         </span>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 text-black dark:text-white">
           <button
             onClick={() => setCurrentDate(currentDate.subtract(1, 'month'))}
           >
@@ -71,7 +72,7 @@ const GrassChart = () => {
       </div>
 
       {/* 요일 헤더 */}
-      <div className="mb-3 grid grid-cols-7 text-center text-xs font-bold text-white">
+      <div className="mb-3 grid grid-cols-7 text-center text-xs font-bold text-black dark:text-white">
         {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => (
           <div key={day}>{day}</div>
         ))}
@@ -83,7 +84,7 @@ const GrassChart = () => {
           cell ? (
             <div
               key={idx}
-              className={`flex h-[50px] items-center justify-center rounded-full ${cell.count === 0 ? 'text-white' : 'text-black'} transition-colors ${getColorByCount(
+              className={`flex h-[50px] items-center justify-center rounded-full ${cell.count === 0 ? 'text-black dark:text-white' : 'text-black'} transition-colors ${getColorByCount(
                 cell.count
               )}`}
             >

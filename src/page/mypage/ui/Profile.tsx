@@ -8,6 +8,7 @@ import Level1Icon from '@public/assets/icons/character/Lv1.svg';
 import ArrowIcon from '@public/assets/icons/button/check/Polygon.svg';
 import { SvgIcon } from '@mui/material';
 import { ToastType } from '@/shared/toast/model/getToastStyle';
+import DarkPolygon from '@public/assets/icons/button/check/DarkPolygon.svg';
 
 const Profile = () => {
   const {
@@ -48,24 +49,31 @@ const Profile = () => {
       </label>
 
       {/* 닉네임 및 버튼 */}
-      <div className="flex flex-col">
-        <div className="text-white">
+      <div className="flex flex-col gap-3">
+        <div className="text-black dark:text-white">
           {user ? (
             <p className="text-title-page font-bold">{user.nickname}</p>
           ) : null}
         </div>
         <button
-          className="flex gap-2 text-button-1 font-bold text-white"
+          className="flex gap-2 text-button-1 font-bold text-black dark:text-white"
           onClick={() => setIsModalOpen(true)}
         >
           Edit Nickname
-          <div className="h-[15px] w-[15px]">
+          <span className="relative h-[15px] w-[15px]">
             <SvgIcon
-              inheritViewBox
+              className="dark:none absolute left-0 top-0 hidden h-[15px] w-[15px]"
               component={ArrowIcon}
-              sx={{ width: '100%', height: '100%' }}
+              inheritViewBox
+              sx={{ width: '15px', height: '15px' }}
             />
-          </div>
+            <SvgIcon
+              className="absolute left-0 top-0 h-[15px] w-[15px] dark:hidden"
+              component={DarkPolygon}
+              inheritViewBox
+              sx={{ width: '15px', height: '15px' }}
+            />
+          </span>
         </button>
       </div>
 
