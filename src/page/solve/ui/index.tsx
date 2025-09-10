@@ -39,7 +39,7 @@ const SolveMainPage = () => {
             <Spinner size="lg" />
           </div>
         ) : (
-          <div className="grid w-full place-items-center gap-[0.5rem]">
+          <div className="grid w-full place-items-center gap-[0.5rem] pb-[2rem]">
             {myTodaySolveData.map((category, index) => {
               return (
                 <div
