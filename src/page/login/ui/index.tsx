@@ -9,6 +9,7 @@ import useLoginPage from '../model/loginPageHook';
 import InputForm from '@/shared/input/inputForm';
 import { SvgIcon } from '@mui/material';
 import ButtonPixel from '@/shared/button/buttonPixel';
+import HomeLogo from '@public/assets/icons/header/mobile_logo.svg';
 
 const LoginPage = () => {
   const {
@@ -29,7 +30,12 @@ const LoginPage = () => {
   return (
     <div className="flex h-full w-full flex-col items-center justify-center px-4">
       <Toaster animationClass={animationClass} />
-      <span className="text-title-main">Sign In</span>
+      <SvgIcon
+        component={HomeLogo}
+        inheritViewBox
+        sx={{ width: 'auto', height: '40px' }}
+      />
+      <span className="mt-4 text-title-main">Sign In</span>
       <div className="flex w-full flex-col justify-center">
         <form
           id={'loginForm'}
