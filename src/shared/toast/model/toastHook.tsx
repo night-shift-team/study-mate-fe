@@ -30,17 +30,17 @@ const useToast = (
 
     if (open) {
       // 토스트 표시 (애니메이션 인)
-      setAnimationClass('animate-toast-in');
+      setAnimationClass('animate-toast-in pointer-events-auto');
 
       // 일정 시간 후 애니메이션 아웃
       timeoutId1 = setTimeout(() => {
-        setAnimationClass('animate-toast-out');
+        setAnimationClass('animate-toast-out pointer-events-none');
       }, 20000);
 
       // 애니메이션 완료 후 상태 초기화
       timeoutId2 = setTimeout(() => {
         setOpen(false);
-        setAnimationClass('opacity-0 -translate-y-full');
+        setAnimationClass('opacity-0 -translate-y-full pointer-events-none');
       }, 25000);
     }
 

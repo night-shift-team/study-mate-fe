@@ -20,7 +20,9 @@ const Toaster = ({
 }) => {
   return createPortal(
     <div
-      className={`fixed left-1/2 top-[7.5rem] flex w-auto min-w-[290px] max-w-[95vw] items-center justify-between gap-16 rounded-xl p-16p text-[0.9rem] md:top-1 ${getToastBackgroundColor(status)} rounded-sm md:top-16 ${animationClass} z-[10000]`}
+      id="toaster"
+      className={`pointer-events-none fixed left-1/2 top-[7.5rem] flex w-auto min-w-[290px] max-w-[95vw] items-center justify-between gap-16 rounded-xl p-16p text-[0.9rem] md:top-1 ${getToastBackgroundColor(status)} rounded-sm md:top-16 ${animationClass} z-[10000]`}
+      onClick={() => console.log('clicked')}
     >
       <div className="flex items-center gap-16">
         <div className="flex-shrink-0">{getToastStatusIcon(status)}</div>
@@ -31,7 +33,18 @@ const Toaster = ({
       </div>
 
       <div className="overflow-hidden rounded-full">
-        <Image src={XIcon} alt="Close" width={12} height={12} />
+        <Image
+          src={XIcon}
+          alt="Close"
+          width={12}
+          height={12}
+          onClick={() => {
+            if (typeof document !== 'undefined') {
+              const toasterEl = document.getElementById('toaster');
+              toasterEl?.classList.add('animate-toast-out');
+            }
+          }}
+        />
       </div>
     </div>,
     document.body
