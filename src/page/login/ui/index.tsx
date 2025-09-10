@@ -43,6 +43,7 @@ const LoginPage = () => {
           onSubmit={handleSubmit}
           className="flex w-full flex-col gap-4"
           noValidate
+          autoComplete="off"
         >
           <div className="flex w-full flex-col gap-2">
             <div className="flex w-full flex-col">

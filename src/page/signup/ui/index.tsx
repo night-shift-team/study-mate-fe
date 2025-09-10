@@ -38,6 +38,7 @@ const SignUpPage = () => {
           onSubmit={handleSubmit}
           className="w-full max-w-[400px]"
           noValidate
+          autoComplete="off"
         >
           <div className="flex flex-col gap-2">
             <div className="flex flex-col">

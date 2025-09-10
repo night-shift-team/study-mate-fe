@@ -24,7 +24,7 @@ const WriteSuggestionPage = () => {
           Hey {user?.nickname},<br /> What can I help you with?
         </div>
         <div className="mt-2 text-white">
-          <form className="space-y-4">
+          <form className="space-y-4" autoComplete="off">
             <div>
               <input
                 type="text"
