@@ -10,9 +10,9 @@ import { setTokens } from './setTokens';
 import { getUserInfo } from './getUserInfo';
 
 import { LoginToastText } from './loginToastText';
-import { ToastType } from '@/shared/toast/model/toastHook';
 import { UserInfo } from '@/shared/user/model/userInfo.types';
 import { Ecode, EcodeMessage } from '@/shared/api/model/ecode';
+import { ToastType } from '@/shared/toast/model/getToastStyle';
 
 export const addSocialLoginRedirectDataListener = (
   setLoading: Dispatch<SetStateAction<boolean>>,

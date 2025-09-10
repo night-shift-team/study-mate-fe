@@ -7,7 +7,7 @@ import {
   ProblemInfoMAQ,
   ProblemInfoSAQ,
 } from '@/shared/problem/model/problemInfo.types';
-import useToast, { ToastType } from '@/shared/toast/model/toastHook';
+import useToast from '@/shared/toast/model/toastHook';
 import { useEffect, useRef, useState } from 'react';
 import {
   getMAQbyCategoryApi,
@@ -26,8 +26,13 @@ import { Ecode } from '@/shared/api/model/ecode';
 import { UserInfo } from '@/shared/user/model/userInfo.types';
 import { ProblemProps } from '../ui/solvingProblemPage';
 import { userStore } from '@/shared/state/userStore/model';
-
-interface QuestionType extends ProblemInfoMAQ, ProblemInfoSAQ {
+import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
+import { ToastType } from '@/shared/toast/model/getToastStyle';
+const Toaster = dynamic(() => import('@/shared/toast/ui/toaster'), {
+  ssr: false,
+});
+export interface QuestionType extends ProblemInfoMAQ, ProblemInfoSAQ {
   problemType: ProblemCategoryType;
 }
 interface CanSolveProblemInfo {
@@ -63,9 +68,8 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
   >(null);
 
   const currentSolveCategoryRef = useRef<ProblemCategory | null>(null);
-
   const [toastOpen, setToastOpen] = useState(false);
-  const { Toaster, setToastDescription, setToastIcon } = useToast(
+  const { animationClass, setToastDescription, setToastIcon } = useToast(
     toastOpen,
     setToastOpen
   );
@@ -73,6 +77,36 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isPageLoading, setIsPageLoading] = useState(true);
+
+  const answerFormRef = useRef<HTMLDivElement>(null);
+  const [answerListOpen, setAnswerListOpen] = useState(false);
+  const answerClosedFormRef = useRef<HTMLDivElement>(null);
+
+  const router = useRouter();
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (
+        answerFormRef.current &&
+        !answerFormRef.current.contains(event.target as Node)
+      ) {
+        closeAnswerList();
+      }
+    };
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, []);
+  const closeAnswerList = () => {
+    setAnswerListOpen(false);
+  };
+  const openAnswerList = () => {
+    setAnswerListOpen(true);
+  };
+
+  const handleAnswerSelect = (index: number) => {
+    setSelectedAnswer(String(index));
+  };
 
   const getRandomProblem = async () => {
     try {
@@ -350,6 +384,15 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
     isLoading,
     isPageLoading,
     Toaster,
+    user,
+    router,
+    animationClass,
+    answerFormRef,
+    answerListOpen,
+    openAnswerList,
+    closeAnswerList,
+    answerClosedFormRef,
+    handleAnswerSelect,
   };
 };
 export default useSolvingProblem;

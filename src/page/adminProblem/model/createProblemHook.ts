@@ -11,10 +11,16 @@ import {
   ProblemCategory,
   ProblemCategoryType,
 } from '@/shared/problem/model/problemInfo.types';
-import useToast, { ToastType } from '@/shared/toast/model/toastHook';
+
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { ServerErrorResponse } from '@/shared/api/model/config';
 import { Ecode, EcodeMessage } from '@/shared/api/model/ecode';
+import dynamic from 'next/dynamic';
+import { ToastType } from '@/shared/toast/model/getToastStyle';
+import useToast from '@/shared/toast/model/toastHook';
+const Toaster = dynamic(() => import('@/shared/toast/ui/toaster'), {
+  ssr: false,
+});
 
 const useCreateProblem = () => {
   const router = useRouter();
@@ -31,7 +37,7 @@ const useCreateProblem = () => {
     });
 
   const [toastOpen, setToastOpen] = useState(false);
-  const { Toaster, setToastDescription, setToastIcon } = useToast(
+  const { animationClass, setToastDescription, setToastIcon } = useToast(
     toastOpen,
     setToastOpen
   );
@@ -141,6 +147,7 @@ const useCreateProblem = () => {
     problemDetailInfo,
     setProblemDetailInfo,
     Toaster,
+    animationClass,
     isLoading,
     handleSubmit,
   };

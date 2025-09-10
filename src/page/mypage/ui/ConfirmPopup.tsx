@@ -2,7 +2,7 @@
 
 import { createPortal } from 'react-dom';
 
-export const ConfirmPopup = ({
+const ConfirmPopup = ({
   message,
   onConfirm,
   onCancel,
@@ -36,3 +36,5 @@ export const ConfirmPopup = ({
     document.body
   );
 };
+
+export default ConfirmPopup;

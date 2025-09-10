@@ -2,10 +2,10 @@
 
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import { PopupConfirm } from '@/shared/popUp/ui/popupV2';
 import useSignUpPage from '../model/signUpPageHook';
 import InputForm from '@/shared/input/inputForm';
 import ButtonPixel from '@/shared/button/buttonPixel';
+import Link from 'next/link';
 
 export interface SignUpFormData {
   name: string;
@@ -23,8 +23,6 @@ const SignUpPage = () => {
     formData,
     handleChange,
     // Toaster,
-    popupOpen,
-    router,
     handleSubmit,
     isLoading,
     validationStatus,
@@ -33,16 +31,7 @@ const SignUpPage = () => {
   return (
     <div className="relative flex h-full w-full flex-col items-center justify-center px-4">
       {/* <Toaster /> */}
-      {popupOpen && (
-        <PopupConfirm
-          size="sm"
-          title="회원가입"
-          content="회원가입이 정상적으로 완료되었습니다"
-          onConfirm={() => {
-            router.push(RouteTo.Login);
-          }}
-        />
-      )}
+
       <span className="text-title-main">Register</span>
       <div className="mt-12 flex w-full flex-col items-center gap-4">
         <form
@@ -128,6 +117,12 @@ const SignUpPage = () => {
                   Sign Up
                 </ButtonPixel>
               )}
+            </div>
+            <div className="mt-12 flex justify-center whitespace-pre-wrap font-pretandard text-label">
+              <span>{'Already have an account? '}</span>
+              <Link href={RouteTo.Login}>
+                <span className="text-point-orange">Login here</span>
+              </Link>
             </div>
           </div>
         </form>

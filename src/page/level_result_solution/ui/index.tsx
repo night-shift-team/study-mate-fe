@@ -10,16 +10,33 @@ import { useEffect, useState } from 'react';
 import CircleCheck from '@public/assets/icons/leveltest/checkedCircle.svg';
 import CircleCancel from '@public/assets/icons/leveltest/Subtract.svg';
 import ButtonPixel from '@/shared/button/buttonPixel';
+import { useRouter } from 'next/navigation';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
 
 const TestResultSolutionPage = ({
+  type,
   problemId,
   userAnswer,
+  problemInfo,
 }: {
-  problemId: string;
-  userAnswer: string;
+  type: 'test' | 'favorite' | 'history' | 'solve';
+  problemId?: string;
+  userAnswer?: string;
+  problemInfo?: ProblemDetailInfoRes;
 }) => {
-  const [problemDetailInfo, setProblemDetailInfo] =
-    useState<ProblemDetailInfoRes>();
+  if (!type) return;
+  // problemId와 userAnswer는 둘다 존재하거나 둘다 없어야함. 둘다 없을때는 반드시 problemInfo가 있어야함. 그렇지 않으면 리턴
+  if (
+    (!problemId && userAnswer) ||
+    (problemId && !userAnswer) ||
+    (!problemId && !userAnswer && !problemInfo)
+  )
+    return;
+
+  const [problemDetailInfo, setProblemDetailInfo] = useState<
+    ProblemDetailInfoRes | undefined
+  >(problemInfo);
+  const router = useRouter();
 
   const getProblemDetail = async (id: string) => {
     try {
@@ -35,9 +52,11 @@ const TestResultSolutionPage = ({
   };
 
   useEffect(() => {
-    getProblemDetail(problemId).then((data) => {
-      setProblemDetailInfo(data);
-    });
+    if (problemId && userAnswer) {
+      getProblemDetail(problemId).then((data) => {
+        setProblemDetailInfo(data);
+      });
+    }
   }, []);
   // ["Choice 1 for question 3", "Choice 2 for question 3", "Choice 3 for question 3", "Choice 4 for question 3"]
   // console.log(problemDetailInfo?.options);
@@ -113,22 +132,75 @@ const TestResultSolutionPage = ({
       </div>
 
       <div className="mt-8 flex flex-col gap-4">
-        <ButtonPixel
-          status="default"
-          onClick={() => {
-            window.history.back();
-          }}
-        >
-          Save this result
-        </ButtonPixel>
-        <ButtonPixel
-          status="default"
-          onClick={() => {
-            window.history.back();
-          }}
-        >
-          Go to Folder
-        </ButtonPixel>
+        {type === 'test' && (
+          <>
+            <ButtonPixel
+              status="default"
+              onClick={() => {
+                // 스크랩 api 호출
+              }}
+            >
+              Save this result
+            </ButtonPixel>
+            <ButtonPixel
+              status="default"
+              onClick={() => {
+                // 스크랩 폴더로 이동
+              }}
+            >
+              Go to Scrap Folder
+            </ButtonPixel>
+          </>
+        )}
+        {type === 'solve' && (
+          <>
+            <ButtonPixel
+              status="default"
+              onClick={() => {
+                // 스크랩 api 호출
+              }}
+            >
+              Save this result
+            </ButtonPixel>
+            <ButtonPixel
+              status="default"
+              onClick={() => {
+                router.push(
+                  RouteTo.Solve +
+                    (problemInfo
+                      ? '/' + problemInfo.category.split('_')[0]
+                      : '')
+                );
+              }}
+            >
+              Next Question
+            </ButtonPixel>
+          </>
+        )}
+        {type === 'favorite' && (
+          <>
+            <ButtonPixel
+              status="default"
+              onClick={() => {
+                window.history.back();
+              }}
+            >
+              Back to List
+            </ButtonPixel>
+          </>
+        )}
+        {type === 'history' && (
+          <>
+            <ButtonPixel
+              status="default"
+              onClick={() => {
+                // 스크랩 api 호출
+              }}
+            >
+              Save this result
+            </ButtonPixel>
+          </>
+        )}
       </div>
     </div>
   );

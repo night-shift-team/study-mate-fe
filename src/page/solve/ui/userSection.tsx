@@ -22,17 +22,20 @@ export const UserSection = () => {
   return (
     <div className="flex w-full flex-col text-black dark:text-white">
       <div className="font-pixel text-[40px] font-bold">{user?.nickname}!</div>
-      <div className="flex justify-between gap-2 p-16p">
+      <div className="flex justify-between gap-1 p-16p">
         <div className="flex flex-col">
-          <span className="text-[18px]">현재 보유 포인트</span>
-          <span className="mt-8p text-[16px]">성장한 만큼, 즐기세요!</span>
+          <span className="font-pretandard">
+            현재 보유 포인트 : {user?.userScore}p
+          </span>
+          <span className="v mt-8p text-[16px]">성장한 만큼, 즐기세요!</span>
           <Link href={RouteTo.Store}>
             <span className="flex items-center gap-2 font-pixel text-[20px] font-bold">
               Go to store
-              <span className="relative h-[15px] w-[15px]">
+              <span className="">
                 <SvgIcon
                   inheritViewBox
                   component={
+                    typeof window !== 'undefined' &&
                     window.matchMedia('(prefers-color-scheme: dark)').matches
                       ? Polygon
                       : DarkPolygon
@@ -42,7 +45,6 @@ export const UserSection = () => {
               </span>
             </span>
           </Link>
-
           <div className="flex items-center gap-2 text-point-yellow">
             <span className="font-pixel text-[24px] font-bold">Today:</span>{' '}
             {todaySolveTotal} 문제 완료

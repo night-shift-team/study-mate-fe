@@ -3,16 +3,16 @@ import React from 'react';
 import MobileLogo from '@public/assets/icons/header/mobile_logo.svg';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import UserStateWrapper from '@/shared/state/userStore/model/clientSideWrapper';
 import { userStore } from '@/shared/state/userStore/model';
 import BackButton from '@public/assets/icons/header/backButton.svg';
 import DarkBackButton from '@public/assets/icons/header/dark_backButton.svg';
 import ProfileIcon from '@public/assets/icons/header/Avatar.svg';
 import { DarkModeButton } from '@/shared/button/DarkModeButton';
-import { IoIosArrowBack } from 'react-icons/io';
-const Header = () => {
-  const path = usePathname();
+
+import { SvgIcon } from '@mui/material';
+const Header = ({ path }: { path: string }) => {
   const user = userStore.getState().user;
   const router = useRouter();
 
@@ -21,8 +21,10 @@ const Header = () => {
     path === RouteTo.Login ||
     path === RouteTo.Signup ||
     path === RouteTo.Onboarding ||
+    path === RouteTo.SignupComplete ||
     path === RouteTo.LevelTest ||
-    path.startsWith(RouteTo.LevelTestResult)
+    path.startsWith(RouteTo.LevelTestResult) ||
+    path.startsWith(RouteTo.Solve + '/')
   ) {
     return null;
   }
@@ -58,14 +60,17 @@ const Header = () => {
           path === RouteTo.Login ||
           path === RouteTo.Solve ||
           path === RouteTo.AdminLogin ||
+          path.startsWith(RouteTo.Solve + '/') ||
           path === RouteTo.AdminDashboard ? null : (
             <button
               onClick={() => router.back()}
               className="relative z-[10000] flex cursor-pointer items-center"
             >
-              <IoIosArrowBack
-                size={24}
-                className="ml-[20px] text-black dark:text-white"
+
+              <SvgIcon
+                component={BackButton}
+                inheritViewBox
+                sx={{ width: 20, height: 20, color: 'red' }}
               />
             </button>
           )}

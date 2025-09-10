@@ -22,6 +22,7 @@ interface AnswerListFormProps {
   closeAnswerList: () => void;
   selectedAnswer: number | null;
   answerClosedFormRef: React.RefObject<HTMLDivElement | null>;
+  problemInfo?: ProblemInfoMAQ;
 }
 
 const AnswerListForm = ({
@@ -34,6 +35,7 @@ const AnswerListForm = ({
   selectedAnswer,
   answerFormRef,
   answerClosedFormRef,
+  problemInfo,
 }: AnswerListFormProps) => {
   if (!answerClosedFormRef.current) return;
   const [isMounted, setIsMounted] = useState(false);
@@ -54,7 +56,9 @@ const AnswerListForm = ({
               {Array.from(
                 {
                   length: Object.keys(
-                    levelTestLists[currentQuestionNo] ?? []
+                    problemInfo
+                      ? problemInfo
+                      : (levelTestLists[currentQuestionNo] ?? [])
                   ).filter((keyValue) => keyValue.startsWith('choice') === true)
                     .length,
                 },
@@ -79,7 +83,11 @@ const AnswerListForm = ({
                   >
                     <span className="font-pretandard text-quiz-option">
                       {
-                        (levelTestLists[currentQuestionNo] as ProblemInfoMAQ)[
+                        (problemInfo
+                          ? problemInfo
+                          : (levelTestLists[
+                              currentQuestionNo
+                            ] as ProblemInfoMAQ))[
                           `choice${index + 1}` as keyof ChoiceAttrs
                         ]
                       }

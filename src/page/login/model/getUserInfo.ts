@@ -8,10 +8,10 @@ import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { Dispatch, SetStateAction } from 'react';
 import { LoginToastText } from './loginToastText';
-import { ToastType } from '@/shared/toast/model/toastHook';
 import { Ecode, EcodeMessage } from '@/shared/api/model/ecode';
 import { UserInfo } from '@/shared/user/model/userInfo.types';
 import { UserStoreStorage } from '@/shared/state/userStore/model';
+import { ToastType } from '@/shared/toast/model/getToastStyle';
 
 export const getUserInfo = async (
   setToastText: (description: string) => void,

@@ -1,5 +1,12 @@
 import { CircleCheckBig, CircleX, Info, TriangleAlert } from 'lucide-react';
-import { ToastStatus, ToastType } from './toastHook';
+
+export enum ToastType {
+  success = 'success',
+  error = 'error',
+  warning = 'warning',
+  info = 'info',
+}
+export type ToastStatus = ToastType;
 
 export const getToastStatusIcon = (status?: ToastStatus) => {
   switch (status) {

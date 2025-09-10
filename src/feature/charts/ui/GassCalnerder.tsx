@@ -51,7 +51,7 @@ const GrassChart = () => {
     <div className="w-full max-w-sm text-white">
       {/* Header */}
       <div className="mb-4 flex items-center justify-between">
-        <span className="font-pixel text-[20px] font-semibold">
+        <span className="font-pixel text-[20px] font-semibold text-black dark:text-white">
           {currentDate.format('MMMM YYYY')}
         </span>
         <div className="flex items-center gap-2 text-black dark:text-white">
@@ -64,7 +64,11 @@ const GrassChart = () => {
           <button
             onClick={() => setCurrentDate(currentDate.add(1, 'month'))}
             disabled={isCurrentMonth}
-            className={isCurrentMonth ? 'cursor-not-allowed text-gray-800' : ''}
+            className={
+              isCurrentMonth
+                ? 'cursor-not-allowed text-gray-400 dark:text-gray-800'
+                : ''
+            }
           >
             ▶
           </button>

@@ -1,6 +1,7 @@
+'use client';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { levelTestCaching } from './levelTestCaching';
+import levelTestCaching from './levelTestCaching';
 import { getLevelTestResultApi, GetLevelTestResultRes } from '../api';
 import { ServerErrorResponse } from '@/shared/api/model/config';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';

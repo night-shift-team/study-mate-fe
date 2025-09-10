@@ -50,6 +50,7 @@ export const MobileCheckList = ({
         <SvgIcon
           inheritViewBox
           component={
+            typeof window !== 'undefined' &&
             window.matchMedia('(prefers-color-scheme: dark)').matches
               ? Arrow
               : DarkPolygon

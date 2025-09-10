@@ -4,10 +4,10 @@ import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 
 import Button from '@/shared/design/ui/customButton';
 import useProfile from '../model/profileHook';
-import { ToastType } from '@/shared/toast/model/toastHook';
 import Level1Icon from '@public/assets/icons/character/Lv1.svg';
 import ArrowIcon from '@public/assets/icons/button/check/Polygon.svg';
 import { SvgIcon } from '@mui/material';
+import { ToastType } from '@/shared/toast/model/getToastStyle';
 import DarkPolygon from '@public/assets/icons/button/check/DarkPolygon.svg';
 
 const Profile = () => {
@@ -20,12 +20,13 @@ const Profile = () => {
     isModalOpen,
     setIsModalOpen,
     isPending,
+    animationClass,
     errorMessage,
   } = useProfile();
   return (
     <div className="flex gap-16p font-pixel">
       {/* Toast 컴포넌트 */}
-      <Toaster status={ToastType.success} />
+      <Toaster status={ToastType.success} animationClass={animationClass} />
 
       {/* 프로필 이미지 */}
       <label htmlFor="profile-upload" className="">

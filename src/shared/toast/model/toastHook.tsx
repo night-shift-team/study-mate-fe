@@ -1,20 +1,17 @@
 'use client';
 import { Dispatch, SetStateAction, useLayoutEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
 import SuccessIcon from '@public/assets/icons/toast/check.svg';
 import ErrorIcon from '@public/assets/icons/toast/error.svg';
 import InfoIcon from '@public/assets/icons/toast/info.svg';
 import WarningIcon from '@public/assets/icons/toast/warning.svg';
-import Image from 'next/image';
-import XIcon from '@public/assets/icons/toast/x.png';
 
-export enum ToastType {
+enum ToastType {
   success = 'success',
   error = 'error',
   warning = 'warning',
   info = 'info',
 }
-export type ToastStatus = ToastType;
+type ToastStatus = ToastType;
 
 const useToast = (
   open: boolean,
@@ -108,42 +105,17 @@ const useToast = (
     }
   };
 
-  const Toaster = ({
-    status,
-    description,
-    title,
-  }: {
-    status?: ToastStatus;
-    description?: string;
-    title?: string;
-  }) => {
-    return createPortal(
-      <div
-        className={`fixed left-1/2 top-[5rem] flex w-auto min-w-[290px] max-w-[95vw] items-center justify-between gap-16 rounded-xl p-16p text-[0.9rem] ${getToastBackgroundColor(status ?? toastType)} rounded-sm ${animationClass} z-[10000]`}
-      >
-        <div className="flex items-center gap-16">
-          <div className="flex-shrink-0">
-            {status
-              ? getToastStatusIcon(status)
-              : getToastStatusIcon(toastType)}
-          </div>
-          <div className="flex flex-col gap-0.5">
-            <span className="font-semibold">{title ?? changeTitle}</span>
-            <span className="text-xs text-gray-700">
-              {description ?? changeDescription}
-            </span>
-          </div>
-        </div>
-
-        <div className="overflow-hidden rounded-full">
-          <Image src={XIcon} alt="Close" width={12} height={12} />
-        </div>
-      </div>,
-      document.body
-    );
+  return {
+    changeTitle,
+    changeDescription,
+    toastType,
+    animationClass,
+    getToastStatusIcon,
+    getToastBackgroundColor,
+    setToastDescription,
+    setToastIcon,
+    setToastTitle,
   };
-
-  return { Toaster, setToastDescription, setToastIcon, setToastTitle };
 };
 
 export default useToast;

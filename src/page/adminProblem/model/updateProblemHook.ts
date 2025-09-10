@@ -7,10 +7,15 @@ import {
   updateAdminMAQApi,
   updateAdminSAQApi,
 } from '../api';
-import useToast, { ToastType } from '@/shared/toast/model/toastHook';
+import useToast from '@/shared/toast/model/toastHook';
 import { getProblemDetail } from './getProblemDetailInfo';
 import { ProblemCategoryType } from '@/shared/problem/model/problemInfo.types';
 import { Problem } from '../ui';
+import dynamic from 'next/dynamic';
+import { ToastType } from '@/shared/toast/model/getToastStyle';
+const Toaster = dynamic(() => import('@/shared/toast/ui/toaster'), {
+  ssr: false,
+});
 
 const useUpdateProblem = () => {
   const [selectedProblem, setSelectedProblem] = useState<Problem | null>(null);
@@ -18,7 +23,7 @@ const useUpdateProblem = () => {
     useState<ProblemDetailInfoRes | null>(null);
 
   const [toastOpen, setToastOpen] = useState(false);
-  const { Toaster, setToastDescription, setToastIcon } = useToast(
+  const { animationClass, setToastDescription, setToastIcon } = useToast(
     toastOpen,
     setToastOpen
   );
@@ -109,6 +114,7 @@ const useUpdateProblem = () => {
     handleSubmit,
     Toaster,
     isLoading,
+    animationClass,
   };
 };
 export default useUpdateProblem;

@@ -34,7 +34,7 @@ const AuthHoc = <P extends object>(WrappedComponent: ComponentType<P>) => {
 
       // 사용자 점수가 0인 경우 레벨 테스트 페이지로 리다이렉트
       if (user && user.userScore === 0 && path !== RouteTo.LevelTest) {
-        router.push(RouteTo.LevelTest);
+        router.push(RouteTo.Onboarding);
         return;
       }
       // 인증된 사용자가 홈 또는 로그인 페이지에 접근한 경우 Solve 페이지로 리다이렉트

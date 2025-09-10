@@ -11,7 +11,7 @@ const InputForm = ({
   status: InputStatus;
 } & React.InputHTMLAttributes<HTMLInputElement>) => {
   const baseClasses =
-    'w-full px-[16px] py-[12px] rounded-12p border outline-none transition-all bg-background text-white';
+    'w-full px-[16px] py-[12px] rounded-12p border outline-none transition-all bg-background';
 
   const statusClasses = {
     empty:

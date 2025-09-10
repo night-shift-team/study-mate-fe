@@ -39,7 +39,11 @@ const TestResultSolution = async ({
             </Link>
           }
         ></NewHeader>
-        <TestResultSolutionPage problemId={problemId} userAnswer={userAnswer} />
+        <TestResultSolutionPage
+          type="test"
+          problemId={problemId}
+          userAnswer={userAnswer}
+        />
       </PageAnimationWrapper>
     </UserStateWrapper>
   );

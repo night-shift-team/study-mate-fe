@@ -26,7 +26,7 @@ const Mypage = () => {
   } = useMyPage();
 
   return (
-    <div className="h-[100vh] pt-[30px]">
+    <div className="h-[100vh] w-[100vw] pt-[30px]">
       {isPopupOpen && popUpProblemDetail && (
         <PopupProblem
           size="md"

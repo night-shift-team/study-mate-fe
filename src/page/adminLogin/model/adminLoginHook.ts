@@ -13,7 +13,7 @@ import {
 } from '@/shared/api/model/config';
 import { Ecode } from '@/shared/api/model/ecode';
 import { userStore } from '@/shared/state/userStore/model';
-import { ToastType } from '@/shared/toast/model/toastHook';
+import { ToastType } from '@/shared/toast/model/getToastStyle';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useRef, useState } from 'react';
 
