@@ -81,6 +81,7 @@ const LoginPage = () => {
                   //   hideTooltip(passwordInputRef.current);
                   // }
                 }}
+                onClick={(e) => e.currentTarget.focus()}
                 placeholder="Password"
                 className="font-pretandard text-label"
                 status={validationStatus.password.status}
