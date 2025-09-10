@@ -9,6 +9,7 @@ import { userStore } from '@/shared/state/userStore/model';
 import BackButton from '@public/assets/icons/header/left_arrow.svg';
 import ProfileIcon from '@public/assets/icons/header/Avatar.svg';
 import { DarkModeButton } from '@/shared/button/DarkModeButton';
+import { SvgIcon } from '@mui/material';
 const Header = ({ path }: { path: string }) => {
   const user = userStore.getState().user;
   const router = useRouter();
@@ -63,7 +64,11 @@ const Header = ({ path }: { path: string }) => {
               onClick={() => router.back()}
               className="z-[10000] flex h-full w-[6.5rem] cursor-pointer items-center pl-4"
             >
-              <BackButton className="h-[20px] w-[20px]" />
+              <SvgIcon
+                component={BackButton}
+                inheritViewBox
+                sx={{ width: 20, height: 20, color: 'red' }}
+              />
             </button>
           )}
 
