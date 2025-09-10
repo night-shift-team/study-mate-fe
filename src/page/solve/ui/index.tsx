@@ -36,7 +36,7 @@ const SolveMainPage = () => {
         </div>
         {!myTodaySolveData ? (
           <div className="pt-8p">
-            <Spinner size="lg" />
+            <Spinner size="sm" />
           </div>
         ) : (
           <div className="grid w-full place-items-center gap-[0.5rem] pb-[2rem]">

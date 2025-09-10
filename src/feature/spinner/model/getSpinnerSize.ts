@@ -3,18 +3,18 @@ import { ComponentSize } from '../ui/spinnerUI';
 export const getSpinnerSize = (size?: ComponentSize) => {
   switch (size) {
     case 'xxs':
-      return 2;
+      return '1rem';
     case 'xs':
-      return 4;
+      return '2rem';
     case 'sm':
-      return 6;
+      return '3rem';
     case 'md':
-      return 8;
+      return '4rem';
     case 'lg':
-      return 12;
+      return '6rem';
     case 'xl':
-      return 18;
+      return '9rem';
     default:
-      return 8;
+      return '3rem';
   }
 };

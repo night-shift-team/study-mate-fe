@@ -127,6 +127,9 @@ const LoginPage = () => {
               id="loginButton"
               type="submit"
               disabled={loginLoading}
+              style={{
+                backgroundColor: loginLoading ? '#D3D3D3' : '',
+              }}
             >
               {loginLoading ? <Spinner color="#6b7280" /> : 'Sign In'}
             </ButtonPixel>{' '}
