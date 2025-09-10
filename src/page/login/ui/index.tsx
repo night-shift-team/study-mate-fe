@@ -30,13 +30,14 @@ const LoginPage = () => {
   return (
     <div className="flex h-full w-full flex-col items-center justify-center px-4">
       <Toaster animationClass={animationClass} />
-      <SvgIcon
-        component={HomeLogo}
-        inheritViewBox
-        sx={{ width: 'auto', height: '40px' }}
-      />
-      <span className="mt-4 text-title-main">Sign In</span>
       <div className="flex w-full flex-col justify-center">
+        <SvgIcon
+          component={HomeLogo}
+          inheritViewBox
+          sx={{ width: 'auto', height: '40px' }}
+        />
+        <span className="mt-4 text-center text-title-main">Sign In</span>
+
         <form
           id={'loginForm'}
           onSubmit={handleSubmit}
@@ -58,7 +59,7 @@ const LoginPage = () => {
                   // }
                 }}
                 placeholder="Enter your Email"
-                className="mt-20 font-pretandard text-label"
+                className="mt-14 font-pretandard text-label"
                 status={validationStatus.email.status}
               />
               <span className="mt-2 pl-2 text-[11px] text-[#ED3241]">
