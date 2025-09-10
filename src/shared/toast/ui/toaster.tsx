@@ -20,7 +20,7 @@ const Toaster = ({
 }) => {
   return createPortal(
     <div
-      className={`fixed left-1/2 top-[3.5rem] flex w-auto min-w-[290px] max-w-[95vw] items-center justify-between gap-16 rounded-xl p-16p text-[0.9rem] md:top-1 ${getToastBackgroundColor(status)} rounded-sm md:top-16 ${animationClass} z-[10000]`}
+      className={`fixed left-1/2 top-[7.5rem] flex w-auto min-w-[290px] max-w-[95vw] items-center justify-between gap-16 rounded-xl p-16p text-[0.9rem] md:top-1 ${getToastBackgroundColor(status)} rounded-sm md:top-16 ${animationClass} z-[10000]`}
     >
       <div className="flex items-center gap-16">
         <div className="flex-shrink-0">{getToastStatusIcon(status)}</div>
