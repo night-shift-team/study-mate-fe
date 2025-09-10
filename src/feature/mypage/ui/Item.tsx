@@ -91,8 +91,8 @@ export const QuestionItem: React.FC<ItemProps> = ({
           <SvgIcon inheritViewBox component={Arrow} />
         </div>
       </div> */}
-      <div className="flex h-[100px] w-full flex-col rounded-lg bg-[#5500FF] bg-opacity-40 pb-8p pl-16p pr-16p pt-8p">
-        <div className="flex gap-1">
+      <div className="flex h-[100px] w-full flex-col rounded-sm bg-[#451E81] pb-8p pl-16p pr-16p pt-8p">
+        <div className="flex gap-2">
           <span
             className="rounded-sm pl-16p pr-16p text-center text-[16px] font-semibold text-black"
             style={{ backgroundColor: BgColors[category] }}
@@ -103,7 +103,9 @@ export const QuestionItem: React.FC<ItemProps> = ({
             Lv.{questionDetail?.difficulty}
           </span>
         </div>
-        <div className="font-pretandard text-body-primary">{questionTitle}</div>
+        <div className="line-clamp-1 w-full font-pretandard text-body-primary">
+          {questionTitle}
+        </div>
         <div></div>
       </div>
       {isPopupOpen && questionDetail && (

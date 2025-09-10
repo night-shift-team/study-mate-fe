@@ -34,15 +34,17 @@ const CategoryProblemHistoryPage = () => {
       </div>
     );
   }
+  console.log(paginatedHistory, 'paginatedHistory');
+
   return (
-    <div className="flex h-full w-full flex-col p-8p">
+    <div className="flex w-full flex-col p-8p">
       <span className="text-title-page text-black dark:text-white">
         Solution Archive
       </span>
-      <div className="mt-[20px] flex h-full w-full flex-col justify-between">
-        <div className="flex h-[52vh] flex-col justify-between">
+      <div className="mt-[20px] flex w-full flex-col">
+        <div className="flex flex-col justify-between">
           {' '}
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 pb-[10px]">
             {paginatedHistory.length > 0 ? (
               paginatedHistory.map((history, index) => (
                 <QuestionItem
@@ -63,16 +65,18 @@ const CategoryProblemHistoryPage = () => {
               <p>해당 카테고리 문제 데이터가 없습니다.</p>
             )}
           </div>
+          {filteredHistory.length > itemsPerPage && (
+            <div className="mb-[80px] mt-4 flex justify-center">
+              <ProblemPagination
+                page={page}
+                setPage={setPage}
+                paginationSize={Math.ceil(
+                  filteredHistory.length / itemsPerPage
+                )}
+              />
+            </div>
+          )}
         </div>
-        {filteredHistory.length > itemsPerPage && (
-          <div className="mt-4 flex justify-center">
-            <ProblemPagination
-              page={page}
-              setPage={setPage}
-              paginationSize={Math.ceil(filteredHistory.length / itemsPerPage)}
-            />
-          </div>
-        )}
       </div>
     </div>
   );
