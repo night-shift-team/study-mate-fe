@@ -26,9 +26,9 @@ const CommentSection = ({
     useCommentSection(initialComments, currentUserNickname, boardId);
 
   return (
-    <div className="mt-8 flex h-[40vh] flex-col justify-between bg-[#e7924a] p-4 shadow-md">
+    <div className="flex flex-col justify-between p-4">
       <div className="flex items-start gap-2">
-        <h2 className="mb-4 text-sm font-semibold">A .</h2>
+        <h2 className="mb-4 text-sm font-semibold text-black">A .</h2>
 
         {comments.length > 0 ? (
           <ul className="mb-4 space-y-4 text-center">
