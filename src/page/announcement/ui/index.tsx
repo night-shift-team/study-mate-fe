@@ -33,12 +33,19 @@ const AnnouncementPage = () => {
     suggestionListHook.handleSort(sortKey);
   }, [activeSort, list]);
 
-  console.log(announcementList, 'announcementList');
+  const sortAnnouncements = (list: typeof announcementList) => {
+    if (!list) return [];
+    return [...list].sort(
+      (a, b) =>
+        new Date(b.displayStartTime).getTime() -
+        new Date(a.displayStartTime).getTime()
+    );
+  };
 
   return (
     <div className="flex h-full w-full flex-col overflow-y-auto scrollbar-hide">
       <div className="flex h-full w-full flex-col gap-4">
-        <div className="flex items-center justify-between px-16p font-pixel text-[32px] font-bold text-white">
+        <div className="flex items-center justify-between px-16p font-pixel text-[32px] font-bold text-black dark:text-white">
           <span className="text-title-page">Notice</span>
           {activeTab === '문의' && (
             <span
@@ -56,33 +63,33 @@ const AnnouncementPage = () => {
             <NoticeTap activeTab={activeTab} setActiveTab={setActiveTab} />
 
             <div className="flex flex-col gap-4 p-16p">
-              {activeTab === '문의' && (
-                <div className="flex gap-2">
-                  {sorts.map((sort) => (
-                    <button
-                      key={sort}
-                      onClick={() => setActiveSort(sort)}
-                      className={`rounded-full px-2 py-1 text-[14px] transition-all ${
-                        activeSort === sort
-                          ? 'bg-point-yellow'
-                          : 'bg-gray-400 text-white'
-                      }`}
-                    >
-                      {sort}
-                    </button>
-                  ))}
-                </div>
-              )}
+              <div className="flex gap-2">
+                {sorts.map((sort) => (
+                  <button
+                    key={sort}
+                    onClick={() => setActiveSort(sort)}
+                    className={`rounded-full px-2 py-1 text-[14px] transition-all ${
+                      activeSort === sort
+                        ? 'bg-point-yellow'
+                        : 'bg-gray-400 text-white'
+                    }`}
+                  >
+                    {sort}
+                  </button>
+                ))}
+              </div>
               <div className="">
                 {activeTab === '공지' ? (
                   <>
                     {announcementList && announcementList.length > 0 ? (
-                      announcementList.map((announcement) => (
-                        <AnnouncementList
-                          key={announcement.noticeId}
-                          noticeDetail={announcement}
-                        />
-                      ))
+                      sortAnnouncements(announcementList).map(
+                        (announcement) => (
+                          <AnnouncementList
+                            key={announcement.noticeId}
+                            noticeDetail={announcement}
+                          />
+                        )
+                      )
                     ) : announcementList && announcementList.length === 0 ? (
                       <div className="flex h-full w-full items-center justify-center">
                         <span className="text-lg md:text-xl">No data</span>
@@ -109,7 +116,7 @@ const AnnouncementPage = () => {
             </div>
           </div>
         </div>
-        <div className="flex h-[4rem] w-full justify-center pb-[4rem] md:pl-[8rem]">
+        <div className="flex h-[4rem] justify-center pb-[4rem]">
           <ProblemPagination
             page={page}
             setPage={setPage}

@@ -24,6 +24,7 @@ const useQuestionItem = (questionId: string) => {
         fetcher: async () => await getQuestionDetailApi(questionId),
         expires: 3 * 24 * 60 * 60 * 1000, // 3일
       });
+
       if (res.ok && res.payload) {
         setQuestionDetail(res.payload);
       } else {

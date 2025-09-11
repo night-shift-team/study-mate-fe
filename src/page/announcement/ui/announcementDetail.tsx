@@ -1,23 +1,13 @@
 'use client';
 
-import { BsList } from 'react-icons/bs';
-import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import NoticeFoxBg from '@public/assets/backgroundImages/main/noticeFoxBg.svg';
-import { SvgIcon } from '@mui/material';
-
 import useAnnouncementDetailPage from '../model/announcementDetailPageHook';
-import {
-  convertNoticeCategoryToString,
-  splitNoticeTitle,
-} from '@/feature/notice/model/dataConvert';
 
 const AnnouncemnetByIdDetailPage = () => {
-  const { noticeDetail, router } = useAnnouncementDetailPage();
-
+  const { noticeDetail } = useAnnouncementDetailPage();
   return (
     <>
       <div className="flex h-full w-full flex-col bg-point-logo font-pretandard">
-        <div className="flex gap-2 bg-black p-16p">
+        <div className="flex gap-2 bg-white p-16p dark:bg-black">
           <span className="text-point-orange">공지</span>
           <span className="text-black dark:text-white">
             {noticeDetail?.noticeTitle}

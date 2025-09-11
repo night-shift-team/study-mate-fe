@@ -19,6 +19,7 @@ interface ItemProps {
   score: number;
   textColorClass?: string;
   category: string;
+  createdDt?: string;
 }
 
 export const QuestionItem: React.FC<ItemProps> = ({
@@ -29,6 +30,7 @@ export const QuestionItem: React.FC<ItemProps> = ({
   questionId,
   textColorClass,
   category,
+  createdDt,
 }) => {
   const {
     questionDetail,
@@ -37,7 +39,6 @@ export const QuestionItem: React.FC<ItemProps> = ({
     handleClosePopup,
     truncateText,
   } = useQuestionItem(questionId);
-  console.log(questionDetail, 'questionDetail');
 
   const BgColors: Record<string, string> = {
     OS: '#7CFC00',
@@ -106,7 +107,9 @@ export const QuestionItem: React.FC<ItemProps> = ({
         <div className="line-clamp-1 w-full font-pretandard text-body-primary">
           {questionTitle}
         </div>
-        <div></div>
+        <div className="font-pretandard text-body-secondary text-grayscale-400">
+          {createdDt?.slice().replace('T', ' ').slice(0, 10)}
+        </div>
       </div>
       {isPopupOpen && questionDetail && (
         <PopupProblem

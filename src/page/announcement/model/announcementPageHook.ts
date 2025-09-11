@@ -27,6 +27,8 @@ const useAnnouncementPage = () => {
 
       if (res.ok) {
         const noticeList = (res.payload as getAllNoticeListRes).content;
+        console.log(noticeList, 'noticeList');
+
         setMaxPage((res.payload as getAllNoticeListRes).totalPages);
         setAnnouncementList(noticeList);
       }

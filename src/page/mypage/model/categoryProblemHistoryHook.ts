@@ -15,7 +15,7 @@ const useCategoryProblemHistory = () => {
     if (!category) return;
 
     setLoading(true);
-    getQuestionHistoryApi(100, 100000)
+    getQuestionHistoryApi(10, 100000)
       .then((res) => {
         if (res.ok && res.payload && 'content' in res.payload) {
           setQuestionHistory(res.payload.content);

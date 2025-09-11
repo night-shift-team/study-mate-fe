@@ -38,25 +38,16 @@ export const MobileCheckList = ({
       <Icon className="h-full w-full" />
 
       <div
-        className={`absolute left-[22%] top-[25%] z-10 w-[30vw] max-w-[120px] text-center text-title-section font-semibold text-black ${bgColorClass}`}
+        className={`absolute left-[22%] top-[25%] z-10 w-[30vw] max-w-[120px] p-2 text-center text-title-section font-semibold text-black ${bgColorClass}`}
       >
         {category}
       </div>
       <div
-        className="absolute bottom-[20%] right-[5%] z-10 flex items-center justify-center gap-4 text-[20px] font-semibold text-black dark:text-white"
+        className="absolute bottom-[20%] right-[25%] z-10 flex items-center justify-center gap-4 text-[20px] font-semibold text-black dark:text-white"
         onClick={() => router.push(`/mypage/${category}`)}
       >
         <span>Go to</span>
-        <SvgIcon
-          inheritViewBox
-          component={
-            typeof window !== 'undefined' &&
-            window.matchMedia('(prefers-color-scheme: dark)').matches
-              ? Arrow
-              : DarkPolygon
-          }
-          sx={{ width: '8%', height: '8%' }}
-        />
+        <button className="text-black dark:text-white">▶</button>
       </div>
     </div>
   );
