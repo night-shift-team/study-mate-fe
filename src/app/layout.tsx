@@ -27,9 +27,9 @@ export default async function RootLayout({
         className={`flex h-full w-full bg-pointcolor-yogurt font-spoqa antialiased`}
       >
         <ChunkReloadGuard />
-        <MaintenanceCheck>
-          <ClientSideWrapper>{children}</ClientSideWrapper>
-        </MaintenanceCheck>
+        {/* <MaintenanceCheck> */}
+        <ClientSideWrapper>{children}</ClientSideWrapper>
+        {/* </MaintenanceCheck> */}
       </body>
     </html>
   );
