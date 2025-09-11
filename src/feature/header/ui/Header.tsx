@@ -66,11 +66,10 @@ const Header = ({ path }: { path: string }) => {
               onClick={() => router.back()}
               className="relative z-[10000] flex cursor-pointer items-center"
             >
-
               <SvgIcon
                 component={BackButton}
                 inheritViewBox
-                sx={{ width: 20, height: 20, color: 'red' }}
+                sx={{ width: 20, height: 20, color: '' }}
               />
             </button>
           )}

@@ -20,7 +20,7 @@ const SuggestionDetailPage = () => {
   return (
     <UserStateWrapper>
       <div className="flex w-full flex-col bg-point-logo font-pretandard">
-        <div className="bg-black p-16p text-white">
+        <div className="bg-white p-16p text-white dark:bg-black">
           {/* <div className="mb-2 flex w-[100%] items-center justify-between text-sm text-gray-500">
               #{suggestion.id}
               <span className="relative">
@@ -46,14 +46,21 @@ const SuggestionDetailPage = () => {
                 )}
               </span>
             </div> */}
-
-          <div className="flex flex-col gap-16p">
-            <div className="flex gap-2">
-              <span className="w-[30px]">Q</span>
-              <h1 className="mb-4t ext-xl font-semibold">{suggestion.title}</h1>
+          <div className="flex flex-col gap-3">
+            <div className="flex gap-3 font-pretandard text-[12px] text-black dark:text-white">
+              <span>작성일: {suggestion.createdDt.slice(0, 10)}</span>
+              <span>문의 닉네임: {suggestion.user.nickname}</span>
             </div>
+            <div className="flex flex-col gap-16p text-black dark:text-white">
+              <div className="flex gap-2">
+                <span className="w-[30px]">Q</span>
+                <h1 className="mb-4t ext-xl font-semibold">
+                  {suggestion.title}
+                </h1>
+              </div>
 
-            <div className="whitespace-pre-wrap">{suggestion.content}</div>
+              <div className="whitespace-pre-wrap">{suggestion.content}</div>
+            </div>
           </div>
         </div>
 

@@ -1,6 +1,4 @@
 'use client';
-
-import Image from 'next/image';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import useCategoryProblemHistory from '../model/categoryProblemHistoryHook';
 import { QuestionItem } from '@/feature/mypage/ui/Item';
@@ -34,8 +32,6 @@ const CategoryProblemHistoryPage = () => {
       </div>
     );
   }
-
-  console.log(filteredHistory, 'sdsdsdsdsddss');
 
   return (
     <div className="flex w-full flex-col p-8p">
