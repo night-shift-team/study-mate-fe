@@ -1,6 +1,6 @@
 import './globals.css';
 import React from 'react';
-import { MaintenanceCheck } from '@/feature/maintenance/ui';
+// import { MaintenanceCheck } from '@/feature/maintenance/ui';
 
 import 'swiper/css';
 import 'swiper/css/navigation'; // 화살표
