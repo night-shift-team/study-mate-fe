@@ -33,8 +33,29 @@ export const ProblemPagination = ({
                   (item.type === 'next' || item.type === 'previous')) ||
                 (page === paginationSize && item.type === 'next')
               }
+              sx={{
+                fontFamily: 'PixelOperator',
+                fontSize: '20px',
+                fontWeight: 'bold',
+                color: '#fff', // 기본 흰색
+                '&.Mui-selected': {
+                  color: '#FFA500', // 선택된 페이지 주황색
+                  backgroundColor: 'transparent', // 배경 투명
+                },
+                '&.Mui-disabled': {
+                  opacity: 0.4, // 비활성화 화살표
+                },
+              }}
             />
           )}
+          sx={{
+            '& .MuiPagination-ul': {
+              padding: '8px 16px',
+              borderRadius: '8px',
+              display: 'flex',
+              gap: '8px',
+            },
+          }}
         />
       ) : null}
     </>
