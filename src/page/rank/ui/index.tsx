@@ -14,7 +14,7 @@ const RankPage = () => {
   // 캐릭터 이미지는 임의로 넣음
   return (
     <div
-      className="flex w-full flex-col overflow-scroll p-16p pb-[5rem] font-pixel font-bold text-white"
+      className="flex h-full w-full flex-col overflow-scroll p-16p pb-[5rem] font-pixel font-bold text-white"
       style={{
         scrollbarWidth: 'none',
         msOverflowStyle: 'none',

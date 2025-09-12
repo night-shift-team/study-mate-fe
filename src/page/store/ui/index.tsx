@@ -105,23 +105,24 @@ const StorePage = () => {
                 href={RouteTo.StorePurchaseHistory}
                 className="w-full text-right"
               >
-                <span className="font-pixel text-[20px] font-bold">
-                  Go to Storage
-                  <span className="relative h-[15px] w-[15px]">
+                <div className="flex justify-end gap-2 font-pixel text-[20px] font-bold">
+                  <span>Go to Storage</span>
+
+                  <div className="relative h-[15px] w-[15px]">
                     <SvgIcon
-                      className="dark:none absolute left-1 top-1 hidden h-[15px] w-[15px]"
                       component={Arrow}
                       inheritViewBox
-                      sx={{ width: '15px', height: '15px' }}
+                      className="absolute left-0 top-2 block dark:hidden"
+                      sx={{ width: 15, height: 15 }}
                     />
                     <SvgIcon
-                      className="absolute left-1 top-1 h-[15px] w-[15px] dark:hidden"
                       component={DarkPolygon}
                       inheritViewBox
-                      sx={{ width: '15px', height: '15px' }}
+                      className="absolute left-0 top-2 hidden dark:block"
+                      sx={{ width: 15, height: 15 }}
                     />
-                  </span>
-                </span>
+                  </div>
+                </div>
               </Link>
             </div>
           </div>

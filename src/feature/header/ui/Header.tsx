@@ -10,6 +10,7 @@ import BackButton from '@public/assets/icons/header/backButton.svg';
 import DarkBackButton from '@public/assets/icons/header/dark_backButton.svg';
 import ProfileIcon from '@public/assets/icons/header/Avatar.svg';
 import { DarkModeButton } from '@/shared/button/DarkModeButton';
+import { IoIosArrowBack } from 'react-icons/io';
 
 import { SvgIcon } from '@mui/material';
 const Header = ({ path }: { path: string }) => {
@@ -66,10 +67,15 @@ const Header = ({ path }: { path: string }) => {
               onClick={() => router.back()}
               className="relative z-[10000] flex cursor-pointer items-center"
             >
-              <SvgIcon
-                component={BackButton}
-                inheritViewBox
-                sx={{ width: 20, height: 20, color: '' }}
+              <IoIosArrowBack
+                className="block dark:hidden"
+                size={30}
+                fill="black"
+              />
+              <IoIosArrowBack
+                className="hidden dark:block"
+                size={30}
+                fill="white"
               />
             </button>
           )}
