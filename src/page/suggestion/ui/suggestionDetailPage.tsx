@@ -1,6 +1,5 @@
 'use client';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
-import PageAnimationWrapper from '@/shared/style/ui/pageAnimationWrapper';
 import useSuggestionDetailPage from '../model/suggestionDetailPageHook';
 import UserStateWrapper from '@/shared/state/userStore/model/clientSideWrapper';
 import CommentSection from './commentSection';

@@ -18,7 +18,6 @@ export interface ResultData extends GetLevelTestResultRes {
 const TestResultPage = () => {
   const { questionInfos, resultData } = useTestResultContent();
   const [userAnswers, setUserAnswers] = useState<UserAnswerWithId[]>([]);
-  console.log('resultData', resultData);
   const correct = resultData?.correctQuestions.length ?? 0;
   const total = resultData?.requestedQuestionCount ?? 1;
 

@@ -63,7 +63,6 @@ const useSignUpPage = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    console.log('handleChange called with:', name, value);
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -215,7 +214,6 @@ const useSignUpPage = () => {
     setIsLoading(true);
     try {
       const signUpRes = await signUpApi(formData);
-      console.log('회원가입 결과:', signUpRes);
       if (signUpRes.ok) {
         // 로그인 요청
         await signInAndSetUser(formData.email, formData.password);
@@ -231,11 +229,9 @@ const useSignUpPage = () => {
     try {
       // 여기에 실제 로그인 API 호출 로직 구현
       const tokens = await requestSignIn(email, password);
-      console.log('tokens:', tokens);
       setTokens(tokens);
       setTokenToHeader(localStorage.getItem('accessToken'));
       const res = await userInfoApi();
-      console.log('userInfoApi:', res);
       if (res.ok) {
         const userData = res.payload as UserInfoRes;
         setUser(userData);

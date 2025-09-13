@@ -190,17 +190,17 @@ module.exports = {
         error: {
           DEFAULT: '#FF4A4A',
           50: 'rgba(255, 74, 74, 0.5)',
-          30: 'rgba(255, 74, 74, 0.3)',
+          30: '#fdacac',
         },
         success: {
           DEFAULT: '#7CFC00',
           50: 'rgba(124, 252, 0, 0.5)',
-          30: 'rgba(124, 252, 0, 0.3)',
+          30: '#c3e6a1',
         },
         notice: {
           DEFAULT: '#006FFD',
           50: 'rgba(0, 111, 253, 0.5)',
-          30: 'rgba(0, 111, 253, 0.3)',
+          30: '#8fc1ff',
         },
         point: {
           pink: '#FFB8FF',

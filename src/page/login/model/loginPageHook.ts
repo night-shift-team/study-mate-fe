@@ -1,5 +1,4 @@
 import { resetFocus } from '@/shared/dom/model/focus';
-import useToast from '@/shared/toast/model/toastHook';
 import { useEffect, useRef, useState } from 'react';
 import { setTokens } from './setTokens';
 import {
@@ -17,8 +16,8 @@ import tooltipMountHook from '@/feature/tooltip/model/tooltipMount';
 import { userStore } from '@/shared/state/userStore/model';
 import { TooltipContents } from '@/shared/state/tooltip/model/tooltipContents';
 import { InputStatus } from '@/shared/components/input/useInput';
-import { ToastType } from '@/shared/toast/model/getToastStyle';
 import dynamic from 'next/dynamic';
+import { toastStore, ToastType } from '@/shared/state/toast/toastStore';
 const Toaster = dynamic(() => import('@/shared/toast/ui/toaster'), {
   ssr: false,
 });
@@ -27,17 +26,31 @@ const useLoginPage = () => {
   const router = useRouter();
   const windowReference: Window | null = null;
   const [loginLoading, setLoginLoading] = useState(false);
-  const [toastOpen, setToastOpen] = useState(false);
 
   const setUser = userStore.getState().setUser;
 
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
   const { setMountTooltip } = tooltipMountHook();
-  const { animationClass, setToastIcon, setToastDescription } = useToast(
-    toastOpen,
-    setToastOpen
-  );
+  // const { animationClass, setToastIcon, setToastDescription } = useToast(
+  //   toastOpen,
+  //   setToastOpen
+  // );
+
+  const setToastOpen = (
+    status?: ToastType,
+    title?: string,
+    description?: string,
+    duration?: number
+  ) => {
+    toastStore.show({
+      status: status,
+      title: title,
+      description: description,
+      duration: duration,
+    });
+  };
+
   const [validationStatus, setValidationStatus] = useState({
     email: {
       status: 'empty' as InputStatus,
@@ -49,13 +62,7 @@ const useLoginPage = () => {
     },
   });
   // 인증 response 리스너
-  addSocialLoginRedirectDataListener(
-    setLoginLoading,
-    setToastDescription,
-    setToastOpen,
-    setToastIcon,
-    setUser
-  );
+  addSocialLoginRedirectDataListener(setLoginLoading, setToastOpen, setUser);
   // const { showTooltip, hideTooltip, updateTooltip } = useTooltip();
 
   const [formData, setFormData] = useState({
@@ -127,15 +134,10 @@ const useLoginPage = () => {
       const tokens = await requestSignIn(formData.email, formData.password);
       setTokens(tokens);
       setTokenToHeader(localStorage.getItem('accessToken'));
-      await getUserInfo(
-        setToastDescription,
-        setToastOpen,
-        setToastIcon,
-        setUser,
-        router
-      );
+      await getUserInfo(setToastOpen, setUser, router);
     } catch (error) {
       if ((error as ServerErrorResponse).ecode !== undefined) {
+        console.log('에러,', error);
         switch ((error as ServerErrorResponse).ecode) {
           case Ecode.E0103:
             if (emailInputRef.current) {
@@ -152,6 +154,7 @@ const useLoginPage = () => {
                   message: TooltipContents.InvalidEmail,
                 },
               }));
+              setToastOpen(ToastType.error, TooltipContents.InvalidEmail);
               emailInputRef.current.focus();
             }
             break;
@@ -170,6 +173,7 @@ const useLoginPage = () => {
                   message: TooltipContents.InvalidPassword,
                 },
               }));
+              setToastOpen(ToastType.error, TooltipContents.InvalidPassword);
               passwordInputRef.current.focus();
             }
             break;
@@ -178,9 +182,7 @@ const useLoginPage = () => {
         }
       } else {
         console.error('로그인 에러:', error);
-        setToastIcon(ToastType.error);
-        setToastDescription('Login Failed');
-        setToastOpen(true);
+        setToastOpen(ToastType.error, 'Login Failed');
       }
     } finally {
       setLoginLoading(false);
@@ -233,12 +235,6 @@ const useLoginPage = () => {
     };
   }, []);
 
-  const testToast = () => {
-    setToastIcon(ToastType.info);
-    setToastDescription('준비 중 입니다');
-    setToastOpen(true);
-  };
-
   return {
     Toaster,
     handleSubmit,
@@ -247,9 +243,8 @@ const useLoginPage = () => {
     formData,
     handleChange,
     // hideTooltip,
-    testToast,
     loginLoading,
-    animationClass,
+    // animationClass,
     windowReference,
     validationStatus,
   };

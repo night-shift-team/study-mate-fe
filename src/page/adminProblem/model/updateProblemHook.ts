@@ -7,26 +7,16 @@ import {
   updateAdminMAQApi,
   updateAdminSAQApi,
 } from '../api';
-import useToast from '@/shared/toast/model/toastHook';
 import { getProblemDetail } from './getProblemDetailInfo';
 import { ProblemCategoryType } from '@/shared/problem/model/problemInfo.types';
 import { Problem } from '../ui';
-import dynamic from 'next/dynamic';
-import { ToastType } from '@/shared/toast/model/getToastStyle';
-const Toaster = dynamic(() => import('@/shared/toast/ui/toaster'), {
-  ssr: false,
-});
+import { toastStore, ToastType } from '@/shared/state/toast/toastStore';
 
 const useUpdateProblem = () => {
   const [selectedProblem, setSelectedProblem] = useState<Problem | null>(null);
   const [problemDetailInfo, setProblemDetailInfo] =
     useState<ProblemDetailInfoRes | null>(null);
 
-  const [toastOpen, setToastOpen] = useState(false);
-  const { animationClass, setToastDescription, setToastIcon } = useToast(
-    toastOpen,
-    setToastOpen
-  );
   const [isLoading, setIsLoading] = useState(false);
 
   useLayoutEffect(() => {
@@ -75,9 +65,11 @@ const useUpdateProblem = () => {
         };
         const res = await updateAdminMAQApi(problemDetailInfo.questionId, body);
         if (res.ok) {
-          setToastIcon(ToastType.success);
-          setToastDescription('문제 수정이 완료되었습니다.');
-          setToastOpen(true);
+          toastStore.show({
+            status: ToastType.success,
+            title: '문제 수정이 완료되었습니다.',
+          });
+
           return;
         }
         throw res.payload;
@@ -91,9 +83,10 @@ const useUpdateProblem = () => {
         };
         const res = await updateAdminSAQApi(problemDetailInfo.questionId, body);
         if (res.ok) {
-          setToastIcon(ToastType.success);
-          setToastDescription('문제 수정이 완료되었습니다.');
-          setToastOpen(true);
+          toastStore.show({
+            status: ToastType.success,
+            title: '문제 수정이 완료되었습니다.',
+          });
           return;
         }
         throw res.payload;
@@ -101,9 +94,10 @@ const useUpdateProblem = () => {
       return;
     } catch (e) {
       console.log(e);
-      setToastIcon(ToastType.error);
-      setToastDescription('문제 수정에 실패했습니다.');
-      setToastOpen(true);
+      toastStore.show({
+        status: ToastType.error,
+        title: '문제 수정에 실패했습니다.',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -112,9 +106,7 @@ const useUpdateProblem = () => {
     problemDetailInfo,
     setProblemDetailInfo,
     handleSubmit,
-    Toaster,
     isLoading,
-    animationClass,
   };
 };
 export default useUpdateProblem;

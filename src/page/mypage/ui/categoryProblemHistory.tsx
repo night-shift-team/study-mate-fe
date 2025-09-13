@@ -24,7 +24,6 @@ const CategoryProblemHistoryPage = () => {
       </div>
     );
   }
-  console.log(category, 'category');
   if (loading) {
     return (
       <div>

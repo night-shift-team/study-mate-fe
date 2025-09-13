@@ -1,12 +1,6 @@
-import { CircleCheck } from 'lucide-react';
-import { CircleX } from 'lucide-react';
-
 import { PopupProblem } from '@/shared/popUp/ui/popupV2';
-import { FaArrowRightLong } from 'react-icons/fa6';
-import Arrow from '@public/assets/icons/mypage/Arrow.svg';
-import { SvgIcon } from '@mui/material';
+
 import useQuestionItem from '../model/questionItemHook';
-import { ProblemCategory } from '@/shared/problem/model/problemInfo.types';
 
 interface ItemProps {
   index: number;
@@ -23,22 +17,13 @@ interface ItemProps {
 }
 
 export const QuestionItem: React.FC<ItemProps> = ({
-  index,
-  isCorrectAnswer,
   questionTitle,
-  score,
   questionId,
-  textColorClass,
   category,
   createdDt,
 }) => {
-  const {
-    questionDetail,
-    isPopupOpen,
-    setIsPopupOpen,
-    handleClosePopup,
-    truncateText,
-  } = useQuestionItem(questionId);
+  const { questionDetail, isPopupOpen, handleClosePopup } =
+    useQuestionItem(questionId);
 
   const BgColors: Record<string, string> = {
     OS: '#7CFC00',

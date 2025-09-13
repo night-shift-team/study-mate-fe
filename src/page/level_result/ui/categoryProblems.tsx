@@ -37,7 +37,6 @@ const LevelTestCategoryProblems = ({
   useEffect(() => {
     setCurrentProblemList(findProblemsByCategory(category));
   }, [problemsIdWithTitle, category]);
-  console.log('userAnswers', userAnswers);
   return (
     <div className="w-full flex-1 flex-col gap-4">
       <div className="mt-10 flex w-full justify-between gap-4 px-2">

@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation';
 import UserStateWrapper from '@/shared/state/userStore/model/clientSideWrapper';
 import { userStore } from '@/shared/state/userStore/model';
 import BackButton from '@public/assets/icons/header/backButton.svg';
-import DarkBackButton from '@public/assets/icons/header/dark_backButton.svg';
 import ProfileIcon from '@public/assets/icons/header/Avatar.svg';
 import { DarkModeButton } from '@/shared/button/DarkModeButton';
 

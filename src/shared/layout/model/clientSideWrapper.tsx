@@ -11,6 +11,7 @@ const TabBarComponent = dynamic(
 );
 import { usePathname } from 'next/navigation';
 import QueryProvider from './queryProvider';
+import ToastPortal from '@/shared/toast/ui/toaster';
 
 const ClientSideWrapper = ({ children }: { children: React.ReactNode }) => {
   const path = usePathname();
@@ -34,6 +35,7 @@ const ClientSideWrapper = ({ children }: { children: React.ReactNode }) => {
     <QueryProvider>
       <div className="base relative h-full w-full max-w-[450px] bg-[#FAFAFA] dark:bg-grayscale-900">
         <Header path={path} />
+        <ToastPortal />
         <div
           className={`${isNeccessaryOldHeader(path) ? 'mt-[3.2rem] flex h-[calc(100%-3.2rem)] w-full justify-center md:mt-[3.5rem] md:h-[calc(100%-3.5rem)]' : 'flex h-full w-full flex-col'}`}
         >

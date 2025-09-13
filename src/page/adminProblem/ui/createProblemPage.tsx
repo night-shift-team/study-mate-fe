@@ -26,20 +26,13 @@ enum ProblemAttributeTitle {
 }
 
 const CreateProblemPage = () => {
-  const {
-    problemDetailInfo,
-    setProblemDetailInfo,
-    Toaster,
-    isLoading,
-    handleSubmit,
-    animationClass,
-  } = useCreateProblem();
+  const { problemDetailInfo, setProblemDetailInfo, isLoading, handleSubmit } =
+    useCreateProblem();
   return (
     <form
       onSubmit={async (e) => await handleSubmit(e)}
       className="relative flex h-full w-full flex-col items-center p-4"
     >
-      <Toaster animationClass={animationClass} />
       <div className="fixed left-0 flex h-12 w-full items-center justify-between border-b-2 bg-pointcolor-sand px-4">
         <div className="flex h-12 max-w-full items-center justify-center text-xl font-bold">
           Problem {problemDetailInfo?.questionId ?? ''}

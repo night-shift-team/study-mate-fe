@@ -4,11 +4,8 @@ import NETWORK_Image from '@public/assets/icons/mypage/NETWORK.svg';
 import DATABASE_Image from '@public/assets/icons/mypage/DATABASE.svg';
 import ALGORITHM_Image from '@public/assets/icons/mypage/ALGORITHM.svg';
 import OS_Image from '@public/assets/icons/mypage/OS.svg';
-import Arrow from '@public/assets/icons/button/check/Polygon.svg';
 import { useRouter } from 'next/navigation';
-import { SvgIcon } from '@mui/material';
 import { ProblemCategoryTitle } from '@/shared/problem/model/problemInfo.types';
-import DarkPolygon from '@public/assets/icons/button/check/DarkPolygon.svg';
 
 interface MobileCheckListProps {
   category: ProblemCategoryTitle;

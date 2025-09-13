@@ -40,12 +40,10 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
 
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
-      console.log(window.getComputedStyle(canvas).fontFamily);
       const computedFontFamily =
         fontFamily === 'inherit'
           ? window.getComputedStyle(canvas).fontFamily || 'sans-serif'
           : fontFamily;
-      console.log(computedFontFamily.split(',')[0]);
 
       const fontSizeStr =
         typeof fontSize === 'number' ? `${fontSize}px` : fontSize;

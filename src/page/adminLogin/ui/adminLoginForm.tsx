@@ -1,6 +1,5 @@
 'use client';
 import { FaArrowRightLong } from 'react-icons/fa6';
-import { Dispatch, SetStateAction } from 'react';
 import {
   checkEmailValidate,
   checkPasswordValidate,
@@ -8,23 +7,9 @@ import {
 
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import useAdminLogin from '../model/adminLoginHook';
-import { ToastType } from '@/shared/toast/model/getToastStyle';
 
-const AdminLoginForm = ({
-  setOpen,
-  setToastText,
-  setToastIcon,
-}: {
-  open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  setToastText: (description: string) => void;
-  setToastIcon: (status: ToastType) => void;
-}) => {
-  const { adminLogin, emailRef, passwordRef, isLoading } = useAdminLogin(
-    setOpen,
-    setToastText,
-    setToastIcon
-  );
+const AdminLoginForm = () => {
+  const { adminLogin, emailRef, passwordRef, isLoading } = useAdminLogin();
 
   return (
     <form

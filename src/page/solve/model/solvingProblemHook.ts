@@ -7,7 +7,6 @@ import {
   ProblemInfoMAQ,
   ProblemInfoSAQ,
 } from '@/shared/problem/model/problemInfo.types';
-import useToast from '@/shared/toast/model/toastHook';
 import { useEffect, useRef, useState } from 'react';
 import {
   getMAQbyCategoryApi,
@@ -27,11 +26,8 @@ import { UserInfo } from '@/shared/user/model/userInfo.types';
 import { ProblemProps } from '../ui/solvingProblemPage';
 import { userStore } from '@/shared/state/userStore/model';
 import { useRouter } from 'next/navigation';
-import dynamic from 'next/dynamic';
-import { ToastType } from '@/shared/toast/model/getToastStyle';
-const Toaster = dynamic(() => import('@/shared/toast/ui/toaster'), {
-  ssr: false,
-});
+import { toastStore, ToastType } from '@/shared/state/toast/toastStore';
+
 export interface QuestionType extends ProblemInfoMAQ, ProblemInfoSAQ {
   problemType: ProblemCategoryType;
 }
@@ -68,11 +64,7 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
   >(null);
 
   const currentSolveCategoryRef = useRef<ProblemCategory | null>(null);
-  const [toastOpen, setToastOpen] = useState(false);
-  const { animationClass, setToastDescription, setToastIcon } = useToast(
-    toastOpen,
-    setToastOpen
-  );
+
   const { user, setUser } = userStore.getState();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -344,21 +336,27 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
       const res = await questionBookmarkToggleApi(questionId);
       if (res.ok) {
         if (res.payload) {
-          setToastDescription('북마크가 추가되었습니다.');
+          toastStore.update({
+            status: ToastType.success,
+            title: '북마크가 추가되었습니다.',
+          });
         } else {
-          setToastDescription('북마크가 삭제되었습니다.');
+          toastStore.update({
+            status: ToastType.success,
+            title: '북마크가 삭제되었습니다.',
+          });
         }
-        setToastIcon(ToastType.success);
         return res.payload as boolean;
       }
       return false;
     } catch (e) {
       console.log(e);
-      setToastDescription('일시적인 오류가 발생하였습니다.');
-      setToastIcon(ToastType.error);
+      toastStore.update({
+        status: ToastType.error,
+        title: '일시적인 오류가 발생하였습니다.',
+      });
+
       return false;
-    } finally {
-      setToastOpen(true);
     }
   };
 
@@ -383,10 +381,7 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
     handleNextButton,
     isLoading,
     isPageLoading,
-    Toaster,
-    user,
     router,
-    animationClass,
     answerFormRef,
     answerListOpen,
     openAnswerList,

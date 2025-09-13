@@ -6,17 +6,19 @@ import { userInfoApi, UserInfoRes } from '../api';
 
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-import { Dispatch, SetStateAction } from 'react';
 import { LoginToastText } from './loginToastText';
 import { Ecode, EcodeMessage } from '@/shared/api/model/ecode';
 import { UserInfo } from '@/shared/user/model/userInfo.types';
 import { UserStoreStorage } from '@/shared/state/userStore/model';
-import { ToastType } from '@/shared/toast/model/getToastStyle';
+import { ToastType } from '@/shared/state/toast/toastStore';
 
 export const getUserInfo = async (
-  setToastText: (description: string) => void,
-  setToastOpen: Dispatch<SetStateAction<boolean>>,
-  setToastIcon: (status: ToastType) => void,
+  setToastOpen: (
+    status?: ToastType,
+    title?: string,
+    description?: string,
+    duration?: number
+  ) => void,
   setUser: (newUser: UserInfo | null) => void,
   router: AppRouterInstance,
   isAdmin?: boolean
@@ -29,18 +31,15 @@ export const getUserInfo = async (
         EcodeMessage(Ecode.E0106);
         localStorage.removeItem('accessToken');
         localStorage.removeItem(UserStoreStorage.userStore);
-        setToastText(LoginToastText.LOGIN_FAILED);
-        setToastIcon(ToastType.success);
-        setToastOpen(true);
+
+        setToastOpen(ToastType.success, LoginToastText.LOGIN_FAILED);
         return;
       }
       router.push(RouteTo.Home);
     } else {
       const userData = res.payload as UserInfoRes;
       setUser(userData);
-      setToastText(LoginToastText.LOGIN_SUCCESS);
-      setToastIcon(ToastType.success);
-      setToastOpen(true);
+      setToastOpen(ToastType.success, LoginToastText.LOGIN_SUCCESS);
       setTimeout(() => {
         if (isAdmin && userData.role >= 7) {
           router.push(RouteTo.AdminDashboard);

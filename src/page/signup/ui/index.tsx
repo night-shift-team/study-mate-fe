@@ -30,8 +30,6 @@ const SignUpPage = () => {
 
   return (
     <div className="relative flex h-full w-full flex-col items-center justify-center px-4">
-      {/* <Toaster /> */}
-
       <span className="text-title-main">Register</span>
       <div className="mt-12 flex w-full flex-col items-center gap-4">
         <form

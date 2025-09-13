@@ -7,13 +7,10 @@ import {
 import { ServerErrorResponse } from '@/shared/api/model/config';
 import { useEffect, useState } from 'react';
 import { getStoreItemListApi, getStorePaymentHistoryApi } from '../api';
-import useToast from '@/shared/toast/model/toastHook';
 import { PurchaseStatus, StoreItemInfo } from '../ui';
 import useOutsideClick from '@/shared/routes/model/useOutsideClick';
-import dynamic from 'next/dynamic';
-const Toaster = dynamic(() => import('@/shared/toast/ui/toaster'), {
-  ssr: false,
-});
+import { toastStore, ToastType } from '@/shared/state/toast/toastStore';
+
 const useStorePage = () => {
   const [purchaseOpen, setPurchaseOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
@@ -22,14 +19,9 @@ const useStorePage = () => {
     setPurchaseOpen(false);
     setCartOpen(false);
   });
-  const [toastOpen, setToastOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<StoreItemInfo | null>(null);
   const [cart, setCart] = useState<StoreItemInfo[]>([]);
   const [storeItems, setStoreItems] = useState<StoreItemDto[]>([]);
-  const { animationClass, setToastDescription } = useToast(
-    toastOpen,
-    setToastOpen
-  );
 
   const getStoreItemLists = async () => {
     try {
@@ -66,10 +58,10 @@ const useStorePage = () => {
             if (currentTime - latestPaymentTime < 30000) {
               // 결제하고 결제내역 호출했는데 가장 최근 내역이 30초 전보다 더 전이면 데이터가 들어오지 않은걸로 간주
               setPurchaseStatus('success');
-              setToastDescription(
-                `${historyByLatest[0].itemName} 아이템 구매 완료`
-              );
-              setToastOpen(true);
+              toastStore.update({
+                status: ToastType.success,
+                title: `${historyByLatest[0].itemName} 아이템 구매 완료`,
+              });
               return;
             }
           }
@@ -105,8 +97,6 @@ const useStorePage = () => {
     setCart,
     setPurchaseOpen,
     purchaseStatus,
-    animationClass,
-    Toaster,
   };
 };
 export default useStorePage;

@@ -13,30 +13,29 @@ import HomeLogo from '@public/assets/icons/header/mobile_logo.svg';
 
 const LoginPage = () => {
   const {
-    Toaster,
+    // Toaster,
     handleSubmit,
     emailInputRef,
     passwordInputRef,
     formData,
     handleChange,
     // hideTooltip,
-    testToast,
+
     loginLoading,
     windowReference,
     validationStatus,
-    animationClass,
+    // animationClass,
   } = useLoginPage();
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center px-4">
-      <Toaster animationClass={animationClass} />
       <div className="flex w-full flex-col justify-center">
         <SvgIcon
           component={HomeLogo}
           inheritViewBox
           sx={{ width: 'auto', height: '40px' }}
         />
-        <span className="mt-4 text-center text-title-main">Sign In</span>
+        <span className="mt-6 text-center text-title-main">Sign In</span>
 
         <form
           id={'loginForm'}
@@ -71,7 +70,7 @@ const LoginPage = () => {
             <div className="flex w-full flex-col">
               <InputForm
                 ref={passwordInputRef}
-                type="password"
+                type="text"
                 name="password"
                 value={formData.password}
                 onChange={(e) => {
@@ -83,7 +82,7 @@ const LoginPage = () => {
                 }}
                 onClick={(e) => e.currentTarget.focus()}
                 placeholder="Password"
-                className="font-pretandard text-label"
+                className="font-pretandard text-label [-webkit-text-security:disc]"
                 status={validationStatus.password.status}
               />
               <span className="mt-2 pl-2 text-[11px] text-[#ED3241]">
@@ -114,7 +113,7 @@ const LoginPage = () => {
                   }`}
                   onClick={(e) => {
                     e.preventDefault();
-                    testToast();
+                    // testToast();
                   }}
                 >
                   Forgot password?
@@ -149,7 +148,7 @@ const LoginPage = () => {
                 onClick={(e) => {
                   if (item.title != 'google') {
                     e.preventDefault();
-                    testToast();
+                    // testToast();
                     return;
                   }
                   openNewWindowWithoutDuplicate(windowReference, item.link);
