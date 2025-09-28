@@ -1,12 +1,5 @@
-User-Agent: *
-Allow: /
-Disallow: /admin/
-Disallow: /api/
-Disallow: /leveltest/
-Disallow: /login/
-Disallow: /rank/
-Disallow: /mypage/
-Disallow: /testresult/
-Disallow: /solve/
+User-agent: *
+Disallow: /
+Allow: /$
 
 Sitemap: https://developer-dev.study-mate.academy/sitemap.xml
