@@ -1,9 +1,6 @@
 'use client';
 
-const Header = dynamic(() => import('@/feature/header/ui/Header'), {
-  ssr: false,
-});
-import dynamic from 'next/dynamic';
+import Header from '@/feature/header/ui/Header';
 import QueryProvider from './queryProvider';
 
 const ClientSideWrapper = ({ children }: { children: React.ReactNode }) => {
