@@ -6,7 +6,6 @@ import 'swiper/css';
 import 'swiper/css/navigation'; // 화살표
 import 'swiper/css/pagination'; // 페이지네이션
 import ClientSideWrapper from '@/shared/layout/model/clientSideWrapper';
-import ChunkReloadGuard from './chunkReloadGuard';
 
 export default async function RootLayout({
   children,
@@ -26,7 +25,6 @@ export default async function RootLayout({
         id="root-container"
         className={`flex h-full w-full bg-pointcolor-yogurt font-spoqa antialiased`}
       >
-        <ChunkReloadGuard />
         {/* <MaintenanceCheck> */}
         <ClientSideWrapper>{children}</ClientSideWrapper>
         {/* </MaintenanceCheck> */}
