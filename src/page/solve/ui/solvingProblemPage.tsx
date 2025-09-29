@@ -78,12 +78,12 @@ const SolvingProblemPage = ({ category }: ProblemProps) => {
       answer: (problemAnswer as SendMAQAnswerRes).answer,
       answerExplanation: problemAnswer!.answerExplanation,
     } as ProblemDetailInfoRes);
-
+  console.log(problemSolutionInfo);
   useEffect(() => {
     if (problemAnswer && problemSolutionInfo) {
       router.push(
         RouteTo.SolveSolution +
-          `?problemInfo=${encodeURIComponent(JSON.stringify(problemSolutionInfo))}`
+          `?problemInfo=${encodeURIComponent(JSON.stringify(problemSolutionInfo))}&userAnswer=${selectedAnswer}`
       );
     }
   }, [problemAnswer]);

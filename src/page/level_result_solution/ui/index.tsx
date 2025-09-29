@@ -22,7 +22,7 @@ const TestResultSolutionPage = ({
   type: 'test' | 'favorite' | 'history' | 'solve';
   problemId?: string;
   userAnswer?: string;
-  problemInfo?: ProblemDetailInfoRes;
+  problemInfo?: ProblemDetailInfoRes | null;
 }) => {
   if (!type) return;
   // problemId와 userAnswer는 둘다 존재하거나 둘다 없어야함. 둘다 없을때는 반드시 problemInfo가 있어야함. 그렇지 않으면 리턴
@@ -34,7 +34,7 @@ const TestResultSolutionPage = ({
     return;
 
   const [problemDetailInfo, setProblemDetailInfo] = useState<
-    ProblemDetailInfoRes | undefined
+    ProblemDetailInfoRes | undefined | null
   >(problemInfo);
   const router = useRouter();
 
@@ -110,7 +110,7 @@ const TestResultSolutionPage = ({
                   >
                     {selection}
                   </span>
-                  <div className="h-[20px] w-[20px] rounded-full">
+                  <div className="h-[20px] w-[20px] shrink-0 rounded-full">
                     {index + 1 === Number(problemDetailInfo.answer) ? (
                       <CircleCheck className="h-full w-full fill-success" />
                     ) : (

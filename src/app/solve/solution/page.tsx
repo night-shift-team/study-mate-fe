@@ -1,4 +1,5 @@
 'use client';
+import { ProblemDetailInfoRes } from '@/page/adminProblem/api';
 import SolveSolutionPage from '@/page/solve/ui/solveSolutionPage';
 import UserStateWrapper from '@/shared/state/userStore/model/clientSideWrapper';
 import PageAnimationWrapper from '@/shared/style/ui/pageAnimationWrapper';
@@ -8,11 +9,15 @@ import { useMemo } from 'react';
 const SolveSolution = () => {
   const searchParams = useSearchParams();
 
+  let userAnswer;
   const problemInfo = useMemo(() => {
-    const raw = searchParams.get('problemInfo');
-    if (!raw) return null;
+    const problemData = searchParams.get('problemInfo');
+    const userData = searchParams.get('userAnswer');
+    if (!problemData) return null;
     try {
-      return JSON.parse(decodeURIComponent(raw));
+      const solutionData = JSON.parse(decodeURIComponent(problemData));
+      userAnswer = userData;
+      return solutionData as ProblemDetailInfoRes;
     } catch (e) {
       console.error('Failed to parse problemInfo:', e);
       return null;
@@ -22,7 +27,7 @@ const SolveSolution = () => {
   return (
     <UserStateWrapper>
       <PageAnimationWrapper>
-        <SolveSolutionPage solutionData={problemInfo} />
+        <SolveSolutionPage solutionData={problemInfo} userAnswer={userAnswer} />
       </PageAnimationWrapper>
     </UserStateWrapper>
   );
