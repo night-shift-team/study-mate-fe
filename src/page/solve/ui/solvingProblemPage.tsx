@@ -33,6 +33,7 @@ import { useEffect } from 'react';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { LucideHome } from 'lucide-react';
 import Link from 'next/link';
+import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 
 export interface ProblemProps {
   category: 'random' | ProblemCategoryTitle;
@@ -47,7 +48,7 @@ const SolvingProblemPage = ({ category }: ProblemProps) => {
     sendAnswerButton,
     // bookMarkToggle,
     // handleNextButton,
-    // isLoading,
+    isLoading,
     // isPageLoading,
     // Toaster,
     // user,
@@ -191,7 +192,7 @@ const SolvingProblemPage = ({ category }: ProblemProps) => {
               </div>
               <div className="flex w-full gap-2 pb-4">
                 <ButtonPixel
-                  status="default"
+                  status={isLoading ? 'inactive' : 'default'}
                   onClick={async () => {
                     if (!currentQuestionWithType || !selectedAnswer) return;
                     await sendAnswerButton(
@@ -200,7 +201,7 @@ const SolvingProblemPage = ({ category }: ProblemProps) => {
                     );
                   }}
                 >
-                  Submit
+                  {isLoading ? <Spinner /> : 'Submit'}
                 </ButtonPixel>
               </div>
             </div>
