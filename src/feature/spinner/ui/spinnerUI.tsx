@@ -17,7 +17,7 @@ export const Spinner = ({
 }) => {
   return (
     <div
-      className={`items-cneter flex h-full min-h-[5px] min-w-[5px] justify-center`}
+      className={`items-cneter flex h-full max-h-[9rem] min-h-[5px] min-w-[5px] justify-center`}
     >
       <div
         className="loader"
