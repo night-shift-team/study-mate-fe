@@ -163,7 +163,7 @@ const SolvingProblemPage = ({ category }: ProblemProps) => {
                       </div>
                     </button>
                   )}
-                  {answerListOpen && (
+                  {!isLoading && answerListOpen && (
                     <AnswerListForm
                       key={selectedAnswer}
                       answerFormRef={answerFormRef}

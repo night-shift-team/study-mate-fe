@@ -69,16 +69,22 @@ const AnswerListForm = ({
                     key={index}
                     selected={selectedAnswer === index + 1}
                     onClick={() => {
-                      if (selectedAnswer === index + 1) {
-                        closeAnswerList();
-                        return;
-                      }
                       if (isGetResultApiLoading) {
                         return;
-                      } else {
-                        handleAnswerSelect(index + 1);
-                        return;
                       }
+                      // if (selectedAnswer === index + 1) {
+                      //   closeAnswerList();
+                      //   return;
+                      // }
+                      // if (isGetResultApiLoading) {
+                      //   return;
+                      // } else {
+                      handleAnswerSelect(index + 1);
+                      setTimeout(() => {
+                        closeAnswerList();
+                      }, 100);
+                      return;
+                      // }
                     }}
                   >
                     <span className="font-pretandard text-quiz-option">
