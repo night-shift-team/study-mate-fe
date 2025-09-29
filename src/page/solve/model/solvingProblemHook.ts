@@ -18,7 +18,7 @@ import {
 } from '../api';
 import {
   getRandomProblemCategory,
-  getRandomProblemType,
+  // getRandomProblemType,
 } from './getRandomCategory';
 import { ServerErrorResponse } from '@/shared/api/model/config';
 import { Ecode } from '@/shared/api/model/ecode';
@@ -39,17 +39,15 @@ interface CanSolveProblemInfo {
 const DEFAULT_CANSOLVE_PROBLEM_INFO = (() => {
   const value: CanSolveProblemInfo[] = [];
   for (const key in ProblemCategory) {
+    const problemType = key as keyof typeof ProblemCategory;
     if (Object.prototype.hasOwnProperty.call(ProblemCategory, key)) {
-      if (
-        ProblemCategory[key as keyof typeof ProblemCategory] ===
-        ProblemCategory.LEVEL_TEST
-      ) {
+      if (ProblemCategory[problemType] === ProblemCategory.LEVEL_TEST) {
         continue;
       }
     }
     value.push({
-      category: ProblemCategory[key as keyof typeof ProblemCategory],
-      canSolve: true,
+      category: ProblemCategory[problemType],
+      canSolve: problemType.includes('SAQ') ? false : true,
     });
   }
   return value;
@@ -128,7 +126,9 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
       const solveType = checkCanSolveProblemType(targetCategory);
       if (!solveType) return;
       const randomType =
-        solveType === 'BOTH' ? getRandomProblemType() : solveType;
+        //* 현재는 MAQ만 풀 수 있으므로 주석처리
+        // solveType === 'BOTH' ? getRandomProblemType() : solveType;
+        ProblemCategoryType.MAQ;
       if (randomType === ProblemCategoryType.MAQ) {
         currentSolveCategoryRef.current =
           `${targetCategory}_${ProblemCategoryType.MAQ}` as ProblemCategory;
@@ -183,16 +183,16 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
           item.category.split('_')[0] === targetCategory
       );
       if (canSolveData.length) {
-        // MAQ, SAQ
-        const first = canSolveData[0].canSolve
+        // MAQ, SAQ 순서대로 0인덱스, 1인덱스에 들어있음
+        const canSolveMAQ = canSolveData[0].canSolve
           ? (canSolveData[0].category.split('_')[1] as ProblemCategoryType)
           : null;
-        const second = canSolveData[1].canSolve
+        const canSolveSAQ = canSolveData[1].canSolve
           ? (canSolveData[1].category.split('_')[1] as ProblemCategoryType)
           : null;
-        if (first && second) {
+        if (canSolveMAQ && canSolveSAQ) {
           return 'BOTH';
-        } else if (!first && second) {
+        } else if (!canSolveMAQ && canSolveSAQ) {
           const newData = data.map((value: CanSolveProblemInfo) => {
             if (value.category === canSolveData[0].category) {
               return {
@@ -203,8 +203,8 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
             return value;
           });
           sessionStorage.setItem('canSolveProblem', JSON.stringify(newData));
-          return second;
-        } else if (first && !second) {
+          return canSolveSAQ as ProblemCategoryType.SAQ;
+        } else if (canSolveMAQ && !canSolveSAQ) {
           const newData = data.map((value: CanSolveProblemInfo) => {
             if (value.category === canSolveData[1].category) {
               return {
@@ -215,7 +215,7 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
             return value;
           });
           sessionStorage.setItem('canSolveProblem', JSON.stringify(newData));
-          return first;
+          return canSolveMAQ as ProblemCategoryType.MAQ;
         } else {
           const newData = data.map((value: CanSolveProblemInfo) => {
             if (value.category.split('_')[0] === category) {
