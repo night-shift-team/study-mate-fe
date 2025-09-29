@@ -1,3 +1,4 @@
+'use client';
 import UnderConstruction from '@public/assets/backgroundImages/main/under_construction.png';
 import Image from 'next/image';
 import { RemainTimeSV2 } from './noticeEndTimerV2';
@@ -17,11 +18,20 @@ const Maintenance = ({ notices }: { notices?: GetValidnoticeListRes }) => {
       </div>
       <span className="flex w-full justify-center">유지보수중입니다.</span>
       {notices?.maintenaceNotices[0] ? (
-        <div className="flex w-full flex-col items-center justify-center p-2">
-          <p>
-            {notices.displayNotices[0]?.noticeTitle ?? '임시 점검 중입니다.'}
+        <div className="mt-2 flex w-full flex-col items-center justify-center p-4">
+          <p>{notices.displayNotices[0]?.noticeTitle ?? ''}</p>
+          <p className="font-pretandard">
+            점검 종료 시각 :{' '}
+            {notices.maintenaceNotices[0]?.maintenanceEndTime
+              ? new Date(
+                  notices.maintenaceNotices[0].maintenanceEndTime
+                ).toLocaleDateString() +
+                '  ' +
+                new Date(
+                  notices.maintenaceNotices[0].maintenanceEndTime
+                ).toLocaleTimeString()
+              : ''}
           </p>
-          <p>{notices.maintenaceNotices[0]?.maintenanceEndTime ?? ''}</p>
           <RemainTimeSV2
             endDate={
               notices.maintenaceNotices[0]?.maintenanceEndTime
