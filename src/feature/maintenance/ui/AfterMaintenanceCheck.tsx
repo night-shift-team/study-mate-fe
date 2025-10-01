@@ -7,6 +7,7 @@ const AfterMaintenanceCheck = async ({
   renderChildren: React.ReactNode;
 }) => {
   const isNotOpen = await useAfterMaintenanceCheck();
+  console.log(isNotOpen);
   return (
     <>{isNotOpen === false ? children : <Maintenance notices={isNotOpen} />}</>
   );
