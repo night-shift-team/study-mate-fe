@@ -35,7 +35,7 @@ export const MobileCheckList = ({
       <Icon className="h-full w-full" />
 
       <div
-        className={`absolute left-[22%] top-[25%] z-10 w-[30vw] max-w-[120px] p-2 text-center text-title-section font-semibold text-black ${bgColorClass}`}
+        className={`absolute left-[22%] top-[25%] z-10 w-[30vw] max-w-[120px] p-1 text-center text-[3vh] font-semibold text-black ${bgColorClass}`}
       >
         {category}
       </div>

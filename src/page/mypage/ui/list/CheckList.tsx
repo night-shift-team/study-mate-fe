@@ -22,35 +22,6 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
     <>
       <div className="flex-col items-center overflow-auto pb-[50px] pt-[20px]">
         <div className="w-[100%] overflow-auto scrollbar-hide">
-          {/* <div className="flex">
-            {TempCategories.map((category, index) => {
-              const bgColorClass = categoryBgColors[category.title] ?? '';
-
-              return (
-                <div
-                  key={index}
-                  onClick={() => setSelectedCategory(category.title)}
-                  className={`hidden h-[3rem] w-[150px] cursor-pointer flex-col items-center justify-center rounded-tr-2xl px-4 pt-2.5 md:flex md:p-4 ${bgColorClass}`}
-                >
-                  <div className="flex h-[3rem] justify-center">
-                    <span
-                      className={`flex items-center text-title-section font-bold ${
-                        selectedCategory === category.title
-                          ? 'text-black'
-                          : 'text-gray-500'
-                      }`}
-                      style={{
-                        letterSpacing:
-                          category.title.length > 20 ? '-0.06rem' : '',
-                      }}
-                    >
-                      {category.title}
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
-          </div> */}
           <div className="grid grid-cols-2 gap-3 pb-10">
             {TempCategories.map((category, index) => {
               const bgColorClass = categoryBgColors[category.title] ?? '';
