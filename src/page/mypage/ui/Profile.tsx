@@ -24,7 +24,7 @@ const Profile = () => {
     <div className="flex gap-16p font-pixel">
       {/* 프로필 이미지 */}
       <label htmlFor="profile-upload" className="">
-        <div className="flex h-[12vh] w-[12vh]">
+        <div className="z-[1000] flex h-[12vh] w-[12vh]">
           <div className="">
             <SvgIcon
               inheritViewBox

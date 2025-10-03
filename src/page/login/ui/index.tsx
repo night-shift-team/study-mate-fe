@@ -28,7 +28,7 @@ const LoginPage = () => {
   } = useLoginPage();
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center px-4">
+    <div className="flex h-full w-full flex-col items-center justify-center px-4 text-black dark:text-white">
       <div className="flex w-full flex-col justify-center">
         <SvgIcon
           component={HomeLogo}

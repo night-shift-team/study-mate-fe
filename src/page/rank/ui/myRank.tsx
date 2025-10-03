@@ -1,7 +1,4 @@
-import Image from 'next/image';
 import { userStore } from '@/shared/state/userStore/model';
-import Lv2Image from '@public/assets/icons/character/Lv2.svg';
-import Lv3Image from '@public/assets/icons/character/Lv3.svg';
 import Lv4Image from '@public/assets/icons/character/Lv4.svg';
 import { SvgIcon } from '@mui/material';
 import useRankPage from '../model/rankPageHook';
@@ -11,7 +8,6 @@ interface UserDataItem {
   value: string | number;
 }
 
-// 랭크 번호를 영어 서수(ordinal)로 변환
 function getOrdinalSuffix(rank: number | string): string {
   const num = typeof rank === 'string' ? parseInt(rank, 10) : rank;
   if (isNaN(num)) return '-';
