@@ -1,5 +1,22 @@
 User-agent: *
-Disallow: /
-Allow: /$
+Allow: /_next/static/
+Allow: /_next/image/
+Allow: /_next/data/
+Allow: /assets/
+Allow: /favicon.ico
+Allow: /robots.txt
+Allow: /sitemap.xml
+Allow: /assets/
+
+Disallow: /admin/
+Disallow: /announcement/
+Disallow: /api/
+Disallow: /leveltest/
+Disallow: /login/
+Disallow: /signup/
+Disallow: /solve/
+Disallow: /store/
+Disallow: /suggestion/
+Disallow: /testresult/
 
 Sitemap: https://developer-dev.study-mate.academy/sitemap.xml
