@@ -24,7 +24,7 @@ const Profile = () => {
     <div className="flex gap-16p font-pixel">
       {/* 프로필 이미지 */}
       <label htmlFor="profile-upload" className="">
-        <div className="flex h-[12vh] w-[12vh]">
+        <div className="z-[1000] flex h-[12vh] w-[12vh]">
           <div className="">
             <SvgIcon
               inheritViewBox
@@ -75,19 +75,21 @@ const Profile = () => {
       {isModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-70">
           <div className="w-[90%] rounded bg-white p-5 shadow-lg md:w-[30rem]">
-            <h2 className="ml-1 text-base font-semibold">변경할 닉네임</h2>
+            <h2 className="ml-1 text-base font-semibold text-black">
+              변경할 닉네임
+            </h2>
             <input
               type="text"
               value={newNickname}
               onChange={(e) => setNewNickname(e.target.value)}
-              className="mt-2 w-full rounded border p-2 font-spoqa"
+              className="mt-2 w-full rounded border p-2 font-spoqa text-black"
               placeholder="새 닉네임을 입력하세요"
             />
             <div className="mt-3 flex justify-end gap-2">
               <Button
                 size="xxs"
                 rounded={true}
-                className="rounded-full bg-gray-300 pl-[0.05rem] pt-0.5 font-mono text-[0.8rem] font-medium"
+                className="rounded-full bg-gray-400 pl-[0.05rem] pt-0.5 font-pixel text-[0.8rem] font-medium"
                 onClick={() => setIsModalOpen(false)}
               >
                 취소

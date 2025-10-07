@@ -12,6 +12,10 @@ import CircleCancel from '@public/assets/icons/leveltest/Subtract.svg';
 import ButtonPixel from '@/shared/button/buttonPixel';
 import { useRouter } from 'next/navigation';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import useSolvingProblem from '@/page/solve/model/solvingProblemHook';
+import Toaster from '@/shared/toast/ui/toaster';
+import { ProblemCategoryTitle } from '@/shared/problem/model/problemInfo.types';
+import { toastStore, ToastType } from '@/shared/state/toast/toastStore';
 
 const TestResultSolutionPage = ({
   type,
@@ -32,6 +36,10 @@ const TestResultSolutionPage = ({
     (!problemId && !userAnswer && !problemInfo)
   )
     return;
+
+  const { bookMarkToggle } = useSolvingProblem(
+    problemInfo?.category.split('_')[0] as ProblemCategoryTitle
+  );
 
   const [problemDetailInfo, setProblemDetailInfo] = useState<
     ProblemDetailInfoRes | undefined | null
@@ -71,6 +79,7 @@ const TestResultSolutionPage = ({
 
   return (
     <div className="flex h-full w-full flex-col overflow-y-auto px-4 py-5 scrollbar-hide">
+      <Toaster />
       <span className="text-title-page">Result Summary</span>
       <div className="mt-2 flex flex-col">
         <span className="mt-2 text-title-section text-point-logo">
@@ -136,8 +145,21 @@ const TestResultSolutionPage = ({
           <>
             <ButtonPixel
               status="default"
-              onClick={() => {
-                // 스크랩 api 호출
+              onClick={async () => {
+                if (problemId) {
+                  const success = await bookMarkToggle(problemId);
+                  if (success) {
+                    toastStore.show({
+                      status: ToastType.success,
+                      title: '북마크가 추가되었습니다',
+                    });
+                  } else {
+                    toastStore.show({
+                      status: ToastType.info,
+                      title: '북마크 실패',
+                    });
+                  }
+                }
               }}
             >
               Save this result
@@ -156,12 +178,26 @@ const TestResultSolutionPage = ({
           <>
             <ButtonPixel
               status="default"
-              onClick={() => {
-                // 스크랩 api 호출
+              onClick={async () => {
+                if (problemId) {
+                  const success = await bookMarkToggle(problemId);
+                  if (success) {
+                    toastStore.show({
+                      status: ToastType.success,
+                      title: '북마크가 추가되었습니다',
+                    });
+                  } else {
+                    toastStore.show({
+                      status: ToastType.info,
+                      title: '북마크 실패',
+                    });
+                  }
+                }
               }}
             >
               Save this result
             </ButtonPixel>
+
             <ButtonPixel
               status="default"
               onClick={() => {
@@ -193,8 +229,21 @@ const TestResultSolutionPage = ({
           <>
             <ButtonPixel
               status="default"
-              onClick={() => {
-                // 스크랩 api 호출
+              onClick={async () => {
+                if (problemId) {
+                  const success = await bookMarkToggle(problemId);
+                  if (success) {
+                    toastStore.show({
+                      status: ToastType.success,
+                      title: '북마크가 추가되었습니다',
+                    });
+                  } else {
+                    toastStore.show({
+                      status: ToastType.info,
+                      title: '북마크 실패',
+                    });
+                  }
+                }
               }}
             >
               Save this result

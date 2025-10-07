@@ -34,49 +34,6 @@ export const QuestionItem: React.FC<ItemProps> = ({
 
   return (
     <>
-      {/* <div className="rounded-lg bg-[#5500FF] opacity-[40%]">
-        <div className="flex gap-5">
-          <span className="text-[1.5vh] font-semibold">
-            {truncateText(questionTitle, 40)}
-          </span>
-          <p className="text-[1.5vh] text-gray-500">
-            난이도 : {Math.floor(Math.abs(score))}
-          </p>
-        </div>
-
-        <button
-          onClick={() => setIsPopupOpen(true)}
-          className="flex items-center justify-center gap-5 rounded-xl bg-[#FEBA73] p-2 text-[1.5vh] text-white"
-        >
-          자세히 보기
-          <FaArrowRightLong />
-        </button>
-      </div>
-      <div className="flex items-center justify-between rounded-lg bg-white p-3 shadow-lg md:hidden">
-        <div className="flex items-center gap-5">
-          <span className={`ml-2 text-sm font-semibold ${textColorClass}`}>
-            {(index + 1).toString().padStart(2, '0')}
-          </span>
-          {isCorrectAnswer ? (
-            <CircleCheck
-              size={20}
-              className="text-green-600"
-              strokeWidth={2.5}
-            />
-          ) : (
-            <CircleX size={20} className="text-red-600" strokeWidth={2.5} />
-          )}
-          <div className="flex items-center">
-            <span className="text-[1.5vh] font-semibold">
-              <h2>문제 제목</h2> {truncateText(questionTitle, 30)}
-            </span>
-          </div>
-        </div>
-
-        <div className="h-7 w-7" onClick={() => setIsPopupOpen(true)}>
-          <SvgIcon inheritViewBox component={Arrow} />
-        </div>
-      </div> */}
       <div className="flex h-[100px] w-full flex-col rounded-sm bg-[#451E81] pb-8p pl-16p pr-16p pt-8p">
         <div className="flex gap-2">
           <span

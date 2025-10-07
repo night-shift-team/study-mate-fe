@@ -56,6 +56,7 @@ export const ScrapsList: React.FC<ScrapsListProps> = ({ favoriteList }) => {
           </div>
         );
       })}
+      {favoriteList.length === 0 && <div>스크랩한 문제가 없습니다</div>}
     </div>
   );
 };

@@ -20,32 +20,34 @@ export const ScrapsListPage = () => {
   );
 
   return (
-    <div className="flex flex-col gap-[20px] p-8p">
-      <div className="text-title-page text-black dark:text-white">
-        Scrap folders
-      </div>
-      <div className="flex gap-4 text-black dark:text-white">
-        {TapButton.map((button) => (
-          <button
-            key={button.id}
-            onClick={() => setSelectedCategory(button.title)}
-            className={`text-button-1 transition-colors ${
-              selectedCategory === button.title
-                ? `${button.textColor}` // 선택된 색
-                : 'text-black'
-            }`}
-          >
-            {button.title}
-          </button>
-        ))}
-      </div>
-      <div className="h-[80vh] overflow-auto pb-[80px]">
-        <ScrapsList
-          favoriteList={(filteredList || []).map((item) => ({
-            ...item,
-            createdDt: String(item.createdDt),
-          }))}
-        />
+    <div className="w-screen p-4">
+      <div className="flex flex-col gap-[20px]">
+        <div className="text-title-page text-black dark:text-white">
+          Scrap folders
+        </div>
+        <div className="flex gap-4 text-black dark:text-white">
+          {TapButton.map((button) => (
+            <button
+              key={button.id}
+              onClick={() => setSelectedCategory(button.title)}
+              className={`text-button-1 transition-colors ${
+                selectedCategory === button.title
+                  ? `${button.textColor}` // 선택된 색
+                  : 'text-black dark:text-white'
+              }`}
+            >
+              {button.title}
+            </button>
+          ))}
+        </div>
+        <div className="h-[80vh] overflow-auto pb-[80px]">
+          <ScrapsList
+            favoriteList={(filteredList || []).map((item) => ({
+              ...item,
+              createdDt: String(item.createdDt),
+            }))}
+          />
+        </div>
       </div>
     </div>
   );

@@ -11,7 +11,7 @@ const InputForm = ({
   status: InputStatus;
 } & React.InputHTMLAttributes<HTMLInputElement>) => {
   const baseClasses =
-    'w-full px-[16px] py-[12px] rounded-12p border outline-none transition-all bg-background';
+    'w-full px-[16px] py-[12px] rounded-12p border outline-none transition-all bg-background placeholder:text-black dark:placeholder:text-white';
 
   const statusClasses = {
     empty:
@@ -27,7 +27,7 @@ const InputForm = ({
   return (
     <input
       ref={ref}
-      className={`${baseClasses} ${statusClasses[status]} ${className} shrink-0 caret-black dark:caret-white`}
+      className={`${baseClasses} ${statusClasses[status]} ${className} shrink-0 text-black dark:text-white`}
       disabled={isDisabled}
       {...props}
     />

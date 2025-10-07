@@ -1,11 +1,16 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import SunIcon from '@public/assets/icons/button/toggle/sun.png';
 import { FaMoon } from 'react-icons/fa';
 
 export const DarkModeButton = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    // 초기 상태 동기화
+    setIsDarkMode(document.documentElement.classList.contains('dark'));
+  }, []);
 
   const toggleDarkMode = () => {
     const newMode = !isDarkMode;
@@ -14,7 +19,6 @@ export const DarkModeButton = () => {
   };
 
   return (
-    // pointer-events-auto를 넣어서 클릭 가능하게 보장
     <div className="pointer-events-auto relative z-[1000000]">
       <button
         onClick={toggleDarkMode}

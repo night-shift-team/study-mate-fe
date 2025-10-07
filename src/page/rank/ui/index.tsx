@@ -4,6 +4,7 @@ import { SvgIcon } from '@mui/material';
 import Lv2Image from '@public/assets/icons/character/Lv2.svg';
 import Lv3Image from '@public/assets/icons/character/Lv3.svg';
 import Lv4Image from '@public/assets/icons/character/Lv4.svg';
+import { MyRankBox } from './myRank';
 
 import useRankPage from '../model/rankPageHook';
 import { TopRankUser } from './topRankUser';
@@ -14,37 +15,41 @@ const RankPage = () => {
   // 캐릭터 이미지는 임의로 넣음
   return (
     <div
-      className="flex h-full w-full flex-col overflow-scroll p-16p pb-[5rem] font-pixel font-bold text-white"
+      className="flex h-full w-full flex-col gap-[7%] overflow-scroll p-16p pb-[5rem] font-pixel font-bold text-white"
       style={{
         scrollbarWidth: 'none',
         msOverflowStyle: 'none',
       }}
     >
-      <span className="text-[32px] text-black dark:text-white">Ranking</span>
-      <div className="flex h-[clamp(8rem,30%,12rem)] w-full min-w-[15rem] items-end justify-center gap-[0.1rem] px-[5%]">
-        <TopRankUser
-          user={displayedUsers[1]}
-          levelIcon={Lv2Image}
-          heightClass="h-[86%]"
-          delayClass="delay-500"
-          rank="2"
-        />
-        <TopRankUser
-          user={displayedUsers[0]}
-          levelIcon={Lv4Image}
-          heightClass="h-full"
-          rank="1"
-        />
-        <TopRankUser
-          user={displayedUsers[2]}
-          levelIcon={Lv3Image}
-          heightClass="h-[80%]"
-          delayClass="delay-1000"
-          rank="3"
-        />
+      <div>
+        <span className="text-[32px] text-black dark:text-white">Ranking</span>
+        <div className="flex h-[clamp(8rem,30%,12rem)] w-full min-w-[15rem] items-end justify-center gap-[0.1rem] px-[5%]">
+          <TopRankUser
+            user={displayedUsers[1]}
+            levelIcon={Lv2Image}
+            heightClass="h-[86%]"
+            delayClass="delay-500"
+            rank="2"
+          />
+          <TopRankUser
+            user={displayedUsers[0]}
+            levelIcon={Lv4Image}
+            heightClass="h-full"
+            rank="1"
+          />
+          <TopRankUser
+            user={displayedUsers[2]}
+            levelIcon={Lv3Image}
+            heightClass="h-[80%]"
+            delayClass="delay-1000"
+            rank="3"
+          />
+        </div>
       </div>
-      <>
-        <div className="mt-[80px] flex flex-col gap-16p">
+
+      <div className="flex flex-col gap-8">
+        <MyRankBox />
+        <div className="flex flex-col gap-16p">
           {displayedUsers.map((user, index) =>
             index > 2 ? (
               <div key={user.rankNo} className="flex items-center gap-1">
@@ -71,7 +76,7 @@ const RankPage = () => {
             ) : null
           )}
         </div>
-      </>
+      </div>
     </div>
   );
 };

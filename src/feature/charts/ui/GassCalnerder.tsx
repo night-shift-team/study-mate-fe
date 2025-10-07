@@ -7,15 +7,14 @@ import useGrassChart from '../model/grassChartHook';
 
 const getColorByCount = (count: number) => {
   if (count === 0)
-    return 'bg-grass border border-[#D3D3D3]/70 dark:border-white';
-  if (count <= 2) return 'bg-grass-100';
-  if (count <= 4) return 'bg-grass-200';
-  if (count <= 7) return 'bg-grass-300';
-  if (count <= 10) return 'bg-grass-400';
+    return 'bg-transparent border border-gray-400/70 dark:border-white/50';
+  if (count <= 2) return 'bg-yellow-100';
+  if (count <= 4) return 'bg-yellow-300';
+  if (count <= 7) return 'bg-yellow-400';
+  if (count <= 10) return 'bg-yellow-500';
 
-  return 'bg-grass-500';
+  return 'bg-yellow-600';
 };
-
 const GrassChart = () => {
   const { stats } = useGrassChart();
 
@@ -83,19 +82,22 @@ const GrassChart = () => {
       </div>
 
       {/* 달력 날짜 셀 */}
-      <div className="aspect-square grid h-auto w-full grid-cols-7 gap-0 text-center text-sm">
+      <div className="aspect-square grid h-auto w-full grid-cols-7 gap-2 text-center text-sm">
         {daysArray.map((cell, idx) =>
           cell ? (
             <div
               key={idx}
-              className={`flex h-[50px] items-center justify-center rounded-full ${cell.count === 0 ? 'text-black dark:text-white' : 'text-black'} transition-colors ${getColorByCount(
+              className={`flex h-[45px] w-[45px] items-center justify-center rounded-full transition-colors ${getColorByCount(
                 cell.count
-              )}`}
+              )} ${cell.count > 0 ? 'text-black' : 'text-gray-500 dark:text-gray-300'}`}
             >
-              {cell.count > 0 ? cell.count : '0'}
+              {cell.count > 0 ? cell.count : ''}
             </div>
           ) : (
-            <div key={idx} className="aspect-square" />
+            <div
+              key={idx}
+              className="flex h-[45px] w-[45px] items-center justify-center rounded-full border border-dashed border-gray-400/50 dark:border-white/30"
+            />
           )
         )}
       </div>

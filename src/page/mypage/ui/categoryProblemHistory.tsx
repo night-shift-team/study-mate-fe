@@ -38,31 +38,35 @@ const CategoryProblemHistoryPage = () => {
         Solution Archive
       </span>
       <div className="mt-[20px] flex w-full flex-col">
-        <div className="flex flex-col justify-between">
-          <div className="flex flex-col gap-3 pb-[10px]">
+        <div className="flex h-[85vh] flex-col justify-between gap-3 pb-[10px]">
+          <div className="flex flex-col gap-3">
             {paginatedHistory.length > 0 ? (
-              paginatedHistory.map((history, index) => (
-                <QuestionItem
-                  key={history.historyId}
-                  index={startIndex + index}
-                  isCorrectAnswer={history.isCorrect}
-                  userAnswer={history.userAnswer}
-                  userId={history.userId}
-                  historyId={history.historyId}
-                  questionId={history.questionId}
-                  questionTitle={history.questionTitle}
-                  score={history.score}
-                  textColorClass={textColorClass}
-                  category={category}
-                  createdDt={history.createdDt}
-                />
-              ))
+              paginatedHistory.map((history, index) => {
+                console.log(history); // 로그 출력
+                return (
+                  <QuestionItem
+                    key={history.historyId}
+                    index={startIndex + index}
+                    isCorrectAnswer={history.isCorrect}
+                    userAnswer={history.userAnswer}
+                    userId={history.userId}
+                    historyId={history.historyId}
+                    questionId={history.questionId}
+                    questionTitle={history.questionTitle}
+                    score={history.score}
+                    textColorClass={textColorClass}
+                    category={category}
+                    createdDt={history.createdDt}
+                  />
+                );
+              })
             ) : (
               <p>해당 카테고리 문제 데이터가 없습니다.</p>
             )}
           </div>
+
           {filteredHistory.length > 0 && (
-            <div className="mb-[80px] mt-4 flex justify-center">
+            <div className="mb-[10px] mt-4 flex justify-center">
               <ProblemPagination
                 page={page}
                 setPage={setPage}

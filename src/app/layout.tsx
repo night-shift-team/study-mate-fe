@@ -13,7 +13,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="h-screen w-screen">
+    <html lang="en" suppressHydrationWarning className="dark h-screen w-screen">
       <link rel="icon" type="image/x-icon" href="/favicon.ico" />
       <body
         id="root-container"
