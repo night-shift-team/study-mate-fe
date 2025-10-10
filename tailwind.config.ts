@@ -160,6 +160,7 @@ module.exports = {
         'body-primary': ['18px', { lineHeight: '28px', fontWeight: '500' }],
         'body-secondary': ['16px', { lineHeight: '26px', fontWeight: '400' }],
         'body-small': ['14px', { lineHeight: '24px', fontWeight: '400' }],
+        'body-muted': ['12px', { lineHeight: '24px', fontWeight: '400' }],
 
         'quiz-question': ['16px', { lineHeight: '24px', fontWeight: '700' }],
         'quiz-option': ['15px', { lineHeight: '22px', fontWeight: '400' }],
