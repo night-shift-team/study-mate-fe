@@ -68,7 +68,7 @@ const SignUpPage = () => {
                     placeholder="Nickname"
                     status={validationStatus.name.status}
                     className="font-pretandard text-label"
-                    disabled={isFormChecked.email && isEmailAuthComplete}
+                    disabled={isFormChecked.nickname}
                   />
                   <span className="mt-2 pl-2 text-[11px] text-[#ED3241]">
                     {validationStatus.name.status !== 'empty' &&

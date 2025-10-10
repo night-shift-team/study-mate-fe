@@ -4,6 +4,7 @@ import {
   checkDuplicateEmailApi,
   checkDuplicateNicknameApi,
   signUpApi,
+  verifySignUpEmailApi,
 } from '../api';
 import { useRouter } from 'next/navigation';
 import { SignUpFormData } from '../ui';
@@ -17,6 +18,7 @@ import { setTokenToHeader } from '@/shared/api/model/config';
 import { requestSignIn } from '@/page/login/model/requestSignIn';
 import { setTokens } from '@/page/login/model/setTokens';
 import { userStore } from '@/shared/state/userStore/model';
+
 const useSignUpPage = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -85,10 +87,14 @@ const useSignUpPage = () => {
     return ASCII_UPPER_RE.test(value) || ASCII_PUNCT_RE.test(value);
   };
 
-  const isAuthNumberValid = (value: string | undefined) => {
+  const isAuthNumberValid = async (value: string | undefined) => {
     try {
       if (!value) return false;
-      return true;
+      const res = await verifySignUpEmailApi(formData.email, value);
+      if (res.ok) {
+        return true;
+      }
+      return false;
     } catch (e) {
       console.log(e);
       return false;

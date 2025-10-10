@@ -2,6 +2,7 @@ import ButtonPixel, { ButtonPixelCustom } from '@/shared/button/buttonPixel';
 import InputForm from '@/shared/input/inputForm';
 import { Dispatch, RefObject, SetStateAction, useState } from 'react';
 import { SignUpFormData } from '.';
+import { sendSignUpEmailVerificationApi } from '../api';
 
 const EmailValidationPage = ({
   ref: AuthNumberRef,
@@ -14,7 +15,7 @@ const EmailValidationPage = ({
   ref: RefObject<HTMLInputElement | null>;
   email: string;
   setIsEmailAuthComplete: Dispatch<SetStateAction<boolean>>;
-  checkEmailAuthFunc: (value: string | undefined) => boolean;
+  checkEmailAuthFunc: (value: string | undefined) => Promise<boolean>;
   resetEmail: Dispatch<SetStateAction<SignUpFormData>>;
   resetEmailChcked: Dispatch<
     SetStateAction<{
@@ -28,11 +29,13 @@ const EmailValidationPage = ({
   const [authNumber, setAuthNumber] = useState('');
   const [validationStatus, setValidationStatus] = useState<boolean>();
 
-  const handleSendEmail = () => {
+  const handleSendEmail = async (email: string) => {
     try {
       //TODO: 이메일 전송 api
-
-      setIsSendButtonClicked(true);
+      const res = await sendSignUpEmailVerificationApi(email);
+      if (res.ok) {
+        setIsSendButtonClicked(true);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -42,15 +45,15 @@ const EmailValidationPage = ({
   // 1. 제출 전
   // 2. 틀린 후
   // 3. 성공 후
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (authNumber.length === 0) {
       setValidationStatus(undefined);
       return;
     }
-
-    if (isAuthNumberValid(authNumber)) {
+    const isSuccess = await isAuthNumberValid(authNumber);
+    if (isSuccess) {
       setValidationStatus(true);
     } else {
       setValidationStatus(false);
@@ -78,7 +81,7 @@ const EmailValidationPage = ({
           paddingX={16}
           paddingY={0}
           rounded={8}
-          onClick={handleSendEmail}
+          onClick={async () => await handleSendEmail(email)}
         >
           {isSendButtonClicked ? 'Completed!' : 'Send'}
         </ButtonPixelCustom>
@@ -109,7 +112,7 @@ const EmailValidationPage = ({
                 className={`mt-2 pl-2 text-[11px] ${validationStatus ? 'text-success' : validationStatus === undefined ? 'text-gray-400' : 'text-error'}`}
               >
                 {validationStatus === undefined &&
-                  '인증번호는 최대 10분간만 유효해요.'}
+                  '인증번호는 최대 5분간만 유효해요.'}
                 {validationStatus === false && '인증번호가 일치하지 않습니다.'}
                 {validationStatus === true && '인증 완료!'}
               </span>

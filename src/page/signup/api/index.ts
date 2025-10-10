@@ -56,6 +56,27 @@ export const signUpApi = async (data: SignUpFormData) => {
   );
 };
 
+export const sendSignUpEmailVerificationApi = async (email: string) => {
+  const body = { email: email };
+  return await _apiFetch<string>(
+    'POST',
+    API_Prefix + '/sign-up/local/email-verification',
+    body
+  );
+};
+
+export const verifySignUpEmailApi = async (
+  email: string,
+  authNumber: string
+) => {
+  const body = { email: email, code: authNumber };
+  return await _apiFetch<string>(
+    'POST',
+    API_Prefix + '/sign-up/local/email-verification/verify',
+    body
+  );
+};
+
 export const getUserInfoApi = async () => {
   return await _apiFetch<GetUserInfoRes>('GET', API_Prefix + '/');
 };
