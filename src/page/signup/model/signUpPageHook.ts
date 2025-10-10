@@ -30,6 +30,8 @@ const useSignUpPage = () => {
     email: false,
     password: false,
   });
+  const [isEmailAuthComplete, setIsEmailAuthComplete] =
+    useState<boolean>(false);
 
   // const [toastOpen, setToastOpen] = useState(false);
   // const { Toaster, setToastDescription, setToastIcon } = useToast(
@@ -62,11 +64,36 @@ const useSignUpPage = () => {
       message: TooltipContents.TypingConfirmPassword,
     },
   });
+  const AuthNumberRef = useRef<HTMLInputElement>(null);
 
   const { setMountTooltip } = tooltipMountHook();
 
   const router = useRouter();
 
+  const getButtonText = (checkForm: typeof isFormChecked) => {
+    if (!checkForm.nickname) return 'Check Nickname';
+    if (!checkForm.email) return 'Verify Email';
+    if (!checkForm.password) return 'Sign Up';
+    return 'Sign Up';
+  };
+
+  const passwordValidation = (value: string) => {
+    const ASCII_UPPER_RE = /[A-Z]/;
+    const ASCII_PUNCT_RE = /[!-\/:-@\[-`{-~]/; // ASCII punctuation ranges
+
+    if (!value) return false;
+    return ASCII_UPPER_RE.test(value) || ASCII_PUNCT_RE.test(value);
+  };
+
+  const isAuthNumberValid = (value: string | undefined) => {
+    try {
+      if (!value) return false;
+      return true;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -246,6 +273,8 @@ const useSignUpPage = () => {
       }
     } catch (e) {
       console.error('회원가입 에러:', e);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -294,13 +323,19 @@ const useSignUpPage = () => {
     confirmPasswordRef,
     formData,
     handleChange,
-    // Toaster,
+    AuthNumberRef,
+    getButtonText,
+    isAuthNumberValid,
     router,
     handleSubmit,
     isLoading,
     validationStatus,
     isFormChecked,
     setIsFormChecked,
+    setFormData,
+    isEmailAuthComplete,
+    setIsEmailAuthComplete,
+    passwordValidation,
   };
 };
 export default useSignUpPage;

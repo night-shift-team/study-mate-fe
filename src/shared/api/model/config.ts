@@ -88,6 +88,7 @@ export const _apiFetch = async <T = any>(
       payload: payload,
     };
 
+    console.log(responseWithData);
     if (!response.ok) {
       const serverErrorData = payload as ServerErrorResponse;
       if (
