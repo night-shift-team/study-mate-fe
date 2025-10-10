@@ -20,7 +20,6 @@ const LoginPage = () => {
     formData,
     handleChange,
     // hideTooltip,
-
     loginLoading,
     windowReference,
     validationStatus,

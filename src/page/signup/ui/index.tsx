@@ -6,6 +6,7 @@ import useSignUpPage from '../model/signUpPageHook';
 import InputForm from '@/shared/input/inputForm';
 import ButtonPixel from '@/shared/button/buttonPixel';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 export interface SignUpFormData {
   name: string;
@@ -26,11 +27,20 @@ const SignUpPage = () => {
     handleSubmit,
     isLoading,
     validationStatus,
+    isFormChecked,
   } = useSignUpPage();
 
+  const getButtonText = (checkForm: typeof isFormChecked) => {
+    if (!checkForm.nickname) return 'Check Nickname';
+    if (!checkForm.email) return 'Verify Email';
+    if (!checkForm.password) return 'Sign Up';
+    return 'Sign Up';
+  };
+
+  console.log(isFormChecked);
   return (
     <div className="relative flex h-full w-full flex-col items-center justify-center px-4">
-      <span className="text-title-main">Register</span>
+      <span className="text-title-main">Sign Up</span>
       <div className="mt-12 flex w-full flex-col items-center gap-4">
         <form
           onSubmit={handleSubmit}
@@ -55,57 +65,61 @@ const SignUpPage = () => {
                   validationStatus.name.message}
               </span>
             </div>
+            {isFormChecked.nickname && (
+              <div className="flex flex-col">
+                <InputForm
+                  ref={emailRef}
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Enter your Email"
+                  status={validationStatus.email.status}
+                  className="font-pretandard text-label"
+                />
+                <span className="mt-2 pl-2 text-[11px] text-[#ED3241]">
+                  {validationStatus.email.status !== 'empty' &&
+                    validationStatus.email.message}
+                </span>
+              </div>
+            )}
+            {isFormChecked.email && (
+              <>
+                <div className="flex flex-col">
+                  <InputForm
+                    ref={passwordRef}
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="Password"
+                    status={validationStatus.password.status}
+                    className="font-pretandard text-label"
+                  />
+                  <span className="mt-2 pl-2 text-[11px] text-[#ED3241]">
+                    {validationStatus.password.status !== 'empty' &&
+                      validationStatus.password.message}
+                  </span>
+                </div>
 
-            <div className="flex flex-col">
-              <InputForm
-                ref={emailRef}
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Enter your Email"
-                status={validationStatus.email.status}
-                className="font-pretandard text-label"
-              />
-              <span className="mt-2 pl-2 text-[11px] text-[#ED3241]">
-                {validationStatus.email.status !== 'empty' &&
-                  validationStatus.email.message}
-              </span>
-            </div>
-
-            <div className="flex flex-col">
-              <InputForm
-                ref={passwordRef}
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="Password"
-                status={validationStatus.password.status}
-                className="font-pretandard text-label"
-              />
-              <span className="mt-2 pl-2 text-[11px] text-[#ED3241]">
-                {validationStatus.password.status !== 'empty' &&
-                  validationStatus.password.message}
-              </span>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <InputForm
-                ref={confirmPasswordRef}
-                type="password"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                placeholder="Check Password"
-                status={validationStatus.confirmPassword.status}
-                className="font-pretandard text-label"
-              />
-              <span className="mt-2 pl-2 text-[11px] text-[#ED3241]">
-                {validationStatus.confirmPassword.status !== 'empty' &&
-                  validationStatus.confirmPassword.message}
-              </span>
-            </div>
+                <div className="flex flex-col gap-2">
+                  <InputForm
+                    ref={confirmPasswordRef}
+                    type="password"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    placeholder="Check Password"
+                    status={validationStatus.confirmPassword.status}
+                    className="font-pretandard text-label"
+                  />
+                  <span className="mt-2 pl-2 text-[11px] text-[#ED3241]">
+                    {validationStatus.confirmPassword.status !== 'empty' &&
+                      validationStatus.confirmPassword.message}
+                  </span>
+                </div>
+              </>
+            )}
             <div className="mt-4">
               {isLoading ? (
                 <ButtonPixel type="submit" disabled status="inactive">
@@ -113,7 +127,7 @@ const SignUpPage = () => {
                 </ButtonPixel>
               ) : (
                 <ButtonPixel type="submit" status="default">
-                  Sign Up
+                  {getButtonText(isFormChecked)}
                 </ButtonPixel>
               )}
             </div>

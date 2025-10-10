@@ -25,6 +25,12 @@ const useSignUpPage = () => {
     confirmPassword: '',
   } as SignUpFormData);
 
+  const [isFormChecked, setIsFormChecked] = useState({
+    nickname: false,
+    email: false,
+    password: false,
+  });
+
   // const [toastOpen, setToastOpen] = useState(false);
   // const { Toaster, setToastDescription, setToastIcon } = useToast(
   //   toastOpen,
@@ -103,8 +109,10 @@ const useSignUpPage = () => {
 
     try {
       // 프론트 검증
+      // 폼 입력값 검증 -> 서버 검증 순서로 진행
+
+      // 1. 닉네임 검증
       if (nameRef.current && !formData.name.length) {
-        // showTooltip(nameRef.current);
         setValidationStatus((prev) => ({
           ...prev,
           name: { status: 'error', message: TooltipContents.TypingName },
@@ -112,8 +120,27 @@ const useSignUpPage = () => {
         nameRef.current.focus();
         return;
       }
+
+      if (!isFormChecked.nickname) {
+        const res = await checkNicknameDuplicate(formData.name);
+        if (res) {
+          setValidationStatus((prev) => ({
+            ...prev,
+            name: {
+              status: 'error',
+              message: TooltipContents.DuplicateName,
+            },
+          }));
+          return;
+        }
+        setIsFormChecked((prev) => ({ ...prev, nickname: true }));
+      }
+
+      console.log('email ', !formData.email.length, ' email', emailRef.current);
+
+      // 2. 이메일 검증
+      if (!emailRef.current && !formData.email.length) return;
       if (emailRef.current && !formData.email.length) {
-        // showTooltip(emailRef.current);
         setValidationStatus((prev) => ({
           ...prev,
           email: { status: 'error', message: TooltipContents.TypingEmail },
@@ -131,6 +158,23 @@ const useSignUpPage = () => {
         emailRef.current.focus();
         return;
       }
+
+      if (!isFormChecked.email) {
+        const res = await checkEmailDuplicate(formData.email);
+        if (res) {
+          setValidationStatus((prev) => ({
+            ...prev,
+            email: {
+              status: 'error',
+              message: TooltipContents.DuplicateEmail,
+            },
+          }));
+          return;
+        }
+        setIsFormChecked((prev) => ({ ...prev, email: true }));
+      }
+
+      // 3. 패스워드 검증
       if (passwordRef.current && !formData.password.length) {
         // showTooltip(passwordRef.current);
         setValidationStatus((prev) => ({
@@ -176,33 +220,8 @@ const useSignUpPage = () => {
         return;
       }
 
-      // 서버 검증
-      if (await checkNicknameDuplicate(formData.name)) {
-        setValidationStatus((prev) => ({
-          ...prev,
-          name: {
-            status: 'error',
-            message: TooltipContents.DuplicateName,
-          },
-        }));
-        // setToastIcon(ToastType.warning);
-        // setToastDescription('이미 사용중인 닉네임입니다.');
-        // setToastOpen(true);
-        return;
-      }
-      if (await checkEmailDuplicate(formData.email)) {
-        // setToastIcon(ToastType.warning);
-        // setToastDescription('이미 사용중인 이메일입니다.');
-        // setToastOpen(true);
-        setValidationStatus((prev) => ({
-          ...prev,
-          email: {
-            status: 'error',
-            message: TooltipContents.DuplicateEmail,
-          },
-        }));
-        return;
-      }
+      // 모든 검증 완료
+      setIsFormChecked((prev) => ({ ...prev, password: true }));
     } catch (e) {
       console.warn('회원 가입 불가:', e);
       return;
@@ -210,7 +229,14 @@ const useSignUpPage = () => {
       setIsLoading(false);
     }
 
-    // 회원 가입 요청
+    if (
+      !isFormChecked.nickname ||
+      !isFormChecked.email ||
+      !isFormChecked.password
+    )
+      return;
+
+    // 4. 회원 가입 요청
     setIsLoading(true);
     try {
       const signUpRes = await signUpApi(formData);
@@ -273,6 +299,8 @@ const useSignUpPage = () => {
     handleSubmit,
     isLoading,
     validationStatus,
+    isFormChecked,
+    setIsFormChecked,
   };
 };
 export default useSignUpPage;
