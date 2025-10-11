@@ -17,7 +17,6 @@ export interface SignUpRes {
 
 export interface GetUserInfoRes {
   userId: string;
-  loginType: UserLoginType;
   loginId: string;
   nickname: string;
   profileImg: string;
@@ -25,6 +24,11 @@ export interface GetUserInfoRes {
   role: number;
   registeredAt: string;
   userScore: number;
+  userOAuth: {
+    oauthType: UserLoginType;
+    accessToken: string;
+  }[];
+  passwordChangeRequired: boolean;
 }
 
 export const checkDuplicateNicknameApi = async (nickname: string) => {
