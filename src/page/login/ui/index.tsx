@@ -10,6 +10,7 @@ import InputForm from '@/shared/input/inputForm';
 import { SvgIcon } from '@mui/material';
 import ButtonPixel from '@/shared/button/buttonPixel';
 import HomeLogo from '@public/assets/icons/header/mobile_logo.svg';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
 
 const LoginPage = () => {
   const {
@@ -103,20 +104,12 @@ const LoginPage = () => {
                 </span>
               </div>
               <div>
-                <button
-                  disabled={true}
-                  className={`font-pretandard text-label ${
-                    true
-                      ? 'text-grayscale-600'
-                      : 'text-[#5761eb] hover:cursor-pointer hover:underline hover:underline-offset-4'
-                  }`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    // testToast();
-                  }}
+                <Link
+                  href={RouteTo.ResetPassword}
+                  className={`font-pretandard text-label ${'text-grayscale-600 hover:cursor-pointer hover:text-[#5761eb] hover:underline hover:underline-offset-4'}`}
                 >
                   Forgot password?
-                </button>
+                </Link>
               </div>
             </div>
           </div>

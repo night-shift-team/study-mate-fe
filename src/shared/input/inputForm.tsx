@@ -8,7 +8,7 @@ const InputForm = ({
   className = '',
   ...props
 }: {
-  ref: React.Ref<HTMLInputElement> | undefined;
+  ref?: React.Ref<HTMLInputElement> | undefined;
   className?: string;
   width?: string | number;
   height?: string | number;
