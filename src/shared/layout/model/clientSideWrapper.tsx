@@ -20,6 +20,7 @@ const ClientSideWrapper = ({ children }: { children: React.ReactNode }) => {
       path === RouteTo.Home ||
       path === RouteTo.Login ||
       path === RouteTo.Signup ||
+      path === RouteTo.ResetPassword ||
       path === RouteTo.Onboarding ||
       path === RouteTo.SignupComplete ||
       path === RouteTo.LevelTest ||
@@ -28,7 +29,6 @@ const ClientSideWrapper = ({ children }: { children: React.ReactNode }) => {
     ) {
       return false;
     }
-    return true;
   };
 
   return (
