@@ -3,23 +3,21 @@ import HomeLogo from '@/feature/images/ui/homelogo';
 import ButtonPixel from '@/shared/button/buttonPixel';
 import InputForm from '@/shared/input/inputForm';
 import { sendResetPasswordEmailApi } from '../api';
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
 import { SvgIcon } from '@mui/material';
 import EmailIcon from '@public/assets/icons/resetPassword/email.svg';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import NewHeader from '@/feature/header/ui/newheader';
 import LeftArrow from '@public/assets/icons/header/left_arrow.svg';
+import FormButtonPixel from '../model/formStatus';
 
 const ResetPasswordPage = () => {
   const [email, setEmail] = useState<string>();
 
-  const sendPasswordResetLink = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formEl = (e.target as HTMLFormElement).elements.namedItem(
-      'email'
-    ) as HTMLInputElement;
-    const email = formEl.value;
+  const sendPasswordResetLink = async (formData: FormData) => {
+    const email = formData.get('email');
+    if (!email || typeof email !== 'string') return;
     try {
       const res = await sendResetPasswordEmailApi(email);
       if (res.ok) {
@@ -48,7 +46,7 @@ const ResetPasswordPage = () => {
               {`스터디메이트에 가입했던 이메일을 입력해주세요
 비밀번호 재설정 메일을 보내드립니다.`}
             </span>
-            <form onSubmit={async (e) => await sendPasswordResetLink(e)}>
+            <form action={async (e) => await sendPasswordResetLink(e)}>
               <InputForm
                 type="email"
                 status="empty"
@@ -57,9 +55,7 @@ const ResetPasswordPage = () => {
                 className="mt-14 font-pretandard text-label"
               />
               <div className="mt-4">
-                <ButtonPixel type="submit" status="default">
-                  Send Reset Link
-                </ButtonPixel>
+                <FormButtonPixel buttonText="Send Reset Link" />
               </div>
             </form>
           </div>
