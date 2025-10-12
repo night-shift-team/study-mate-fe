@@ -50,6 +50,7 @@ const ChangePasswordPage = () => {
     // TODO: 이전 비밀번호 확인 실패 시 처리
     // setPrevPasswordConfirmed(false)
     // return
+    //TODO: 신규 비밀번호 유효성 검사
     await changePassword();
     // setChangeSuccess(true)
     // Link
