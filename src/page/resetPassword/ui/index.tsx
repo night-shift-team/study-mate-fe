@@ -28,7 +28,7 @@ const ResetPasswordPage = () => {
     }
   };
   return (
-    <div className="flex h-full w-full flex-col items-center px-4 text-black dark:text-white">
+    <div className="flex h-full w-full flex-col items-center text-black dark:text-white">
       <NewHeader
         left={
           <Link href={RouteTo.Home} className="h-5 w-5">
@@ -38,7 +38,7 @@ const ResetPasswordPage = () => {
         center={<></>}
         right={<></>}
       />
-      <div className="mt-16 flex h-full w-full flex-col">
+      <div className="flex h-full w-full flex-col justify-center px-4 pb-16">
         {!email ? (
           <div className="flex w-full flex-col justify-center">
             <HomeLogo />

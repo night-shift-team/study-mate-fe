@@ -119,9 +119,17 @@
     src: url('/assets/fonts/beachday.regular.ttf') format('truetype');
   }
 
+  /* regular */
   @font-face {
     font-family: 'PixelOperator';
     src: url('/assets/fonts/PixelOperator.ttf') format('truetype');
+    font-weight: 400;
+  }
+  /* bold */
+  @font-face {
+    font-family: 'PixelOperator';
+    src: url('/assets/fonts/PixelOperator-Bold.ttf') format('truetype');
+    font-weight: 700;
   }
   @font-face {
     font-family: 'Jalnan';
@@ -216,6 +224,10 @@
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+.password-hide {
+  -webkit-text-security: disc;
 }
 
 .custom-dotted-border {

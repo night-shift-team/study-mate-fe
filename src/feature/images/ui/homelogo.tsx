@@ -8,7 +8,7 @@ const HomeLogo = () => {
     <SvgIcon
       component={Home}
       inheritViewBox
-      sx={{ width: 'auto', height: '40px' }}
+      sx={{ width: 'auto', height: '50px' }}
     />
   );
 };

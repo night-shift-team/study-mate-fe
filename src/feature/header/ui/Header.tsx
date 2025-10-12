@@ -19,6 +19,7 @@ const Header = ({ path }: { path: string }) => {
     path === RouteTo.Signup ||
     path === RouteTo.Onboarding ||
     path === RouteTo.ResetPassword ||
+    path === RouteTo.ChangePassword ||
     path === RouteTo.SignupComplete ||
     path === RouteTo.LevelTest ||
     path.startsWith(RouteTo.LevelTestResult) ||

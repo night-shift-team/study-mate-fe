@@ -4,6 +4,7 @@ export enum RouteTo {
   Signup = '/signup',
   SignupComplete = '/signup-complete',
   ResetPassword = '/reset-password',
+  ChangePassword = '/change-password',
   Onboarding = '/onboarding',
   LevelTest = '/leveltest',
   LevelTestResult = '/testresult',

@@ -82,7 +82,7 @@ const LoginPage = () => {
                 }}
                 onClick={(e) => e.currentTarget.focus()}
                 placeholder="Password"
-                className="font-pretandard text-label [-webkit-text-security:disc]"
+                className="password-hide font-pretandard text-label"
                 status={validationStatus.password.status}
               />
               <span className="mt-2 pl-2 text-[11px] text-[#ED3241]">

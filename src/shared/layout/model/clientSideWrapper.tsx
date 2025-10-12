@@ -21,6 +21,7 @@ const ClientSideWrapper = ({ children }: { children: React.ReactNode }) => {
       path === RouteTo.Login ||
       path === RouteTo.Signup ||
       path === RouteTo.ResetPassword ||
+      path === RouteTo.ChangePassword ||
       path === RouteTo.Onboarding ||
       path === RouteTo.SignupComplete ||
       path === RouteTo.LevelTest ||
