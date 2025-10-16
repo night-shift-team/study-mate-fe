@@ -12,10 +12,9 @@ import CircleCancel from '@public/assets/icons/leveltest/Subtract.svg';
 import ButtonPixel from '@/shared/button/buttonPixel';
 import { useRouter } from 'next/navigation';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import useSolvingProblem from '@/page/solve/model/solvingProblemHook';
 import Toaster from '@/shared/toast/ui/toaster';
-import { ProblemCategoryTitle } from '@/shared/problem/model/problemInfo.types';
 import { toastStore, ToastType } from '@/shared/state/toast/toastStore';
+import { questionBookmarkToggleApi } from '@/feature/boomMark/api';
 
 const TestResultSolutionPage = ({
   type,
@@ -36,10 +35,6 @@ const TestResultSolutionPage = ({
     (!problemId && !userAnswer && !problemInfo)
   )
     return;
-
-  const { bookMarkToggle } = useSolvingProblem(
-    problemInfo?.category.split('_')[0] as ProblemCategoryTitle
-  );
 
   const [problemDetailInfo, setProblemDetailInfo] = useState<
     ProblemDetailInfoRes | undefined | null
@@ -77,6 +72,42 @@ const TestResultSolutionPage = ({
       .split(',')
       .map((item) => item.trim().replaceAll('"', ''));
 
+  const bookMarkToggle = async (problemId: string) => {
+    try {
+      const res = await questionBookmarkToggleApi(problemId);
+      console.log('북마크 api', res);
+      if (res.payload === true) {
+        return 'added';
+      }
+      if (res.payload === false) {
+        return 'removed';
+      }
+      return null;
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  };
+
+  const handleBookMark = async (problemId: string) => {
+    const success = await bookMarkToggle(problemId);
+    if (success === 'added') {
+      toastStore.show({
+        status: ToastType.success,
+        title: '북마크가 추가되었습니다',
+      });
+    } else if (success === 'removed') {
+      toastStore.show({
+        status: ToastType.info,
+        title: '북마크가 제거되었습니다',
+      });
+    } else {
+      toastStore.show({
+        status: ToastType.info,
+        title: '북마크 실패',
+      });
+    }
+  };
   return (
     <div className="flex h-full w-full flex-col overflow-y-auto px-4 py-5 scrollbar-hide">
       <Toaster />
@@ -147,18 +178,7 @@ const TestResultSolutionPage = ({
               status="default"
               onClick={async () => {
                 if (problemId) {
-                  const success = await bookMarkToggle(problemId);
-                  if (success) {
-                    toastStore.show({
-                      status: ToastType.success,
-                      title: '북마크가 추가되었습니다',
-                    });
-                  } else {
-                    toastStore.show({
-                      status: ToastType.info,
-                      title: '북마크 실패',
-                    });
-                  }
+                  await handleBookMark(problemId);
                 }
               }}
             >
@@ -215,6 +235,16 @@ const TestResultSolutionPage = ({
         )}
         {type === 'favorite' && (
           <>
+            <ButtonPixel
+              status="default"
+              onClick={async () => {
+                if (problemInfo?.questionId) {
+                  await handleBookMark(problemInfo.questionId);
+                }
+              }}
+            >
+              Save this result
+            </ButtonPixel>
             <ButtonPixel
               status="default"
               onClick={() => {
