@@ -20,6 +20,7 @@ export enum RouteTo {
   Store = '/store',
   StorePurchaseHistory = '/store/purchase-history',
   MypageScrap = 'mypage/scrap-list',
+  MypageScrapDetail = '/mypage/scrap-problem-detail',
 
   AdminLogin = '/admin',
   AdminDashboard = '/admin/dashboard',

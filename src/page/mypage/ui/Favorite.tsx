@@ -9,6 +9,8 @@ import useFavorite from '../model/favoriteHook';
 import { QuestionHistory } from '../model/checkListHook';
 import { AlertPopup } from './AlertPopup';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
 const ConfirmPopup = dynamic(() => import('@/page/mypage/ui/ConfirmPopup'), {
   ssr: false,
 });
@@ -31,7 +33,6 @@ const Favorite = ({
 }: FavoriteListProps) => {
   const {
     currentFavoriteList,
-    handleItemClick,
     isPending,
     alertMessage,
     setAlertMessage,
@@ -92,7 +93,7 @@ const Favorite = ({
                   return (
                     <div
                       key={index}
-                      className="flex h-[140px] w-[200px] shrink-0 snap-start flex-col rounded-lg bg-[#451E81] font-pretandard transition dark:bg-point-purple dark:bg-opacity-60"
+                      className="flex h-[140px] w-[200px] shrink-0 snap-start flex-col justify-between rounded-lg bg-[#451E81] font-pretandard transition dark:bg-point-purple dark:bg-opacity-60"
                     >
                       {/* <div className="flex w-full justify-end p-2">
                         <IoClose
@@ -101,7 +102,7 @@ const Favorite = ({
                         />
                       </div> */}
 
-                      <div className="flex h-[50px] w-full items-center justify-between gap-4">
+                      <div className="flex h-[50px] w-full items-center gap-4">
                         <div className="flex flex-col truncate pl-4 text-sm">
                           <span className="text-[16px] text-white">
                             {truncateText(item.questionTitle, 20)}
@@ -123,7 +124,7 @@ const Favorite = ({
                         fill="#FCD34D"
                         onClick={(event) => handleBookmarkClick(event, item)}
                       /> */}
-                      <div className="mt-auto flex h-[30px] w-full justify-between pl-16p pr-16p">
+                      <div className="flex h-[40px] w-full items-center justify-between pl-16p pr-2">
                         <span className="text-xs text-gray-400">
                           {/* 스크랩 날짜 */}
                           {item.createdDt.toString().slice(0, 10)}
@@ -134,12 +135,21 @@ const Favorite = ({
                         >
                           자세히 보기
                         </span> */}
-                        <SvgIcon
-                          onClick={() => handleItemClick(item)}
-                          inheritViewBox
-                          component={Arrow}
-                          sx={{ width: '10%', height: '50%' }}
-                        />
+                        <Link
+                          className="h-full w-6"
+                          href={{
+                            pathname: RouteTo.MypageScrapDetail,
+                            query: {
+                              problemId: item.questionId,
+                            },
+                          }}
+                        >
+                          <SvgIcon
+                            inheritViewBox
+                            component={Arrow}
+                            sx={{ width: '50%', height: '100%' }}
+                          />
+                        </Link>
                       </div>
                     </div>
                   );
