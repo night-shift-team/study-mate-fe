@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { ProblemCategory } from '@/shared/problem/model/problemInfo.types';
+import Link from 'next/link';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
 
 interface ScrapsListProps {
   favoriteList: {
@@ -33,7 +35,13 @@ export const ScrapsList: React.FC<ScrapsListProps> = ({ favoriteList }) => {
           categoryBgColors[item.questionCategory as ProblemCategory] ?? '';
 
         return (
-          <div
+          <Link
+            href={{
+              pathname: RouteTo.MypageScrapDetail,
+              query: {
+                problemId: item.questionId,
+              },
+            }}
             key={item.questionId}
             className="flex w-full flex-col rounded-md bg-[#451E81] p-3 text-white"
           >
@@ -53,7 +61,7 @@ export const ScrapsList: React.FC<ScrapsListProps> = ({ favoriteList }) => {
             <div className="mt-1 font-pretandard text-body-secondary text-gray-300">
               {String(item.createdDt).split('T')[0]}
             </div>
-          </div>
+          </Link>
         );
       })}
       {favoriteList.length === 0 && <div>스크랩한 문제가 없습니다</div>}
