@@ -8,12 +8,12 @@ import useGrassChart from '../model/grassChartHook';
 const getColorByCount = (count: number) => {
   if (count === 0)
     return 'bg-transparent border border-gray-400/70 dark:border-white/50';
-  if (count <= 2) return 'bg-yellow-100';
-  if (count <= 4) return 'bg-yellow-300';
-  if (count <= 7) return 'bg-yellow-400';
-  if (count <= 10) return 'bg-yellow-500';
+  if (count <= 10) return 'bg-grass-100';
+  if (count <= 20) return 'bg-grass-300';
+  if (count <= 40) return 'bg-grass-400';
+  if (count > 40) return 'bg-grass-500';
 
-  return 'bg-yellow-600';
+  return 'bg-transparent border border-gray-400/70 dark:border-white/50';
 };
 const GrassChart = () => {
   const { stats } = useGrassChart();
