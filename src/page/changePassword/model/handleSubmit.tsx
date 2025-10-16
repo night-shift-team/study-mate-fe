@@ -1,6 +1,7 @@
 'use server';
 
-import { verifyResetPasswordCodeApi } from '@/page/resetPassword/api';
+import { ServerErrorResponse } from '@/shared/api/model/config';
+// import { verifyResetPasswordCodeApi } from '@/page/resetPassword/api';
 import { changePasswordApi } from '../api';
 
 export const handleSubmit = async (loginId: string, _: any, form: FormData) => {
@@ -17,50 +18,43 @@ export const handleSubmit = async (loginId: string, _: any, form: FormData) => {
   }
   // setPasswordAndCheckMatch(true);
 
-  //* 이전 비밀번호 유효성 검사
-  const prevPW = form.get('prev-password')
-    ? (form.get('prev-password') as Extract<FormDataEntryValue, 'string'>)
-    : ('' as string);
-  const prevPWVerify = await confirmPrevPassword(loginId, prevPW);
-  if (!prevPWVerify) {
-    // setPrevPasswordConfirmed(false);
-    return { ok: false, errorTitle: 'Previous_Password_Wrong' };
-  }
-  // setPrevPasswordConfirmed(true);
-
-  //* 신규 비밀번호 유효성 검사
+  //* 비밃먼호 변경 요청
 
   const changeSuccess = await changePassword(loginId, newPW, checkPW);
-  if (!changeSuccess) {
+  if (!changeSuccess.ok) {
     // setChangeSuccess(false);
-    return { ok: false, errorTitle: 'Change_Failed' };
+    return {
+      ok: false,
+      errorTitle: changeSuccess.payload,
+    };
   }
   // setChangeSuccess(true);
   return { ok: true, errorTitle: '' };
 };
 
-const confirmPrevPassword = async (userId: string, prevPW: string) => {
-  try {
-    const res = await verifyResetPasswordCodeApi(userId, prevPW);
-    if (res.ok) {
-      return true;
-    }
-    return false;
-  } catch (e) {
-    console.log(e);
-    return false;
-  }
-};
+// const confirmPrevPassword = async (userId: string, prevPW: string) => {
+//   try {
+//     const res = await verifyResetPasswordCodeApi(userId, prevPW);
+//     if (res.ok) {
+//       return true;
+//     }
+//     return false;
+//   } catch (e) {
+//     console.log(e);
+//     return false;
+//   }
+// };
 
 const changePassword = async (userId: string, oldPW: string, newPW: string) => {
   try {
     const res = await changePasswordApi(userId, oldPW, newPW);
+    console.log(res);
     if (res.ok) {
-      return true;
+      return { ok: true, payload: '' };
     }
-    return false;
+    return { ok: false, payload: (res.payload as ServerErrorResponse).message };
   } catch (e) {
     console.log(e);
-    return false;
+    return { ok: false, payload: 'Change_Failed' };
   }
 };
