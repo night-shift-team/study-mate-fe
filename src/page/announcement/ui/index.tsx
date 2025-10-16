@@ -59,7 +59,7 @@ const AnnouncementPage = () => {
           )}
         </div>
         <div className="flex h-auto w-full flex-col md:flex-row">
-          <div>
+          <div className="w-full">
             <NoticeTap activeTab={activeTab} setActiveTab={setActiveTab} />
 
             <div className="flex flex-col gap-4 p-16p">

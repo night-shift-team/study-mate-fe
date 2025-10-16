@@ -10,7 +10,7 @@ export const NoticeTap = ({ activeTab, setActiveTab }: NoticeTapProps) => {
   const tabWidth = 120;
 
   return (
-    <div className="w-full text-white">
+    <div className="mt-4 w-fit text-white">
       <div className="relative flex">
         {tabs.map((tab) => (
           <button
@@ -26,7 +26,7 @@ export const NoticeTap = ({ activeTab, setActiveTab }: NoticeTapProps) => {
 
         <div className="absolute bottom-0 left-0 h-[2px] w-full bg-gray-300">
           <div
-            className="absolute top-[-2px] h-[2px] bg-yellow-400 transition-all duration-300"
+            className="absolute top-[-1px] h-[2px] bg-yellow-400 transition-all duration-300"
             style={{
               width: `${tabWidth}px`,
               left: activeTab === '공지' ? 0 : `${tabWidth}px`,
