@@ -1,12 +1,14 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { getQuestionHistoryApi } from '../api';
+import { getQuestionHistoryApi, QuestionHistoryRes } from '../api';
 import { useParams } from 'next/navigation';
 import { ProblemCategoryTitle } from '@/shared/problem/model/problemInfo.types';
 
 const useCategoryProblemHistory = () => {
   const { category } = useParams();
-  const [questionHistory, setQuestionHistory] = useState<any[]>([]);
+  const [questionHistory, setQuestionHistory] = useState<
+    QuestionHistoryRes['content']
+  >([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const itemsPerPage = 5;

@@ -3,6 +3,8 @@ import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import useCategoryProblemHistory from '../model/categoryProblemHistoryHook';
 import { QuestionItem } from '@/feature/mypage/ui/Item';
 import { ProblemPagination } from '@/feature/pagination/ui';
+import Link from 'next/link';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
 
 const CategoryProblemHistoryPage = () => {
   const {
@@ -44,20 +46,29 @@ const CategoryProblemHistoryPage = () => {
               paginatedHistory.map((history, index) => {
                 console.log(history); // 로그 출력
                 return (
-                  <QuestionItem
+                  <Link
                     key={history.historyId}
-                    index={startIndex + index}
-                    isCorrectAnswer={history.isCorrect}
-                    userAnswer={history.userAnswer}
-                    userId={history.userId}
-                    historyId={history.historyId}
-                    questionId={history.questionId}
-                    questionTitle={history.questionTitle}
-                    score={history.score}
-                    textColorClass={textColorClass}
-                    category={category}
-                    createdDt={history.createdDt}
-                  />
+                    href={{
+                      pathname: RouteTo.MypageProblemDetail,
+                      query: {
+                        problemId: history.questionId,
+                      },
+                    }}
+                  >
+                    <QuestionItem
+                      index={startIndex + index}
+                      isCorrectAnswer={history.isCorrect}
+                      userAnswer={history.userAnswer}
+                      userId={history.userId}
+                      historyId={history.historyId}
+                      questionId={history.questionId}
+                      questionTitle={history.questionTitle}
+                      score={history.score}
+                      textColorClass={textColorClass}
+                      category={category}
+                      createdDt={history.createdDt}
+                    />
+                  </Link>
                 );
               })
             ) : (

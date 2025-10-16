@@ -138,7 +138,7 @@ const Favorite = ({
                         <Link
                           className="h-full w-6"
                           href={{
-                            pathname: RouteTo.MypageScrapDetail,
+                            pathname: RouteTo.MypageProblemDetail,
                             query: {
                               problemId: item.questionId,
                             },

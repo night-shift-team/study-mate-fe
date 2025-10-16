@@ -3,7 +3,6 @@ import { ProblemCategory } from '@/shared/problem/model/problemInfo.types';
 const API_Prefix = '/api/v1';
 
 export interface QuestionHistoryRes {
-  payload: any;
   content: {
     historyId: number;
     questionId: string;
@@ -13,6 +12,7 @@ export interface QuestionHistoryRes {
     score: number;
     isCorrect: boolean;
     questionType: string;
+    createdDt: string;
   }[];
   pageSize: number;
   pageNumber: number;
