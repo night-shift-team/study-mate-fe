@@ -3,9 +3,10 @@
 import { ScrapsList } from '../ui/list/ScrapList';
 import useMyPage from '../model/myPageHook';
 import { useState } from 'react';
+import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 
 export const ScrapsListPage = () => {
-  const { favoriteList } = useMyPage();
+  const { favoriteList, isLoading } = useMyPage();
   const [selectedCategory, setSelectedCategory] =
     useState<string>('ALGORITHUM');
 
@@ -20,7 +21,7 @@ export const ScrapsListPage = () => {
   );
 
   return (
-    <div className="w-screen p-4">
+    <div className="h-full w-full p-4 pt-20">
       <div className="flex flex-col gap-[20px]">
         <div className="text-title-page text-black dark:text-white">
           Scrap folders
@@ -40,14 +41,18 @@ export const ScrapsListPage = () => {
             </button>
           ))}
         </div>
-        <div className="h-[80vh] overflow-auto pb-[80px]">
-          <ScrapsList
-            favoriteList={(filteredList || []).map((item) => ({
-              ...item,
-              createdDt: String(item.createdDt),
-            }))}
-          />
-        </div>
+        {!isLoading ? (
+          <div className="h-[80vh] overflow-auto pb-[80px]">
+            <ScrapsList
+              favoriteList={(filteredList || []).map((item) => ({
+                ...item,
+                createdDt: String(item.createdDt),
+              }))}
+            />
+          </div>
+        ) : (
+          <Spinner />
+        )}
       </div>
     </div>
   );

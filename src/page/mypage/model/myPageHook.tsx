@@ -20,6 +20,7 @@ const useMyPage = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popUpProblemDetail, setPopupProblemDetail] =
     useState<ProblemDetailInfoRes | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     userRanking();
@@ -28,6 +29,7 @@ const useMyPage = () => {
   }, []);
 
   const userRanking = async () => {
+    setIsLoading(true);
     try {
       const res = await getUserRankingApi(0, 12); // 예제:
       if (res.ok) {
@@ -39,10 +41,13 @@ const useMyPage = () => {
       throw res.payload;
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const userQuestionHistory = async () => {
+    setIsLoading(true);
     try {
       const res = await getQuestionHistoryApi(100, 100000);
       if (res.ok) {
@@ -55,10 +60,13 @@ const useMyPage = () => {
       throw res.payload;
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const userFavoriteApi = async () => {
+    setIsLoading(true);
     try {
       const res = await getQuestionFavoriteApi(0, 12);
       if (res.ok) {
@@ -70,6 +78,8 @@ const useMyPage = () => {
       throw res.payload;
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -123,6 +133,7 @@ const useMyPage = () => {
     questionHistory,
     scrollByCard,
     isPopupOpen,
+    isLoading,
     setIsPopupOpen,
     swiperRef,
   };
