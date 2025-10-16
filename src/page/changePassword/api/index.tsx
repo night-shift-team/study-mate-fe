@@ -1,6 +1,6 @@
 import { _apiFetch } from '@/shared/api/model/config';
 
-const API_Prefix = '/api/v1/change-password';
+const API_Prefix = '/api/v1/users/change-password';
 
 export const changePasswordApi = async (
   loginId: string,

@@ -5,7 +5,7 @@ import LeftArrow from '@public/assets/icons/header/left_arrow.svg';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import HomeLogo from '@/feature/images/ui/homelogo';
 import ButtonPixel from '@/shared/button/buttonPixel';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Checked from '@public/assets/icons/changePassword/checked.svg';
 import { UserInfo } from '@/shared/user/model/userInfo.types';
 import { toastStore, ToastType } from '@/shared/state/toast/toastStore';
@@ -15,13 +15,18 @@ import ChangePasswordForm from './changePWform';
 const ChangePasswordPage = ({ user }: { user: UserInfo | null }) => {
   const router = useRouter();
 
+  useEffect(() => {
+    if (!user) {
+      toastStore.show({
+        status: ToastType.warning,
+        title: '로그인이 이후 진행해주세요.',
+      });
+      router.push(RouteTo.Home);
+    }
+  }, [user]);
+
   if (!user) {
-    toastStore.show({
-      status: ToastType.warning,
-      title: '로그인이 이후 진행해주세요.',
-    });
-    router.push(RouteTo.Home);
-    return;
+    return null;
   }
 
   // 첫 화면 버튼 클릭 용도 변수

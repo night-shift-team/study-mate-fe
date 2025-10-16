@@ -49,7 +49,7 @@ const ChangePasswordForm = ({
         case 'Password_Mismatch':
           setPasswordAndCheckMatch(false);
           break;
-        case 'Previous_Password_Wrong':
+        case 'invalid password':
           setPrevPasswordConfirmed(false);
           break;
         case 'Change_Failed':

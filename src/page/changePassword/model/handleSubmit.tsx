@@ -1,4 +1,4 @@
-'use server';
+'use client';
 
 import { ServerErrorResponse } from '@/shared/api/model/config';
 // import { verifyResetPasswordCodeApi } from '@/page/resetPassword/api';
@@ -18,41 +18,26 @@ export const handleSubmit = async (loginId: string, _: any, form: FormData) => {
   }
   // setPasswordAndCheckMatch(true);
 
-  //* 비밃먼호 변경 요청
+  const prevPW = form.get('prev-password')
+    ? (form.get('prev-password') as Extract<FormDataEntryValue, 'string'>)
+    : ('' as string);
 
-  const changeSuccess = await changePassword(loginId, newPW, checkPW);
+  //* 비밀번호 변경 요청
+  const changeSuccess = await changePassword(loginId, prevPW, checkPW);
   if (!changeSuccess.ok) {
-    // setChangeSuccess(false);
-    return {
-      ok: false,
-      errorTitle: changeSuccess.payload,
-    };
+    return { ok: false, errorTitle: changeSuccess.payload };
   }
-  // setChangeSuccess(true);
   return { ok: true, errorTitle: '' };
 };
-
-// const confirmPrevPassword = async (userId: string, prevPW: string) => {
-//   try {
-//     const res = await verifyResetPasswordCodeApi(userId, prevPW);
-//     if (res.ok) {
-//       return true;
-//     }
-//     return false;
-//   } catch (e) {
-//     console.log(e);
-//     return false;
-//   }
-// };
 
 const changePassword = async (userId: string, oldPW: string, newPW: string) => {
   try {
     const res = await changePasswordApi(userId, oldPW, newPW);
-    console.log(res);
+    console.log('api res', res);
     if (res.ok) {
-      return { ok: true, payload: '' };
+      return { ok: true, payload: res.payload };
     }
-    return { ok: false, payload: (res.payload as ServerErrorResponse).message };
+    return { ok: false, payload: (res.payload as ServerErrorResponse).ecode };
   } catch (e) {
     console.log(e);
     return { ok: false, payload: 'Change_Failed' };
