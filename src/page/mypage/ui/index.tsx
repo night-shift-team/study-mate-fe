@@ -26,7 +26,7 @@ const Mypage = () => {
   } = useMyPage();
 
   return (
-    <div className="h-[100vh] max-w-[450px] pt-[30px]">
+    <div className="flex h-full w-full">
       {isPopupOpen && popUpProblemDetail && (
         <PopupProblem
           size="md"
@@ -38,7 +38,7 @@ const Mypage = () => {
           onClose={() => setIsPopupOpen(false)}
         />
       )}
-      <div className="flex flex-col items-center">
+      <div className="flex w-full flex-col items-center">
         <div className="z-1 flex h-[20vh] w-full flex-col px-6 pt-2">
           <Profile />
           <div className="custom-dotted-border flex justify-around border-black pb-4 text-[24px] font-bold dark:border-white dark:text-white">
@@ -62,12 +62,6 @@ const Mypage = () => {
 
               <Link href={RouteTo.MypageScrap}>
                 <div className="flex h-full items-center gap-1.5 text-black dark:text-white">
-                  {/* <button
-                  onClick={() => scrollByCard('left')}
-                  className="text-white"
-                >
-                  ◀
-                </button> */}
                   See more
                   <button
                     onClick={() => scrollByCard('right')}
@@ -103,7 +97,7 @@ const Mypage = () => {
               </Swiper>
             )}
           </div>
-          <div className="flex flex-col">
+          <div className="flex w-full flex-col">
             <span className="flex w-full font-pixel text-title-section font-bold text-black dark:text-white">
               Solution Archive
             </span>

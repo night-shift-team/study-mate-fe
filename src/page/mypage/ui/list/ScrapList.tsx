@@ -37,7 +37,7 @@ export const ScrapsList: React.FC<ScrapsListProps> = ({ favoriteList }) => {
         return (
           <Link
             href={{
-              pathname: RouteTo.MypageScrapDetail,
+              pathname: RouteTo.MypageProblemDetail,
               query: {
                 problemId: item.questionId,
               },

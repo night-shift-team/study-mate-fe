@@ -6,8 +6,7 @@ import { sendResetPasswordEmailApi, verifyResetPasswordCodeApi } from '../api';
 import { useState } from 'react';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import NewHeader from '@/feature/header/ui/newheader';
-import LeftArrow from '@public/assets/icons/header/left_arrow.svg';
+
 import FormButtonPixel from '../model/formStatus';
 import { checkDuplicateEmailApi } from '@/page/signup/api';
 import { SvgIcon } from '@mui/material';
@@ -40,15 +39,6 @@ const ResetPasswordPage = () => {
 
   return (
     <div className="flex h-full w-full flex-col items-center text-black dark:text-white">
-      <NewHeader
-        left={
-          <Link href={RouteTo.Home} className="h-5 w-5">
-            <LeftArrow className="h-full w-full" />
-          </Link>
-        }
-        center={<></>}
-        right={<></>}
-      />
       <div className="flex h-full w-full flex-col justify-center px-4 pb-16">
         <div className="flex w-full flex-col justify-center">
           {!isPasswordResetSuccess && !email && (

@@ -81,12 +81,12 @@ const StorePage = () => {
 
       <div className="relative flex h-full w-full flex-col overflow-y-auto overflow-x-hidden pb-[80px] pl-16p pr-16p scrollbar-hide">
         {purchaseStatus !== 'none' ? (
-          <div className="mt-4 flex h-[8rem] w-full animate-fade-up items-center justify-center">
+          <div className="mt-2 flex h-[8rem] w-full animate-fade-up items-center justify-center">
             {/* <Panel className="h-full w-full scale-[1.45] object-contain" /> */}
             <div className="flex flex-col text-white">
               <span className="text-[24px] font-bold">
                 {lastPurchasedItem?.title}을 <br />
-                새롭게 생성했어요!
+                새롭게 획득했어요!
               </span>
             </div>
           </div>

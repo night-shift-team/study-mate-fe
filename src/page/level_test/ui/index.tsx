@@ -5,7 +5,6 @@
 import useLevelTest from '../model/levelTestHook';
 import { ProblemInfoMAQ } from '@/shared/problem/model/problemInfo.types';
 import MarkdownComponent from '@/shared/lexical/model/markdownConfig';
-import NewHeader from '@/feature/header/ui/newheader';
 import Cancel from '@public/assets/icons/leveltest/cancel.svg';
 import ButtonPixel from '@/shared/button/buttonPixel';
 import { Icon } from '@iconify/react';
@@ -45,25 +44,23 @@ const LevelTestPage = () => {
 
   return (
     <div className="flex h-full w-full flex-col">
-      <NewHeader
-        left={
+      <div className="relative flex h-56p w-full shrink-0 items-center justify-center">
+        <div className="absolute left-4 mt-2 flex">
           <Link href={RouteTo.Home}>
-            <Cancel className="mt-1 h-6 w-6" />
+            <Cancel className="h-6 w-6" />
           </Link>
-        }
-        center={
-          <div className="flex h-40p w-40p items-center justify-center rounded-12p bg-point-orange">
-            <span className="mt-1 flex h-full w-auto items-center justify-center text-center font-plusJakarta font-bold">
-              {String(currentQuestionNo + 1).padStart(2, '0') ?? ''}
-            </span>
-          </div>
-        }
-        right={
-          <span className="mt-1 flex h-full w-auto items-center font-plusJakarta text-[16px] font-semibold leading-none">
+        </div>
+        <div className="mt-2 flex h-40p w-40p items-center justify-center rounded-12p bg-point-orange">
+          <span className="mt-1 flex h-full w-auto items-center justify-center text-center font-plusJakarta font-bold">
+            {String(currentQuestionNo + 1).padStart(2, '0') ?? ''}
+          </span>
+        </div>
+        <div className="absolute right-4 mt-3 flex">
+          <span className="flex h-full w-auto items-center font-plusJakarta text-[16px] font-semibold leading-none">
             {currentQuestionNo + 1}/{levelTestLists.length}
           </span>
-        }
-      />
+        </div>
+      </div>
       <div className="mt-2 flex h-full w-full overflow-y-auto bg-grayscale-800 scrollbar-hide">
         <div className="flex h-full w-full flex-col">
           <span className="mt-6 flex w-full justify-center px-4 text-[28px] font-bold leading-[20px] text-[#FFD900]">

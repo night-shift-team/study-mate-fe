@@ -20,7 +20,6 @@ import CircleCheck from '@public/assets/icons/leveltest/checkedCircle.svg';
 import { Icon } from '@iconify/react';
 import arrow from '@iconify/icons-mdi/play-arrow';
 
-import NewHeader from '@/feature/header/ui/newheader';
 // import Link from 'next/link';
 import useSolveMainPage from '../model/solveMainPageHook';
 import SelectAnswerRow from '@/page/level_test/ui/levelTestAnswer';
@@ -34,6 +33,7 @@ import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { LucideHome } from 'lucide-react';
 import Link from 'next/link';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import Cancel from '@public/assets/icons/leveltest/cancel.svg';
 
 export interface ProblemProps {
   category: 'random' | ProblemCategoryTitle;
@@ -91,23 +91,25 @@ const SolvingProblemPage = ({ category }: ProblemProps) => {
   return (
     <div className="flex h-full w-full flex-col">
       <>
-        <NewHeader
-          left={<></>}
-          center={
-            <Link
-              href={RouteTo.Home}
-              className="flex h-40p w-40p items-center justify-center rounded-12p bg-point-orange"
-            >
-              <LucideHome />
+        <div className="relative flex h-56p w-full shrink-0 items-center justify-center">
+          <div className="absolute left-4 mt-2 flex">
+            <Link href={RouteTo.Home}>
+              <Cancel className="h-6 w-6" />
             </Link>
-          }
-          right={
+          </div>
+          <Link
+            href={RouteTo.Home}
+            className="mt-2 flex h-40p w-40p items-center justify-center rounded-12p bg-point-orange"
+          >
+            <LucideHome />
+          </Link>
+          <div className="absolute right-4 mt-3 flex">
             <span className="mt-1 flex h-full w-auto items-center font-plusJakarta text-[16px] font-semibold leading-none">
               {currentMyRemainQuizCount?.userSolvingCount ?? 0}/
               {currentMyRemainQuizCount?.solvingLimit ?? 0}
             </span>
-          }
-        />
+          </div>
+        </div>
         <div className="mt-2 flex h-full w-full overflow-y-auto bg-grayscale-800 scrollbar-hide">
           <div className="flex h-full w-full flex-col">
             <span className="mt-6 flex w-full justify-center px-4 text-[28px] font-bold leading-[20px] text-[#FFD900]">

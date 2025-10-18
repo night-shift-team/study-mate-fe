@@ -15,30 +15,34 @@ import ToastPortal from '@/shared/toast/ui/toaster';
 
 const ClientSideWrapper = ({ children }: { children: React.ReactNode }) => {
   const path = usePathname();
-  const isNeccessaryOldHeader = (path: string) => {
+  const isNeccessaryHeader = (path: string) => {
     if (
-      path === RouteTo.Home ||
-      path === RouteTo.Login ||
-      path === RouteTo.Signup ||
       path === RouteTo.ResetPassword ||
       path === RouteTo.ChangePassword ||
-      path === RouteTo.Onboarding ||
-      path === RouteTo.SignupComplete ||
-      path === RouteTo.LevelTest ||
-      path.startsWith(RouteTo.Solve + '/') ||
-      path.startsWith(RouteTo.LevelTestResult)
+      path === RouteTo.Solve ||
+      path === RouteTo.SolveSolution ||
+      path === RouteTo.Rank ||
+      path === RouteTo.Store ||
+      path === RouteTo.StorePurchaseHistory ||
+      path.startsWith(RouteTo.Announcement) ||
+      path.startsWith(RouteTo.Suggestion) ||
+      path.startsWith(RouteTo.LevelTestResult + '/') ||
+      path.startsWith(RouteTo.Mypage)
     ) {
-      return false;
+      return true;
     }
+    return false;
   };
 
   return (
     <QueryProvider>
       <div className="base relative h-full w-full max-w-[450px] bg-[#FAFAFA] dark:bg-grayscale-900">
-        <Header path={path} />
+        <div className="absolute flex w-full">
+          <Header path={path} />
+        </div>
         <ToastPortal />
         <div
-          className={`${isNeccessaryOldHeader(path) ? 'mt-[3.2rem] flex h-[calc(100%-3.2rem)] w-full justify-center md:mt-[3.5rem] md:h-[calc(100%-3.5rem)]' : 'flex h-full w-full flex-col'}`}
+          className={`${isNeccessaryHeader(path) ? 'mt-[3.2rem] flex h-[calc(100%-3.2rem)] w-full justify-center md:mt-[3.5rem] md:h-[calc(100%-3.5rem)]' : 'flex h-full w-full flex-col'}`}
         >
           {children}
         </div>
