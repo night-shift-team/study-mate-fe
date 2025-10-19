@@ -15,19 +15,13 @@ export const Spinner = ({
   color?: string;
   size?: ComponentSize;
 }) => {
+  const { width } = getSpinnerSize(size);
   return (
-    <div
-      className={`items-cneter flex h-full max-h-[9rem] min-h-[5px] min-w-[5px] justify-center`}
-    >
+    <div className={`items-cneter flex h-[20px] min-w-[5px] justify-center`}>
       <div
         className="loader"
-        style={{ width: getSpinnerSize(size), color: color ?? '#e8d7b9' }}
+        style={{ width: width, color: color ?? '#e8d7b9' }}
       />
-      {/* <PulseLoader
-        color={color ?? '#e8d7b9'}
-        className="flex items-center justify-center"
-        size={getSpinnerSize(size)}
-      /> */}
     </div>
   );
 };
