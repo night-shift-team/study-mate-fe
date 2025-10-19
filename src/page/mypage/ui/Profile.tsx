@@ -7,7 +7,6 @@ import useProfile from '../model/profileHook';
 import Level1Icon from '@public/assets/icons/character/Lv1.svg';
 import ArrowIcon from '@public/assets/icons/button/check/Polygon.svg';
 import { SvgIcon } from '@mui/material';
-import DarkPolygon from '@public/assets/icons/button/check/DarkPolygon.svg';
 
 const Profile = () => {
   const {
@@ -56,14 +55,8 @@ const Profile = () => {
           Edit Nickname
           <span className="relative h-[15px] w-[15px]">
             <SvgIcon
-              className="dark:none absolute left-0 top-0 hidden h-[15px] w-[15px]"
+              className="absolute left-0 top-0 h-[15px] w-[15px] fill-black dark:fill-white"
               component={ArrowIcon}
-              inheritViewBox
-              sx={{ width: '15px', height: '15px' }}
-            />
-            <SvgIcon
-              className="absolute left-0 top-0 h-[15px] w-[15px] dark:hidden"
-              component={DarkPolygon}
               inheritViewBox
               sx={{ width: '15px', height: '15px' }}
             />
