@@ -19,6 +19,7 @@ export enum RouteTo {
   WriteSuggestion = '/suggestion/write',
   Store = '/store',
   StorePurchaseHistory = '/store/purchase-history',
+  MyPageChangeNickname = '/mypage/change-nickname',
   MypageScrap = 'mypage/scrap-list',
   MypageProblemDetail = '/mypage/problem-detail',
 

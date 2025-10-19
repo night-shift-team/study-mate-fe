@@ -7,6 +7,8 @@ import useProfile from '../model/profileHook';
 import Level1Icon from '@public/assets/icons/character/Lv1.svg';
 import ArrowIcon from '@public/assets/icons/button/check/Polygon.svg';
 import { SvgIcon } from '@mui/material';
+import Link from 'next/link';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
 
 const Profile = () => {
   const {
@@ -48,9 +50,9 @@ const Profile = () => {
             <p className="text-title-page font-bold">{user.nickname}</p>
           ) : null}
         </div>
-        <button
+        <Link
+          href={RouteTo.MyPageChangeNickname}
           className="flex gap-2 text-button-1 font-bold text-black dark:text-white"
-          onClick={() => setIsModalOpen(true)}
         >
           Edit Nickname
           <span className="relative h-[15px] w-[15px]">
@@ -61,7 +63,7 @@ const Profile = () => {
               sx={{ width: '15px', height: '15px' }}
             />
           </span>
-        </button>
+        </Link>
       </div>
 
       {/* 닉네임 변경 모달 */}
