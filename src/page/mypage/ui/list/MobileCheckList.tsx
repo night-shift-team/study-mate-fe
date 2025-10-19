@@ -6,6 +6,7 @@ import ALGORITHM_Image from '@public/assets/icons/mypage/ALGORITHM.svg';
 import OS_Image from '@public/assets/icons/mypage/OS.svg';
 import { useRouter } from 'next/navigation';
 import { ProblemCategoryTitle } from '@/shared/problem/model/problemInfo.types';
+import { SvgIcon } from '@mui/material';
 
 interface MobileCheckListProps {
   category: ProblemCategoryTitle;
@@ -30,17 +31,33 @@ export const MobileCheckList = ({
 
   const Icon = imageMap[category];
 
-  return (
-    <div className="relative overflow-hidden font-pixel">
-      <Icon className="h-full w-full" />
+  const getTitle = (category: ProblemCategoryTitle) => {
+    switch (category) {
+      case ProblemCategoryTitle.ALGORITHUM:
+        return 'Algorithm';
+      case ProblemCategoryTitle.NETWORK:
+        return 'Network';
+      case ProblemCategoryTitle.DB:
+        return 'Database';
+      case ProblemCategoryTitle.OS:
+        return 'OS';
+      default:
+        return '';
+    }
+  };
 
-      <div
-        className={`absolute left-[22%] top-[25%] z-10 w-[30vw] max-w-[120px] p-1 text-center text-[3vh] font-semibold text-black ${bgColorClass}`}
-      >
-        {category}
+  return (
+    <div className="relative w-[100%] font-pixel">
+      <div className="w-full">
+        <Icon className="h-auto w-full" />
       </div>
       <div
-        className="absolute bottom-[20%] right-[25%] z-10 flex items-center justify-center gap-4 text-[20px] font-semibold text-black dark:text-white"
+        className={`absolute left-[50%] top-[28%] z-10 h-[20%] w-[70%] translate-x-[-50%] rounded-[2px] text-center text-title-section text-black ${bgColorClass} flex items-center justify-center`}
+      >
+        {getTitle(category)}
+      </div>
+      <div
+        className="absolute bottom-[25%] left-[50%] z-10 flex translate-x-[-50%] items-center justify-center gap-4 text-[20px] font-semibold text-black dark:text-white"
         onClick={() => router.push(`/mypage/${category}`)}
       >
         <span>Go to</span>

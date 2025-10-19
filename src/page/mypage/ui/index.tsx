@@ -26,7 +26,7 @@ const Mypage = () => {
   } = useMyPage();
 
   return (
-    <div className="flex h-full w-full">
+    <div className="flex h-full w-full overflow-y-auto scrollbar-hide">
       {isPopupOpen && popUpProblemDetail && (
         <PopupProblem
           size="md"

@@ -20,14 +20,14 @@ const CheckList: React.FC<CheckListProps> = ({ questionHistory }) => {
 
   return (
     <>
-      <div className="flex-col items-center overflow-auto pb-[50px] pt-[20px]">
-        <div className="w-[100%] overflow-auto scrollbar-hide">
-          <div className="grid grid-cols-2 gap-3 pb-10">
+      <div className="flex w-full flex-col items-center pb-[50px] pt-[20px]">
+        <div className="w-full">
+          <div className="grid w-full grid-cols-2 gap-3 pb-10">
             {TempCategories.map((category, index) => {
               const bgColorClass = categoryBgColors[category.title] ?? '';
 
               return (
-                <div key={index} className="grid-2 grid">
+                <div key={index} className="grid-2 grid w-full">
                   <MobileCheckList
                     category={category.title}
                     bgColorClass={bgColorClass}
