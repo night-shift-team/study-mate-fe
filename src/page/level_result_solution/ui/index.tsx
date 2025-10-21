@@ -15,6 +15,7 @@ import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import Toaster from '@/shared/toast/ui/toaster';
 import { toastStore, ToastType } from '@/shared/state/toast/toastStore';
 import { questionBookmarkToggleApi } from '@/feature/boomMark/api';
+import { ComponentLoader } from '@/feature/spinner/ui/componentLoader';
 
 const TestResultSolutionPage = ({
   type,
@@ -107,6 +108,9 @@ const TestResultSolutionPage = ({
       });
     }
   };
+
+  const [isFetching, setIsFetching] = useState(false);
+
   return (
     <div className="flex h-full w-full flex-col overflow-y-auto px-4 py-5 scrollbar-hide">
       <Toaster />
@@ -174,14 +178,22 @@ const TestResultSolutionPage = ({
         {type === 'test' && (
           <>
             <ButtonPixel
-              status="default"
+              status={isFetching ? 'inactive' : 'default'}
               onClick={async () => {
                 if (problemId) {
+                  setIsFetching(true);
                   await handleBookMark(problemId);
+                  setIsFetching(false);
                 }
               }}
             >
-              Save this result
+              {isFetching ? (
+                <div className="mb-0">
+                  <ComponentLoader size="sm" />
+                </div>
+              ) : (
+                'Save this result'
+              )}
             </ButtonPixel>
             <ButtonPixel
               status="default"
@@ -196,25 +208,22 @@ const TestResultSolutionPage = ({
         {type === 'solve' && (
           <>
             <ButtonPixel
-              status="default"
+              status={isFetching ? 'inactive' : 'default'}
               onClick={async () => {
                 if (problemId) {
-                  const success = await bookMarkToggle(problemId);
-                  if (success) {
-                    toastStore.show({
-                      status: ToastType.success,
-                      title: '북마크가 추가되었습니다',
-                    });
-                  } else {
-                    toastStore.show({
-                      status: ToastType.info,
-                      title: '북마크 실패',
-                    });
-                  }
+                  setIsFetching(true);
+                  await handleBookMark(problemId);
+                  setIsFetching(false);
                 }
               }}
             >
-              Save this result
+              {isFetching ? (
+                <div className="mb-0">
+                  <ComponentLoader size="sm" />
+                </div>
+              ) : (
+                'Save this result'
+              )}
             </ButtonPixel>
 
             <ButtonPixel
@@ -235,14 +244,22 @@ const TestResultSolutionPage = ({
         {type === 'favorite' && (
           <>
             <ButtonPixel
-              status="default"
+              status={isFetching ? 'inactive' : 'default'}
               onClick={async () => {
                 if (problemInfo?.questionId) {
+                  setIsFetching(true);
                   await handleBookMark(problemInfo.questionId);
+                  setIsFetching(false);
                 }
               }}
             >
-              Save this result
+              {isFetching ? (
+                <div className="mb-0">
+                  <ComponentLoader size="sm" />
+                </div>
+              ) : (
+                'Save this result'
+              )}
             </ButtonPixel>
             <ButtonPixel
               status="default"
@@ -257,25 +274,22 @@ const TestResultSolutionPage = ({
         {type === 'history' && (
           <>
             <ButtonPixel
-              status="default"
+              status={isFetching ? 'inactive' : 'default'}
               onClick={async () => {
                 if (problemId) {
-                  const success = await bookMarkToggle(problemId);
-                  if (success) {
-                    toastStore.show({
-                      status: ToastType.success,
-                      title: '북마크가 추가되었습니다',
-                    });
-                  } else {
-                    toastStore.show({
-                      status: ToastType.info,
-                      title: '북마크 실패',
-                    });
-                  }
+                  setIsFetching(true);
+                  await handleBookMark(problemId);
+                  setIsFetching(false);
                 }
               }}
             >
-              Save this result
+              {isFetching ? (
+                <div className="mb-0">
+                  <ComponentLoader size="sm" />
+                </div>
+              ) : (
+                'Save this result'
+              )}
             </ButtonPixel>
           </>
         )}
