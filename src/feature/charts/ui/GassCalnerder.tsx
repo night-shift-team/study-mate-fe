@@ -1,26 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import dayjs from 'dayjs';
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import useGrassChart from '../model/grassChartHook';
+import { SolveStats } from '@/page/mypage/api';
 
-const getColorByCount = (count: number) => {
-  if (count === 0)
-    return 'bg-transparent border border-gray-400/70 dark:border-white/50';
-  if (count <= 10) return 'bg-grass-100';
-  if (count <= 20) return 'bg-grass-300';
-  if (count <= 40) return 'bg-grass-400';
-  if (count > 40) return 'bg-grass-500';
-
-  return 'bg-transparent border border-gray-400/70 dark:border-white/50';
-};
-const GrassChart = () => {
-  const { stats } = useGrassChart();
-
+const GrassChart = ({
+  setIsFetched,
+}: {
+  setIsFetched: Dispatch<SetStateAction<boolean>>;
+}) => {
+  const { stats } = useGrassChart(setIsFetched);
   const [currentDate, setCurrentDate] = useState(dayjs());
 
-  if (!stats) return <Spinner />;
+  if (!stats) return null;
 
   const year = currentDate.year();
   const month = currentDate.month();
@@ -29,13 +22,20 @@ const GrassChart = () => {
   const startWeekday = startOfMonth.day();
   const paddedStart = startWeekday === 0 ? 6 : startWeekday - 1;
 
+  // solveDay는 날짜임. YYYY-MM-DD 형식의 문자열
+  const historyDatesMap = new Map<string, SolveStats>(
+    stats.map((stat) => [stat.solveDay, stat])
+  );
+
   const daysArray = Array.from(
     { length: paddedStart + daysInMonth },
     (_, i) => {
       if (i < paddedStart) return null;
       const day = i - paddedStart + 1;
-      const date = dayjs(new Date(year, month, day)).format('YYYY-MM-DD');
-      const stat = stats.find((s) => s.solveDay === date);
+      const date = dayjs(new Date(year, month, day));
+      const stat = historyDatesMap.has(date.format('YYYY-MM-DD'))
+        ? historyDatesMap.get(date.format('YYYY-MM-DD'))
+        : null;
       return {
         day,
         count: stat?.solveCount || 0,
@@ -106,3 +106,14 @@ const GrassChart = () => {
 };
 
 export default GrassChart;
+
+const getColorByCount = (count: number) => {
+  if (count === 0)
+    return 'bg-transparent border border-gray-400/70 dark:border-white/50';
+  if (count <= 10) return 'bg-grass-100';
+  if (count <= 20) return 'bg-grass-300';
+  if (count <= 40) return 'bg-grass-400';
+  if (count > 40) return 'bg-grass-500';
+
+  return 'bg-transparent border border-gray-400/70 dark:border-white/50';
+};

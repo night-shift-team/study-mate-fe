@@ -1,7 +1,5 @@
 'use client';
-import NewHeader from '@/feature/header/ui/newheader';
 import Link from 'next/link';
-import LeftArrow from '@public/assets/icons/header/left_arrow.svg';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import HomeLogo from '@/feature/images/ui/homelogo';
 import ButtonPixel from '@/shared/button/buttonPixel';
@@ -19,7 +17,7 @@ const ChangePasswordPage = ({ user }: { user: UserInfo | null }) => {
     if (!user) {
       toastStore.show({
         status: ToastType.warning,
-        title: '로그인이 이후 진행해주세요.',
+        title: '로그인 이후 진행해주세요.',
       });
       router.push(RouteTo.Home);
     }
@@ -35,16 +33,6 @@ const ChangePasswordPage = ({ user }: { user: UserInfo | null }) => {
 
   return (
     <div className="flex h-full w-full flex-col items-center text-black dark:text-white">
-      <NewHeader
-        left={
-          <Link href={RouteTo.Solve} className="h-5 w-5">
-            <LeftArrow className="h-full w-full" />
-          </Link>
-        }
-        center={<></>}
-        right={<></>}
-      />
-
       {!changeSuccess && !changeClicked && (
         <div className="flex h-full w-full flex-col justify-center px-4 pb-16">
           <HomeLogo />

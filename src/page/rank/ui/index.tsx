@@ -8,9 +8,18 @@ import { MyRankBox } from './myRank';
 
 import useRankPage from '../model/rankPageHook';
 import { TopRankUser } from './topRankUser';
+import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
+import { useLayoutEffect } from 'react';
 
 const RankPage = () => {
+  const getPageLoader = pageLoaderStore((s) => s.status);
+  const setPageLoader = pageLoaderStore((s) => s.setStatus);
   const { displayedUsers } = useRankPage();
+
+  useLayoutEffect(() => {
+    setPageLoader('loading');
+    console.log('page loader status:', getPageLoader);
+  }, []);
 
   // 캐릭터 이미지는 임의로 넣음
   return (

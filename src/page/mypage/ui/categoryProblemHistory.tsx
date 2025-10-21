@@ -1,10 +1,11 @@
 'use client';
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import useCategoryProblemHistory from '../model/categoryProblemHistoryHook';
 import { QuestionItem } from '@/feature/mypage/ui/Item';
 import { ProblemPagination } from '@/feature/pagination/ui';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
+import { useLayoutEffect } from 'react';
 
 const CategoryProblemHistoryPage = () => {
   const {
@@ -16,23 +17,20 @@ const CategoryProblemHistoryPage = () => {
     itemsPerPage,
     page,
     setPage,
-    loading,
   } = useCategoryProblemHistory();
 
-  if (!category || typeof category !== 'string') {
-    return (
-      <div>
-        <Spinner />
-      </div>
-    );
-  }
-  if (loading) {
-    return (
-      <div>
-        <Spinner />
-      </div>
-    );
-  }
+  // const getPageLoader = pageLoaderStore((s) => s.status);
+  const setPageLoader = pageLoaderStore((s) => s.setStatus);
+
+  useLayoutEffect(() => {
+    setPageLoader('loading');
+  }, []);
+
+  useLayoutEffect(() => {
+    if (paginatedHistory) {
+      setPageLoader('loaded');
+    }
+  }, [paginatedHistory]);
 
   return (
     <div className="flex w-full flex-col p-8p">
@@ -42,7 +40,7 @@ const CategoryProblemHistoryPage = () => {
       <div className="mt-[20px] flex w-full flex-col">
         <div className="flex h-[85vh] flex-col justify-between gap-3 pb-[10px]">
           <div className="flex flex-col gap-3">
-            {paginatedHistory.length > 0 ? (
+            {paginatedHistory && paginatedHistory.length > 0 ? (
               paginatedHistory.map((history, index) => {
                 console.log(history); // 로그 출력
                 return (
@@ -65,7 +63,7 @@ const CategoryProblemHistoryPage = () => {
                       questionTitle={history.questionTitle}
                       score={history.score}
                       textColorClass={textColorClass}
-                      category={category}
+                      category={category as string}
                       createdDt={history.createdDt}
                     />
                   </Link>
@@ -76,7 +74,7 @@ const CategoryProblemHistoryPage = () => {
             )}
           </div>
 
-          {filteredHistory.length > 0 && (
+          {filteredHistory && filteredHistory.length > 0 && (
             <div className="mb-[10px] mt-4 flex justify-center">
               <ProblemPagination
                 page={page}

@@ -3,9 +3,9 @@
 import useTooltip from '@/feature/tooltip/model/tooltipController';
 import tooltipMountHook from '@/feature/tooltip/model/tooltipMount';
 import { getSolveStatsApi, SolveStats } from '@/page/mypage/api';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-const useGrassChart = () => {
+const useGrassChart = (setIsFetched: Dispatch<SetStateAction<boolean>>) => {
   const [stats, setStats] = useState<SolveStats[]>();
   const [mapStats, setMapStats] = useState<{ [key: string]: number }>();
 
@@ -71,10 +71,17 @@ const useGrassChart = () => {
   };
 
   useEffect(() => {
-    if (stats) {
+    if (stats && !mapStats) {
       setMapStats(mapSolveStats(stats));
     }
-  }, [stats]);
+    if (mapStats) {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setIsFetched(true);
+        });
+      });
+    }
+  }, [stats, mapStats]);
 
   return {
     stats,

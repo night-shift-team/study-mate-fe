@@ -3,13 +3,16 @@ import AuthHoc from '@/shared/auth/model/authHoc';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { SvgIcon } from '@mui/material';
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import useSolveMainPage from '../model/solveMainPageHook';
 import { UserSection } from './userSection';
 import Polygon from '@public/assets/icons/button/check/Polygon.svg';
+import { useEffect, useLayoutEffect } from 'react';
+import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
 
 const SolveMainPage = () => {
   const { myTodaySolveData } = useSolveMainPage();
+  const setPageLoader = pageLoaderStore((s) => s.setStatus);
+  const getPageLoader = pageLoaderStore((s) => s.status);
 
   const changeCategoryName: Record<string, string> = {
     ALGORITHUM: '알고리즘',
@@ -23,6 +26,15 @@ const SolveMainPage = () => {
     OS: 'text-success',
     DB: 'text-point-orange',
   };
+  useLayoutEffect(() => {
+    setPageLoader('loading');
+    console.log('page loader status:', getPageLoader);
+  }, []);
+
+  useEffect(() => {
+    if (!myTodaySolveData) return;
+    setPageLoader('loaded');
+  }, [myTodaySolveData]);
 
   return (
     <div className="flex h-full w-full flex-shrink-0 flex-col items-center justify-between overflow-y-auto scrollbar-hide">
@@ -34,13 +46,10 @@ const SolveMainPage = () => {
             Quiz Categories
           </span>
         </div>
-        {!myTodaySolveData ? (
-          <div className="pt-8p">
-            <Spinner size="sm" />
-          </div>
-        ) : (
-          <div className="grid w-full place-items-center gap-[0.5rem] pb-[2rem]">
-            {myTodaySolveData.map((category, index) => {
+
+        <div className="grid w-full place-items-center gap-[0.5rem] pb-[2rem]">
+          {myTodaySolveData &&
+            myTodaySolveData.map((category, index) => {
               return (
                 <div
                   key={index}
@@ -117,8 +126,7 @@ const SolveMainPage = () => {
                 </div>
               );
             })}
-          </div>
-        )}
+        </div>
       </div>
       {/* <TabBarComponent /> */}
     </div>

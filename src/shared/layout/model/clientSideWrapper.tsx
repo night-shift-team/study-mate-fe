@@ -12,9 +12,15 @@ const TabBarComponent = dynamic(
 import { usePathname } from 'next/navigation';
 import QueryProvider from './queryProvider';
 import ToastPortal from '@/shared/toast/ui/toaster';
+import PageWrapperLoader from '@/shared/state/spinner/pageWrapper';
+import { useLayoutEffect, useState } from 'react';
+import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
 
 const ClientSideWrapper = ({ children }: { children: React.ReactNode }) => {
   const path = usePathname();
+  const getPageLoader = pageLoaderStore((s) => s.status);
+  const setPageLoader = pageLoaderStore((s) => s.setStatus);
+  const [pendingTime, setPendingTime] = useState(0);
   const isNeccessaryHeader = (path: string) => {
     if (
       path === RouteTo.ResetPassword ||
@@ -34,6 +40,25 @@ const ClientSideWrapper = ({ children }: { children: React.ReactNode }) => {
     return false;
   };
 
+  // 오래 지속되는 페이지 로더 해제
+  useLayoutEffect(() => {
+    if (pendingTime >= 15) {
+      setPageLoader('none');
+      setPendingTime(0);
+      return;
+    }
+
+    if (getPageLoader === 'loaded' || getPageLoader === 'none') {
+      setPendingTime(0);
+    } else {
+      const interval = setInterval(() => {
+        setPendingTime((prev) => prev + 1);
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [getPageLoader, pendingTime]);
+
   return (
     <QueryProvider>
       <div className="base relative h-full w-full max-w-[450px] bg-[#FAFAFA] dark:bg-grayscale-900">
@@ -41,11 +66,13 @@ const ClientSideWrapper = ({ children }: { children: React.ReactNode }) => {
           <Header path={path} />
         </div>
         <ToastPortal />
+
         <div
           className={`${isNeccessaryHeader(path) ? 'mt-[3.2rem] flex h-[calc(100%-3.2rem)] w-full justify-center md:mt-[3.5rem] md:h-[calc(100%-3.5rem)]' : 'flex h-full w-full flex-col'}`}
         >
-          {children}
+          <PageWrapperLoader>{children}</PageWrapperLoader>
         </div>
+
         <TabBarComponent path={path} />
       </div>
     </QueryProvider>

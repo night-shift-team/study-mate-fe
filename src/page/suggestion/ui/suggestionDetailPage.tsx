@@ -1,20 +1,25 @@
 'use client';
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import useSuggestionDetailPage from '../model/suggestionDetailPageHook';
 import UserStateWrapper from '@/shared/state/userStore/model/clientSideWrapper';
 import CommentSection from './commentSection';
 import { userStore } from '@/shared/state/userStore/model';
+import { useLayoutEffect } from 'react';
+import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
 
 const SuggestionDetailPage = () => {
   const { suggestion, user } = useSuggestionDetailPage();
   const isuser = userStore.getState().user;
+  const setPageLoader = pageLoaderStore((s) => s.setStatus);
 
-  if (!suggestion)
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center">
-        <Spinner />
-      </div>
-    );
+  useLayoutEffect(() => {
+    if (suggestion) {
+      setPageLoader('loaded');
+    }
+  }, [suggestion]);
+
+  useLayoutEffect(() => {
+    setPageLoader('loading');
+  }, []);
 
   return (
     <UserStateWrapper>
@@ -47,33 +52,35 @@ const SuggestionDetailPage = () => {
             </div> */}
           <div className="flex flex-col gap-3">
             <div className="flex gap-3 font-pretandard text-[12px] text-black dark:text-white">
-              <span>작성일: {suggestion.createdDt.slice(0, 10)}</span>
-              <span>문의 닉네임: {suggestion.user.nickname}</span>
+              <span>작성일: {suggestion?.createdDt.slice(0, 10)}</span>
+              <span>문의 닉네임: {suggestion?.user.nickname}</span>
             </div>
             <div className="flex flex-col gap-16p text-black dark:text-white">
               <div className="flex gap-2">
                 <span className="w-[30px]">Q</span>
                 <h1 className="mb-4t ext-xl font-semibold">
-                  {suggestion.title}
+                  {suggestion?.title}
                 </h1>
               </div>
 
-              <div className="whitespace-pre-wrap">{suggestion.content}</div>
+              <div className="whitespace-pre-wrap">{suggestion?.content}</div>
             </div>
           </div>
         </div>
 
-        <CommentSection
-          initialComments={suggestion.comments.map((c) => ({
-            id: c.id,
-            author: c.writer,
-            content: c.content,
-            date: new Date(c.createdDt).toISOString().split('T')[0],
-          }))}
-          role={isuser?.role}
-          currentUserNickname={user?.loginId ?? ''}
-          boardId={suggestion.id}
-        />
+        {suggestion && (
+          <CommentSection
+            initialComments={suggestion.comments.map((c) => ({
+              id: c.id,
+              author: c.writer,
+              content: c.content,
+              date: new Date(c.createdDt).toISOString().split('T')[0],
+            }))}
+            role={isuser?.role}
+            currentUserNickname={user?.loginId ?? ''}
+            boardId={suggestion.id}
+          />
+        )}
       </div>
     </UserStateWrapper>
   );

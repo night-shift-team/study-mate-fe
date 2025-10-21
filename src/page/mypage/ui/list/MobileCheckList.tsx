@@ -6,7 +6,6 @@ import ALGORITHM_Image from '@public/assets/icons/mypage/ALGORITHM.svg';
 import OS_Image from '@public/assets/icons/mypage/OS.svg';
 import { useRouter } from 'next/navigation';
 import { ProblemCategoryTitle } from '@/shared/problem/model/problemInfo.types';
-import { SvgIcon } from '@mui/material';
 
 interface MobileCheckListProps {
   category: ProblemCategoryTitle;

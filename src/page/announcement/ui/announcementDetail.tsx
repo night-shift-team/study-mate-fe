@@ -1,9 +1,24 @@
 'use client';
 
+import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
 import useAnnouncementDetailPage from '../model/announcementDetailPageHook';
+import { useLayoutEffect } from 'react';
 
 const AnnouncemnetByIdDetailPage = () => {
   const { noticeDetail } = useAnnouncementDetailPage();
+  const getPageLoader = pageLoaderStore((s) => s.status);
+  const setPageLoader = pageLoaderStore((s) => s.setStatus);
+
+  useLayoutEffect(() => {
+    if (getPageLoader === 'loading' && noticeDetail) {
+      setPageLoader('loaded');
+    }
+  }, [noticeDetail]);
+
+  useLayoutEffect(() => {
+    setPageLoader('loading');
+  }, []);
+
   return (
     <>
       <div className="flex h-full w-full flex-col bg-point-logo font-pretandard">

@@ -2,11 +2,11 @@
 
 import { ScrapsList } from '../ui/list/ScrapList';
 import useMyPage from '../model/myPageHook';
-import { useState } from 'react';
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import { useLayoutEffect, useState } from 'react';
+import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
 
 export const ScrapsListPage = () => {
-  const { favoriteList, isLoading } = useMyPage();
+  const { favoriteList } = useMyPage();
   const [selectedCategory, setSelectedCategory] =
     useState<string>('ALGORITHUM');
 
@@ -20,8 +20,22 @@ export const ScrapsListPage = () => {
     item.questionCategory.startsWith(selectedCategory)
   );
 
+  const getPageLoader = pageLoaderStore((s) => s.status);
+  const setPageLoader = pageLoaderStore((s) => s.setStatus);
+
+  useLayoutEffect(() => {
+    if (favoriteList) {
+      setPageLoader('loaded');
+    }
+  }, [favoriteList]);
+
+  useLayoutEffect(() => {
+    setPageLoader('loading');
+    console.log('page loader status:', getPageLoader);
+  }, []);
+
   return (
-    <div className="h-full w-full p-4 pt-20">
+    <div className="h-full w-full overflow-y-auto px-4 pt-20 scrollbar-hide">
       <div className="flex flex-col gap-[20px]">
         <div className="text-title-page text-black dark:text-white">
           Scrap folders
@@ -41,18 +55,14 @@ export const ScrapsListPage = () => {
             </button>
           ))}
         </div>
-        {!isLoading ? (
-          <div className="h-[80vh] overflow-auto pb-[80px]">
-            <ScrapsList
-              favoriteList={(filteredList || []).map((item) => ({
-                ...item,
-                createdDt: String(item.createdDt),
-              }))}
-            />
-          </div>
-        ) : (
-          <Spinner />
-        )}
+        <div className="h-full">
+          <ScrapsList
+            favoriteList={(filteredList || []).map((item) => ({
+              ...item,
+              createdDt: String(item.createdDt),
+            }))}
+          />
+        </div>
       </div>
     </div>
   );

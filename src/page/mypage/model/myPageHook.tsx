@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useRef, useState } from 'react';
 import {
   getQuestionFavoriteApi,
@@ -9,6 +10,7 @@ import { ProblemDetailInfoRes } from '@/page/adminProblem/api';
 import { Swiper as SwiperType } from 'swiper';
 import { getUserRankingApi } from '@/page/rank/api';
 import { userStore } from '@/shared/state/userStore/model';
+import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
 
 const useMyPage = () => {
   const [questionHistory, setQuestionHistory] = useState<any[]>([]);
@@ -20,16 +22,10 @@ const useMyPage = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popUpProblemDetail, setPopupProblemDetail] =
     useState<ProblemDetailInfoRes | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    userRanking();
-    userQuestionHistory();
-    userFavoriteApi();
-  }, []);
+  const [isFetched, setIsFetched] = useState(false);
+  const setLoadingStatus = pageLoaderStore.getState().setStatus;
 
   const userRanking = async () => {
-    setIsLoading(true);
     try {
       const res = await getUserRankingApi(0, 12); // 예제:
       if (res.ok) {
@@ -41,13 +37,10 @@ const useMyPage = () => {
       throw res.payload;
     } catch (error) {
       console.log(error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const userQuestionHistory = async () => {
-    setIsLoading(true);
     try {
       const res = await getQuestionHistoryApi(100, 100000);
       if (res.ok) {
@@ -60,13 +53,10 @@ const useMyPage = () => {
       throw res.payload;
     } catch (error) {
       console.log(error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const userFavoriteApi = async () => {
-    setIsLoading(true);
     try {
       const res = await getQuestionFavoriteApi(0, 12);
       if (res.ok) {
@@ -78,22 +68,8 @@ const useMyPage = () => {
       throw res.payload;
     } catch (error) {
       console.log(error);
-    } finally {
-      setIsLoading(false);
     }
   };
-
-  // const getScoreTierInfo = (score: number) => {
-  //   if (score >= 256000) return { img: Star_IMG };
-  //   if (score >= 128000) return { img: Strom_IMG };
-  //   if (score >= 32000) return { img: Cloud_IMG };
-  //   if (score >= 16000) return { img: Range_IMG };
-  //   if (score >= 8000) return { img: Rock_IMG };
-  //   if (score >= 4000) return { img: Peddle_IMG };
-  //   if (score >= 2000) return { img: Grain_IMG };
-  //   if (score >= 1000) return { img: Dust_IMG };
-  //   return { img: Dust_IMG };
-  // };
 
   const getRankInfo = (myRanking: number) => {
     if (myRanking === 1) return 'st';
@@ -109,11 +85,13 @@ const useMyPage = () => {
     },
     {
       count: (
-        <div className="relative aspect-1 w-6 md:w-8">{user?.userScore}</div>
+        <div className="relative aspect-1 w-6 md:w-8">
+          {myRanking ? user?.userScore : ''}
+        </div>
       ),
       label: 'Score',
     },
-    { count: totalElements, label: 'Sloved' },
+    { count: totalElements, label: 'Solved' },
   ];
 
   const scrollByCard = (direction: 'left' | 'right') => {
@@ -125,6 +103,30 @@ const useMyPage = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      await Promise.all([
+        userRanking(),
+        userQuestionHistory(),
+        userFavoriteApi(),
+      ]);
+    };
+    fetchData().finally(() => {
+      setTimeout(() => {
+        requestAnimationFrame(() => {
+          setIsFetched(true);
+        });
+      }, 0);
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log('isFetched changed:', isFetched);
+    if (cardData[2].count) {
+      setLoadingStatus('loaded');
+    }
+  }, [cardData[2].count]);
+
   return {
     cardData,
     favoriteList,
@@ -133,9 +135,10 @@ const useMyPage = () => {
     questionHistory,
     scrollByCard,
     isPopupOpen,
-    isLoading,
     setIsPopupOpen,
     swiperRef,
+    setIsFetched,
+    isFetched,
   };
 };
 export default useMyPage;

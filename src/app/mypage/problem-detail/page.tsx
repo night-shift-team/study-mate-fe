@@ -4,10 +4,11 @@ import {
   ProblemDetailInfoRes,
 } from '@/page/adminProblem/api';
 import TestResultSolutionPage from '@/page/level_result_solution/ui';
+import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
 import UserStateWrapper from '@/shared/state/userStore/model/clientSideWrapper';
 import PageAnimationWrapper from '@/shared/style/ui/pageAnimationWrapper';
 import { useSearchParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 
 const ScrapProblemDetail = () => {
   const params = useSearchParams();
@@ -30,15 +31,26 @@ const ScrapProblemDetail = () => {
     console.log('problemId', problemId);
     getProblemInfo(problemId);
   }, [problemId]);
+
+  const setPageLoader = pageLoaderStore((s) => s.setStatus);
+
+  useLayoutEffect(() => {
+    console.log('problemDetailInfo', problemInfo);
+
+    if (problemInfo) {
+      setPageLoader('loaded');
+    }
+  }, [problemInfo]);
+
+  useLayoutEffect(() => {
+    setPageLoader('loading');
+  }, []);
+
   return (
     <UserStateWrapper>
       <PageAnimationWrapper>
         {problemInfo && (
-          <TestResultSolutionPage
-            type="favorite"
-            problemInfo={problemInfo}
-            userAnswer={undefined}
-          />
+          <TestResultSolutionPage type="favorite" problemInfo={problemInfo} />
         )}
       </PageAnimationWrapper>
     </UserStateWrapper>

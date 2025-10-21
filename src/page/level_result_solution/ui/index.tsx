@@ -40,7 +40,6 @@ const TestResultSolutionPage = ({
     ProblemDetailInfoRes | undefined | null
   >(problemInfo);
   const router = useRouter();
-
   const getProblemDetail = async (id: string) => {
     try {
       const res = await getProblemDetailInfoApi(id);

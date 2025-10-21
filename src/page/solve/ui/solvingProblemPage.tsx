@@ -28,12 +28,13 @@ import ButtonPixel from '@/shared/button/buttonPixel';
 import { ChoiceAttrs } from '@/page/level_test/ui';
 import { ProblemDetailInfoRes } from '@/page/adminProblem/api';
 import { SendMAQAnswerRes } from '../api';
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { LucideHome } from 'lucide-react';
 import Link from 'next/link';
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import Cancel from '@public/assets/icons/leveltest/cancel.svg';
+import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
 
 export interface ProblemProps {
   category: 'random' | ProblemCategoryTitle;
@@ -78,7 +79,7 @@ const SolvingProblemPage = ({ category }: ProblemProps) => {
       answer: (problemAnswer as SendMAQAnswerRes).answer,
       answerExplanation: problemAnswer!.answerExplanation,
     } as ProblemDetailInfoRes);
-  console.log(problemSolutionInfo);
+
   useEffect(() => {
     if (problemAnswer && problemSolutionInfo) {
       router.push(
@@ -87,6 +88,20 @@ const SolvingProblemPage = ({ category }: ProblemProps) => {
       );
     }
   }, [problemAnswer]);
+
+  const getPageLoader = pageLoaderStore((s) => s.status);
+  const setPageLoader = pageLoaderStore((s) => s.setStatus);
+
+  useLayoutEffect(() => {
+    if (currentQuestionWithType) {
+      setPageLoader('loaded');
+    }
+  }, [currentQuestionWithType]);
+
+  useLayoutEffect(() => {
+    setPageLoader('loading');
+    console.log('page loader status:', getPageLoader);
+  }, []);
 
   return (
     <div className="flex h-full w-full flex-col">

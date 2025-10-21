@@ -18,7 +18,6 @@ const TabBarList = [
 
 export const TabBarComponent = ({ path: pathname }: { path: string }) => {
   const user = userStore.getState().user;
-
   // 특정 페이지에서는 TabBar 숨김
   if (
     pathname === RouteTo.Home ||

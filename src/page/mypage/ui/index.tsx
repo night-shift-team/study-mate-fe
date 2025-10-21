@@ -3,43 +3,40 @@ import 'swiper/css';
 import Card from './Card';
 import Profile from './Profile';
 import CheckList from './list/CheckList';
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
-import { PopupProblem } from '@/shared/popUp/ui/popupV2';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import useMyPage from '../model/myPageHook';
 import Favorite from './Favorite';
 import GrassChart from '@/feature/charts/ui/GassCalnerder';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import { useLayoutEffect } from 'react';
+import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
 
 const Mypage = () => {
   const {
     cardData,
     favoriteList,
-    popUpProblemDetail,
     setPopupProblemDetail,
     questionHistory,
     scrollByCard,
     isPopupOpen,
     setIsPopupOpen,
     swiperRef,
+    setIsFetched,
   } = useMyPage();
 
+  const getPageLoader = pageLoaderStore((s) => s.status);
+  const setPageLoader = pageLoaderStore((s) => s.setStatus);
+
+  useLayoutEffect(() => {
+    setPageLoader('loading');
+    console.log('page loader status:', getPageLoader);
+  }, []);
+
   return (
-    <div className="flex h-full w-full overflow-y-auto scrollbar-hide">
-      {isPopupOpen && popUpProblemDetail && (
-        <PopupProblem
-          size="md"
-          questionTitle={popUpProblemDetail.questionTitle}
-          difficulty={popUpProblemDetail.difficulty}
-          content={popUpProblemDetail.content}
-          answer={popUpProblemDetail.answer}
-          explanation={popUpProblemDetail.answerExplanation}
-          onClose={() => setIsPopupOpen(false)}
-        />
-      )}
+    <div className="relative flex h-full w-full overflow-y-auto scrollbar-hide">
       <div className="flex w-full flex-col items-center">
-        <div className="z-1 flex h-[20vh] w-full flex-col px-6 pt-2">
+        <div className="flex h-[20vh] w-full flex-col px-6 pt-2">
           <Profile />
           <div className="custom-dotted-border flex justify-around border-black pb-4 text-[24px] font-bold dark:border-white dark:text-white">
             {cardData.map((item, index) => (
@@ -52,7 +49,7 @@ const Mypage = () => {
             <label className="flex w-full font-pixel text-title-section font-bold text-black dark:text-white">
               My Activity
             </label>
-            <GrassChart />
+            <GrassChart setIsFetched={setIsFetched} />
           </div>
           <div className="flex flex-col items-center gap-4">
             <div className="flex w-full items-center justify-between text-base font-bold md:text-lg">
@@ -73,16 +70,14 @@ const Mypage = () => {
               </Link>
             </div>
 
-            {typeof favoriteList === 'undefined' ? (
-              <Spinner size="md" />
-            ) : (
-              <Swiper
-                spaceBetween={12}
-                slidesPerView={'auto'}
-                onSwiper={(swiper) => (swiperRef.current = swiper)}
-                className="w-full"
-              >
-                {favoriteList.map((item) => (
+            <Swiper
+              spaceBetween={12}
+              slidesPerView={'auto'}
+              onSwiper={(swiper) => (swiperRef.current = swiper)}
+              className="w-full"
+            >
+              {favoriteList &&
+                favoriteList.map((item) => (
                   <SwiperSlide key={item.questionId} style={{ width: '200px' }}>
                     <Favorite
                       questionHistory={questionHistory}
@@ -94,8 +89,7 @@ const Mypage = () => {
                     />
                   </SwiperSlide>
                 ))}
-              </Swiper>
-            )}
+            </Swiper>
           </div>
           <div className="flex w-full flex-col">
             <span className="flex w-full font-pixel text-title-section font-bold text-black dark:text-white">

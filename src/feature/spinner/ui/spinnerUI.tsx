@@ -17,7 +17,9 @@ export const Spinner = ({
 }) => {
   const { width } = getSpinnerSize(size);
   return (
-    <div className={`items-cneter flex h-[20px] min-w-[5px] justify-center`}>
+    <div
+      className={`items-cneter flex h-[20px] min-w-[5px] justify-center ${`w-[${width}]`}`}
+    >
       <div
         className="loader"
         style={{ width: width, color: color ?? '#e8d7b9' }}

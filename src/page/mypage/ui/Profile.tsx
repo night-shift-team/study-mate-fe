@@ -1,8 +1,5 @@
 'use client';
 
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
-
-import Button from '@/shared/design/ui/customButton';
 import useProfile from '../model/profileHook';
 import Level1Icon from '@public/assets/icons/character/Lv1.svg';
 import ArrowIcon from '@public/assets/icons/button/check/Polygon.svg';
@@ -11,28 +8,17 @@ import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 
 const Profile = () => {
-  const {
-    user,
-    newNickname,
-    setNewNickname,
-    handleNicknameChange,
-    isModalOpen,
-    setIsModalOpen,
-    isPending,
-    errorMessage,
-  } = useProfile();
+  const { user } = useProfile();
   return (
-    <div className="flex gap-16p font-pixel">
+    <div className={`flex gap-16p font-pixel`}>
       {/* 프로필 이미지 */}
       <label htmlFor="profile-upload" className="">
-        <div className="z-[1000] flex h-[12vh] w-[12vh]">
-          <div className="">
-            <SvgIcon
-              inheritViewBox
-              component={Level1Icon}
-              sx={{ width: '100%', height: '100%' }}
-            />
-          </div>
+        <div className="flex h-[12vh] w-[12vh]">
+          <SvgIcon
+            inheritViewBox
+            component={Level1Icon}
+            sx={{ width: '100%', height: '100%' }}
+          />
         </div>
         <input
           id="profile-upload"
@@ -65,49 +51,6 @@ const Profile = () => {
           </span>
         </Link>
       </div>
-
-      {/* 닉네임 변경 모달 */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-70">
-          <div className="w-[90%] rounded bg-white p-5 shadow-lg md:w-[30rem]">
-            <h2 className="ml-1 text-base font-semibold text-black">
-              변경할 닉네임
-            </h2>
-            <input
-              type="text"
-              value={newNickname}
-              onChange={(e) => setNewNickname(e.target.value)}
-              className="mt-2 w-full rounded border p-2 font-spoqa text-black"
-              placeholder="새 닉네임을 입력하세요"
-            />
-            <div className="mt-3 flex justify-end gap-2">
-              <Button
-                size="xxs"
-                rounded={true}
-                className="rounded-full bg-gray-400 pl-[0.05rem] pt-0.5 font-pixel text-[0.8rem] font-medium"
-                onClick={() => setIsModalOpen(false)}
-              >
-                취소
-              </Button>
-              <Button
-                size="xxs"
-                rounded={true}
-                className="bg-blue-500 pl-[0.05rem] pt-0.5 font-mono text-[0.8rem] font-medium text-white"
-                onClick={handleNicknameChange}
-              >
-                {isPending ? (
-                  <Spinner size={'xs'} color="#fff" />
-                ) : (
-                  <span>변경</span>
-                )}
-              </Button>
-            </div>
-            {errorMessage && (
-              <div className="text-sm text-red-500">{errorMessage}</div>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 };

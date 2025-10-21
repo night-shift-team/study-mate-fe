@@ -3,6 +3,10 @@ import { useEffect, useState } from 'react';
 import { getUserRankingApi, UserRankingRes } from '../api';
 import Image from 'next/image';
 import { BRONZE_IMG, GOLD_IMG, SLIVER_IMG } from './img';
+import {
+  PageLoaderState,
+  pageLoaderStore,
+} from '@/shared/state/spinner/pageLoader';
 
 type UserRank = UserRankingRes['list'];
 const useRankPage = () => {
@@ -12,12 +16,15 @@ const useRankPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState<boolean>(true); // 로딩 상태 추가
+  const setPageLoader = pageLoaderStore.getState().setStatus;
 
   useEffect(() => {
-    userRanking();
+    userRanking(setPageLoader);
   }, []);
 
-  const userRanking = async () => {
+  const userRanking = async (
+    setPageLoader: (status: PageLoaderState) => void
+  ) => {
     setIsLoading(true);
     try {
       const res = await getUserRankingApi(0, 10000);
@@ -36,6 +43,9 @@ const useRankPage = () => {
       console.error(error);
     } finally {
       setIsLoading(false);
+      setTimeout(() => {
+        setPageLoader('loaded');
+      }, 0);
     }
   };
 

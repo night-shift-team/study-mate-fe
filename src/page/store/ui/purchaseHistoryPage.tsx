@@ -3,9 +3,24 @@
 import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import usePurchaseHistoryPage from '../model/purchaseHistoryPageHook';
 import { OrderList } from './orderList';
+import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
+import { useLayoutEffect } from 'react';
 
 const StorePurchaseHistoryPage = () => {
   const { paymentHistory } = usePurchaseHistoryPage();
+
+  const setPageLoader = pageLoaderStore((s) => s.setStatus);
+
+  useLayoutEffect(() => {
+    setPageLoader('loading');
+  }, []);
+
+  useLayoutEffect(() => {
+    if (paymentHistory) {
+      setPageLoader('loaded');
+    }
+  }, [paymentHistory]);
+
   return (
     <div
       className="flex h-[100vh] w-full flex-col gap-2 overflow-scroll p-16p"

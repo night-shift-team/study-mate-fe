@@ -1,16 +1,15 @@
 'use client';
 
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
-
 import AnnouncementList from './announcementList';
 import useAnnouncementPage from '../model/announcementPageHook';
 import { ProblemPagination } from '@/feature/pagination/ui';
 import { NoticeTap } from '@/shared/components/notice/NoticeTap';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { SuggestionList } from '@/page/suggestion/ui/SuggestionList';
 import useSuggestionPage from '@/page/suggestion/model/suggestionPageHook';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import useSuggestionList from '@/page/suggestion/model/suggestionListHook';
+import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
 
 export enum AnnouncementType {
   Anouncement,
@@ -41,6 +40,21 @@ const AnnouncementPage = () => {
         new Date(a.displayStartTime).getTime()
     );
   };
+
+  const setPageLoader = pageLoaderStore((s) => s.setStatus);
+
+  useLayoutEffect(() => {
+    setPageLoader('loading');
+  }, [activeTab]);
+
+  useLayoutEffect(() => {
+    if (activeTab === '공지' && announcementList) {
+      setPageLoader('loaded');
+    }
+    if (activeTab === '문의' && list) {
+      setPageLoader('loaded');
+    }
+  }, [activeTab, announcementList, list]);
 
   return (
     <div className="flex h-full w-full flex-col overflow-y-auto scrollbar-hide">
@@ -81,30 +95,25 @@ const AnnouncementPage = () => {
               <div className="">
                 {activeTab === '공지' ? (
                   <>
-                    {announcementList && announcementList.length > 0 ? (
-                      sortAnnouncements(announcementList).map(
-                        (announcement) => (
-                          <AnnouncementList
-                            key={announcement.noticeId}
-                            noticeDetail={announcement}
-                          />
+                    {announcementList && announcementList.length > 0
+                      ? sortAnnouncements(announcementList).map(
+                          (announcement) => (
+                            <AnnouncementList
+                              key={announcement.noticeId}
+                              noticeDetail={announcement}
+                            />
+                          )
                         )
-                      )
-                    ) : announcementList && announcementList.length === 0 ? (
-                      <div className="flex h-full w-full items-center justify-center">
-                        <span className="text-lg md:text-xl">No data</span>
-                      </div>
-                    ) : (
-                      <Spinner />
-                    )}
+                      : announcementList &&
+                        announcementList.length === 0 && (
+                          <div className="flex h-full w-full items-center justify-center">
+                            <span className="text-lg md:text-xl">No data</span>
+                          </div>
+                        )}
                   </>
                 ) : (
                   <>
-                    {list === null ? (
-                      <div className="fixed inset-0 z-50 flex items-center justify-center">
-                        <Spinner />
-                      </div>
-                    ) : (
+                    {list && (
                       <SuggestionList
                         list={list}
                         suggestionListHook={suggestionListHook}

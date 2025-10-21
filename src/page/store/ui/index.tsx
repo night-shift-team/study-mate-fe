@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
@@ -12,6 +12,7 @@ import useItemCard from '../model/itemCardHook';
 import { SvgIcon } from '@mui/material';
 import Arrow from '@public/assets/icons/button/check/Polygon.svg';
 import DarkPolygon from '@public/assets/icons/button/check/DarkPolygon.svg';
+import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
 
 export interface StoreItemInfo {
   id?: string;
@@ -37,6 +38,14 @@ const StorePage = () => {
     setPurchaseOpen,
     purchaseStatus,
   } = useStorePage();
+
+  const getPageLoader = pageLoaderStore((s) => s.status);
+  const setPageLoader = pageLoaderStore((s) => s.setStatus);
+
+  useLayoutEffect(() => {
+    setPageLoader('loading');
+    console.log('page loader status:', getPageLoader);
+  }, []);
 
   useEffect(() => {
     if (storeItems.length > 0 && !selectedItem) {
@@ -198,44 +207,35 @@ const StorePage = () => {
               </button>
             </Link>
           )}
-
-          <>
-            {storeItems.length > 0 ? (
-              <div className="mt-5 flex gap-3">
-                {storeItems.map((item, index) => (
-                  <ItemCard
-                    key={index}
-                    index={index}
-                    id={item.itemId}
-                    title={item.itemName}
-                    description={item.itemDescription}
-                    imageUrl={item.itemImage}
-                    price={item.priceKrw}
-                    afterPaymentCallback={async () =>
-                      await updateBuyingStatusSuccess()
-                    }
-                    isSelected={selectedItem?.title === item.itemName}
-                    onClick={() =>
-                      setSelectedItem({
-                        id: item.itemId,
-                        title: item.itemName,
-                        imageUrl: item.itemImage,
-                        price: item.priceKrw,
-                        description: item.itemDescription,
-                        afterPaymentCallback: async () => {
-                          await updateBuyingStatusSuccess();
-                        },
-                      })
-                    }
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="flex h-full w-full justify-center pb-[10%]">
-                <Spinner size="lg" color="#fff" />
-              </div>
-            )}
-          </>
+          <div className="mt-5 flex gap-3">
+            {storeItems.map((item, index) => (
+              <ItemCard
+                key={index}
+                index={index}
+                id={item.itemId}
+                title={item.itemName}
+                description={item.itemDescription}
+                imageUrl={item.itemImage}
+                price={item.priceKrw}
+                afterPaymentCallback={async () =>
+                  await updateBuyingStatusSuccess()
+                }
+                isSelected={selectedItem?.title === item.itemName}
+                onClick={() =>
+                  setSelectedItem({
+                    id: item.itemId,
+                    title: item.itemName,
+                    imageUrl: item.itemImage,
+                    price: item.priceKrw,
+                    description: item.itemDescription,
+                    afterPaymentCallback: async () => {
+                      await updateBuyingStatusSuccess();
+                    },
+                  })
+                }
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>

@@ -10,6 +10,7 @@ import { getStoreItemListApi, getStorePaymentHistoryApi } from '../api';
 import { PurchaseStatus, StoreItemInfo } from '../ui';
 import useOutsideClick from '@/shared/routes/model/useOutsideClick';
 import { toastStore, ToastType } from '@/shared/state/toast/toastStore';
+import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
 
 const useStorePage = () => {
   const [purchaseOpen, setPurchaseOpen] = useState(false);
@@ -22,6 +23,7 @@ const useStorePage = () => {
   const [selectedItem, setSelectedItem] = useState<StoreItemInfo | null>(null);
   const [cart, setCart] = useState<StoreItemInfo[]>([]);
   const [storeItems, setStoreItems] = useState<StoreItemDto[]>([]);
+  const setPageLoader = pageLoaderStore.getState().setStatus;
 
   const getStoreItemLists = async () => {
     try {
@@ -34,6 +36,8 @@ const useStorePage = () => {
       }
     } catch (e) {
       console.log(e);
+    } finally {
+      setPageLoader('loaded');
     }
   };
 
