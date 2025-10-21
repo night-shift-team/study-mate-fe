@@ -14,6 +14,7 @@ import CircleCheck from '@public/assets/icons/leveltest/checkedCircle.svg';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import { ComponentLoader } from '@/feature/spinner/ui/componentLoader';
 const AnswerListForm = dynamic(() => import('./answerListForm'), {
   ssr: false,
 });
@@ -39,6 +40,7 @@ const LevelTestPage = () => {
     answerListOpen,
     openAnswerList,
     closeAnswerList,
+    isSubmitting,
     answerClosedFormRef,
   } = useLevelTest();
 
@@ -134,8 +136,17 @@ const LevelTestPage = () => {
             </div>
             <div className="flex w-full gap-2 pb-4">
               {currentQuestionNo === levelTestLists.length - 1 ? (
-                <ButtonPixel status="default" onClick={handleNextQuestion}>
-                  Submit
+                <ButtonPixel
+                  status={isSubmitting ? 'inactive' : 'default'}
+                  onClick={handleNextQuestion}
+                >
+                  {isSubmitting ? (
+                    <div className="mb-0">
+                      <ComponentLoader />
+                    </div>
+                  ) : (
+                    'Submit'
+                  )}
                 </ButtonPixel>
               ) : (
                 <>

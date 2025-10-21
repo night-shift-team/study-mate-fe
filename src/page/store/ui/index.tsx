@@ -4,7 +4,6 @@ import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { PopupNotice } from '@/shared/popUp/ui/popupV2';
-import { PageLoader } from '@/feature/spinner/ui/pageLoader';
 import useStorePage from '../model/storePageHook';
 import PurchasePopupData from './purchasePopup';
 import ItemCard from './storeItemCard';
@@ -13,6 +12,7 @@ import { SvgIcon } from '@mui/material';
 import Arrow from '@public/assets/icons/button/check/Polygon.svg';
 import DarkPolygon from '@public/assets/icons/button/check/DarkPolygon.svg';
 import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
+import { ComponentLoader } from '@/feature/spinner/ui/componentLoader';
 
 export interface StoreItemInfo {
   id?: string;
@@ -179,7 +179,8 @@ const StorePage = () => {
                     </div>
 
                     <button
-                      className="h-[40px] rounded-xl bg-point-orange font-pixel text-[20px] font-bold text-black dark:text-white"
+                      className={`h-[40px] rounded-xl ${paymentOpen ? 'bg-grayscale-400' : 'bg-point-orange'} font-pixel text-[20px] font-bold text-black dark:text-white`}
+                      disabled={paymentOpen}
                       onClick={async () => {
                         if (!selectedItem) return;
                         await buyItem();
@@ -188,7 +189,9 @@ const StorePage = () => {
                       }}
                     >
                       {paymentOpen ? (
-                        <PageLoader color="#fff" size="sm" />
+                        <div className="flex w-full justify-center">
+                          <ComponentLoader color="#fff" size="md" />
+                        </div>
                       ) : (
                         'Buy now'
                       )}

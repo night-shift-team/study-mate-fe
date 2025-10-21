@@ -1,6 +1,5 @@
 'use client';
 
-import { PageLoader } from '@/feature/spinner/ui/pageLoader';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import useSignUpPage from '../model/signUpPageHook';
 import InputForm from '@/shared/input/inputForm';
@@ -9,6 +8,7 @@ import Link from 'next/link';
 import { SvgIcon } from '@mui/material';
 import HomeLogo from '@public/assets/icons/header/mobile_logo.svg';
 import EmailValidationPage from './emailValidation';
+import { ComponentLoader } from '@/feature/spinner/ui/componentLoader';
 
 export interface SignUpFormData {
   name: string;
@@ -144,7 +144,7 @@ const SignUpPage = () => {
                 <div className="mt-4">
                   {isLoading ? (
                     <ButtonPixel type="submit" disabled status="inactive">
-                      <PageLoader color="#ffffff" />
+                      <ComponentLoader />
                     </ButtonPixel>
                   ) : (
                     <ButtonPixel type="submit" status="default">

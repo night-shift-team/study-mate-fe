@@ -32,9 +32,9 @@ import { useEffect, useLayoutEffect } from 'react';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { LucideHome } from 'lucide-react';
 import Link from 'next/link';
-import { PageLoader } from '@/feature/spinner/ui/pageLoader';
 import Cancel from '@public/assets/icons/leveltest/cancel.svg';
 import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
+import { ComponentLoader } from '@/feature/spinner/ui/componentLoader';
 
 export interface ProblemProps {
   category: 'random' | ProblemCategoryTitle;
@@ -218,7 +218,7 @@ const SolvingProblemPage = ({ category }: ProblemProps) => {
                     );
                   }}
                 >
-                  {isLoading ? <PageLoader /> : 'Submit'}
+                  {isLoading ? <ComponentLoader /> : 'Submit'}
                 </ButtonPixel>
               </div>
             </div>

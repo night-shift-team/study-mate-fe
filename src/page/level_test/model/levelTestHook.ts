@@ -17,7 +17,7 @@ const useLevelTest = () => {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState<boolean>(false);
   const [userAnswers, setUserAnswers] = useState<number[]>([]);
-  const [isStarted, setIsStarted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [answerListOpen, setAnswerListOpen] = useState(false);
   const answerFormRef = useRef<HTMLDivElement>(null);
   const answerClosedFormRef = useRef<HTMLDivElement>(null);
@@ -97,6 +97,7 @@ const useLevelTest = () => {
     // 마지막 문제일 경우
     try {
       setIsGetResultApiLoading(true);
+      setIsSubmitting(true);
       const res = await getLevelTestResult(updateAnswer);
       const userData = { ...res, userAnswers: updateAnswer };
       sessionStorage.setItem('levelTestResult', JSON.stringify(userData));
@@ -129,8 +130,8 @@ const useLevelTest = () => {
 
   return {
     isPageLoading,
-    isStarted,
-    setIsStarted,
+    isSubmitting,
+    setIsSubmitting,
     currentQuestionNo,
     levelTestLists,
     isGetResultApiLoading,

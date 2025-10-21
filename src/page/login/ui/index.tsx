@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import AuthHoc from '@/shared/auth/model/authHoc';
-import { PageLoader } from '@/feature/spinner/ui/pageLoader';
 import { openNewWindowWithoutDuplicate } from '@/shared/window/model/openWindow';
 import { LoginButton } from '../model/loginButtonMeta';
 import useLoginPage from '../model/loginPageHook';
@@ -11,6 +10,7 @@ import { SvgIcon } from '@mui/material';
 import ButtonPixel from '@/shared/button/buttonPixel';
 import HomeLogo from '@public/assets/icons/header/mobile_logo.svg';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import { ComponentLoader } from '@/feature/spinner/ui/componentLoader';
 
 const LoginPage = () => {
   const {
@@ -123,7 +123,13 @@ const LoginPage = () => {
                 backgroundColor: loginLoading ? '#D3D3D3' : '',
               }}
             >
-              {loginLoading ? <PageLoader color="#6b7280" /> : 'Sign In'}
+              {loginLoading ? (
+                <div className="mb-0">
+                  <ComponentLoader color="#6b7280" />
+                </div>
+              ) : (
+                'Sign In'
+              )}
             </ButtonPixel>{' '}
           </div>
         </form>

@@ -11,6 +11,7 @@ import FormButtonPixel from '../model/formStatus';
 import { checkDuplicateEmailApi } from '@/page/signup/api';
 import { SvgIcon } from '@mui/material';
 import EmailIcon from '@public/assets/icons/resetPassword/email.svg';
+import { ComponentLoader } from '@/feature/spinner/ui/componentLoader';
 
 const ResetPasswordPage = () => {
   const [email, setEmail] = useState<string>();
@@ -121,10 +122,12 @@ const ResetPasswordAuthCodeForm = ({
   const [isResetRquestSuccess, setIsResetRequestSuccess] =
     useState<boolean>(false);
 
+  const [isFetching, setIsFetching] = useState<boolean>(false);
   const [validationStatus, setValidationStatus] = useState<boolean>();
 
   const handleSendEmail = async (mail: string) => {
     try {
+      setIsFetching(true);
       const res = await sendResetPasswordEmailApi(mail);
       if (res.ok) {
         return true;
@@ -133,6 +136,8 @@ const ResetPasswordAuthCodeForm = ({
     } catch (e) {
       console.log(e);
       return false;
+    } finally {
+      setIsFetching(false);
     }
   };
 
@@ -153,13 +158,23 @@ const ResetPasswordAuthCodeForm = ({
     const isAuthNumberVerified = await verifyAuthNumber(email, code);
     if (isAuthNumberVerified) {
       setValidationStatus(true);
+      setIsFetching(false);
       return;
     }
     setValidationStatus(false);
+    setIsFetching(false);
   };
   const handleNext = () => {
     setIsPasswordResetSuccess(true);
   };
+  console.log(
+    'isFetching',
+    isFetching,
+    'validationStatus:',
+    validationStatus,
+    'reset',
+    isResetRquestSuccess
+  );
 
   return (
     <>
@@ -175,7 +190,7 @@ const ResetPasswordAuthCodeForm = ({
           </span>
         </div>
         <ButtonPixelCustom
-          status={isResetRquestSuccess ? 'inactive' : 'default'}
+          status={isResetRquestSuccess || isFetching ? 'inactive' : 'default'}
           paddingX={16}
           paddingY={0}
           rounded={8}
@@ -186,7 +201,9 @@ const ResetPasswordAuthCodeForm = ({
             }
           }}
         >
-          {isResetRquestSuccess ? 'Completed!' : 'Send'}
+          {!isFetching && !isResetRquestSuccess && 'Send'}
+          {isFetching && !isResetRquestSuccess && <ComponentLoader size="xs" />}
+          {isResetRquestSuccess && 'Completed!'}
         </ButtonPixelCustom>
       </div>
       {isResetRquestSuccess && (
@@ -194,7 +211,10 @@ const ResetPasswordAuthCodeForm = ({
           <form
             action={async (e) => {
               const authNumber = e.get('emailAuthNumber');
-              if (!authNumber || typeof authNumber !== 'string') return;
+              if (!authNumber || typeof authNumber !== 'string') {
+                setIsFetching(false);
+                return;
+              }
               await handleResetAuthCode(email, authNumber);
             }}
             autoComplete="off"
@@ -221,14 +241,21 @@ const ResetPasswordAuthCodeForm = ({
               </span>
             </div>
             <ButtonPixelCustom
-              status={validationStatus ? 'inactive' : 'default'}
+              status={validationStatus || isFetching ? 'inactive' : 'default'}
               height={38}
               paddingX={16}
               paddingY={8}
               rounded={8}
               disabled={validationStatus}
+              onClick={() => setIsFetching(true)}
             >
-              {validationStatus ? 'Completed!' : 'Verify'}
+              {!isFetching && !validationStatus && 'Verify'}
+              {isFetching && !validationStatus && (
+                <div className="mt-0">
+                  <ComponentLoader size="xs" />
+                </div>
+              )}
+              {!isFetching && validationStatus && 'Completed!'}
             </ButtonPixelCustom>
           </form>
           <div className="mt-16 flex w-full flex-col">

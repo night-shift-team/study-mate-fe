@@ -1,10 +1,19 @@
 'use client';
 import { userStore } from '@/shared/state/userStore/model';
 import useWriteSuggestionPage from '../model/writeSuggestionPageHook';
+import ButtonPixel from '@/shared/button/buttonPixel';
+import { ComponentLoader } from '@/feature/spinner/ui/componentLoader';
 
 const WriteSuggestionPage = () => {
-  const { title, setTitle, content, setContent, submitted, handleSubmit } =
-    useWriteSuggestionPage();
+  const {
+    title,
+    setTitle,
+    content,
+    setContent,
+    submitted,
+    handleSubmit,
+    isSumitting,
+  } = useWriteSuggestionPage();
 
   const user = userStore.getState().user;
 
@@ -49,12 +58,12 @@ const WriteSuggestionPage = () => {
         </div>
       </div>
       <div className="mt-3 w-full">
-        <button
+        <ButtonPixel
+          status={isSumitting ? 'inactive' : 'default'}
           onClick={handleSubmit}
-          className="w-full rounded-xl bg-point-orange px-6 py-2 font-pixel text-button-1 text-black transition-colors duration-200 hover:bg-orange-500"
         >
-          Submit
-        </button>
+          {isSumitting ? <ComponentLoader /> : 'Submit'}
+        </ButtonPixel>
       </div>
     </div>
   );

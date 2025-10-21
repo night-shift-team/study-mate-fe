@@ -27,6 +27,7 @@ const ButtonPixel = ({
   };
   return (
     <button
+      disabled={status === 'inactive'}
       className={`${baseClasses} ${statusClasses[status]} ${props.className}`}
       {...props}
     >
@@ -46,7 +47,7 @@ export const ButtonPixelCustom = ({
   ...props
 }: StatusButtonCustomProps & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
   const baseClasses =
-    'rounded-[12px] flex justify-center items-center font-semibold text-center transition-all font-pixel text-button-2 select-none';
+    'rounded-[12px] min-h-[24px] flex justify-center items-center font-semibold text-center transition-all font-pixel text-button-2 select-none';
 
   const statusClasses = {
     default: 'text-black bg-point-orange',

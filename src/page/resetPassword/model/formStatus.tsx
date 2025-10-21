@@ -1,5 +1,5 @@
 'use client';
-import { PageLoader } from '@/feature/spinner/ui/pageLoader';
+import { ComponentLoader } from '@/feature/spinner/ui/componentLoader';
 import ButtonPixel from '@/shared/button/buttonPixel';
 import { useFormStatus } from 'react-dom';
 
@@ -14,7 +14,13 @@ const FormButtonPixel = ({
       status={status.pending ? 'inactive' : 'default'}
       {...props}
     >
-      {status.pending ? <PageLoader color="black" /> : buttonText}
+      {status.pending ? (
+        <div className="mb-[0.5px]">
+          <ComponentLoader />
+        </div>
+      ) : (
+        buttonText
+      )}
     </ButtonPixel>
   );
 };
