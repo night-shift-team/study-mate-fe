@@ -2,7 +2,7 @@
 
 import { ReactNode, useLayoutEffect } from 'react';
 import { pageLoaderStore } from './pageLoader';
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import { PageLoader } from '@/feature/spinner/ui/pageLoader';
 
 const PageWrapperLoader = ({ children }: { children: ReactNode }) => {
   const loadingStatus = pageLoaderStore((selector) => selector.status);
@@ -23,7 +23,7 @@ const PageWrapperLoader = ({ children }: { children: ReactNode }) => {
       <div
         className={`absolute flex h-full w-full items-center justify-center bg-grayscale-900 ${loadingStatus === 'loading' && 'z-[1000] opacity-100'} ${loadingStatus === 'loaded' && '-z-10 opacity-0'} ${loadingStatus === 'none' && '-z-10 opacity-0'} `}
       >
-        <Spinner size="md" />
+        <PageLoader size="md" />
       </div>
       {children}
     </div>

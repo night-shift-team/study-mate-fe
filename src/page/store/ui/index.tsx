@@ -4,7 +4,7 @@ import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { PopupNotice } from '@/shared/popUp/ui/popupV2';
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import { PageLoader } from '@/feature/spinner/ui/pageLoader';
 import useStorePage from '../model/storePageHook';
 import PurchasePopupData from './purchasePopup';
 import ItemCard from './storeItemCard';
@@ -188,7 +188,7 @@ const StorePage = () => {
                       }}
                     >
                       {paymentOpen ? (
-                        <Spinner color="#fff" size="sm" />
+                        <PageLoader color="#fff" size="sm" />
                       ) : (
                         'Buy now'
                       )}

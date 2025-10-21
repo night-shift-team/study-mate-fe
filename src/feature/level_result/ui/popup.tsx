@@ -2,7 +2,7 @@ import React from 'react';
 import { IoMdClose } from 'react-icons/io';
 import Button from '@/shared/design/ui/customButton';
 import MarkdownComponent from '@/shared/lexical/model/markdownConfig';
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import { PageLoader } from '@/feature/spinner/ui/pageLoader';
 
 interface PopupProps {
   index: number | undefined;
@@ -49,7 +49,7 @@ const Popup: React.FC<PopupProps> = ({
           >
             문제 {showContent ? '숨기기' : '보기'}
           </Button>
-          {typeof index === 'number' ? null : <Spinner />}
+          {typeof index === 'number' ? null : <PageLoader />}
           {showContent ? <MarkdownComponent markdown={content ?? ''} /> : ''}
           <p className="text-gray-700">
             <span className="font-semibold text-gray-900">유저 답변:</span>{' '}

@@ -7,7 +7,7 @@ import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import LevelTestCategoryProblems from './categoryProblems';
 import ResultSummary from './resultSummary';
 import useTestResultContent from '../model/testResultHook';
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import { PageLoader } from '@/feature/spinner/ui/pageLoader';
 import { useEffect, useState } from 'react';
 import { UserAnswerWithId } from '@/page/level_test/model/levelTestHook';
 
@@ -53,7 +53,7 @@ const TestResultPage = () => {
   }, []);
 
   if (problemListsArray.length === 0) {
-    return <Spinner size="lg" />;
+    return <PageLoader size="lg" />;
   }
 
   return (

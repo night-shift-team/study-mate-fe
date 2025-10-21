@@ -1,6 +1,6 @@
 'use client';
 
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import { PageLoader } from '@/feature/spinner/ui/pageLoader';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import useSignUpPage from '../model/signUpPageHook';
 import InputForm from '@/shared/input/inputForm';
@@ -144,7 +144,7 @@ const SignUpPage = () => {
                 <div className="mt-4">
                   {isLoading ? (
                     <ButtonPixel type="submit" disabled status="inactive">
-                      <Spinner color="#ffffff" />
+                      <PageLoader color="#ffffff" />
                     </ButtonPixel>
                   ) : (
                     <ButtonPixel type="submit" status="default">

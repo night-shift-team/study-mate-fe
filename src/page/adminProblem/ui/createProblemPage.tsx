@@ -10,7 +10,7 @@ import {
 } from '@/feature/adminProblem/update/ui/problemUpdateComponents';
 import ContentsMarkDown from '@/feature/adminProblem/update/ui/markDownEdit';
 import { updateAttrBox } from '../model/updateAttrBoxContents';
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import { PageLoader } from '@/feature/spinner/ui/pageLoader';
 import useCreateProblem from '../model/createProblemHook';
 import {
   ProblemCategoryTitle,
@@ -43,7 +43,7 @@ const CreateProblemPage = () => {
             disabled={isLoading}
             className={`flex h-[2.5rem] w-16 items-center justify-center rounded-lg border text-sm hover:bg-pointcolor-coral/30 ${isLoading ? 'bg-gray-200' : 'bg-white'}`}
           >
-            {isLoading ? <Spinner /> : '생성하기'}
+            {isLoading ? <PageLoader /> : '생성하기'}
           </button>
         </div>
       </div>

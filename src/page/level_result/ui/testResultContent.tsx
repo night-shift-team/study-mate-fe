@@ -1,7 +1,7 @@
 import useTestResultContent from '../model/testResultHook';
 import { Category } from './category';
 import Button from '@/shared/design/ui/customButton';
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import { PageLoader } from '@/feature/spinner/ui/pageLoader';
 import { PopupProblem } from '@/shared/popUp/ui/popupV2';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { DonutChart } from '@/feature/charts/ui/DonutChart';
@@ -28,7 +28,7 @@ const TestResultContent = () => {
   } = useTestResultContent();
 
   if (!isLoading) {
-    return <Spinner size="xl" />;
+    return <PageLoader size="xl" />;
   }
 
   return (
@@ -96,7 +96,7 @@ const TestResultContent = () => {
         // />
         (!selectedQuestion ? (
           <div className="fixed flex h-full w-full items-center justify-center bg-[#fdfbf3]/50 backdrop:blur-xl">
-            <Spinner size="xl" />
+            <PageLoader size="xl" />
           </div>
         ) : (
           <PopupProblem

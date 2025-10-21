@@ -1,6 +1,6 @@
 'use client';
 
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import { PageLoader } from '@/feature/spinner/ui/pageLoader';
 import usePurchaseHistoryPage from '../model/purchaseHistoryPageHook';
 import { OrderList } from './orderList';
 import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
@@ -54,7 +54,7 @@ const StorePurchaseHistoryPage = () => {
           )
         ) : (
           <div className="w-full">
-            <Spinner size="md" color="#fff" />
+            <PageLoader size="md" color="#fff" />
           </div>
         )}
       </div>

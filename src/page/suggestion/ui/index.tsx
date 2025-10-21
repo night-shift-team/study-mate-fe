@@ -1,7 +1,7 @@
 // 'use client';
 // import { SuggestionList } from './SuggestionList';
 // import { RouteTo } from '@/shared/routes/model/getRoutePath';
-// import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+// import { PageLoader } from '@/feature/spinner/ui/pageLoader';
 // import useSuggestionPage from '../model/suggestionPageHook';
 
 // const SuggestionPage = () => {
@@ -9,7 +9,7 @@
 //   if (list === null) {
 //     return (
 //       <div className="fixed inset-0 z-50 flex items-center justify-center">
-//         <Spinner />
+//         <PageLoader />
 //       </div>
 //     );
 //   }

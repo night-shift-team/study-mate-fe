@@ -1,7 +1,7 @@
 'use client';
 
 // import { PiPaperPlaneTilt } from 'react-icons/pi';
-// import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+// import { PageLoader } from '@/feature/spinner/ui/pageLoader';
 // import { IoIosArrowForward } from 'react-icons/io';
 // import { BookMarkCircle } from '@/feature/boomMark/ui/bookmarkCircle';
 import useSolvingProblem, { QuestionType } from '../model/solvingProblemHook';
@@ -32,7 +32,7 @@ import { useEffect, useLayoutEffect } from 'react';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { LucideHome } from 'lucide-react';
 import Link from 'next/link';
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import { PageLoader } from '@/feature/spinner/ui/pageLoader';
 import Cancel from '@public/assets/icons/leveltest/cancel.svg';
 import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
 
@@ -218,7 +218,7 @@ const SolvingProblemPage = ({ category }: ProblemProps) => {
                     );
                   }}
                 >
-                  {isLoading ? <Spinner /> : 'Submit'}
+                  {isLoading ? <PageLoader /> : 'Submit'}
                 </ButtonPixel>
               </div>
             </div>
@@ -232,7 +232,7 @@ const SolvingProblemPage = ({ category }: ProblemProps) => {
 // <div className="relative flex h-full w-full justify-center px-[2%] md:px-0">
 //   <Toaster />
 //   {isPageLoading ? (
-//     <Spinner />
+//     <PageLoader />
 //   ) : (
 //     <div className="flex h-full w-full max-w-[1200px] flex-col rounded-xl px-[2%] pb-[2%] pt-[1%] md:max-h-full md:min-h-[50vh]">
 //       {!currentQuestionWithType ? (
@@ -413,7 +413,7 @@ const SolvingProblemPage = ({ category }: ProblemProps) => {
 //                     }}
 //                   >
 //                     {isLoading ? (
-//                       <Spinner size="xs" />
+//                       <PageLoader size="xs" />
 //                     ) : (
 //                       <PiPaperPlaneTilt className="h-[18px] w-[18px]" />
 //                     )}

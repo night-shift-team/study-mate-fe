@@ -8,7 +8,7 @@ export type ComponentSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
  * @param {number} size - 점의 크기 (px)
  * @returns
  */
-export const Spinner = ({
+export const PageLoader = ({
   color,
   size,
 }: {

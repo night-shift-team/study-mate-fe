@@ -5,7 +5,7 @@ import {
   checkPasswordValidate,
 } from '@/page/login/model/checkInputValidate';
 
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import { PageLoader } from '@/feature/spinner/ui/pageLoader';
 import useAdminLogin from '../model/adminLoginHook';
 
 const AdminLoginForm = () => {
@@ -42,7 +42,7 @@ const AdminLoginForm = () => {
           type="submit"
           className={`flex aspect-1 w-[3.5rem] items-center justify-center rounded-full ${isLoading ? 'cursor-not-allowed bg-gray-200' : 'bg-[#f0edd4] hover:border-2 hover:border-[#ECCDB4] active:scale-[0.99] active:cursor-grabbing'}`}
         >
-          {isLoading ? <Spinner /> : <FaArrowRightLong />}
+          {isLoading ? <PageLoader /> : <FaArrowRightLong />}
         </button>
       </div>
     </form>

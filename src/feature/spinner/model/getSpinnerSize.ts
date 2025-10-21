@@ -1,4 +1,4 @@
-import { ComponentSize } from '../ui/spinnerUI';
+import { ComponentSize } from '../ui/pageLoader';
 
 export const getSpinnerSize = (size?: ComponentSize) => {
   switch (size) {

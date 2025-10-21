@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import AuthHoc from '@/shared/auth/model/authHoc';
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import { PageLoader } from '@/feature/spinner/ui/pageLoader';
 import { openNewWindowWithoutDuplicate } from '@/shared/window/model/openWindow';
 import { LoginButton } from '../model/loginButtonMeta';
 import useLoginPage from '../model/loginPageHook';
@@ -123,7 +123,7 @@ const LoginPage = () => {
                 backgroundColor: loginLoading ? '#D3D3D3' : '',
               }}
             >
-              {loginLoading ? <Spinner color="#6b7280" /> : 'Sign In'}
+              {loginLoading ? <PageLoader color="#6b7280" /> : 'Sign In'}
             </ButtonPixel>{' '}
           </div>
         </form>

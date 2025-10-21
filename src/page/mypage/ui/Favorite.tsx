@@ -1,6 +1,6 @@
 'use client';
 import { QuestionFavoriteRes } from '../api';
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import { PageLoader } from '@/feature/spinner/ui/pageLoader';
 import { ProblemDetailInfoRes } from '@/page/adminProblem/api';
 import Arrow from '@public/assets/icons/button/check/Polygon.svg';
 import { SvgIcon } from '@mui/material';
@@ -160,7 +160,7 @@ const Favorite = ({
 
           {isPending && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-              <Spinner />
+              <PageLoader />
             </div>
           )}
 

@@ -1,4 +1,4 @@
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import { PageLoader } from '@/feature/spinner/ui/pageLoader';
 import { Bookmark } from 'lucide-react';
 import useBookmarkCircle from '../model/bookmarkCircleHook';
 
@@ -33,7 +33,7 @@ export const BookMarkCircle = ({
       } ${isClicked ? 'scale-90' : 'scale-100'}`}
     >
       {isPending ? (
-        <Spinner size={'sm'} color="#b08968" />
+        <PageLoader size={'sm'} color="#b08968" />
       ) : (
         <Bookmark
           size={size}
