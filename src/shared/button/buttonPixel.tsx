@@ -18,7 +18,7 @@ const ButtonPixel = ({
   ...props
 }: StatusButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
   const baseClasses =
-    'rounded-[12px] h-[40px] flex w-full px-[16px] py-[12px] justify-center items-center font-semibold text-center transition-all font-pixel text-button-1 select-none';
+    'rounded-[12px] shrink-0 h-[40px] flex w-full px-[16px] py-[12px] justify-center items-center font-semibold text-center transition-all font-pixel text-button-1 select-none';
 
   const statusClasses = {
     default: 'text-black bg-point-orange',

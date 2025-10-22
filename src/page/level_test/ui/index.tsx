@@ -76,7 +76,7 @@ const LevelTestPage = () => {
               markdown={levelTestLists[currentQuestionNo]?.content ?? ''}
             />
           </div>
-          <div className="flex h-[18rem] w-full flex-col gap-6 bg-grayscale-900 px-4">
+          <div className="flex h-[18rem] w-full flex-col gap-6 bg-grayscale-300 px-4 dark:bg-grayscale-900">
             <div ref={answerClosedFormRef} className="relative h-auto w-full">
               <>
                 {selectedAnswer !== null ? (
@@ -96,7 +96,7 @@ const LevelTestPage = () => {
                         }
                       </span>
                       <div className="h-[20px] w-[20px] shrink-0 rounded-full">
-                        <CircleCheck className="h-full w-full" />
+                        <CircleCheck className="h-full w-full fill-point-orange" />
                       </div>
                     </SelectAnswerRow>
                   </div>
@@ -106,7 +106,7 @@ const LevelTestPage = () => {
                       if (answerListOpen) closeAnswerList();
                       else openAnswerList();
                     }}
-                    className="relative mt-6 flex h-[62px] w-full items-center justify-between rounded-[18px] bg-[#1F1F1F] px-4"
+                    className="relative mt-6 flex h-[62px] w-full items-center justify-between rounded-[18px] bg-grayscale-300 px-4 dark:bg-grayscale-850"
                   >
                     <span className="font-pretandard text-quiz-option">
                       답 고르기
@@ -114,7 +114,7 @@ const LevelTestPage = () => {
                     <div className="h-24p w-24p shrink-0">
                       <Icon
                         icon={arrow}
-                        className="h-full w-full rotate-[270deg]"
+                        className="h-full w-full rotate-[270deg] bg-black dark:bg-white"
                       />
                     </div>
                   </button>

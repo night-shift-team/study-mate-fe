@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import dayjs from 'dayjs';
 import useGrassChart from '../model/grassChartHook';
 import { SolveStats } from '@/page/mypage/api';
+import RightTriangle from '@public/assets/icons/button/check/Polygon.svg';
 
 const GrassChart = ({
   setIsFetched,
@@ -53,23 +54,24 @@ const GrassChart = ({
         <span className="font-pixel text-[20px] font-semibold text-black dark:text-white">
           {currentDate.format('MMMM YYYY')}
         </span>
-        <div className="flex items-center gap-2 text-black dark:text-white">
+        <div className="flex items-center gap-4 pr-1 text-black dark:text-white">
           <button
             onClick={() => setCurrentDate(currentDate.subtract(1, 'month'))}
+            className="aspect-1 w-[1.8cap]"
           >
-            ◀
+            <RightTriangle className="-scale-x-100 fill-black dark:fill-white" />
           </button>
 
           <button
             onClick={() => setCurrentDate(currentDate.add(1, 'month'))}
             disabled={isCurrentMonth}
             className={
-              isCurrentMonth
+              (isCurrentMonth
                 ? 'cursor-not-allowed text-gray-400 dark:text-gray-800'
-                : ''
+                : '') + 'aspect-1 w-[1.8cap]'
             }
           >
-            ▶
+            <RightTriangle className="fill-black dark:fill-white" />
           </button>
         </div>
       </div>
@@ -87,7 +89,7 @@ const GrassChart = ({
           cell ? (
             <div
               key={idx}
-              className={`flex h-[45px] w-[45px] items-center justify-center rounded-full transition-colors ${getColorByCount(
+              className={`flex h-[45px] w-[45px] items-center justify-center rounded-full ${getColorByCount(
                 cell.count
               )} ${cell.count > 0 ? 'text-black' : 'text-gray-500 dark:text-gray-300'}`}
             >
@@ -108,12 +110,11 @@ const GrassChart = ({
 export default GrassChart;
 
 const getColorByCount = (count: number) => {
-  if (count === 0)
-    return 'bg-transparent border border-gray-400/70 dark:border-white/50';
+  if (count === 0) return ' bg-grayscale-200 dark:bg-grayscale-800';
   if (count <= 10) return 'bg-grass-100';
   if (count <= 20) return 'bg-grass-300';
   if (count <= 40) return 'bg-grass-400';
   if (count > 40) return 'bg-grass-500';
 
-  return 'bg-transparent border border-gray-400/70 dark:border-white/50';
+  return 'bg-grayscale-200 dark:bg-grayscale-800';
 };

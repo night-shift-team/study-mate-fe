@@ -1,5 +1,4 @@
-import { PopupProblem } from '@/shared/popUp/ui/popupV2';
-
+'use client';
 import useQuestionItem from '../model/questionItemHook';
 
 interface ItemProps {
@@ -22,8 +21,7 @@ export const QuestionItem: React.FC<ItemProps> = ({
   category,
   createdDt,
 }) => {
-  const { questionDetail, isPopupOpen, handleClosePopup } =
-    useQuestionItem(questionId);
+  const { questionDetail } = useQuestionItem(questionId);
 
   const BgColors: Record<string, string> = {
     OS: '#7CFC00',
@@ -33,37 +31,24 @@ export const QuestionItem: React.FC<ItemProps> = ({
   };
 
   return (
-    <>
-      <div className="flex h-[100px] w-full flex-col rounded-sm bg-[#451E81] pb-8p pl-16p pr-16p pt-8p">
-        <div className="flex gap-2">
-          <span
-            className="rounded-sm pl-16p pr-16p text-center text-[16px] font-semibold text-black"
-            style={{ backgroundColor: BgColors[category] }}
-          >
-            {category}
-          </span>
-          <span className="font-semibold text-point-yellow">
-            Lv.{questionDetail?.difficulty}
-          </span>
-        </div>
-        <div className="line-clamp-1 w-full font-pretandard text-body-primary">
-          {questionTitle}
-        </div>
-        <div className="font-pretandard text-body-secondary text-grayscale-400">
-          {createdDt?.slice().replace('T', ' ').slice(0, 10)}
-        </div>
+    <div className="flex w-full flex-shrink-0 flex-col rounded-sm bg-[#451E81] pb-8p pl-16p pr-16p pt-8p">
+      <div className="mb-4 flex gap-2">
+        <span
+          className="rounded-sm pl-16p pr-16p text-center text-[16px] font-semibold text-black"
+          style={{ backgroundColor: BgColors[category] }}
+        >
+          {category}
+        </span>
+        <span className="font-semibold text-point-yellow">
+          Lv.{questionDetail?.difficulty}
+        </span>
       </div>
-      {isPopupOpen && questionDetail && (
-        <PopupProblem
-          size="md"
-          questionTitle={questionTitle}
-          difficulty={questionDetail.difficulty}
-          content={questionDetail.content}
-          answer={questionDetail.answer}
-          explanation={questionDetail.explanation}
-          onClose={handleClosePopup}
-        />
-      )}
-    </>
+      <div className="mb-1 w-full font-pretandard text-body-primary text-white">
+        {questionTitle}
+      </div>
+      <div className="font-pretandard text-body-secondary text-grayscale-400">
+        {createdDt?.slice().replace('T', ' ').slice(0, 10)}
+      </div>
+    </div>
   );
 };

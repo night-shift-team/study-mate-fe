@@ -2,8 +2,7 @@
 import { QuestionFavoriteRes } from '../api';
 import { PageLoader } from '@/feature/spinner/ui/pageLoader';
 import { ProblemDetailInfoRes } from '@/page/adminProblem/api';
-import Arrow from '@public/assets/icons/button/check/Polygon.svg';
-import { SvgIcon } from '@mui/material';
+
 import useFavorite from '../model/favoriteHook';
 // import { ProblemCategoryTitle } from '@/shared/problem/model/problemInfo.types';
 import { QuestionHistory } from '../model/checkListHook';
@@ -11,6 +10,8 @@ import { AlertPopup } from './AlertPopup';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import RightTriangle from '@public/assets/icons/button/check/Polygon.svg';
+
 const ConfirmPopup = dynamic(() => import('@/page/mypage/ui/ConfirmPopup'), {
   ssr: false,
 });
@@ -124,8 +125,8 @@ const Favorite = ({
                         fill="#FCD34D"
                         onClick={(event) => handleBookmarkClick(event, item)}
                       /> */}
-                      <div className="flex h-[40px] w-full items-center justify-between pl-16p pr-2">
-                        <span className="text-xs text-gray-400">
+                      <div className="mb-1 flex h-[40px] w-full items-center justify-between pl-16p pr-2 text-xs">
+                        <span className="text-gray-400">
                           {/* 스크랩 날짜 */}
                           {item.createdDt.toString().slice(0, 10)}
                         </span>
@@ -136,7 +137,7 @@ const Favorite = ({
                           자세히 보기
                         </span> */}
                         <Link
-                          className="h-full w-6"
+                          className="mr-2 flex w-6 justify-center text-white"
                           href={{
                             pathname: RouteTo.MypageProblemDetail,
                             query: {
@@ -144,11 +145,7 @@ const Favorite = ({
                             },
                           }}
                         >
-                          <SvgIcon
-                            inheritViewBox
-                            component={Arrow}
-                            sx={{ width: '50%', height: '100%' }}
-                          />
+                          <RightTriangle className="aspect-1 w-[1.8cap] fill-inherit" />
                         </Link>
                       </div>
                     </div>

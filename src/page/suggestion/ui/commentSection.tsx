@@ -27,13 +27,13 @@ const CommentSection = ({
 
   return (
     <div className="flex flex-col justify-between p-4">
-      <div className="flex items-start gap-2">
-        <h2 className="mb-4 text-sm font-semibold text-black">A .</h2>
+      <div className="flex items-start gap-2 text-body-primary">
+        <h2 className="mb-4 w-[30px] text-black">A .</h2>
 
         {comments.length > 0 ? (
           <ul className="mb-4 space-y-4 text-center">
             {comments.map((comment) => (
-              <li key={comment.id} className="text-xs">
+              <li key={comment.id} className="">
                 <div className="whitespace-pre-wrap text-gray-800">
                   {comment.content}
                 </div>

@@ -63,7 +63,7 @@ const StorePage = () => {
     selectedItem?.id ?? '',
     updateBuyingStatusSuccess
   );
-  console.log(purchaseOpen, 'purchaseOpen');
+  console.log('purchaseOpen', purchaseOpen, 'purchaseStatus', purchaseStatus);
 
   const [lastPurchasedItem, setLastPurchasedItem] =
     useState<StoreItemInfo | null>(null);
@@ -89,10 +89,10 @@ const StorePage = () => {
       ) : null}
 
       <div className="relative flex h-full w-full flex-col overflow-y-auto overflow-x-hidden pb-[80px] pl-16p pr-16p scrollbar-hide">
-        {purchaseStatus !== 'none' ? (
+        {purchaseStatus === 'success' ? (
           <div className="mt-2 flex h-[8rem] w-full animate-fade-up items-center justify-center">
             {/* <Panel className="h-full w-full scale-[1.45] object-contain" /> */}
-            <div className="flex flex-col text-white">
+            <div className="flex flex-col text-black dark:text-white">
               <span className="text-[24px] font-bold">
                 {lastPurchasedItem?.title}을 <br />
                 새롭게 획득했어요!
@@ -138,13 +138,13 @@ const StorePage = () => {
         )}
 
         <div className="flex w-full flex-col justify-center">
-          <div className="w-full rounded-xl bg-white">
-            {purchaseStatus !== 'none' ? (
+          <div className="w-full rounded-xl border-[1.5px] border-black bg-white">
+            {purchaseStatus === 'success' ? (
               <>
                 {selectedItem ? (
                   <div className="flex w-full flex-col justify-center gap-4 p-32p">
                     <h2 className="text-center text-[18px] font-bold">
-                      제한없이 마음껏 문제 풀기!
+                      {selectedItem.description}
                     </h2>
                     <div className="flex w-full justify-center">
                       <Image
@@ -162,7 +162,7 @@ const StorePage = () => {
             ) : (
               <>
                 {selectedItem ? (
-                  <div className="flex w-full flex-col gap-4 rounded-xl border border-black p-32p">
+                  <div className="flex w-full flex-col gap-4 rounded-xl p-32p">
                     <div className="flex flex-col text-left text-black">
                       <h2 className="text-[24px] text-lg font-bold">
                         {selectedItem.title}
@@ -203,7 +203,7 @@ const StorePage = () => {
               </>
             )}
           </div>
-          {purchaseStatus !== 'none' && (
+          {purchaseStatus === 'success' && (
             <Link href={RouteTo.StorePurchaseHistory}>
               <button className="mt-5 h-[40px] w-full rounded-xl bg-point-orange font-pixel text-[20px] font-bold">
                 Go to Storage
@@ -224,7 +224,8 @@ const StorePage = () => {
                   await updateBuyingStatusSuccess()
                 }
                 isSelected={selectedItem?.title === item.itemName}
-                onClick={() =>
+                onClick={() => {
+                  if (purchaseStatus === 'success') return;
                   setSelectedItem({
                     id: item.itemId,
                     title: item.itemName,
@@ -234,8 +235,8 @@ const StorePage = () => {
                     afterPaymentCallback: async () => {
                       await updateBuyingStatusSuccess();
                     },
-                  })
-                }
+                  });
+                }}
               />
             ))}
           </div>

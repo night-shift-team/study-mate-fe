@@ -125,7 +125,7 @@ const SolvingProblemPage = ({ category }: ProblemProps) => {
             </span>
           </div>
         </div>
-        <div className="mt-2 flex h-full w-full overflow-y-auto bg-grayscale-800 scrollbar-hide">
+        <div className="mt-2 flex h-full w-full overflow-y-auto bg-layout-white scrollbar-hide dark:bg-grayscale-800">
           <div className="flex h-full w-full flex-col">
             <span className="mt-6 flex w-full justify-center px-4 text-[28px] font-bold leading-[20px] text-[#FFD900]">
               Lv. {currentQuestionWithType?.difficulty ?? '0'}
@@ -138,7 +138,7 @@ const SolvingProblemPage = ({ category }: ProblemProps) => {
                 markdown={currentQuestionWithType?.content ?? ''}
               />
             </div>
-            <div className="flex h-[18rem] w-full flex-col gap-6 bg-grayscale-900 px-4">
+            <div className="flex h-[18rem] w-full flex-col gap-6 bg-layout-white px-4 dark:bg-grayscale-900">
               <div ref={answerClosedFormRef} className="relative h-auto w-full">
                 <>
                   {selectedAnswer !== null ? (
@@ -157,7 +157,7 @@ const SolvingProblemPage = ({ category }: ProblemProps) => {
                             ]}
                         </span>
                         <div className="h-[20px] w-[20px] shrink-0 rounded-full">
-                          <CircleCheck className="h-full w-full" />
+                          <CircleCheck className="h-full w-full fill-point-orange" />
                         </div>
                       </SelectAnswerRow>
                     </div>
@@ -167,7 +167,7 @@ const SolvingProblemPage = ({ category }: ProblemProps) => {
                         if (answerListOpen) closeAnswerList();
                         else openAnswerList();
                       }}
-                      className="relative mt-6 flex h-[62px] w-full items-center justify-between rounded-[18px] bg-[#1F1F1F] px-4"
+                      className="relative mt-6 flex h-[62px] w-full items-center justify-between rounded-[18px] bg-grayscale-300 px-4 dark:bg-grayscale-850"
                     >
                       <span className="font-pretandard text-quiz-option">
                         답 고르기

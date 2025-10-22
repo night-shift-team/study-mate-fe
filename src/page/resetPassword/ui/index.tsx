@@ -184,8 +184,10 @@ const ResetPasswordAuthCodeForm = ({
       </p>
       <div className="mt-12 flex w-full items-center border-b border-grayscale-800 py-4 outline-1">
         <div className="flex w-full flex-col gap-1 font-pretandard">
-          <span className="text-body-secondary text-white">{email}</span>
-          <span className="text-body-muted text-grayscale-400">
+          <span className="text-body-secondary text-black dark:text-white">
+            {email}
+          </span>
+          <span className="text-body-muted text-grayscale-600 dark:text-grayscale-400">
             {'해당 이메일로 인증번호를 전송할게요.'}
           </span>
         </div>
@@ -232,7 +234,7 @@ const ResetPasswordAuthCodeForm = ({
               />
 
               <span
-                className={`mt-2 pl-2 text-[11px] ${validationStatus ? 'text-success' : validationStatus === undefined ? 'text-gray-400' : 'text-error'}`}
+                className={`mt-2 pl-2 text-[11px] ${validationStatus ? 'text-success-lightMode dark:text-success' : validationStatus === undefined ? 'text-gray-400' : 'text-error'}`}
               >
                 {validationStatus === undefined &&
                   '인증번호는 최대 5분간만 유효해요.'}

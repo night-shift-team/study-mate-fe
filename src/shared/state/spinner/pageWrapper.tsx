@@ -21,7 +21,7 @@ const PageWrapperLoader = ({ children }: { children: ReactNode }) => {
   return (
     <div className={`relative flex h-full w-full`}>
       <div
-        className={`absolute flex h-full w-full items-center justify-center bg-grayscale-900 ${loadingStatus === 'loading' && 'z-[1000] opacity-100'} ${loadingStatus === 'loaded' && '-z-10 opacity-0'} ${loadingStatus === 'none' && '-z-10 opacity-0'} `}
+        className={`absolute flex h-full w-full items-center justify-center bg-[#fafafa] dark:bg-grayscale-900 ${loadingStatus === 'loading' && 'z-[1000] opacity-100'} ${loadingStatus === 'loaded' && '-z-10 opacity-0'} ${loadingStatus === 'none' && '-z-10 opacity-0'} `}
       >
         <PageLoader size="md" />
       </div>

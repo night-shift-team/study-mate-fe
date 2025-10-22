@@ -18,7 +18,7 @@ const WriteSuggestionPage = () => {
   const user = userStore.getState().user;
 
   return (
-    <div className="flex w-[90vw] flex-col">
+    <div className="flex w-full flex-col px-4">
       <div className="relative w-full flex-col items-center">
         <div
           className={`absolute left-1/2 top-4 z-50 w-[90%] max-w-md -translate-x-1/2 transform rounded-md bg-green-500 px-4 py-3 text-center text-white shadow-lg transition-all duration-500 ease-in-out ${
@@ -29,10 +29,11 @@ const WriteSuggestionPage = () => {
         >
           건의사항이 제출되었습니다!
         </div>
-        <div className="w-[200px] font-pixel text-title-page leading-7 text-white">
-          Hey {user?.nickname},<br /> What can I help you with?
+        <div className="mt-4 font-pretandard text-title-section leading-[1.1] text-black dark:text-white">
+          Hey <span className="font-pixel">{user?.nickname}</span>,<br /> What
+          can I help you with?
         </div>
-        <div className="mt-2 text-white">
+        <div className="mt-2 font-pretandard text-black dark:text-white">
           <form className="space-y-4" autoComplete="off">
             <div>
               <input
@@ -41,7 +42,7 @@ const WriteSuggestionPage = () => {
                 onChange={(e) => setTitle(e.target.value)}
                 required
                 placeholder="Title"
-                className="w-full border-b border-white bg-transparent p-2 font-pixel font-semibold"
+                className="w-full rounded-t-2xl border-b-[1.5px] border-black bg-transparent p-3 pl-3 font-semibold focus:outline-none dark:border-white"
               />
             </div>
 
@@ -51,7 +52,7 @@ const WriteSuggestionPage = () => {
                 onChange={(e) => setContent(e.target.value)}
                 required
                 placeholder="Text"
-                className="h-80 w-full resize-none rounded-md border bg-transparent p-2 font-pixel font-semibold text-white"
+                className="h-[clamp(50px,80vh,320px)] w-full resize-none rounded-md border-[1.5px] border-black bg-transparent p-3 font-semibold focus:outline-none"
               />
             </div>
           </form>

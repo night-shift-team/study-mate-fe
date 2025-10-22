@@ -40,6 +40,7 @@ const StorePurchaseHistoryPage = () => {
               <div key={order.orderId}>
                 <OrderList
                   title={order.itemName}
+                  id={order.orderId}
                   time={order.paymentDate.split('T').join(' ')}
                   price={order.price.toLocaleString()}
                   count="1"

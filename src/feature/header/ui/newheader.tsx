@@ -26,7 +26,7 @@ const NewHeader = ({
       <div className="absolute left-4 flex h-full items-center">
         {left === 'Back' && (
           <Link href={''} onClick={() => router.back()} className="h-5 w-5">
-            <LeftArrow className="h-full w-full" />
+            <LeftArrow className="fill-dark h-full w-full dark:fill-white" />
           </Link>
         )}
       </div>

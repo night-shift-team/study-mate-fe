@@ -75,6 +75,12 @@ module.exports = {
         '180': '180%',
         '200': '200%',
       },
+      backgroundColor: {
+        layout: {
+          white: '#FAFAFA',
+          dark: '#101010',
+        },
+      },
       backgroundImage: {
         'main-notice': "url('/assets/backgroundImages/main/noticeBg.svg')",
         storeBg: "url('/assets/backgroundImages/store/storeBg.png')",
@@ -158,7 +164,7 @@ module.exports = {
         'title-section': ['24px', { lineHeight: '20px', fontWeight: '700' }],
 
         'body-primary': ['18px', { lineHeight: '28px', fontWeight: '500' }],
-        'body-secondary': ['16px', { lineHeight: '26px', fontWeight: '400' }],
+        'body-secondary': ['16px', { lineHeight: '26px', fontWeight: '500' }],
         'body-small': ['14px', { lineHeight: '24px', fontWeight: '400' }],
         'body-muted': ['12px', { lineHeight: '24px', fontWeight: '400' }],
 
@@ -182,9 +188,12 @@ module.exports = {
         },
         grayscale: {
           900: '#101010',
+          850: '#1F1F1F',
           800: '#2F3036',
           600: '#8F9098',
           400: '#D3D3D3',
+          300: '#E5E5E5',
+          200: '#F2F2F2',
           100: '#F8F9FE',
           white: '#FFFFFF',
         },
@@ -195,6 +204,7 @@ module.exports = {
         },
         success: {
           DEFAULT: '#7CFC00',
+          lightMode: '#3ed933',
           50: 'rgba(124, 252, 0, 0.5)',
           30: '#c3e6a1',
         },

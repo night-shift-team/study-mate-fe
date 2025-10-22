@@ -56,14 +56,16 @@ const SuggestionDetailPage = () => {
               <span>문의 닉네임: {suggestion?.user.nickname}</span>
             </div>
             <div className="flex flex-col gap-16p text-black dark:text-white">
-              <div className="flex gap-2">
-                <span className="w-[30px]">Q</span>
+              <div className="flex gap-2 text-body-primary">
+                <span className="w-[30px]">Q. </span>
                 <h1 className="mb-4t ext-xl font-semibold">
                   {suggestion?.title}
                 </h1>
               </div>
 
-              <div className="whitespace-pre-wrap">{suggestion?.content}</div>
+              <div className="whitespace-pre-wrap text-body-secondary">
+                {suggestion?.content}
+              </div>
             </div>
           </div>
         </div>

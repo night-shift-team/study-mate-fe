@@ -31,7 +31,7 @@ const useStorePage = () => {
       if (res.ok) {
         const data = res.payload as PageResponseDtoStoreItemDto;
         if ('content' in data && data.content) {
-          setStoreItems(data.content);
+          setStoreItems(data.content.reverse());
         }
       }
     } catch (e) {

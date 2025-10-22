@@ -15,6 +15,7 @@ import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { toastStore, ToastType } from '@/shared/state/toast/toastStore';
 import { questionBookmarkToggleApi } from '@/feature/boomMark/api';
 import { ComponentLoader } from '@/feature/spinner/ui/componentLoader';
+import { useDarkMode } from '@/feature/darkMode/model/isDarkMode';
 
 const TestResultSolutionPage = ({
   type,
@@ -120,7 +121,7 @@ const TestResultSolutionPage = ({
   // }, []);
 
   const [isFetching, setIsFetching] = useState(false);
-
+  const { isDarkMode } = useDarkMode();
   return (
     <div className="flex h-full w-full flex-col overflow-y-auto px-4 py-5 scrollbar-hide">
       <span className="text-title-page">Result Summary</span>
@@ -135,7 +136,7 @@ const TestResultSolutionPage = ({
       </div>
       <div className="mt-8 flex flex-col gap-2.5">
         <span className="text-title-section">Question</span>
-        <div className="flex w-full rounded-[4px] bg-grayscale-800 px-4 py-2.5">
+        <div className="flex w-full rounded-[4px] bg-grayscale-300 px-4 py-2.5 dark:bg-grayscale-800">
           <span className="font-pretandard text-[16px]">
             {problemDetailInfo?.questionTitle}{' '}
           </span>
@@ -145,14 +146,14 @@ const TestResultSolutionPage = ({
         <span className="text-title-section">
           Your Answer vs. Correct Answer
         </span>
-        <div className="flex w-full flex-col gap-0.5 rounded-[4px] bg-grayscale-800 p-2">
+        <div className="flex w-full flex-col gap-0.5 rounded-[4px] bg-grayscale-300 p-2 dark:bg-grayscale-800">
           {selections &&
             selections.map((selection, index) => {
               console.log(userAnswer, index + 1);
               return (
                 <SelectAnswerRow
                   key={selection}
-                  bgColor="#2F3036"
+                  bgColor={isDarkMode ? '#2f3036' : '#e5e5e5'}
                   selected={Number(userAnswer) === index + 1}
                   onClick={() => {}}
                 >
@@ -176,7 +177,7 @@ const TestResultSolutionPage = ({
       </div>
       <div className="mt-8 flex flex-col gap-2.5">
         <span className="text-title-section">Explanation</span>
-        <div className="flex w-full rounded-[4px] bg-grayscale-800 px-4 py-2.5">
+        <div className="flex w-full rounded-[4px] bg-grayscale-300 px-4 py-2.5 dark:bg-grayscale-800">
           <span className="font-pretandard text-[16px]">
             {problemDetailInfo?.answerExplanation}
           </span>

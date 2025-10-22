@@ -62,14 +62,14 @@ const AnnouncementPage = () => {
         <div className="flex items-center justify-between px-16p font-pixel text-[32px] font-bold text-black dark:text-white">
           <span className="text-title-page">Notice</span>
           {activeTab === '문의' && (
-            <span
-              className="cursor-pointer border-white text-[20px] hover:border-b"
+            <button
+              className="text-[20px] underline underline-offset-4"
               onClick={() => {
                 router.push(RouteTo.WriteSuggestion);
               }}
             >
               Write
-            </span>
+            </button>
           )}
         </div>
         <div className="flex h-auto w-full flex-col md:flex-row">

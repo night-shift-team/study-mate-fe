@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { useLayoutEffect } from 'react';
 import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
+import RightTriangle from '@public/assets/icons/button/check/Polygon.svg';
 
 const Mypage = () => {
   const {
@@ -52,19 +53,19 @@ const Mypage = () => {
             <GrassChart setIsFetched={setIsFetched} />
           </div>
           <div className="flex flex-col items-center gap-4">
-            <div className="flex w-full items-center justify-between text-base font-bold md:text-lg">
+            <div className="mt-3 flex w-full items-center justify-between text-base font-bold md:text-lg">
               <span className="font-pixel text-title-section text-black dark:text-white">
                 My Scraps
               </span>
 
               <Link href={RouteTo.MypageScrap}>
-                <div className="flex h-full items-center gap-1.5 text-black dark:text-white">
+                <div className="flex h-full items-center gap-1.5 pr-4 text-button-1 text-black dark:text-white">
                   See more
                   <button
                     onClick={() => scrollByCard('right')}
-                    className="text-black dark:text-white"
+                    className="aspect-1 w-[1.2cap]"
                   >
-                    ▶
+                    <RightTriangle className="fill-black dark:fill-white" />
                   </button>
                 </div>
               </Link>
@@ -91,7 +92,7 @@ const Mypage = () => {
                 ))}
             </Swiper>
           </div>
-          <div className="flex w-full flex-col">
+          <div className="mt-2 flex w-full flex-col">
             <span className="flex w-full font-pixel text-title-section font-bold text-black dark:text-white">
               Solution Archive
             </span>

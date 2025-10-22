@@ -13,11 +13,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="dark h-screen w-screen">
+    <html lang="en" suppressHydrationWarning className="h-screen w-screen">
       <link rel="icon" type="image/x-icon" href="/favicon.ico" />
       <body
         id="root-container"
-        className={`flex h-full w-full justify-center bg-[#FAFAFA] font-pixel text-black antialiased dark:bg-grayscale-900 dark:text-grayscale-white`}
+        className={`flex h-full w-full justify-center bg-layout-white font-pixel text-black antialiased dark:bg-layout-dark dark:text-grayscale-white`}
       >
         <MaintenanceCheck>
           <ClientSideWrapper>{children}</ClientSideWrapper>

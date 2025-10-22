@@ -8,7 +8,7 @@ export const DarkModeButton = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
-    // 초기 상태 동기화
+    // Html의 초기 상태 동기화
     setIsDarkMode(document.documentElement.classList.contains('dark'));
   }, []);
 

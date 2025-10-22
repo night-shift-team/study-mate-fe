@@ -51,7 +51,7 @@ const AnswerListForm = ({
         ? createPortal(
             <div
               ref={answerFormRef}
-              className={`absolute bottom-0 left-0 z-[1] h-auto w-full origin-bottom rounded-[18px] bg-[#1F1F1F] ${answerListOpen ? 'opacity-100' : 'pointer-events-none opacity-0'} `}
+              className={`absolute bottom-0 left-0 z-[1] h-auto w-full origin-bottom rounded-[18px] bg-grayscale-300 dark:bg-grayscale-850 ${answerListOpen ? 'opacity-100' : 'pointer-events-none opacity-0'} `}
             >
               {Array.from(
                 {
@@ -100,10 +100,10 @@ const AnswerListForm = ({
                     </span>
                     {selectedAnswer === index + 1 ? (
                       <div className="h-[20px] w-[20px] shrink-0 rounded-full">
-                        <CircleCheck className="h-full w-full" />
+                        <CircleCheck className="h-full w-full fill-point-orange" />
                       </div>
                     ) : (
-                      <div className="h-[20px] w-[20px] shrink-0 rounded-full inner-border-2" />
+                      <div className="h-[20px] w-[20px] shrink-0 rounded-full inner-border-2 inner-border-grayscale-400 dark:inner-border-gray-700" />
                     )}
                   </SelectAnswerRow>
                 );

@@ -102,12 +102,12 @@ const ChangePasswordForm = ({
         className="password-hide mt-2 font-pretandard text-label"
       />
       <p
-        className={`mt-2 pl-1 text-[11px] ${formData.newPassword.length >= 6 ? 'text-success' : 'text-[#ED3241]'} `}
+        className={`mt-2 pl-1 text-[11px] ${formData.newPassword.length >= 6 ? 'text-success-lightMode dark:text-success' : 'text-[#ED3241]'} `}
       >
         • 6글자 이상
       </p>
       <p
-        className={`pl-1 text-[11px] ${passwordValidation(formData.newPassword) ? 'text-success' : 'text-[#ED3241]'}`}
+        className={`pl-1 text-[11px] ${passwordValidation(formData.newPassword) ? 'text-success-lightMode dark:text-success' : 'text-[#ED3241]'}`}
       >
         • 영문 대문자 또는 특수문자 포함
       </p>

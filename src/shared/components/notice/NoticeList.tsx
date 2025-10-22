@@ -24,21 +24,21 @@ export const NoticeList: FC<NoticeListProps> = ({
         isQuestion ? 'bg-gray-300/30' : 'bg-[#E5E5E5] dark:bg-point-purple/30'
       } text-white`}
     >
-      <div className="flex items-center gap-1 text-body-primary">
-        <span className="text-point-yellow">
+      <div className="flex items-center gap-3 text-body-primary">
+        <span className="text-point-orange">
           {status === 'Q' ? 'Q.' : '공지'}
         </span>
-        <span className="text-[18px] text-black dark:text-white">{title}</span>
+        <span className="text-body-primary text-black dark:text-white">
+          {title}
+        </span>
       </div>
 
       {content && (
-        <p className="text-[12px] font-light text-black dark:text-white">
-          {content}
-        </p>
+        <p className="font-regular text-[12px] text-black">{content}</p>
       )}
 
       {createdAt && (
-        <div className="text-left text-xs text-gray-300">{createdAt}</div>
+        <div className="text-left text-xs text-grayscale-600">{createdAt}</div>
       )}
     </div>
   );

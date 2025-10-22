@@ -35,7 +35,7 @@ export const ScrapsListPage = () => {
   }, []);
 
   return (
-    <div className="h-full w-full overflow-y-auto px-4 pt-20 scrollbar-hide">
+    <div className="h-full w-full overflow-y-auto px-4 pb-[84px] pt-4 scrollbar-hide">
       <div className="flex flex-col gap-[20px]">
         <div className="text-title-page text-black dark:text-white">
           Scrap folders
