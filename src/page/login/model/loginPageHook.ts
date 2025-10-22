@@ -154,7 +154,7 @@ const useLoginPage = () => {
                   message: TooltipContents.InvalidEmail,
                 },
               }));
-              setToastOpen(ToastType.error, TooltipContents.InvalidEmail);
+              // setToastOpen(ToastType.error, TooltipContents.InvalidEmail);
               emailInputRef.current.focus();
             }
             break;
@@ -173,7 +173,7 @@ const useLoginPage = () => {
                   message: TooltipContents.InvalidPassword,
                 },
               }));
-              setToastOpen(ToastType.error, TooltipContents.InvalidPassword);
+              // setToastOpen(ToastType.error, TooltipContents.InvalidPassword);
               passwordInputRef.current.focus();
             }
             break;
