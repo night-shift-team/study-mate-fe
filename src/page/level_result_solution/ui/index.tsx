@@ -113,7 +113,7 @@ const TestResultSolutionPage = ({
   //   const interval = setInterval(() => {
   //     toastStore.show({
   //       status: ToastType.success,
-  //       title: 'Test Toast Test Toast Test Toast Test Toast ',
+  //       title: 'Test Toast ',
   //     });
   //   }, 1000);
   //   return () => clearInterval(interval);

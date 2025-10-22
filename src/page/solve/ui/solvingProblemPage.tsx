@@ -218,7 +218,13 @@ const SolvingProblemPage = ({ category }: ProblemProps) => {
                     );
                   }}
                 >
-                  {isLoading ? <ComponentLoader /> : 'Submit'}
+                  {isLoading ? (
+                    <div className="mb-0">
+                      <ComponentLoader />
+                    </div>
+                  ) : (
+                    'Submit'
+                  )}
                 </ButtonPixel>
               </div>
             </div>

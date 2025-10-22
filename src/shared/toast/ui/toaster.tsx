@@ -122,11 +122,11 @@ export default function Toaster() {
             <span className="text-xs">{description ?? ''}</span>
           </div>
           <button
-            className="mb-1 w-[12px] flex-shrink-0 items-end justify-items-center overflow-hidden rounded-full"
+            className="mb-1 w-[24px] flex-shrink-0 items-end justify-items-center overflow-hidden rounded-full"
             onClick={() => toastStore.hide()}
             aria-label="Close"
           >
-            <Image src={XIcon} alt="" />
+            <Image src={XIcon} alt="" className="aspect-1 w-[12px]" />
           </button>
         </div>
       </div>
