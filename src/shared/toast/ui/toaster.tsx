@@ -1,4 +1,3 @@
-// ToastPortal.tsx
 'use client';
 import { createPortal } from 'react-dom';
 import { useEffect, useState } from 'react';
@@ -18,7 +17,7 @@ import WarningIcon from '@public/assets/icons/toast/warning.svg';
 
 function getIcon(status?: ToastStatus) {
   const Wrap = ({ children }: { children: React.ReactNode }) => (
-    <div className="h-5 w-5 overflow-hidden rounded-full shadow-sm">
+    <div className="aspect-1 w-[24px] overflow-hidden rounded-full shadow-sm">
       {children}
     </div>
   );
@@ -32,13 +31,13 @@ function getIcon(status?: ToastStatus) {
     case ToastType.error:
       return (
         <Wrap>
-          <ErrorIcon width={20} height={20} />
+          <ErrorIcon width={24} height={24} />
         </Wrap>
       );
     case ToastType.warning:
       return (
         <Wrap>
-          <WarningIcon width={20} height={20} />
+          <WarningIcon width={24} height={24} />
         </Wrap>
       );
     case ToastType.info:
@@ -63,6 +62,19 @@ function getBg(status?: ToastStatus) {
       return 'bg-notice-30';
     default:
       return 'bg-[var(--background)]';
+  }
+}
+
+function getTextColor(status?: ToastStatus) {
+  switch (status) {
+    case ToastType.success:
+    case ToastType.warning:
+      return 'text-black';
+    case ToastType.error:
+    case ToastType.info:
+      return 'text-white';
+    default:
+      return 'text-[var(--text-primary)]';
   }
 }
 
@@ -95,26 +107,26 @@ export default function Toaster() {
         id="toaster"
         className={[
           'pointer-events-auto fixed left-1/2 top-[7.5rem] md:top-16',
-          'min-w-[290px] max-w-[95vw] -translate-x-1/2',
-          'flex items-center justify-between gap-16 rounded-xl p-16p text-[0.9rem] shadow-sm',
+          'min-w-[290px] max-w-[360px] -translate-x-1/2',
+          'flex shrink-0 items-center justify-between gap-16 rounded-xl p-16p text-[0.9rem] shadow-sm',
           getBg(status),
           anim,
         ].join(' ')}
       >
-        <div className="flex w-full items-center justify-between">
-          <div className="w-[10%] flex-shrink-0 justify-items-center">
-            {getIcon(status)}
-          </div>
-          <div className="flex flex-col gap-0.5 text-grayscale-800 dark:text-white">
-            <span className="mt-1 font-bold">{title ?? 'No data'}</span>
+        <div className="mt-1 flex w-full items-center justify-between">
+          <div className="w-[24px] flex-shrink-0">{getIcon(status)}</div>
+          <div
+            className={`flex flex-col gap-0.5 px-2 font-pretandard ${getTextColor(status)}`}
+          >
+            <span className="font-regular">{title ?? 'No data'}</span>
             <span className="text-xs">{description ?? ''}</span>
           </div>
           <button
-            className="w-[10%] items-end justify-items-center overflow-hidden rounded-full"
+            className="mb-1 w-[12px] flex-shrink-0 items-end justify-items-center overflow-hidden rounded-full"
             onClick={() => toastStore.hide()}
             aria-label="Close"
           >
-            <Image src={XIcon} alt="" width={12} height={12} />
+            <Image src={XIcon} alt="" />
           </button>
         </div>
       </div>

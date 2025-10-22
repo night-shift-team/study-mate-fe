@@ -12,7 +12,6 @@ import CircleCancel from '@public/assets/icons/leveltest/Subtract.svg';
 import ButtonPixel from '@/shared/button/buttonPixel';
 import { useRouter } from 'next/navigation';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import Toaster from '@/shared/toast/ui/toaster';
 import { toastStore, ToastType } from '@/shared/state/toast/toastStore';
 import { questionBookmarkToggleApi } from '@/feature/boomMark/api';
 import { ComponentLoader } from '@/feature/spinner/ui/componentLoader';
@@ -109,11 +108,21 @@ const TestResultSolutionPage = ({
     }
   };
 
+  //* Toast 테스트용 코드
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     toastStore.show({
+  //       status: ToastType.success,
+  //       title: 'Test Toast Test Toast Test Toast Test Toast ',
+  //     });
+  //   }, 1000);
+  //   return () => clearInterval(interval);
+  // }, []);
+
   const [isFetching, setIsFetching] = useState(false);
 
   return (
     <div className="flex h-full w-full flex-col overflow-y-auto px-4 py-5 scrollbar-hide">
-      <Toaster />
       <span className="text-title-page">Result Summary</span>
       <div className="mt-2 flex flex-col">
         <span className="mt-2 text-title-section text-point-logo">
