@@ -53,6 +53,7 @@ const SolvingProblemPage = ({ category }: ProblemProps) => {
     // isPageLoading,
     // Toaster,
     // user,
+    userSolvingStatus,
     router,
     openAnswerList,
     answerListOpen,
@@ -93,10 +94,14 @@ const SolvingProblemPage = ({ category }: ProblemProps) => {
   const setPageLoader = pageLoaderStore((s) => s.setStatus);
 
   useLayoutEffect(() => {
+    if (userSolvingStatus !== 'Can_Solve') {
+      setPageLoader('loaded');
+      return;
+    }
     if (currentQuestionWithType) {
       setPageLoader('loaded');
     }
-  }, [currentQuestionWithType]);
+  }, [currentQuestionWithType, userSolvingStatus]);
 
   useLayoutEffect(() => {
     setPageLoader('loading');
@@ -125,111 +130,121 @@ const SolvingProblemPage = ({ category }: ProblemProps) => {
             </span>
           </div>
         </div>
-        <div className="mt-2 flex h-full w-full overflow-y-auto bg-layout-white scrollbar-hide dark:bg-grayscale-800">
-          <div className="flex h-full w-full flex-col">
-            <span className="mt-6 flex w-full justify-center px-4 text-[28px] font-bold leading-[20px] text-[#FFD900]">
-              Lv. {currentQuestionWithType?.difficulty ?? '0'}
-            </span>{' '}
-            <div className="mt-4 flex justify-center px-4 font-pretandard text-quiz-question">
-              {currentQuestionWithType?.questionTitle}
-            </div>
-            <div className="w-full flex-1 basis-full p-1">
-              <MarkdownComponent
-                markdown={currentQuestionWithType?.content ?? ''}
-              />
-            </div>
-            <div className="flex h-[18rem] w-full flex-col gap-6 bg-layout-white px-4 dark:bg-grayscale-900">
-              <div ref={answerClosedFormRef} className="relative h-auto w-full">
-                <>
-                  {selectedAnswer !== null ? (
-                    <div className="mt-6 h-[62px] w-full">
-                      <SelectAnswerRow
-                        selected={true}
+        {userSolvingStatus === 'Can_Not_Solve' &&
+          '더 이상 문제를 풀 수 없습니다.'}
+        {userSolvingStatus === 'No_Data' &&
+          `${'모든 ' + category + ' 문제를 다 푸셨습니다!'}`}
+        {userSolvingStatus === 'Can_Solve' && (
+          <div className="mt-2 flex h-full w-full overflow-y-auto bg-layout-white scrollbar-hide dark:bg-grayscale-800">
+            <div className="flex h-full w-full flex-col">
+              <span className="mt-6 flex w-full justify-center px-4 text-[28px] font-bold leading-[20px] text-[#FFD900]">
+                Lv. {currentQuestionWithType?.difficulty ?? '0'}
+              </span>{' '}
+              <div className="mt-4 flex justify-center px-4 font-pretandard text-quiz-question">
+                {currentQuestionWithType?.questionTitle}
+              </div>
+              <div className="w-full flex-1 basis-full p-1">
+                <MarkdownComponent
+                  markdown={currentQuestionWithType?.content ?? ''}
+                />
+              </div>
+              <div className="flex h-[18rem] w-full flex-col gap-6 bg-layout-white px-4 dark:bg-grayscale-900">
+                <div
+                  ref={answerClosedFormRef}
+                  className="relative h-auto w-full"
+                >
+                  <>
+                    {selectedAnswer !== null ? (
+                      <div className="mt-6 h-[62px] w-full">
+                        <SelectAnswerRow
+                          selected={true}
+                          onClick={() => {
+                            if (answerListOpen) closeAnswerList();
+                            else openAnswerList();
+                          }}
+                        >
+                          <span className="font-pretandard text-quiz-option">
+                            {currentQuestionWithType &&
+                              currentQuestionWithType[
+                                `choice${selectedAnswer}` as keyof ChoiceAttrs
+                              ]}
+                          </span>
+                          <div className="h-[20px] w-[20px] shrink-0 rounded-full">
+                            <CircleCheck className="h-full w-full fill-point-orange" />
+                          </div>
+                        </SelectAnswerRow>
+                      </div>
+                    ) : (
+                      <button
                         onClick={() => {
                           if (answerListOpen) closeAnswerList();
                           else openAnswerList();
                         }}
+                        className="relative mt-6 flex h-[62px] w-full items-center justify-between rounded-[18px] bg-grayscale-300 px-4 dark:bg-grayscale-850"
                       >
                         <span className="font-pretandard text-quiz-option">
-                          {currentQuestionWithType &&
-                            currentQuestionWithType[
-                              `choice${selectedAnswer}` as keyof ChoiceAttrs
-                            ]}
+                          답 고르기
                         </span>
-                        <div className="h-[20px] w-[20px] shrink-0 rounded-full">
-                          <CircleCheck className="h-full w-full fill-point-orange" />
+                        <div className="h-24p w-24p shrink-0">
+                          <Icon
+                            icon={arrow}
+                            className="h-full w-full rotate-[270deg]"
+                          />
                         </div>
-                      </SelectAnswerRow>
-                    </div>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        if (answerListOpen) closeAnswerList();
-                        else openAnswerList();
-                      }}
-                      className="relative mt-6 flex h-[62px] w-full items-center justify-between rounded-[18px] bg-grayscale-300 px-4 dark:bg-grayscale-850"
-                    >
-                      <span className="font-pretandard text-quiz-option">
-                        답 고르기
-                      </span>
-                      <div className="h-24p w-24p shrink-0">
-                        <Icon
-                          icon={arrow}
-                          className="h-full w-full rotate-[270deg]"
-                        />
+                      </button>
+                    )}
+                    {!isLoading && answerListOpen && (
+                      <AnswerListForm
+                        key={selectedAnswer}
+                        answerFormRef={answerFormRef}
+                        answerClosedFormRef={answerClosedFormRef}
+                        answerListOpen={answerListOpen}
+                        levelTestLists={[]}
+                        currentQuestionNo={0}
+                        isGetResultApiLoading={false}
+                        handleAnswerSelect={handleAnswerSelect}
+                        openAnswerList={openAnswerList}
+                        closeAnswerList={closeAnswerList}
+                        selectedAnswer={Number(selectedAnswer)}
+                        problemInfo={
+                          currentQuestionWithType
+                            ? (Object.fromEntries(
+                                Object.entries(currentQuestionWithType).filter(
+                                  ([attr]) =>
+                                    attr !==
+                                    ('problemType' as keyof QuestionType)
+                                )
+                              ) as ProblemInfoMAQ)
+                            : undefined
+                        }
+                      />
+                    )}
+                  </>
+                </div>
+                <div className="flex w-full gap-2 pb-4">
+                  <ButtonPixel
+                    status={isLoading ? 'inactive' : 'default'}
+                    onClick={async () => {
+                      if (!currentQuestionWithType || !selectedAnswer) return;
+                      await sendAnswerButton(
+                        currentQuestionWithType.id,
+                        selectedAnswer
+                      );
+                    }}
+                  >
+                    {isLoading ? (
+                      <div className="mb-0">
+                        <ComponentLoader />
                       </div>
-                    </button>
-                  )}
-                  {!isLoading && answerListOpen && (
-                    <AnswerListForm
-                      key={selectedAnswer}
-                      answerFormRef={answerFormRef}
-                      answerClosedFormRef={answerClosedFormRef}
-                      answerListOpen={answerListOpen}
-                      levelTestLists={[]}
-                      currentQuestionNo={0}
-                      isGetResultApiLoading={false}
-                      handleAnswerSelect={handleAnswerSelect}
-                      openAnswerList={openAnswerList}
-                      closeAnswerList={closeAnswerList}
-                      selectedAnswer={Number(selectedAnswer)}
-                      problemInfo={
-                        currentQuestionWithType
-                          ? (Object.fromEntries(
-                              Object.entries(currentQuestionWithType).filter(
-                                ([attr]) =>
-                                  attr !== ('problemType' as keyof QuestionType)
-                              )
-                            ) as ProblemInfoMAQ)
-                          : undefined
-                      }
-                    />
-                  )}
-                </>
-              </div>
-              <div className="flex w-full gap-2 pb-4">
-                <ButtonPixel
-                  status={isLoading ? 'inactive' : 'default'}
-                  onClick={async () => {
-                    if (!currentQuestionWithType || !selectedAnswer) return;
-                    await sendAnswerButton(
-                      currentQuestionWithType.id,
-                      selectedAnswer
-                    );
-                  }}
-                >
-                  {isLoading ? (
-                    <div className="mb-0">
-                      <ComponentLoader />
-                    </div>
-                  ) : (
-                    'Submit'
-                  )}
-                </ButtonPixel>
+                    ) : (
+                      'Submit'
+                    )}
+                  </ButtonPixel>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </>
     </div>
   );

@@ -72,6 +72,10 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
   const [answerListOpen, setAnswerListOpen] = useState(false);
   const answerClosedFormRef = useRef<HTMLDivElement>(null);
 
+  const [userSolvingStatus, setUserSolvingStatus] = useState<
+    'No_Data' | 'Can_Not_Solve' | 'Can_Solve' | 'Unknown_Error'
+  >('Can_Solve');
+
   const router = useRouter();
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -249,8 +253,13 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
         await getProblemByCategory(category);
       }
     } catch (e) {
-      console.log(e);
-      if ((e as ServerErrorResponse).ecode === Ecode.E0406) {
+      console.log('error occured', e);
+      if ((e as ServerErrorResponse).ecode === Ecode.E0404) {
+        setSelectedAnswer(null);
+        setProblemAnswer(null);
+        setCurrentQuestionWithType(null);
+        setUserSolvingStatus('No_Data');
+      } else if ((e as ServerErrorResponse).ecode === Ecode.E0406) {
         const disableCanSolveDataStorage =
           sessionStorage.getItem('canSolveProblem');
         if (disableCanSolveDataStorage) {
@@ -311,21 +320,43 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
     try {
       if (currentQuestionWithType.problemType === ProblemCategoryType.MAQ) {
         const res = await sendMAQAnswerApi(id, answer);
-        setProblemAnswer(res.payload as SendMAQAnswerRes);
-        setUser({
-          ...user,
-          userScore: (res.payload as SendMAQAnswerRes).userScore,
-        } as UserInfo);
+        if (res.ok) {
+          setProblemAnswer(res.payload as SendMAQAnswerRes);
+          setUser({
+            ...user,
+            userScore: (res.payload as SendMAQAnswerRes).userScore,
+          } as UserInfo);
+          return;
+        }
+        throw res.payload as ServerErrorResponse;
       } else {
         const res = await sendSAQAnswerApi(id, answer);
-        setProblemAnswer(res.payload as SendSAQAnswerRes);
-        setUser({
-          ...user,
-          userScore: (res.payload as SendSAQAnswerRes).userScore,
-        } as UserInfo);
+        if (res.ok) {
+          setProblemAnswer(res.payload as SendSAQAnswerRes);
+          setUser({
+            ...user,
+            userScore: (res.payload as SendSAQAnswerRes).userScore,
+          } as UserInfo);
+          return;
+        }
+        throw res.payload as ServerErrorResponse;
       }
     } catch (e) {
       console.log(e);
+      console.log('problemAnswer', problemAnswer);
+      if ((e as ServerErrorResponse).ecode !== undefined) {
+        switch ((e as ServerErrorResponse).ecode) {
+          case Ecode.E0407:
+            setUserSolvingStatus('Can_Not_Solve');
+            return;
+          case Ecode.E0406:
+            setUserSolvingStatus('No_Data');
+            return;
+          default:
+            setUserSolvingStatus('Unknown_Error');
+            return;
+        }
+      }
     } finally {
       setIsLoading(false);
     }
@@ -366,7 +397,12 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
   }, []);
 
   useEffect(() => {
-    if (!isPageLoading && category === 'random' && !currentQuestionWithType) {
+    if (
+      !isPageLoading &&
+      category === 'random' &&
+      !currentQuestionWithType &&
+      userSolvingStatus === 'Can_Solve'
+    ) {
       getProblem(category);
     }
   }, [isPageLoading]);
@@ -375,6 +411,7 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
     selectedAnswer,
     currentQuestionWithType,
     problemAnswer,
+    userSolvingStatus,
     setSelectedAnswer,
     sendAnswerButton,
     bookMarkToggle,

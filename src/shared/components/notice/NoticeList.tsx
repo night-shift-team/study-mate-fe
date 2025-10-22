@@ -34,11 +34,13 @@ export const NoticeList: FC<NoticeListProps> = ({
       </div>
 
       {content && (
-        <p className="font-regular text-[12px] text-black">{content}</p>
+        <p className="text-body-small text-black dark:text-white">{content}</p>
       )}
 
       {createdAt && (
-        <div className="text-left text-xs text-grayscale-600">{createdAt}</div>
+        <div className="text-left text-body-muted text-grayscale-600 dark:text-grayscale-300">
+          {createdAt}
+        </div>
       )}
     </div>
   );

@@ -28,6 +28,16 @@ const TestResultSolutionPage = ({
   userAnswer?: string;
   problemInfo?: ProblemDetailInfoRes | null;
 }) => {
+  console.log(
+    'problemId:',
+    problemId,
+    'userAnswer:',
+    userAnswer,
+    'problemInfo:',
+    problemInfo,
+    'type:',
+    type
+  );
   if (!type) return;
   // problemId와 userAnswer는 둘다 존재하거나 둘다 없어야함. 둘다 없을때는 반드시 problemInfo가 있어야함. 그렇지 않으면 리턴
   if (

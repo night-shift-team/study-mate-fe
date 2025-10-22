@@ -5,9 +5,10 @@ export enum Ecode {
   E0106 = '0106',
   E0103 = 'invalid login id',
   E0104 = 'invalid password',
+  E0404 = 'no available question',
   E0405 = '0405',
   E0406 = '0406',
-  E0407 = '0407',
+  E0407 = 'the category daily question limit exceeded',
 }
 
 export const EcodeMessage = (ecode: Ecode) => {
@@ -24,6 +25,8 @@ export const EcodeMessage = (ecode: Ecode) => {
       return '패스워드가 일치하지 않습니다.';
     case Ecode.E0106:
       return '구글 인증에 실패하였습니다.';
+    case Ecode.E0404:
+      return '더 이상 문제가 없습니다.';
     case Ecode.E0405:
       return '이미 존재하는 문제입니다.';
     case Ecode.E0406:
