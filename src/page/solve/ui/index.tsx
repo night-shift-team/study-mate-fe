@@ -1,3 +1,4 @@
+'use client';
 import AuthHoc from '@/shared/auth/model/authHoc';
 import Link from 'next/link';
 import { getCategoriesIcon } from '../model/getCategoryIcons';
