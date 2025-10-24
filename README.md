@@ -26,10 +26,8 @@
   </p>
 </div>
 
----
-
 <details>
-  <summary>Table of Contents</summary>
+  <summary>목차</summary>
   <ol>
     <li>
       <a href="#프로젝트-소개">프로젝트 소개</a>
@@ -141,7 +139,7 @@ Study Mate는 **Night Shift Team**에 의해 개발되었습니다.
   <img src="https://images.weserv.nl/?url=github.com/rhdustn.png&w=80&h=80&fit=cover&mask=circle" width="40" alt="rhdustn" />
 </a>
 
-<br/>
+<br/><br/>
 
 ## 라이센스
 
