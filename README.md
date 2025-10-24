@@ -34,8 +34,8 @@
     <li>
       <a href="#프로젝트-소개">프로젝트 소개</a>
       <ul>
-        <li><a href="#핵심-기능">핵심 기능</a></li>
-        <li><a href="#사용-기술">사용 기술</a></li>
+        <li><a href="#✅-핵심-기능">핵심 기능</a></li>
+        <li><a href="#⚒️-사용-기술">사용 기술</a></li>
       </ul>
     </li>
     <li><a href="#서비스-이용">서비스 이용</a></li>
@@ -50,11 +50,22 @@
 
 ## 프로젝트 소개
 
-[![Thumbnail-1][product-thumbnail-1]](https://developer-dev.study-mate.academy/thumbnails/mainThumbnail_1.svg) [![Thumbnail-2][product-thumbnail-2]](https://developer-dev.study-mate.academy/thumbnails/mainThumbnail_2.svg) [![Thumbnail-3][product-thumbnail-3]](https://developer-dev.study-mate.academy/thumbnails/mainThumbnail_3.svg)
+<br/>
+<p align="center">
+<img src="public/assets/thumbnails/mainThumbnail_1.svg" alt="StudyMate Logo" height="400" />
+<img src="public/assets/thumbnails/mainThumbnail_2.svg" alt="StudyMate Logo"  width="250" height="400" />
+<img src="public/assets/thumbnails/mainThumbnail_3.svg" alt="StudyMate Logo" height="400" />
+</p>
+
+<!-- [![Thumbnail-1][product-thumbnail-1]](https://developer-dev.study-mate.academy/thumbnails/mainThumbnail_1.svg) [![Thumbnail-2][product-thumbnail-2]](https://developer-dev.study-mate.academy/thumbnails/mainThumbnail_2.svg) [![Thumbnail-3][product-thumbnail-3]](https://developer-dev.study-mate.academy/thumbnails/mainThumbnail_3.svg) -->
+
+<br/><br/>
 
 **Study Mate**는 개발자를 위한 문제 풀이 중심의 학습 플랫폼입니다.  
-AI 기반 문제 생성, 랭킹 시스템, 커뮤니티 기능을 통해  
+AI 기반 문제 생성, 랭킹 시스템, 상점 기능을 통해  
 혼자가 아닌 **함께 성장하는 학습 경험**을 제공합니다.
+
+<br/>
 
 ### 🎯 서비스 목표
 
@@ -62,28 +73,25 @@ AI 기반 문제 생성, 랭킹 시스템, 커뮤니티 기능을 통해
 - 학습 과정을 시각적으로 관리하고 성취감을 느낄 수 있는 구조
 - 학습도 기반 문제 추천 및 실시간 랭킹을 통한 몰입형 학습 환경 제공
 
----
+<br/>
 
-### 핵심 기능
+### ✅ 핵심 기능
 
-✅ **카테고리별 문제 풀이**  
-네트워크, 운영체제, 데이터베이스, 알고리즘 등 개발 핵심 분야별 문제를 제공합니다.
+1. 카테고리별 문제 풀이  
+   네트워크, 운영체제, 데이터베이스, 알고리즘 등 개발 핵심 분야별 문제를 제공합니다.
 
-✅ **사용자 학습도 기반 문제 제공**  
-사용자 수준에 맞는 문제를 제공하여 개인화된 학습 경험을 제공합니다.
+2. 사용자 학습도 기반 문제 제공  
+   사용자 수준에 맞는 문제를 제공하여 개인화된 학습 경험을 제공합니다.
 
-✅ **랭킹 및 스코어 시스템**  
-풀이 결과를 기반으로 실시간 랭킹과 통계를 제공합니다.
+3. 랭킹 및 스코어 시스템  
+   풀이 결과를 기반으로 실시간 랭킹과 통계를 제공합니다.
 
-✅ **공지·커뮤니티 기능 (예정)**  
-스터디 공지, 사용자 간 질의응답, 학습 후기 공유 기능을 준비 중입니다.
+4. 리워드 시스템 (예정)\*\*  
+   문제 풀이 성과에 따라 포인트를 얻고 아이템을 교환할 수 있습니다.
 
-✅ **스토어 및 리워드 시스템 (예정)**  
-문제 풀이 성과에 따라 포인트를 얻고 아이템을 교환할 수 있습니다.
+<br/>
 
----
-
-### 사용 기술
+### ⚒️ 사용 기술
 
 [![Next][Next.js]][Next-url]
 [![React][React.js]][React-url]
@@ -94,33 +102,34 @@ AI 기반 문제 생성, 랭킹 시스템, 커뮤니티 기능을 통해
 > 프런트엔드는 **Next.js 기반 SSR & CSR 하이브리드 구조**로 구성되어 있으며,  
 > 백엔드는 **Spring Boot + Gradle + JPA** 구조로 설계되었습니다.
 
----
+<br/>
 
 ## 서비스 이용
 
 Study Mate는 웹 브라우저에서 바로 이용할 수 있습니다.
 
-> 🚀 ㅤ[https://developer-dev.study-mate.academy](https://developer-dev.study-mate.academy)
+> 🏠 ㅤ[https://developer-dev.study-mate.academy](https://developer-dev.study-mate.academy)
 
 **소셜 로그인 지원:**
 
 - Google 계정으로 간편 로그인
-- 로그인 후 개인화된 학습 기록 및 랭킹 시스템 이용 가능
 
----
+<br/>
+
+로그인 후 개인화된 학습 기록 및 랭킹 시스템 이용 가능
+
+<br/>
 
 ## 로드맵
 
-- [x] MVP 런칭 (문제 풀이 + 랭킹 + 공지 + 상점 + 로그인)
-- [ ] 스터디 등 커뮤니티
-- [ ] 리워드 시스템
-- [ ] 영어 버전 서비스
-- [ ] AI 문제 자동 생성 기능
+- [완료] MVP 런칭 (문제 풀이 + 랭킹 + 공지 + 상점 + 로그인)
+
+- 2025 4Q - AI 문제 자동 생성
 
 최신 업데이트 및 제안된 기능은  
 👉 [이슈 페이지](https://github.com/night-shift-team/study-mate-fe/issues)에서 확인할 수 있습니다.
 
----
+<br/>
 
 ## 팀 및 기여자
 
@@ -132,7 +141,7 @@ Study Mate는 **Night Shift Team**에 의해 개발되었습니다.
   <img src="https://images.weserv.nl/?url=github.com/rhdustn.png&w=80&h=80&fit=cover&mask=circle" width="40" alt="rhdustn" />
 </a>
 
----
+<br/>
 
 ## 라이센스
 
@@ -140,7 +149,7 @@ Study Mate는 **Night Shift Team**에 의해 개발되었습니다.
 
 상세 내용은 [`LICENSE.txt`](LICENSE.txt)를 참고하세요.
 
----
+<br/>
 
 ## 문의
 
