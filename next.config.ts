@@ -4,7 +4,26 @@ const nextConfig: NextConfig = {
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
-      use: ['@svgr/webpack'],
+      use: [
+        {
+          loader: '@svgr/webpack',
+          options: {
+            dimensions: false,
+            svgoConfig: {
+              plugins: [
+                {
+                  name: 'preset-default',
+                  params: {
+                    overrides: {
+                      removeViewBox: false, // ✅ viewBox 제거 방지
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        },
+      ],
     });
     return config;
   },
