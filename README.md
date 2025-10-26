@@ -61,19 +61,19 @@
 
 **Study Mate**는 개발자를 위한 문제 풀이 중심의 학습 플랫폼입니다.  
 AI 기반 문제 생성, 랭킹 시스템, 상점 기능을 통해  
-혼자가 아닌 **함께 성장하는 학습 경험**을 제공합니다.
+자신의 성장 수준을 확인하고, 함께 학습하는 동료들의 여정을 살펴볼 수 있는 경험을 제공합니다.
 
 <br/>
 
-### 🎯 서비스 목표
+### 서비스 목표
 
 - 개발자들이 기초 CS 지식을 지속적으로 학습할 수 있는 공간
-- 학습 과정을 시각적으로 관리하고 성취감을 느낄 수 있는 구조
+- 학습 과정을 시각적으로 관리하고 리마인드 할 수 있는 화면 제공
 - 학습도 기반 문제 추천 및 실시간 랭킹을 통한 몰입형 학습 환경 제공
 
 <br/>
 
-### ✅ 핵심 기능
+### 핵심 기능
 
 1. 카테고리별 문제 풀이  
    네트워크, 운영체제, 데이터베이스, 알고리즘 등 개발 핵심 분야별 문제를 제공합니다.
@@ -81,15 +81,15 @@ AI 기반 문제 생성, 랭킹 시스템, 상점 기능을 통해
 2. 사용자 학습도 기반 문제 제공  
    사용자 수준에 맞는 문제를 제공하여 개인화된 학습 경험을 제공합니다.
 
-3. 랭킹 및 스코어 시스템  
-   풀이 결과를 기반으로 실시간 랭킹과 통계를 제공합니다.
+3. 랭킹 시스템  
+   풀이 결과를 기반으로 나와 유저의 실시간 랭킹을 확인 할 수 있습니다.
 
-4. 리워드 시스템 (예정)\*\*  
-   문제 풀이 성과에 따라 포인트를 얻고 아이템을 교환할 수 있습니다.
+4. 상점 기능  
+   문제 풀이로 얻은 포인트를 활용해 추가 풀이 기회나 아이템을 구매할 수 있습니다.
 
 <br/>
 
-### ⚒️ 사용 기술
+### 사용 기술
 
 [![Next][Next.js]][Next-url]
 [![React][React.js]][React-url]
@@ -106,7 +106,7 @@ AI 기반 문제 생성, 랭킹 시스템, 상점 기능을 통해
 
 Study Mate는 웹 브라우저에서 바로 이용할 수 있습니다.
 
-> 🏠 ㅤ[https://developer-dev.study-mate.academy](https://developer-dev.study-mate.academy)
+> [https://developer-dev.study-mate.academy](https://developer-dev.study-mate.academy)
 
 **소셜 로그인 지원:**
 
@@ -114,7 +114,7 @@ Study Mate는 웹 브라우저에서 바로 이용할 수 있습니다.
 
 <br/>
 
-로그인 후 개인화된 학습 기록 및 랭킹 시스템 이용 가능
+추후 Github 로그인 등 다른 소셜 로그인 기능 추가 예정
 
 <br/>
 
@@ -131,11 +131,16 @@ Study Mate는 웹 브라우저에서 바로 이용할 수 있습니다.
 
 ## 팀 및 기여자
 
-Study Mate는 **Night Shift Team**에 의해 개발되었습니다.  
+Study Mate는
+<a href="https://github.com/night-shift-team/study-mate-fe/graphs/contributors">**Night Shift Team**
+</a>
+에 의해 개발되었습니다.  
 서비스 개선을 위한 기여는 언제나 환영합니다 💬
 
-<a href="https://github.com/night-shift-team/study-mate-fe/graphs/contributors">
+<a href="https://github.com/dinn54">
   <img src="https://images.weserv.nl/?url=github.com/dinn54.png&w=80&h=80&fit=cover&mask=circle" width="40" alt="dinn54" />
+  </a>
+  <a href="https://github.com/rhdustn">
   <img src="https://images.weserv.nl/?url=github.com/rhdustn.png&w=80&h=80&fit=cover&mask=circle" width="40" alt="rhdustn" />
 </a>
 
@@ -143,7 +148,7 @@ Study Mate는 **Night Shift Team**에 의해 개발되었습니다.
 
 ## 라이센스
 
-이 프로젝트는 상용 서비스이며, 모든 권리는 Night Shift Team에 있습니다.<br/>
+이 프로젝트에 관한 모든 권리는 Night Shift Team에 있습니다.<br/>
 
 상세 내용은 [`LICENSE.txt`](LICENSE.txt)를 참고하세요.
 
@@ -151,7 +156,7 @@ Study Mate는 **Night Shift Team**에 의해 개발되었습니다.
 
 ## 문의
 
-**주정혁 (JeongHyeog Joo)**
+**주정혁 (JOOJEONGHYEOG)**
 
 - 📧 Email: [joodinner@gmail.com](mailto:joodinner@gmail.com)
 - 💼 LinkedIn: [@joodinner](https://www.linkedin.com/in/정혁-주-10819137b)
