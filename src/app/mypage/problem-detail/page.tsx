@@ -4,6 +4,7 @@ import {
   ProblemDetailInfoRes,
 } from '@/page/adminProblem/api';
 import TestResultSolutionPage from '@/page/level_result_solution/ui';
+import { getWithCache } from '@/shared/api/model/apiCacheHook';
 import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
 import UserStateWrapper from '@/shared/state/userStore/model/clientSideWrapper';
 import PageAnimationWrapper from '@/shared/style/ui/pageAnimationWrapper';
@@ -18,7 +19,11 @@ const ScrapProblemDetail = () => {
     const getProblemInfo = async (problemId?: string) => {
       if (!problemId) return;
       try {
-        const res = await getProblemDetailInfoApi(problemId);
+        const res = await getWithCache({
+          key: `question-detail-${problemId}`,
+          fetcher: async () => await getProblemDetailInfoApi(problemId),
+          expires: 180 * 24 * 60 * 60 * 1000, // 180일
+        });
         if (res.ok) {
           setProblemInfo(res.payload as ProblemDetailInfoRes);
           return;

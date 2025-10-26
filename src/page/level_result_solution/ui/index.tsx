@@ -6,7 +6,7 @@ import {
 } from '@/page/adminProblem/api';
 import SelectAnswerRow from '@/page/level_test/ui/levelTestAnswer';
 import { ServerErrorResponse } from '@/shared/api/model/config';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import CircleCheck from '@public/assets/icons/leveltest/checkedCircle.svg';
 import CircleCancel from '@public/assets/icons/leveltest/Subtract.svg';
 import ButtonPixel from '@/shared/button/buttonPixel';
@@ -16,6 +16,8 @@ import { toastStore, ToastType } from '@/shared/state/toast/toastStore';
 import { questionBookmarkToggleApi } from '@/feature/boomMark/api';
 import { ComponentLoader } from '@/feature/spinner/ui/componentLoader';
 import { useDarkMode } from '@/feature/darkMode/model/isDarkMode';
+import { getWithCache } from '@/shared/api/model/apiCacheHook';
+import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
 
 const TestResultSolutionPage = ({
   type,
@@ -51,9 +53,16 @@ const TestResultSolutionPage = ({
     ProblemDetailInfoRes | undefined | null
   >(problemInfo);
   const router = useRouter();
+  const setPageLoaderStatus = pageLoaderStore((s) => s.setStatus);
+  const [isFetching, setIsFetching] = useState(false);
+
   const getProblemDetail = async (id: string) => {
     try {
-      const res = await getProblemDetailInfoApi(id);
+      const res = await getWithCache({
+        key: `question-detail-${id}`,
+        fetcher: async () => await getProblemDetailInfoApi(id),
+        expires: 180 * 24 * 60 * 60 * 1000, // 180일
+      });
       if (res.ok) {
         return res.payload as ProblemDetailInfoRes;
       }
@@ -64,6 +73,19 @@ const TestResultSolutionPage = ({
     }
   };
 
+  useLayoutEffect(() => {
+    if (problemId && userAnswer) {
+      setPageLoaderStatus('loading');
+    }
+  }, []);
+
+  useLayoutEffect(() => {
+    console.log('problemDetailInfo changed:', problemDetailInfo);
+    if (problemId && userAnswer && problemDetailInfo) {
+      setPageLoaderStatus('loaded');
+    }
+  }, [problemDetailInfo]);
+
   useEffect(() => {
     if (problemId && userAnswer) {
       getProblemDetail(problemId).then((data) => {
@@ -71,16 +93,10 @@ const TestResultSolutionPage = ({
       });
     }
   }, []);
-  // ["Choice 1 for question 3", "Choice 2 for question 3", "Choice 3 for question 3", "Choice 4 for question 3"]
   // console.log(problemDetailInfo?.options);
-
-  const selections =
-    problemDetailInfo &&
-    (problemDetailInfo.options as string)
-      .replace('[', '')
-      .replace(']', '')
-      .split(',')
-      .map((item) => item.trim().replaceAll('"', ''));
+  // "[\"TCP는 실시간 서비스에 적합하고, UDP는 파일 전송과 같이 안정성이 필요한 서비스에 적합합니다.\"]"
+  const selections: string[] =
+    problemDetailInfo && JSON.parse(problemDetailInfo.options as string);
 
   const bookMarkToggle = async (problemId: string) => {
     try {
@@ -130,7 +146,6 @@ const TestResultSolutionPage = ({
   //   return () => clearInterval(interval);
   // }, []);
 
-  const [isFetching, setIsFetching] = useState(false);
   const { isDarkMode } = useDarkMode();
   return (
     <div className="flex h-full w-full flex-col overflow-y-auto px-4 py-5 scrollbar-hide">
@@ -159,10 +174,10 @@ const TestResultSolutionPage = ({
         <div className="flex w-full flex-col gap-0.5 rounded-[4px] bg-grayscale-300 p-2 dark:bg-grayscale-800">
           {selections &&
             selections.map((selection, index) => {
-              console.log(userAnswer, index + 1);
+              console.log(userAnswer, index + 1, selection);
               return (
                 <SelectAnswerRow
-                  key={selection}
+                  key={index}
                   bgColor={isDarkMode ? '#2f3036' : '#e5e5e5'}
                   selected={Number(userAnswer) === index + 1}
                   onClick={() => {}}
@@ -174,7 +189,7 @@ const TestResultSolutionPage = ({
                     {selection}
                   </span>
                   <div className="h-[20px] w-[20px] shrink-0 rounded-full">
-                    {index + 1 === Number(problemDetailInfo.answer) ? (
+                    {index + 1 === Number(problemDetailInfo?.answer) ? (
                       <CircleCheck className="h-full w-full fill-success" />
                     ) : (
                       <CircleCancel className="h-full w-full fill-error" />

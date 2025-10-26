@@ -15,6 +15,8 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { ComponentLoader } from '@/feature/spinner/ui/componentLoader';
+import { useLayoutEffect } from 'react';
+import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
 const AnswerListForm = dynamic(() => import('./answerListForm'), {
   ssr: false,
 });
@@ -44,6 +46,18 @@ const LevelTestPage = () => {
     answerClosedFormRef,
   } = useLevelTest();
 
+  const setPageLoaderStatus = pageLoaderStore((s) => s.setStatus);
+
+  useLayoutEffect(() => {
+    setPageLoaderStatus('loading');
+  }, []);
+
+  useLayoutEffect(() => {
+    if (levelTestLists) {
+      setPageLoaderStatus('loaded');
+    }
+  }, [levelTestLists]);
+
   return (
     <div className="flex h-full w-full flex-col">
       <div className="relative flex h-56p w-full shrink-0 items-center justify-center">
@@ -59,21 +73,27 @@ const LevelTestPage = () => {
         </div>
         <div className="absolute right-4 mt-3 flex">
           <span className="flex h-full w-auto items-center font-plusJakarta text-[16px] font-semibold leading-none">
-            {currentQuestionNo + 1}/{levelTestLists.length}
+            {currentQuestionNo + 1}/
+            {levelTestLists ? levelTestLists.length : ''}
           </span>
         </div>
       </div>
       <div className="mt-2 flex h-full w-full overflow-y-auto bg-grayscale-800 scrollbar-hide">
         <div className="flex h-full w-full flex-col">
           <span className="mt-6 flex w-full justify-center px-4 text-[28px] font-bold leading-[20px] text-[#FFD900]">
-            Lv. {levelTestLists[currentQuestionNo]?.difficulty ?? ''}
+            Lv.{' '}
+            {levelTestLists ? levelTestLists[currentQuestionNo].difficulty : ''}
           </span>{' '}
           <div className="mt-4 flex justify-center px-4 font-pretandard text-quiz-question">
-            {levelTestLists[currentQuestionNo]?.questionTitle}
+            {levelTestLists
+              ? levelTestLists[currentQuestionNo].questionTitle
+              : ''}
           </div>
           <div className="w-full flex-1 basis-full p-1">
             <MarkdownComponent
-              markdown={levelTestLists[currentQuestionNo]?.content ?? ''}
+              markdown={
+                levelTestLists ? levelTestLists[currentQuestionNo].content : ''
+              }
             />
           </div>
           <div className="flex h-[18rem] w-full flex-col gap-6 bg-grayscale-300 px-4 dark:bg-grayscale-900">
@@ -89,11 +109,10 @@ const LevelTestPage = () => {
                       }}
                     >
                       <span className="font-pretandard text-quiz-option">
-                        {
+                        {levelTestLists &&
                           (levelTestLists[currentQuestionNo] as ProblemInfoMAQ)[
                             `choice${selectedAnswer}` as keyof ChoiceAttrs
-                          ]
-                        }
+                          ]}
                       </span>
                       <div className="h-[20px] w-[20px] shrink-0 rounded-full">
                         <CircleCheck className="h-full w-full fill-point-orange" />
@@ -114,7 +133,7 @@ const LevelTestPage = () => {
                     <div className="h-24p w-24p shrink-0">
                       <Icon
                         icon={arrow}
-                        className="h-full w-full rotate-[270deg] bg-black dark:bg-white"
+                        className="h-full w-full rotate-[270deg]"
                       />
                     </div>
                   </button>
@@ -124,7 +143,7 @@ const LevelTestPage = () => {
                   answerFormRef={answerFormRef}
                   answerClosedFormRef={answerClosedFormRef}
                   answerListOpen={answerListOpen}
-                  levelTestLists={levelTestLists}
+                  levelTestLists={levelTestLists ?? []}
                   currentQuestionNo={currentQuestionNo}
                   isGetResultApiLoading={isGetResultApiLoading}
                   handleAnswerSelect={handleAnswerSelect}
@@ -135,7 +154,7 @@ const LevelTestPage = () => {
               </>
             </div>
             <div className="flex w-full gap-2 pb-4">
-              {currentQuestionNo === levelTestLists.length - 1 ? (
+              {currentQuestionNo === (levelTestLists?.length ?? 0) - 1 ? (
                 <ButtonPixel
                   status={isSubmitting ? 'inactive' : 'default'}
                   onClick={handleNextQuestion}
