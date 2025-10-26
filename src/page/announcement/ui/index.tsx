@@ -10,14 +10,17 @@ import useSuggestionPage from '@/page/suggestion/model/suggestionPageHook';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import useSuggestionList from '@/page/suggestion/model/suggestionListHook';
 import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
+import { Notice } from '@/feature/notice/api';
 
 export enum AnnouncementType {
   Anouncement,
   // Event,
 }
 
-const AnnouncementPage = () => {
-  const { announcementList, page, setPage, maxPage } = useAnnouncementPage();
+const AnnouncementPage = ({ noticeList }: { noticeList: Notice[] | false }) => {
+  const { announcementList, page, setPage, maxPage } = useAnnouncementPage(
+    noticeList ? noticeList : undefined
+  );
 
   const { list, router } = useSuggestionPage();
   const suggestionListHook = useSuggestionList(list ?? []);
@@ -92,7 +95,7 @@ const AnnouncementPage = () => {
                   </button>
                 ))}
               </div>
-              <div className="">
+              <div className="space-y-2">
                 {activeTab === '공지' ? (
                   <>
                     {announcementList && announcementList.length > 0
