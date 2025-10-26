@@ -172,7 +172,7 @@ Study Mate는
 [issues-shield]: https://img.shields.io/github/issues/night-shift-team/study-mate-fe.svg?style=flat-square
 [issues-url]: https://github.com/night-shift-team/study-mate-fe/issues
 [license-shield]: https://img.shields.io/github/license/night-shift-team/study-mate-fe.svg?style=flat-square
-[license-url]: https://github.com/night-shift-team/study-mate-fe/blob/main/LICENSE.txt
+[license-url]: https://github.com/night-shift-team/study-mate-fe/blob/dev/LICENSE.txt
 [product-thumbnail-1]: https://developer-dev.study-mate.academy/thumbnails/mainThumbnail_1.svg
 [product-thumbnail-2]: https://developer-dev.study-mate.academy/thumbnails/mainThumbnail_2.svg
 [product-thumbnail-3]: https://developer-dev.study-mate.academy/thumbnails/mainThumbnail_3.svg
