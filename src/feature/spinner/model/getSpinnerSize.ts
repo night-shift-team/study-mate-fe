@@ -9,7 +9,7 @@ export const getSpinnerSize = (size?: ComponentSize) => {
     case 'lg':
       return { width: '20vw' };
     default:
-      return { width: '100%' };
+      return { width: '10vw' };
   }
 };
 
