@@ -42,3 +42,5 @@ next-env.d.ts
 .opencommit
 
 src/shared/api/__autoGenerateAPI__.ts
+# Sentry Config File
+.env.sentry-build-plugin

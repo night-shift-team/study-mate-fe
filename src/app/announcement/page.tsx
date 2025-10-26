@@ -5,6 +5,7 @@ import { getAllNoticeListRes } from '@/feature/notice/api';
 import { Suspense } from 'react';
 import { PageLoader } from '@/feature/spinner/ui/pageLoader';
 import { _serverFetch } from '../api/v1/_serverFetch';
+import * as Sentry from '@sentry/nextjs';
 
 export const metadata = pageMetadata.announcement;
 export const revalidate = 0;

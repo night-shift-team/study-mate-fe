@@ -3,6 +3,8 @@ import {
   HTTPRequestMethod,
   ServerErrorResponse,
 } from '@/shared/api/model/config';
+import * as Sentry from '@sentry/nextjs';
+
 const FrontendAPIDomain = process.env.NEXT_PUBLIC_FRONTEND_URL;
 const BackendAPIDomain = process.env.NEXT_PUBLIC_API_URL;
 
@@ -94,6 +96,9 @@ export const _serverFetch = async <T = any>({
   requestConfig?: RequestInit;
 }) => {
   console.log('_serverFetch called... url: ', `${FrontendAPIDomain}${path}`);
+  Sentry.logger.info('User triggered test log', {
+    log_source: 'sentry_test',
+  });
   if (!FrontendAPIDomain)
     return {
       ok: false,
