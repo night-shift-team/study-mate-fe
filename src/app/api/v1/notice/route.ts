@@ -15,7 +15,7 @@ export async function GET() {
   console.log('routes.ts called', res);
   return Response.json(res, {
     headers: {
-      'CDN-Cache-Control': 'public, s-maxage=1, stale-while-revalidate=180',
+      'CDN-Cache-Control': 'public, s-maxage=60, stale-while-revalidate=30',
     },
   });
 }
