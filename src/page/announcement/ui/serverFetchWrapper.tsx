@@ -6,6 +6,9 @@ const AnnouncementServerFetchWrapper = async () => {
   const res = await _serverFetch<getAllNoticeListRes>({
     method: 'GET',
     path: '/api/v1/notice?page=0&limit=10',
+    requestConfig: {
+      cache: 'no-store',
+    },
   });
 
   console.log('Announcement Page called', res.payload);
