@@ -1,10 +1,9 @@
 import { getAllNoticeListRes } from '@/feature/notice/api';
 import { _backendFetch } from '../_serverFetch';
 
-export const runtime = 'edge'; // 또는 nodejs
+export const runtime = 'nodejs';
 
 export async function GET() {
-  console.log('routes.ts GET called');
   const res = await _backendFetch<getAllNoticeListRes>({
     method: 'GET',
     path: '/api/v1/notice?page=0&limit=10',
@@ -12,7 +11,6 @@ export async function GET() {
       cache: 'no-store',
     },
   });
-  console.log('routes.ts called', res);
   return Response.json(res, {
     headers: {
       'CDN-Cache-Control':
