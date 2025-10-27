@@ -15,7 +15,9 @@ export async function GET() {
   console.log('routes.ts called', res);
   return Response.json(res, {
     headers: {
-      'CDN-Cache-Control': 'public, s-maxage=60, stale-while-revalidate=30',
+      'CDN-Cache-Control':
+        // 1 day 캐시, 2 hour stale-while-revalidate
+        'public, s-maxage=86400, stale-while-revalidate=7200',
     },
   });
 }

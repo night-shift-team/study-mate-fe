@@ -7,8 +7,8 @@
   },
   "crons": [
     {
-      "path": "/api/v1/cron-cache-warm/s60",
-      "schedule": "*/1 * * * *"
+      "path": "/api/v1/cron-cache-warm/day1",
+      "schedule": "0 0 * * *"
     }
   ]
 }
