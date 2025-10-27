@@ -22,6 +22,7 @@ export const _backendFetch = async <T = any>({
   requestConfig?: RequestInit;
 }) => {
   console.log('_backendFetch called... url: ', `${BackendAPIDomain}${path}`);
+
   if (!BackendAPIDomain)
     return {
       ok: false,
@@ -53,7 +54,7 @@ export const _backendFetch = async <T = any>({
       `${BackendAPIDomain}${path}`,
       configOption
     );
-
+    console.log(fetchRequest.headers);
     const response = await fetch(fetchRequest);
     console.log('Backend Response', response);
 
