@@ -4,5 +4,11 @@
   },
   "github": {
     "enabled": false
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/v1/cron-cache-warm/s60",
+      "schedule": "*/1 * * * *"
+    }
+  ]
 }
