@@ -16,7 +16,7 @@ export async function GET() {
   const result: IWarmedAPICachingResult = { status: 'failed', warmed: [] };
 
   // s-maxage 55~60, swr 30
-  await sleep(12_000 + Math.random() * 3_000);
+  await sleep(1_000 + Math.random() * 2_000);
 
   try {
     const settled = await Promise.allSettled(
