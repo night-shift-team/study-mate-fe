@@ -129,19 +129,55 @@ Study Mate는 웹 브라우저에서 바로 이용할 수 있습니다.
 
 <br/>
 
-## 팀 및 기여자
+## Team & Contributors
 
-Study Mate는
-<a href="https://github.com/night-shift-team/study-mate-fe/graphs/contributors">**Night Shift Team**
-</a>
-에 의해 개발되었습니다.  
+Study Mate는 Night Shift Team 에 의해 개발되었습니다.
+
 서비스 개선을 위한 기여는 언제나 환영합니다 💬
 
-<a href="https://github.com/dinn54">
-  <img src="https://images.weserv.nl/?url=github.com/dinn54.png&w=80&h=80&fit=cover&mask=circle" width="40" alt="dinn54" />
-  </a>
-  <a href="https://github.com/rhdustn">
-  <img src="https://images.weserv.nl/?url=github.com/rhdustn.png&w=80&h=80&fit=cover&mask=circle" width="40" alt="rhdustn" />
+### Team
+
+<table >
+  <tr >
+    <td align="center">
+      dinn54
+    </td>
+    <td align="center">
+      rhdustn
+    </td>
+    <td align="center">
+      blockmonkey1992
+    </td>
+    <td align="center">
+      HHJ
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/dinn54">
+        <img src="https://images.weserv.nl/?url=github.com/dinn54.png&w=80&h=80&fit=cover&mask=circle" width="40" alt="dinn54" />
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/rhdustn">
+        <img src="https://images.weserv.nl/?url=github.com/rhdustn.png&w=80&h=80&fit=cover&mask=circle" width="40" alt="rhdustn" />
+      </a>
+    </td>
+        <td align="center">
+        <a href="https://github.com/blockmonkey1992">
+        <img src="https://images.weserv.nl/?url=github.com/blockmonkey1992.png&w=80&h=80&fit=cover&mask=circle" width="40" alt="rhdustn" />
+      </a>
+    </td>
+        </td>
+        <td align="center">
+        <img src="https://www.svgrepo.com/show/365855/user-circle-thin.svg" width="40" alt="rhdustn" />
+    </td>
+  </tr>
+</table>
+
+### Contributors
+
+<a href="https://github.com/night-shift-team/study-mate-fe/graphs/contributors">**Study Mate FE - dinn54, rhdustn**
 </a>
 
 <br/><br/>
