@@ -1,3 +1,5 @@
+SPDX-License-Identifier: LicenseRef-NightShiftTeam-Proprietary
+
 Copyright (c) 2025 Night Shift Team.  
 All rights reserved.
 
