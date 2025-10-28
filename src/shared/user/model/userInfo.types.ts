@@ -25,7 +25,6 @@ export type UserStatus =
 
 export interface UserInfo {
   userId: string;
-  loginType: UserLoginType;
   loginId: string;
   nickname: string;
   profileImg: string;
@@ -33,4 +32,9 @@ export interface UserInfo {
   role: number;
   registeredAt: string;
   userScore: number;
+  userOAuth: {
+    oauthType: UserLoginType;
+    accessToken: string;
+  }[];
+  passwordChangeRequired: boolean;
 }

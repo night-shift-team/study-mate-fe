@@ -3,14 +3,15 @@ import {
   getAllNoticeListRes,
   Notice,
 } from '@/feature/notice/api';
-import { getWithCache } from '@/shared/api/model/apiCacheHook';
 import { useEffect, useState } from 'react';
 import { AnnouncementType } from '../ui';
 
-const useAnnouncementPage = () => {
+const useAnnouncementPage = (noticeList?: Notice[]) => {
   const [currentTab, setCurrentTab] = useState<AnnouncementType>(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [announcementList, setAnnouncementList] = useState<Notice[]>();
+  const [announcementList, setAnnouncementList] = useState<
+    Notice[] | undefined
+  >(noticeList);
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
   const MAX_PAGE = 10;
@@ -19,14 +20,13 @@ const useAnnouncementPage = () => {
     setIsLoading(true);
 
     try {
-      const res = await getWithCache({
-        key: 'AnnouncementPage-getAllNoticeList',
-        fetcher: async () => await getAllNoticeListApi(page - 1, MAX_PAGE),
-        expires: 3 * 60 * 60 * 1000,
-      }); // 3시간
+      console.log('Fetching notices for page:', page - 1, MAX_PAGE);
+      const res = await getAllNoticeListApi(page - 1, MAX_PAGE);
 
       if (res.ok) {
         const noticeList = (res.payload as getAllNoticeListRes).content;
+        console.log(noticeList, 'noticeList');
+
         setMaxPage((res.payload as getAllNoticeListRes).totalPages);
         setAnnouncementList(noticeList);
       }
@@ -38,6 +38,16 @@ const useAnnouncementPage = () => {
   };
 
   useEffect(() => {
+    if (!announcementList) {
+      getNoticeListByPage(page);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (currentTab === AnnouncementType.Anouncement && announcementList) {
+      return;
+    }
+
     if (currentTab === AnnouncementType.Anouncement) {
       getNoticeListByPage(page);
     } else {
@@ -45,7 +55,7 @@ const useAnnouncementPage = () => {
       setPage(1);
       setMaxPage(1);
     }
-  }, [currentTab, page]);
+  }, [announcementList, currentTab, page]);
 
   return {
     isLoading,

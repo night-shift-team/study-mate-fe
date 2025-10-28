@@ -1,15 +1,23 @@
-import useToast, { ToastType } from '@/shared/toast/model/toastHook';
+// import useToast, { ToastType } from '@/shared/toast/model/toastHook';
 import { useEffect, useRef, useState } from 'react';
 import {
   checkDuplicateEmailApi,
   checkDuplicateNicknameApi,
   signUpApi,
+  verifySignUpEmailApi,
 } from '../api';
 import { useRouter } from 'next/navigation';
 import { SignUpFormData } from '../ui';
-import useTooltip from '@/feature/tooltip/model/tooltipController';
+// import useTooltip from '@/feature/tooltip/model/tooltipController';
 import tooltipMountHook from '@/feature/tooltip/model/tooltipMount';
 import { TooltipContents } from '@/shared/state/tooltip/model/tooltipContents';
+import { InputStatus } from '@/shared/components/input/useInput';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import { userInfoApi, UserInfoRes } from '@/page/login/api';
+import { setTokenToHeader } from '@/shared/api/model/config';
+import { requestSignIn } from '@/page/login/model/requestSignIn';
+import { setTokens } from '@/page/login/model/setTokens';
+import { userStore } from '@/shared/state/userStore/model';
 
 const useSignUpPage = () => {
   const [formData, setFormData] = useState({
@@ -19,30 +27,93 @@ const useSignUpPage = () => {
     confirmPassword: '',
   } as SignUpFormData);
 
-  const [toastOpen, setToastOpen] = useState(false);
-  const { Toaster, setToastDescription, setToastIcon } = useToast(
-    toastOpen,
-    setToastOpen
-  );
-  const { showTooltip, updateTooltip, hideTooltip } = useTooltip();
+  const [isFormChecked, setIsFormChecked] = useState({
+    nickname: false,
+    email: false,
+    password: false,
+  });
+  const [isEmailAuthComplete, setIsEmailAuthComplete] =
+    useState<boolean>(false);
+
+  // const [toastOpen, setToastOpen] = useState(false);
+  // const { Toaster, setToastDescription, setToastIcon } = useToast(
+  //   toastOpen,
+  //   setToastOpen
+  // );
+  // const { showTooltip, updateTooltip, hideTooltip } = useTooltip();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [popupOpen, setPopupOpen] = useState(false);
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
+
+  const [validationStatus, setValidationStatus] = useState({
+    name: {
+      status: 'empty' as InputStatus,
+      message: TooltipContents.TypingName,
+    },
+    email: {
+      status: 'empty' as InputStatus,
+      message: TooltipContents.TypingEmail,
+    },
+    password: {
+      status: 'empty' as InputStatus,
+      message: TooltipContents.TypingPassword,
+    },
+    confirmPassword: {
+      status: 'empty' as InputStatus,
+      message: TooltipContents.TypingConfirmPassword,
+    },
+  });
+  const AuthNumberRef = useRef<HTMLInputElement>(null);
+
   const { setMountTooltip } = tooltipMountHook();
 
   const router = useRouter();
 
+  const getButtonText = (checkForm: typeof isFormChecked) => {
+    if (!checkForm.nickname) return 'Check Nickname';
+    if (!checkForm.email) return 'Verify Email';
+    if (!checkForm.password) return 'Sign Up';
+    return 'Sign Up';
+  };
+
+  const passwordValidation = (value: string) => {
+    const ASCII_UPPER_RE = /[A-Z]/;
+    const ASCII_PUNCT_RE = /[!-\/:-@\[-`{-~]/; // ASCII punctuation ranges
+
+    if (!value) return false;
+    return ASCII_UPPER_RE.test(value) || ASCII_PUNCT_RE.test(value);
+  };
+
+  const isAuthNumberValid = async (value: string | undefined) => {
+    try {
+      if (!value) return false;
+      const res = await verifySignUpEmailApi(formData.email, value);
+      if (res.ok) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-    hideTooltip(e.target);
+    // hideTooltip(e.target);
+    setValidationStatus((prev) => ({
+      ...prev,
+      [name]: {
+        status: 'filled',
+        message: '',
+      },
+    }));
   };
 
   const checkNicknameDuplicate = async (nickname: string) => {
@@ -71,29 +142,93 @@ const useSignUpPage = () => {
 
     try {
       // 프론트 검증
+      // 폼 입력값 검증 -> 서버 검증 순서로 진행
+
+      // 1. 닉네임 검증
       if (nameRef.current && !formData.name.length) {
-        showTooltip(nameRef.current);
+        setValidationStatus((prev) => ({
+          ...prev,
+          name: { status: 'error', message: TooltipContents.TypingName },
+        }));
         nameRef.current.focus();
         return;
       }
+
+      if (!isFormChecked.nickname) {
+        const res = await checkNicknameDuplicate(formData.name);
+        if (res) {
+          setValidationStatus((prev) => ({
+            ...prev,
+            name: {
+              status: 'error',
+              message: TooltipContents.DuplicateName,
+            },
+          }));
+          return;
+        }
+        setIsFormChecked((prev) => ({ ...prev, nickname: true }));
+      }
+
+      console.log('email ', !formData.email.length, ' email', emailRef.current);
+
+      // 2. 이메일 검증
+      if (!emailRef.current && !formData.email.length) return;
       if (emailRef.current && !formData.email.length) {
-        showTooltip(emailRef.current);
+        setValidationStatus((prev) => ({
+          ...prev,
+          email: { status: 'error', message: TooltipContents.TypingEmail },
+        }));
         emailRef.current.focus();
         return;
       }
       if (emailRef.current && !emailRef.current?.value.includes('@')) {
-        updateTooltip(emailRef.current, TooltipContents.NotEmailForm);
-        showTooltip(emailRef.current);
+        // updateTooltip(emailRef.current, TooltipContents.NotEmailForm);
+        // showTooltip(emailRef.current);
+        setValidationStatus((prev) => ({
+          ...prev,
+          email: { status: 'error', message: TooltipContents.NotEmailForm },
+        }));
         emailRef.current.focus();
         return;
       }
+
+      if (!isFormChecked.email) {
+        const res = await checkEmailDuplicate(formData.email);
+        if (res) {
+          setValidationStatus((prev) => ({
+            ...prev,
+            email: {
+              status: 'error',
+              message: TooltipContents.DuplicateEmail,
+            },
+          }));
+          return;
+        }
+        setIsFormChecked((prev) => ({ ...prev, email: true }));
+      }
+
+      // 3. 패스워드 검증
       if (passwordRef.current && !formData.password.length) {
-        showTooltip(passwordRef.current);
+        // showTooltip(passwordRef.current);
+        setValidationStatus((prev) => ({
+          ...prev,
+          password: {
+            status: 'error',
+            message: TooltipContents.TypingPassword,
+          },
+        }));
         passwordRef.current.focus();
         return;
       }
       if (confirmPasswordRef.current && !formData.confirmPassword.length) {
-        showTooltip(confirmPasswordRef.current);
+        // showTooltip(confirmPasswordRef.current);
+        setValidationStatus((prev) => ({
+          ...prev,
+          confirmPassword: {
+            status: 'error',
+            message: TooltipContents.TypingConfirmPassword,
+          },
+        }));
         confirmPasswordRef.current.focus();
         return;
       }
@@ -102,36 +237,72 @@ const useSignUpPage = () => {
         confirmPasswordRef.current &&
         formData.password !== formData.confirmPassword
       ) {
-        updateTooltip(
-          confirmPasswordRef.current,
-          TooltipContents.InvalidConfirmPassword
-        );
-        showTooltip(confirmPasswordRef.current);
+        // updateTooltip(
+        //   confirmPasswordRef.current,
+        //   TooltipContents.InvalidConfirmPassword
+        // );
+        // showTooltip(confirmPasswordRef.current);
+        setValidationStatus((prev) => ({
+          ...prev,
+          confirmPassword: {
+            status: 'error',
+            message: TooltipContents.InvalidConfirmPassword,
+          },
+        }));
         confirmPasswordRef.current.focus();
         return;
       }
 
-      // 서버 검증
-      if (await checkNicknameDuplicate(formData.name)) {
-        setToastIcon(ToastType.warning);
-        setToastDescription('이미 사용중인 닉네임입니다.');
-        setToastOpen(true);
-        return;
-      }
-      if (await checkEmailDuplicate(formData.email)) {
-        setToastIcon(ToastType.warning);
-        setToastDescription('이미 사용중인 이메일입니다.');
-        setToastOpen(true);
-        return;
-      }
+      // 모든 검증 완료
+      setIsFormChecked((prev) => ({ ...prev, password: true }));
+    } catch (e) {
+      console.warn('회원 가입 불가:', e);
+      return;
+    } finally {
+      setIsLoading(false);
+    }
 
-      // 회원 가입 요청
-      await signUpApi(formData);
-      setPopupOpen(true);
+    if (
+      !isFormChecked.nickname ||
+      !isFormChecked.email ||
+      !isFormChecked.password
+    )
+      return;
+
+    // 4. 회원 가입 요청
+    setIsLoading(true);
+    try {
+      const signUpRes = await signUpApi(formData);
+      if (signUpRes.ok) {
+        // 로그인 요청
+        await signInAndSetUser(formData.email, formData.password);
+      }
     } catch (e) {
       console.error('회원가입 에러:', e);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const signInAndSetUser = async (email: string, password: string) => {
+    const setUser = userStore.getState().setUser;
+
+    try {
+      // 여기에 실제 로그인 API 호출 로직 구현
+      const tokens = await requestSignIn(email, password);
+      setTokens(tokens);
+      setTokenToHeader(localStorage.getItem('accessToken'));
+      const res = await userInfoApi();
+      if (res.ok) {
+        const userData = res.payload as UserInfoRes;
+        setUser(userData);
+        router.push(RouteTo.SignupComplete);
+        return;
+      }
+      throw new Error('유저 로그인 실패');
+    } catch (error) {
+      console.error('로그인 에러:', error);
+      router.push(RouteTo.Home);
     }
   };
 
@@ -158,11 +329,19 @@ const useSignUpPage = () => {
     confirmPasswordRef,
     formData,
     handleChange,
-    Toaster,
-    popupOpen,
+    AuthNumberRef,
+    getButtonText,
+    isAuthNumberValid,
     router,
     handleSubmit,
     isLoading,
+    validationStatus,
+    isFormChecked,
+    setIsFormChecked,
+    setFormData,
+    isEmailAuthComplete,
+    setIsEmailAuthComplete,
+    passwordValidation,
   };
 };
 export default useSignUpPage;

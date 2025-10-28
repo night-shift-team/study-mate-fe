@@ -10,6 +10,7 @@ import {
 import { ServerErrorResponse } from '@/shared/api/model/config';
 import { ResultData } from '../ui';
 import { userStore } from '@/shared/state/userStore/model';
+import { getWithCache } from '@/shared/api/model/apiCacheHook';
 
 const useTestResultContent = () => {
   const setUser = userStore.getState().setUser;
@@ -61,7 +62,11 @@ const useTestResultContent = () => {
       const map: Record<string, { title: string; category: string }> = {};
       await Promise.all(
         problemLists.map(async (problem) => {
-          const res = await getQuestionDetailApi(problem.id);
+          const res = await getWithCache({
+            key: `question-detail-${problem.id}`,
+            fetcher: async () => await getQuestionDetailApi(problem.id),
+            expires: 180 * 24 * 60 * 60 * 1000, // 180 days
+          });
           if (res.ok && res.payload) {
             const { questionTitle, category } = res.payload as {
               questionTitle: string;

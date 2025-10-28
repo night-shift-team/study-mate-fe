@@ -3,30 +3,36 @@ import { useEffect, useState } from 'react';
 import { getUserRankingApi, UserRankingRes } from '../api';
 import Image from 'next/image';
 import { BRONZE_IMG, GOLD_IMG, SLIVER_IMG } from './img';
+import {
+  PageLoaderState,
+  pageLoaderStore,
+} from '@/shared/state/spinner/pageLoader';
 
+type UserRank = UserRankingRes['list'];
 const useRankPage = () => {
   const PAGE_LIMIT = 10;
   const [myRanking, setMyRanking] = useState<number | null>(null);
-  const [otherUsers, setOtherUsers] = useState<UserRankingRes['otherUsers']>(
-    []
-  );
+  const [otherUsers, setOtherUsers] = useState<UserRank>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState<boolean>(true); // 로딩 상태 추가
+  const setPageLoader = pageLoaderStore.getState().setStatus;
 
   useEffect(() => {
-    userRanking();
+    userRanking(setPageLoader);
   }, []);
 
-  const userRanking = async () => {
+  const userRanking = async (
+    setPageLoader: (status: PageLoaderState) => void
+  ) => {
     setIsLoading(true);
     try {
       const res = await getUserRankingApi(0, 10000);
       if (res.ok && res.payload) {
-        if ('myRanking' in res.payload && 'otherUsers' in res.payload) {
+        if ('myRanking' in res.payload && 'list' in res.payload) {
           setMyRanking(res.payload.myRanking);
-          setOtherUsers(res.payload.otherUsers);
-          setTotalPages(Math.ceil(res.payload.otherUsers.length / PAGE_LIMIT));
+          setOtherUsers(res.payload.list);
+          setTotalPages(Math.ceil(res.payload.list.length / PAGE_LIMIT));
         } else {
           console.error('Unexpected payload structure', res.payload);
         }
@@ -37,6 +43,9 @@ const useRankPage = () => {
       console.error(error);
     } finally {
       setIsLoading(false);
+      setTimeout(() => {
+        setPageLoader('loaded');
+      }, 0);
     }
   };
 

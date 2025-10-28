@@ -1,20 +1,11 @@
 'use client';
 import Logo from '@public/assets/backgroundImages/main/logo.svg';
 import AdminLoginForm from './ui/adminLoginForm';
-import { useState } from 'react';
 import AuthHoc from '@/shared/auth/model/authHoc';
-import useToast from '@/shared/toast/model/toastHook';
 
 const AdminPage = () => {
-  const [toastOpen, setToastOpen] = useState(false);
-  const { Toaster, setToastDescription, setToastIcon } = useToast(
-    toastOpen,
-    setToastOpen
-  );
-
   return (
     <div className="relative flex w-full min-w-[320px] flex-col items-center justify-center p-5 md:w-[80rem] md:flex-row md:p-0">
-      <Toaster />
       <div className="flex w-full max-w-[30rem] items-end justify-center md:w-[50%] md:max-w-none md:justify-end md:p-[3rem]">
         <div className="relative flex aspect-1 w-[80%] rounded-full border-4 border-[#fafbe7]">
           <div className="flex h-full w-full items-end justify-center">
@@ -26,12 +17,7 @@ const AdminPage = () => {
         </div>
       </div>
       <div className="flex w-full justify-center md:w-[50%] md:justify-start md:p-[3rem]">
-        <AdminLoginForm
-          open={toastOpen}
-          setOpen={setToastOpen}
-          setToastText={setToastDescription}
-          setToastIcon={setToastIcon}
-        />
+        <AdminLoginForm />
       </div>
     </div>
   );

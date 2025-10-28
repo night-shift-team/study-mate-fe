@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import AuthHoc from '@/shared/auth/model/authHoc';
 
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import { PageLoader } from '@/feature/spinner/ui/pageLoader';
 import { GetAdminMAQ, GetAdminSAQ } from '../api';
 import useManageProblem from '../model/manageProblemHook';
 import MarkdownComponent from '@/shared/lexical/model/markdownConfig';
@@ -74,7 +74,7 @@ const ManageProblemPage = () => {
           </div>
           <div className="mt-2 flex min-h-[33rem] w-full flex-shrink-0 flex-col items-center justify-center overflow-auto scrollbar-hide">
             {isLoading ? (
-              <Spinner />
+              <PageLoader />
             ) : problemList.length ? (
               problemList.map((problem, index) => {
                 return (

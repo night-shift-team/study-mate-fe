@@ -37,9 +37,34 @@ module.exports = {
   ],
   theme: {
     extend: {
+      container: {
+        center: true,
+        padding: {
+          DEFAULT: '1rem',
+          sm: '16px',
+          lg: '120px',
+        },
+      },
       screens: {
         '3xl': '1920px',
+        desktop: '1440px',
+        mobile: '390px',
       },
+      spacing: {
+        '6p': '6px',
+        '8p': '8px',
+        '16p': '16px',
+        '24p': '24px',
+        '32p': '32px',
+        '40p': '40px',
+        '48p': '48px',
+        '56p': '56px',
+        '64p': '64px',
+        '72p': '72px',
+        '80p': '80px',
+        '88p': '88px',
+      },
+
       backgroundSize: {
         '110': '110%',
         '120': '120%',
@@ -49,6 +74,12 @@ module.exports = {
         '160': '160%',
         '180': '180%',
         '200': '200%',
+      },
+      backgroundColor: {
+        layout: {
+          white: '#FAFAFA',
+          dark: '#101010',
+        },
       },
       backgroundImage: {
         'main-notice': "url('/assets/backgroundImages/main/noticeBg.svg')",
@@ -117,12 +148,33 @@ module.exports = {
         'inner-right': 'inset 2px 0 0 #000', // 오른쪽 내부 테두리
       },
       fontFamily: {
+        plusJakarta: ['PlusJakartaSans', 'sans-serif'],
         spoqa: ['SpoqaHanSansNeo', 'sans-serif'],
         doodle: ['CustomFontDoodle', 'sans-serif'],
         jalnan: ['Jalnan', 'sans-serif'],
         parkdahyun: ['Parkdahyun', 'sans-serif'],
         gmarketsans: ['GmarketSans', 'sans-serif'],
         notosans: ['NotoSansKR', 'sans-serif'],
+        pixel: ['PixelOperator', 'sans-serif'],
+        pretandard: ['Pretandard', 'sans-serif'],
+      },
+      fontSize: {
+        'title-main': ['40px', { lineHeight: '40px', fontWeight: '700' }],
+        'title-page': ['32px', { lineHeight: '30px', fontWeight: '700' }],
+        'title-section': ['24px', { lineHeight: '20px', fontWeight: '700' }],
+
+        'body-primary': ['18px', { lineHeight: '28px', fontWeight: '500' }],
+        'body-secondary': ['16px', { lineHeight: '26px', fontWeight: '500' }],
+        'body-small': ['14px', { lineHeight: '24px', fontWeight: '400' }],
+        'body-muted': ['12px', { lineHeight: '24px', fontWeight: '400' }],
+
+        'quiz-question': ['16px', { lineHeight: '24px', fontWeight: '700' }],
+        'quiz-option': ['15px', { lineHeight: '22px', fontWeight: '400' }],
+        'quiz-explanation': ['14px', { lineHeight: '20px', fontWeight: '400' }],
+
+        'button-1': ['20px', { lineHeight: '16px', fontWeight: '700' }],
+        'button-2': ['14px', { lineHeight: '24px', fontWeight: '700' }],
+        label: ['13px', { lineHeight: '18px', fontWeight: '400' }],
       },
       colors: {
         pointcolor: {
@@ -133,6 +185,49 @@ module.exports = {
           apricot: '#ECCDB4',
           coral: '#FEA1A1',
           deepcoral: '#ec857e',
+        },
+        grayscale: {
+          900: '#101010',
+          850: '#1F1F1F',
+          800: '#2F3036',
+          600: '#8F9098',
+          400: '#D3D3D3',
+          300: '#E5E5E5',
+          200: '#F2F2F2',
+          100: '#F8F9FE',
+          white: '#FFFFFF',
+        },
+        error: {
+          DEFAULT: '#FF4A4A',
+          50: 'rgba(255, 74, 74, 0.5)',
+          30: '#fdacac',
+        },
+        success: {
+          DEFAULT: '#7CFC00',
+          lightMode: '#3ed933',
+          50: 'rgba(124, 252, 0, 0.5)',
+          30: '#c3e6a1',
+        },
+        notice: {
+          DEFAULT: '#006FFD',
+          50: 'rgba(0, 111, 253, 0.5)',
+          30: '#8fc1ff',
+        },
+        point: {
+          pink: '#FFB8FF',
+          yellow: '#FFD900',
+          orange: '#FFB852',
+          purple: '#5500FF',
+          cyan: '#00FFFF',
+          logo: '#e7924a',
+        },
+        grass: {
+          DEFAULT: 'transparent',
+          100: '#FFFFF0',
+          200: '#FFF8CC',
+          300: '#FFEF8E',
+          400: '#FFE433',
+          500: '#FFD900',
         },
         correctGreen: '#d4edda',
         wrongRed: '#f8d7da',
@@ -182,7 +277,11 @@ module.exports = {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
+        '6p': '6px',
+        '12p': '12px',
+        '16p': '16px',
       },
+      countdown: {},
     },
   },
   plugins: [

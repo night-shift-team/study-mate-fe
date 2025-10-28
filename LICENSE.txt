@@ -1,0 +1,28 @@
+SPDX-License-Identifier: LicenseRef-NightShiftTeam-Proprietary
+
+Copyright (c) 2025 Night Shift Team.  
+All rights reserved.
+
+Study Mate and all associated source code, assets, and documentation  
+are the intellectual property of the Night Shift Team.
+
+Unauthorized copying, distribution, modification, or commercial use  
+of this software and its assets, in whole or in part, is strictly prohibited  
+without prior written permission from the copyright holder.
+
+This project is provided solely for authorized use under the terms  
+defined by the Night Shift Team.  
+Use of the Study Mate name, logo, or any associated brand assets  
+is also restricted and requires explicit permission.
+
+For inquiries about usage rights, licensing, or partnership:  
+📧 Contact: joodinner@gmail.com  
+🌐 Website: https://developer-dev.study-mate.academy
+
+──────────────────────────────
+Notice:
+Some open-source components included in this project  
+are licensed under their respective open-source licenses  
+(e.g., MIT, Apache 2.0, etc.).  
+These components retain their original license terms.
+──────────────────────────────

@@ -1,9 +1,9 @@
 import { _apiFetch } from '@/shared/api/model/config';
-const API_Prefix = '/api/v1/users/rank';
+const API_Prefix = '/api/v1/ranking';
 
 export interface UserRankingRes {
   myRanking: number;
-  otherUsers: {
+  list: {
     userId: string;
     loginId: string;
     nickname: string;

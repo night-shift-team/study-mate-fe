@@ -1,3 +1,4 @@
+'use client';
 import { useQuery } from '@tanstack/react-query';
 import { getLevelTestQuestionsApi } from '../api';
 import { ServerErrorResponse } from '@/shared/api/model/config';
@@ -8,7 +9,7 @@ export type ApiResponse<T> = {
   payload: ServerErrorResponse | T;
 };
 
-export const levelTestCaching = () => {
+const levelTestCaching = () => {
   return useQuery<ProblemInfoLevelTest[], Error>({
     queryKey: ['levelTestQuestions'],
     queryFn: async () => {
@@ -30,3 +31,5 @@ export const levelTestCaching = () => {
     retry: 1,
   });
 };
+
+export default levelTestCaching;

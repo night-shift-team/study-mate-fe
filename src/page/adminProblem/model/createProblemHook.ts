@@ -11,10 +11,11 @@ import {
   ProblemCategory,
   ProblemCategoryType,
 } from '@/shared/problem/model/problemInfo.types';
-import useToast, { ToastType } from '@/shared/toast/model/toastHook';
+
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
 import { ServerErrorResponse } from '@/shared/api/model/config';
 import { Ecode, EcodeMessage } from '@/shared/api/model/ecode';
+import { toastStore, ToastType } from '@/shared/state/toast/toastStore';
 
 const useCreateProblem = () => {
   const router = useRouter();
@@ -30,11 +31,6 @@ const useCreateProblem = () => {
       answerExplanation: '',
     });
 
-  const [toastOpen, setToastOpen] = useState(false);
-  const { Toaster, setToastDescription, setToastIcon } = useToast(
-    toastOpen,
-    setToastOpen
-  );
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -85,18 +81,21 @@ const useCreateProblem = () => {
         };
         const res = await createAdminMAQApi(body);
         if (res.ok) {
-          setToastIcon(ToastType.success);
-          setToastDescription('문제 생성이 완료되었습니다.');
-          setToastOpen(true);
+          toastStore.show({
+            status: ToastType.success,
+            title: '문제 생성이 완료되었습니다.',
+          });
           setTimeout(() => {
             router.push(RouteTo.AdminManagementProblem);
           }, 2500);
           return;
         }
         if ((res.payload as ServerErrorResponse).ecode === Ecode.E0405) {
-          setToastIcon(ToastType.error);
-          setToastDescription(EcodeMessage(Ecode.E0405));
-          setToastOpen(true);
+          toastStore.show({
+            status: ToastType.error,
+            title: EcodeMessage(Ecode.E0405),
+          });
+
           return;
         }
         throw res.payload;
@@ -110,18 +109,22 @@ const useCreateProblem = () => {
         };
         const res = await createAdminSAQApi(body);
         if (res.ok) {
-          setToastIcon(ToastType.success);
-          setToastDescription('문제 생성이 완료되었습니다.');
-          setToastOpen(true);
+          toastStore.show({
+            status: ToastType.success,
+            title: '문제 생성이 완료되었습니다.',
+          });
+
           setTimeout(() => {
             router.push(RouteTo.AdminManagementProblem);
           }, 2500);
           return;
         }
         if ((res.payload as ServerErrorResponse).ecode === Ecode.E0405) {
-          setToastIcon(ToastType.error);
-          setToastDescription(EcodeMessage(Ecode.E0405));
-          setToastOpen(true);
+          toastStore.show({
+            status: ToastType.error,
+            title: EcodeMessage(Ecode.E0405),
+          });
+
           return;
         }
         throw res.payload;
@@ -129,9 +132,10 @@ const useCreateProblem = () => {
       return;
     } catch (e) {
       console.log(e);
-      setToastIcon(ToastType.error);
-      setToastDescription('문제 생성에 실패했습니다.');
-      setToastOpen(true);
+      toastStore.show({
+        status: ToastType.error,
+        title: '문제 생성에 실패했습니다.',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -140,7 +144,6 @@ const useCreateProblem = () => {
   return {
     problemDetailInfo,
     setProblemDetailInfo,
-    Toaster,
     isLoading,
     handleSubmit,
   };

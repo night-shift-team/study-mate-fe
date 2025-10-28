@@ -12,14 +12,6 @@ const useAfterMaintenanceCheck = async () => {
 
       if (isMaintenance) {
         return data;
-      } else {
-        // sessionStorage에 유효한 공지사항 저장
-        if (data.isMaintenanceNoticeExist) {
-          sessionStorage.setItem(
-            'validNoticeList',
-            JSON.stringify(data.displayNotices)
-          );
-        }
       }
     }
     return false;

@@ -7,9 +7,10 @@ import {
 import { ServerErrorResponse } from '@/shared/api/model/config';
 import { useEffect, useState } from 'react';
 import { getStoreItemListApi, getStorePaymentHistoryApi } from '../api';
-import useToast from '@/shared/toast/model/toastHook';
 import { PurchaseStatus, StoreItemInfo } from '../ui';
 import useOutsideClick from '@/shared/routes/model/useOutsideClick';
+import { toastStore, ToastType } from '@/shared/state/toast/toastStore';
+import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
 
 const useStorePage = () => {
   const [purchaseOpen, setPurchaseOpen] = useState(false);
@@ -19,11 +20,10 @@ const useStorePage = () => {
     setPurchaseOpen(false);
     setCartOpen(false);
   });
-  const [toastOpen, setToastOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<StoreItemInfo | null>(null);
   const [cart, setCart] = useState<StoreItemInfo[]>([]);
   const [storeItems, setStoreItems] = useState<StoreItemDto[]>([]);
-  const { Toaster, setToastDescription } = useToast(toastOpen, setToastOpen);
+  const setPageLoader = pageLoaderStore.getState().setStatus;
 
   const getStoreItemLists = async () => {
     try {
@@ -31,11 +31,13 @@ const useStorePage = () => {
       if (res.ok) {
         const data = res.payload as PageResponseDtoStoreItemDto;
         if ('content' in data && data.content) {
-          setStoreItems(data.content);
+          setStoreItems(data.content.reverse());
         }
       }
     } catch (e) {
       console.log(e);
+    } finally {
+      setPageLoader('loaded');
     }
   };
 
@@ -60,10 +62,10 @@ const useStorePage = () => {
             if (currentTime - latestPaymentTime < 30000) {
               // 결제하고 결제내역 호출했는데 가장 최근 내역이 30초 전보다 더 전이면 데이터가 들어오지 않은걸로 간주
               setPurchaseStatus('success');
-              setToastDescription(
-                `${historyByLatest[0].itemName} 아이템 구매 완료`
-              );
-              setToastOpen(true);
+              toastStore.update({
+                status: ToastType.success,
+                title: `${historyByLatest[0].itemName} 아이템 구매 완료`,
+              });
               return;
             }
           }
@@ -75,11 +77,11 @@ const useStorePage = () => {
       console.log(e);
     }
 
-    setTimeout(() => {
-      setPurchaseStatus('none');
-      setPurchaseOpen(false);
-      setSelectedItem(null);
-    }, 3000);
+    // setTimeout(() => {
+    //   setPurchaseStatus('none');
+    //   setPurchaseOpen(false);
+    //   setSelectedItem(null);
+    // }, 300000);
   };
 
   useEffect(() => {
@@ -99,7 +101,6 @@ const useStorePage = () => {
     setCart,
     setPurchaseOpen,
     purchaseStatus,
-    Toaster,
   };
 };
 export default useStorePage;

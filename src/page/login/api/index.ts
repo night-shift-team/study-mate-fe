@@ -4,7 +4,6 @@ import { UserLoginType, UserStatus } from '@/shared/user/model/userInfo.types';
 const Api_Prefix = '/api/v1/users';
 export interface UserInfoRes {
   userId: string;
-  loginType: UserLoginType;
   loginId: string;
   nickname: string;
   profileImg: string;
@@ -12,6 +11,11 @@ export interface UserInfoRes {
   role: number;
   registeredAt: string;
   userScore: number;
+  userOAuth: {
+    oauthType: UserLoginType;
+    accessToken: string;
+  }[];
+  passwordChangeRequired: boolean;
 }
 
 export interface LoginRes {

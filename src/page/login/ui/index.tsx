@@ -1,62 +1,52 @@
 'use client';
-import Logo from '@public/assets/backgroundImages/main/studyMate_logo.png';
-import Image from 'next/image';
+
 import Link from 'next/link';
 import AuthHoc from '@/shared/auth/model/authHoc';
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { openNewWindowWithoutDuplicate } from '@/shared/window/model/openWindow';
 import { LoginButton } from '../model/loginButtonMeta';
 import useLoginPage from '../model/loginPageHook';
+import InputForm from '@/shared/input/inputForm';
+import { SvgIcon } from '@mui/material';
+import ButtonPixel from '@/shared/button/buttonPixel';
+import HomeLogo from '@public/assets/icons/header/mobile_logo.svg';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import { ComponentLoader } from '@/feature/spinner/ui/componentLoader';
 
 const LoginPage = () => {
   const {
-    Toaster,
+    // Toaster,
     handleSubmit,
     emailInputRef,
     passwordInputRef,
     formData,
     handleChange,
-    hideTooltip,
-    testToast,
+    // hideTooltip,
     loginLoading,
     windowReference,
+    validationStatus,
+    // animationClass,
   } = useLoginPage();
 
   return (
-    <div className="relative z-[1000] flex h-full w-full animate-fade-in flex-col items-center overflow-hidden overflow-y-auto bg-white/60 duration-300 scrollbar-hide md:flex-row md:justify-center md:bg-transparent md:pb-[4rem]">
-      <Toaster />
-      <div className="md:inner-border-left nd:shadow-xl flex h-full w-full max-w-[900px] flex-col justify-evenly bg-white/60 px-8 py-3 md:h-auto md:flex-row md:justify-around md:gap-6 md:rounded-[1rem] md:border md:p-8">
-        <div className="flex flex-col justify-center md:items-center">
-          {/* <PushNotificationButton /> */}
-          <Image
-            src={Logo}
-            alt=""
-            className="h-[20vh] w-[20vh] md:h-[240px] md:w-[240px]"
-          />
-          <div className="flex w-full flex-col">
-            <span className="text-lg font-bold text-pointcolor-apricot md:text-2xl">
-              Study Mate
-            </span>
-            <span className="mt-1 break-words text-sm md:max-w-[240px] md:text-base">
-              Online platform for solving computer science problems and
-              enhancing learning.
-            </span>
-          </div>
-        </div>
-        <div className="flex flex-col gap-4 sm:gap-6 md:w-[50%] md:gap-10">
-          <span className="font-doodle text-xl font-bold md:text-3xl">
-            Welcome
-          </span>
-          <form
-            id={'loginForm'}
-            onSubmit={handleSubmit}
-            className="flex flex-col gap-2 md:gap-4"
-            noValidate
-          >
-            <div className="flex w-[100%] flex-col">
-              <span className="text-[0.8rem]">Email</span>
+    <div className="flex h-full w-full flex-col items-center justify-center px-4 text-black dark:text-white">
+      <div className="flex w-full flex-col justify-center">
+        <SvgIcon
+          component={HomeLogo}
+          inheritViewBox
+          sx={{ width: 'auto', height: '40px' }}
+        />
+        <span className="mt-6 text-center text-title-main">Sign In</span>
 
-              <input
+        <form
+          id={'loginForm'}
+          onSubmit={handleSubmit}
+          className="flex w-full flex-col gap-4"
+          noValidate
+          autoComplete="off"
+        >
+          <div className="flex w-full flex-col gap-2">
+            <div className="flex w-full flex-col">
+              <InputForm
                 ref={emailInputRef}
                 type="email"
                 name="email"
@@ -64,117 +54,121 @@ const LoginPage = () => {
                 onChange={(e) => {
                   e.preventDefault();
                   handleChange(e);
-                  if (emailInputRef.current) {
-                    hideTooltip(emailInputRef.current);
-                  }
+                  // if (emailInputRef.current) {
+                  //   hideTooltip(emailInputRef.current);
+                  // }
                 }}
-                placeholder="이메일"
-                className="rounded-lg border border-gray-300 px-4 py-2 text-sm"
+                placeholder="Enter your Email"
+                className="mt-14 font-pretandard text-label"
+                status={validationStatus.email.status}
               />
-              <span className="mt-2 text-[0.8rem]">Password</span>
-              <input
+              <span className="mt-2 pl-2 text-[11px] text-[#ED3241]">
+                {validationStatus.email.status !== 'empty' &&
+                  validationStatus.email.message}
+              </span>
+            </div>
+            <div className="flex w-full flex-col">
+              <InputForm
                 ref={passwordInputRef}
-                type="password"
+                type="text"
                 name="password"
                 value={formData.password}
                 onChange={(e) => {
                   e.preventDefault();
                   handleChange(e);
-                  if (passwordInputRef.current) {
-                    hideTooltip(passwordInputRef.current);
-                  }
+                  // if (passwordInputRef.current) {
+                  //   hideTooltip(passwordInputRef.current);
+                  // }
                 }}
-                placeholder="비밀번호"
-                className="rounded-lg border border-gray-300 px-4 py-2 text-sm"
+                onClick={(e) => e.currentTarget.focus()}
+                placeholder="Password"
+                className="password-hide font-pretandard text-label"
+                status={validationStatus.password.status}
               />
+              <span className="mt-2 pl-2 text-[11px] text-[#ED3241]">
+                {validationStatus.password.status !== 'empty' &&
+                  validationStatus.password.message}
+              </span>
+            </div>
 
-              <div className="mt-4 flex w-full justify-between">
-                <div>
-                  <input
-                    type="checkbox"
-                    disabled={true}
-                    className="mr-2"
-                    checked
-                  />
-                  <span className="text-[0.8rem]">로그인 상태 유지</span>
-                </div>
-                <div>
-                  <button
-                    disabled={true}
-                    className={`text-[0.8rem] font-bold ${
-                      true
-                        ? 'text-gray-400'
-                        : 'text-[#5761eb] hover:cursor-pointer hover:underline hover:underline-offset-4'
-                    }`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      testToast();
-                    }}
-                  >
-                    비밀번호 찾기
-                  </button>
-                </div>
+            <div className="flex w-full justify-between">
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  disabled={true}
+                  className="mr-2 aspect-1 h-[18px] items-center"
+                  checked
+                />
+                <span className="font-pretandard text-label text-grayscale-600">
+                  Remember me
+                </span>
+              </div>
+              <div>
+                <Link
+                  href={RouteTo.ResetPassword}
+                  className={`font-pretandard text-label ${'text-grayscale-600 hover:cursor-pointer hover:text-[#5761eb] hover:underline hover:underline-offset-4'}`}
+                >
+                  Forgot password?
+                </Link>
               </div>
             </div>
-            <button
+          </div>
+          <div className="mt-4">
+            <ButtonPixel
+              status="default"
               id="loginButton"
               type="submit"
               disabled={loginLoading}
-              className={`text-balck flex h-[2.5rem] w-full items-center justify-center rounded-lg bg-pointcolor-sand/80 py-1 text-gray-600 transition-colors inner-border-pointcolor-beigebrown hover:text-black md:py-2 ${loginLoading ? 'hover:none' : 'hover:inner-border-[1.2px]'}`}
+              style={{
+                backgroundColor: loginLoading ? '#D3D3D3' : '',
+              }}
             >
-              {loginLoading ? <Spinner color="#6b7280" /> : '로그인'}
-            </button>{' '}
-          </form>
+              {loginLoading ? (
+                <div className="mb-0">
+                  <ComponentLoader color="#6b7280" />
+                </div>
+              ) : (
+                'Sign In'
+              )}
+            </ButtonPixel>{' '}
+          </div>
+        </form>
 
-          <div className="flex w-full flex-col justify-center">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="bg-[#fcfdf6] px-2 text-xs text-gray-500 md:text-sm">
-                  간편 로그인
-                </span>
-              </div>
-            </div>
-            <div className="flex w-full justify-center gap-4">
-              {LoginButton.map((item) => (
-                <button
-                  key={item.id}
-                  disabled={loginLoading}
-                  onClick={(e) => {
-                    if (item.title != 'google') {
-                      e.preventDefault();
-                      testToast();
-                      return;
-                    }
-                    openNewWindowWithoutDuplicate(windowReference, item.link);
-                  }}
-                  className="flex h-[4rem] w-1/3 cursor-pointer flex-col justify-center md:h-[5rem]"
-                >
-                  <div className="flex w-full justify-center rounded-md border py-1">
-                    <Image
-                      src={item.img}
-                      alt=""
-                      width={25}
-                      height={25}
-                      className="rounded-full"
-                    />
-                  </div>
-                </button>
-              ))}
-            </div>
-            <div className="mt-0.5 flex justify-center whitespace-pre-wrap text-[0.8rem]">
-              <span>계정이 없으신가요? </span>
-              <Link
-                href={loginLoading ? '#' : '/signup'}
-                onClick={(e) => (loginLoading ? e.preventDefault() : null)}
+        <div className="mt-8 flex w-full flex-col justify-center">
+          <span className="flex w-full justify-center font-pretandard text-label">
+            Or
+          </span>
+          <div className="mt-4 flex w-full justify-center gap-4">
+            {LoginButton.map((item) => (
+              <button
+                key={item.id}
+                disabled={loginLoading}
+                onClick={(e) => {
+                  if (item.title != 'google') {
+                    e.preventDefault();
+                    // testToast();
+                    return;
+                  }
+                  openNewWindowWithoutDuplicate(windowReference, item.link);
+                }}
+                className="aspect-1 h-[44px]"
               >
-                <span className="font-bold text-[#5761eb] hover:cursor-pointer hover:underline hover:underline-offset-4">
-                  회원가입
-                </span>
-              </Link>
-            </div>
+                <SvgIcon
+                  component={item.img}
+                  inheritViewBox
+                  sx={{ width: 44, height: 44 }}
+                />
+              </button>
+            ))}
+          </div>
+          <div className="mt-8 flex justify-center whitespace-pre-wrap font-pretandard text-label">
+            <span>{"Don't have an account? "}</span>
+            <Link
+              href={loginLoading ? '#' : '/signup'}
+              onClick={(e) => (loginLoading ? e.preventDefault() : null)}
+            >
+              <span className="text-point-orange">Sign up</span>
+            </Link>
           </div>
         </div>
       </div>

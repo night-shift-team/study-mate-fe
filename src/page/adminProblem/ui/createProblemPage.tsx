@@ -10,7 +10,7 @@ import {
 } from '@/feature/adminProblem/update/ui/problemUpdateComponents';
 import ContentsMarkDown from '@/feature/adminProblem/update/ui/markDownEdit';
 import { updateAttrBox } from '../model/updateAttrBoxContents';
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import { PageLoader } from '@/feature/spinner/ui/pageLoader';
 import useCreateProblem from '../model/createProblemHook';
 import {
   ProblemCategoryTitle,
@@ -26,19 +26,13 @@ enum ProblemAttributeTitle {
 }
 
 const CreateProblemPage = () => {
-  const {
-    problemDetailInfo,
-    setProblemDetailInfo,
-    Toaster,
-    isLoading,
-    handleSubmit,
-  } = useCreateProblem();
+  const { problemDetailInfo, setProblemDetailInfo, isLoading, handleSubmit } =
+    useCreateProblem();
   return (
     <form
       onSubmit={async (e) => await handleSubmit(e)}
       className="relative flex h-full w-full flex-col items-center p-4"
     >
-      <Toaster />
       <div className="fixed left-0 flex h-12 w-full items-center justify-between border-b-2 bg-pointcolor-sand px-4">
         <div className="flex h-12 max-w-full items-center justify-center text-xl font-bold">
           Problem {problemDetailInfo?.questionId ?? ''}
@@ -49,7 +43,7 @@ const CreateProblemPage = () => {
             disabled={isLoading}
             className={`flex h-[2.5rem] w-16 items-center justify-center rounded-lg border text-sm hover:bg-pointcolor-coral/30 ${isLoading ? 'bg-gray-200' : 'bg-white'}`}
           >
-            {isLoading ? <Spinner /> : '생성하기'}
+            {isLoading ? <PageLoader /> : '생성하기'}
           </button>
         </div>
       </div>

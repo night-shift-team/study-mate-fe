@@ -12,7 +12,7 @@ const CartPopupData = ({
 }) => {
   const [, setIsMobile] = useState(false);
   const [totalPrice, setTotalPrice] = useState(
-    cart.reduce((acc, item) => acc + item.price * item.count, 0)
+    cart.reduce((acc, item) => acc + item.price * Number(item.count), 0)
   );
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const CartPopupData = ({
 
                         prev.map((cartItem) => {
                           if (cartItem.title === item.title) {
-                            const newCount = cartItem.count - 1;
+                            const newCount = Number(cartItem.count) - 1;
                             if (newCount > 0) {
                               newCart.push({ ...cartItem, count: newCount });
                             }
@@ -53,7 +53,8 @@ const CartPopupData = ({
                         });
                         setTotalPrice(
                           newCart.reduce(
-                            (acc, item) => acc + item.price * item.count,
+                            (acc, item) =>
+                              acc + item.price * Number(item.count),
                             0
                           )
                         );
@@ -74,7 +75,7 @@ const CartPopupData = ({
 
                         prev.map((cartItem) => {
                           if (cartItem.title === item.title) {
-                            const newCount = cartItem.count + 1;
+                            const newCount = Number(cartItem.count) + 1;
                             if (newCount > 99) {
                               newCart.push({ ...cartItem, count: 99 });
                             } else {
@@ -86,7 +87,8 @@ const CartPopupData = ({
                         });
                         setTotalPrice(
                           newCart.reduce(
-                            (acc, item) => acc + item.price * item.count,
+                            (acc, item) =>
+                              acc + item.price * Number(item.count),
                             0
                           )
                         );
@@ -98,7 +100,7 @@ const CartPopupData = ({
                   </button>
                 </div>
                 <span className="flex w-[clamp(3.5rem,20%,4.5rem)]">
-                  ₩{(item.price * item.count).toLocaleString('ko-KR')}
+                  ₩{(item.price * Number(item.count)).toLocaleString('ko-KR')}
                 </span>
 
                 <button
@@ -115,7 +117,7 @@ const CartPopupData = ({
                       });
                       setTotalPrice(
                         newCart.reduce(
-                          (acc, item) => acc + item.price * item.count,
+                          (acc, item) => acc + item.price * Number(item.count),
                           0
                         )
                       );

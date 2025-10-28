@@ -1,30 +1,15 @@
 'use client';
 import { FaArrowRightLong } from 'react-icons/fa6';
-import { Dispatch, SetStateAction } from 'react';
 import {
   checkEmailValidate,
   checkPasswordValidate,
 } from '@/page/login/model/checkInputValidate';
 
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
+import { PageLoader } from '@/feature/spinner/ui/pageLoader';
 import useAdminLogin from '../model/adminLoginHook';
-import { ToastType } from '@/shared/toast/model/toastHook';
 
-const AdminLoginForm = ({
-  setOpen,
-  setToastText,
-  setToastIcon,
-}: {
-  open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  setToastText: (description: string) => void;
-  setToastIcon: (status: ToastType) => void;
-}) => {
-  const { adminLogin, emailRef, passwordRef, isLoading } = useAdminLogin(
-    setOpen,
-    setToastText,
-    setToastIcon
-  );
+const AdminLoginForm = () => {
+  const { adminLogin, emailRef, passwordRef, isLoading } = useAdminLogin();
 
   return (
     <form
@@ -57,7 +42,7 @@ const AdminLoginForm = ({
           type="submit"
           className={`flex aspect-1 w-[3.5rem] items-center justify-center rounded-full ${isLoading ? 'cursor-not-allowed bg-gray-200' : 'bg-[#f0edd4] hover:border-2 hover:border-[#ECCDB4] active:scale-[0.99] active:cursor-grabbing'}`}
         >
-          {isLoading ? <Spinner /> : <FaArrowRightLong />}
+          {isLoading ? <PageLoader /> : <FaArrowRightLong />}
         </button>
       </div>
     </form>

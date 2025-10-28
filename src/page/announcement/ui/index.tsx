@@ -1,69 +1,134 @@
 'use client';
 
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
-
 import AnnouncementList from './announcementList';
 import useAnnouncementPage from '../model/announcementPageHook';
 import { ProblemPagination } from '@/feature/pagination/ui';
+import { NoticeTap } from '@/shared/components/notice/NoticeTap';
+import { useEffect, useLayoutEffect, useState } from 'react';
+import { SuggestionList } from '@/page/suggestion/ui/SuggestionList';
+import useSuggestionPage from '@/page/suggestion/model/suggestionPageHook';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import useSuggestionList from '@/page/suggestion/model/suggestionListHook';
+import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
+import { Notice } from '@/feature/notice/api';
 
 export enum AnnouncementType {
   Anouncement,
   // Event,
 }
 
-const AnnouncementPage = () => {
-  const {
-    isLoading,
-    setCurrentTab,
-    announcementList,
-    page,
-    setPage,
-    maxPage,
-    currentTab,
-  } = useAnnouncementPage();
+const AnnouncementPage = ({ noticeList }: { noticeList: Notice[] | false }) => {
+  const { announcementList, page, setPage, maxPage } = useAnnouncementPage(
+    noticeList ? noticeList : undefined
+  );
+
+  const { list, router } = useSuggestionPage();
+  const suggestionListHook = useSuggestionList(list ?? []);
+
+  const [activeSort, setActiveSort] = useState<'조회순' | '최신순'>('조회순');
+  const [activeTab, setActiveTab] = useState<'공지' | '문의'>('공지');
+  const sorts = ['조회순', '최신순'] as const;
+
+  useEffect(() => {
+    if (!list) return;
+    const sortKey = activeSort === '조회순' ? 'views' : 'date';
+    suggestionListHook.handleSort(sortKey);
+  }, [activeSort, list]);
+
+  const sortAnnouncements = (list: typeof announcementList) => {
+    if (!list) return [];
+    return [...list].sort(
+      (a, b) =>
+        new Date(b.displayStartTime).getTime() -
+        new Date(a.displayStartTime).getTime()
+    );
+  };
+
+  const setPageLoader = pageLoaderStore((s) => s.setStatus);
+
+  useLayoutEffect(() => {
+    setPageLoader('loading');
+  }, [activeTab]);
+
+  useLayoutEffect(() => {
+    if (activeTab === '공지' && announcementList) {
+      setPageLoader('loaded');
+    }
+    if (activeTab === '문의' && list) {
+      setPageLoader('loaded');
+    }
+  }, [activeTab, announcementList, list]);
 
   return (
-    <div className="flex h-full w-full flex-col overflow-y-auto p-7 scrollbar-hide md:p-20">
-      <span className="font-jalnan text-2xl md:text-3xl">News</span>
-      <div className="flex h-full w-full flex-col gap-4 md:gap-6">
-        <div className="flex h-auto w-full flex-col pt-4 md:flex-row">
-          {/* Announcement , Event Tab */}
-          <div className="flex flex-shrink-0 gap-1 p-2 md:w-[8rem] md:flex-col md:gap-3">
+    <div className="flex h-full w-full flex-col overflow-y-auto scrollbar-hide">
+      <div className="flex h-full w-full flex-col gap-4">
+        <div className="flex items-center justify-between px-16p font-pixel text-[32px] font-bold text-black dark:text-white">
+          <span className="text-title-page">Notice</span>
+          {activeTab === '문의' && (
             <button
-              disabled={isLoading}
-              onClick={() => setCurrentTab(AnnouncementType.Anouncement)}
-              className={`whitespace-nowrap px-3 py-1.5 text-center font-bold md:px-0 md:py-2 md:text-lg ${currentTab === AnnouncementType.Anouncement ? 'bg-pointcolor-beigebrown/50 shadow-sm' : ''} rounded-xl`}
+              className="text-[20px] underline underline-offset-4"
+              onClick={() => {
+                router.push(RouteTo.WriteSuggestion);
+              }}
             >
-              공지사항
+              Write
             </button>
-            {/* <button
-            disabled={isLoading}
-            onClick={() => setCurrentTab(AnnouncementType.Event)}
-            className={`whitespace-nowrap px-3 py-1.5 text-center font-bold md:px-0 md:py-2 md:text-lg ${isLoading ? 'text-gray-500' : 'font-bold'} ${currentTab === AnnouncementType.Event ? 'bg-pointcolor-beigebrown/50 shadow-sm' : ''} rounded-xl`}
-          >
-            이벤트
-          </button> */}
-          </div>
-          <div className="mt-2 flex h-full w-full min-w-[10rem] flex-col gap-4 px-3 py-1 pb-4 md:mt-0 md:max-w-[80vw]">
-            {announcementList && announcementList.length > 0
-              ? announcementList.map((announcement) => {
-                  return (
-                    <AnnouncementList
-                      key={announcement.noticeId}
-                      noticeDetail={announcement}
-                    />
-                  );
-                })
-              : null}
-            {announcementList && announcementList.length === 0 ? (
-              <div className="flex h-full w-full items-center justify-center">
-                <span className="text-lg md:text-xl">No data</span>
+          )}
+        </div>
+        <div className="flex h-auto w-full flex-col md:flex-row">
+          <div className="w-full">
+            <NoticeTap activeTab={activeTab} setActiveTab={setActiveTab} />
+
+            <div className="flex flex-col gap-4 p-16p">
+              <div className="flex gap-2">
+                {sorts.map((sort) => (
+                  <button
+                    key={sort}
+                    onClick={() => setActiveSort(sort)}
+                    className={`rounded-full px-2 py-1 text-[14px] transition-all ${
+                      activeSort === sort
+                        ? 'bg-point-yellow'
+                        : 'bg-gray-400 text-white'
+                    }`}
+                  >
+                    {sort}
+                  </button>
+                ))}
               </div>
-            ) : null}
-            {!announcementList ? <Spinner /> : null}
+              <div className="space-y-2">
+                {activeTab === '공지' ? (
+                  <>
+                    {announcementList && announcementList.length > 0
+                      ? sortAnnouncements(announcementList).map(
+                          (announcement) => (
+                            <AnnouncementList
+                              key={announcement.noticeId}
+                              noticeDetail={announcement}
+                            />
+                          )
+                        )
+                      : announcementList &&
+                        announcementList.length === 0 && (
+                          <div className="flex h-full w-full items-center justify-center">
+                            <span className="text-lg md:text-xl">No data</span>
+                          </div>
+                        )}
+                  </>
+                ) : (
+                  <>
+                    {list && (
+                      <SuggestionList
+                        list={list}
+                        suggestionListHook={suggestionListHook}
+                      />
+                    )}
+                  </>
+                )}
+              </div>
+            </div>
           </div>
         </div>
-        <div className="flex h-[4rem] w-full justify-center pb-[4rem] md:pl-[8rem]">
+        <div className="flex h-[4rem] justify-center pb-[4rem]">
           <ProblemPagination
             page={page}
             setPage={setPage}

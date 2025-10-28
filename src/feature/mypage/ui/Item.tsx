@@ -1,10 +1,4 @@
-import { CircleCheck } from 'lucide-react';
-import { CircleX } from 'lucide-react';
-
-import { PopupProblem } from '@/shared/popUp/ui/popupV2';
-import { FaArrowRightLong } from 'react-icons/fa6';
-import Arrow from '@public/assets/icons/mypage/Arrow.svg';
-import { SvgIcon } from '@mui/material';
+'use client';
 import useQuestionItem from '../model/questionItemHook';
 
 interface ItemProps {
@@ -17,79 +11,44 @@ interface ItemProps {
   historyId: number;
   score: number;
   textColorClass?: string;
+  category: string;
+  createdDt?: string;
 }
 
 export const QuestionItem: React.FC<ItemProps> = ({
-  index,
-  isCorrectAnswer,
   questionTitle,
-  score,
   questionId,
-  textColorClass,
+  category,
+  createdDt,
 }) => {
-  const {
-    questionDetail,
-    isPopupOpen,
-    setIsPopupOpen,
-    handleClosePopup,
-    truncateText,
-  } = useQuestionItem(questionId);
+  const { questionDetail } = useQuestionItem(questionId);
+
+  const BgColors: Record<string, string> = {
+    OS: '#7CFC00',
+    DB: '#FFB852',
+    ALGORITHUM: '#FFB8FF',
+    NETWORK: '#00FFFF',
+  };
+
   return (
-    <>
-      <div className="hidden items-center justify-between gap-4 rounded-lg bg-white p-2 shadow-lg md:flex">
-        <div className="flex gap-5">
-          <span className="text-[1.5vh] font-semibold">
-            {truncateText(questionTitle, 40)}
-          </span>
-          <p className="text-[1.5vh] text-gray-500">
-            난이도 : {Math.floor(Math.abs(score))}
-          </p>
-        </div>
-
-        <button
-          onClick={() => setIsPopupOpen(true)}
-          className="flex items-center justify-center gap-5 rounded-xl bg-[#FEBA73] p-2 text-[1.5vh] text-white"
+    <div className="flex w-full flex-shrink-0 flex-col rounded-sm bg-[#451E81] pb-8p pl-16p pr-16p pt-8p">
+      <div className="mb-4 flex gap-2">
+        <span
+          className="rounded-sm pl-16p pr-16p text-center text-[16px] font-semibold text-black"
+          style={{ backgroundColor: BgColors[category] }}
         >
-          자세히 보기
-          <FaArrowRightLong />
-        </button>
+          {category}
+        </span>
+        <span className="font-semibold text-point-yellow">
+          Lv.{questionDetail?.difficulty}
+        </span>
       </div>
-      <div className="flex items-center justify-between rounded-lg bg-white p-3 shadow-lg md:hidden">
-        <div className="flex items-center gap-5">
-          <span className={`ml-2 text-sm font-semibold ${textColorClass}`}>
-            {(index + 1).toString().padStart(2, '0')}
-          </span>
-          {isCorrectAnswer ? (
-            <CircleCheck
-              size={20}
-              className="text-green-600"
-              strokeWidth={2.5}
-            />
-          ) : (
-            <CircleX size={20} className="text-red-600" strokeWidth={2.5} />
-          )}
-          <div className="flex items-center">
-            <span className="text-[1.5vh] font-semibold">
-              <h2>문제 제목</h2> {truncateText(questionTitle, 30)}
-            </span>
-          </div>
-        </div>
-
-        <div className="h-7 w-7" onClick={() => setIsPopupOpen(true)}>
-          <SvgIcon inheritViewBox component={Arrow} />
-        </div>
+      <div className="mb-1 w-full font-pretandard text-body-primary text-white">
+        {questionTitle}
       </div>
-      {isPopupOpen && questionDetail && (
-        <PopupProblem
-          size="md"
-          questionTitle={questionTitle}
-          difficulty={questionDetail.difficulty}
-          content={questionDetail.content}
-          answer={questionDetail.answer}
-          explanation={questionDetail.explanation}
-          onClose={handleClosePopup}
-        />
-      )}
-    </>
+      <div className="font-pretandard text-body-secondary text-grayscale-400">
+        {createdDt?.slice().replace('T', ' ').slice(0, 10)}
+      </div>
+    </div>
   );
 };

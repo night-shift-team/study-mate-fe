@@ -88,11 +88,13 @@ export const _apiFetch = async <T = any>(
       payload: payload,
     };
 
+    console.log(responseWithData);
     if (!response.ok) {
       const serverErrorData = payload as ServerErrorResponse;
       if (
         (serverErrorData.ecode === Ecode.E0002 ||
-          serverErrorData.ecode === Ecode.E0005) &&
+          serverErrorData.ecode === Ecode.E0005 ||
+          serverErrorData.ecode === 'forbidden') &&
         !isRetry &&
         typeof window !== 'undefined'
       ) {

@@ -2,7 +2,7 @@ name: Deploy to Vercel
 on:
   push:
     branches:
-      - stg
+      - dev
 
 jobs:
   deploy:
@@ -34,6 +34,8 @@ jobs:
           echo "NEXT_PUBLIC_GOOGLE_AUTH_SCOPE=${{ secrets.NEXT_PUBLIC_GOOGLE_AUTH_SCOPE }}" >> .env
           echo "NEXT_PUBLIC_VAPID_PUBLIC_KEY=${{ secrets.NEXT_PUBLIC_VAPID_PUBLIC_KEY }}" >> .env
           echo "VAPID_PRIVATE_KEY=${{ secrets.VAPID_PRIVATE_KEY }}" >> .env
+          echo "NEXT_PUBLIC_FRONTEND_URL=${{ secrets.NEXT_PUBLIC_FRONTEND_URL }}" >> .env
+          echo "SENTRY_AUTH_TOKEN=${{secrets.SENTRY_AUTH_TOKEN}}" >> .env
 
       - name: Build project
         run: pnpm build
@@ -45,7 +47,7 @@ jobs:
         run: vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Build Project Artifacts
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy to Vercel
-        run: vercel deploy --prebuilt --yes --prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel deploy --prebuilt --yes --token=${{ secrets.VERCEL_TOKEN }}

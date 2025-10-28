@@ -37,7 +37,7 @@ const SelectCategory = ({
         onChange={() => {}}
         required
       />
-      {openSelect
+      {openSelect && typeof document !== 'undefined'
         ? createPortal(
             <div
               id={'category-select-container-' + attrString}

@@ -1,7 +1,7 @@
-import useToast from '@/shared/toast/model/toastHook';
 import { useEffect, useState, useTransition } from 'react';
 import { changeNicknameApi } from '../api';
 import { userStore } from '@/shared/state/userStore/model';
+import { toastStore, ToastType } from '@/shared/state/toast/toastStore';
 
 const useProfile = () => {
   const { user, setUser } = userStore.getState();
@@ -11,12 +11,6 @@ const useProfile = () => {
   const [newNickname, setNewNickname] = useState<string>(user?.nickname || '');
   const [isPending, startTransition] = useTransition();
   const [isNicknameChanged, setIsNicknameChanged] = useState(false);
-
-  const [isToastOpen, setIsToastOpen] = useState(false);
-  const { Toaster, setToastDescription } = useToast(
-    isToastOpen,
-    setIsToastOpen
-  );
 
   // 닉네임 변경 처리
   const handleNicknameChange = async () => {
@@ -42,7 +36,10 @@ const useProfile = () => {
           setIsModalOpen(false);
           setErrorMessage('');
           setIsNicknameChanged(true);
-          setToastDescription('닉네임이 변경되었습니다.');
+          toastStore.update({
+            status: ToastType.success,
+            title: '닉네임이 변경되었습니다.',
+          });
         } else {
           if (
             'message' in response.payload &&
@@ -62,13 +59,12 @@ const useProfile = () => {
 
   useEffect(() => {
     if (isNicknameChanged) {
-      setIsToastOpen(true);
+      toastStore.show();
       setIsNicknameChanged(false);
     }
   }, [isNicknameChanged]);
 
   return {
-    Toaster,
     imageUrl,
     user,
     newNickname,

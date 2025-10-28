@@ -7,7 +7,6 @@ import {
   ProblemInfoMAQ,
   ProblemInfoSAQ,
 } from '@/shared/problem/model/problemInfo.types';
-import useToast, { ToastType } from '@/shared/toast/model/toastHook';
 import { useEffect, useRef, useState } from 'react';
 import {
   getMAQbyCategoryApi,
@@ -19,15 +18,17 @@ import {
 } from '../api';
 import {
   getRandomProblemCategory,
-  getRandomProblemType,
+  // getRandomProblemType,
 } from './getRandomCategory';
 import { ServerErrorResponse } from '@/shared/api/model/config';
 import { Ecode } from '@/shared/api/model/ecode';
 import { UserInfo } from '@/shared/user/model/userInfo.types';
 import { ProblemProps } from '../ui/solvingProblemPage';
 import { userStore } from '@/shared/state/userStore/model';
+import { useRouter } from 'next/navigation';
+import { toastStore, ToastType } from '@/shared/state/toast/toastStore';
 
-interface QuestionType extends ProblemInfoMAQ, ProblemInfoSAQ {
+export interface QuestionType extends ProblemInfoMAQ, ProblemInfoSAQ {
   problemType: ProblemCategoryType;
 }
 interface CanSolveProblemInfo {
@@ -38,17 +39,15 @@ interface CanSolveProblemInfo {
 const DEFAULT_CANSOLVE_PROBLEM_INFO = (() => {
   const value: CanSolveProblemInfo[] = [];
   for (const key in ProblemCategory) {
+    const problemType = key as keyof typeof ProblemCategory;
     if (Object.prototype.hasOwnProperty.call(ProblemCategory, key)) {
-      if (
-        ProblemCategory[key as keyof typeof ProblemCategory] ===
-        ProblemCategory.LEVEL_TEST
-      ) {
+      if (ProblemCategory[problemType] === ProblemCategory.LEVEL_TEST) {
         continue;
       }
     }
     value.push({
-      category: ProblemCategory[key as keyof typeof ProblemCategory],
-      canSolve: true,
+      category: ProblemCategory[problemType],
+      canSolve: problemType.includes('SAQ') ? false : true,
     });
   }
   return value;
@@ -64,15 +63,44 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
 
   const currentSolveCategoryRef = useRef<ProblemCategory | null>(null);
 
-  const [toastOpen, setToastOpen] = useState(false);
-  const { Toaster, setToastDescription, setToastIcon } = useToast(
-    toastOpen,
-    setToastOpen
-  );
   const { user, setUser } = userStore.getState();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isPageLoading, setIsPageLoading] = useState(true);
+
+  const answerFormRef = useRef<HTMLDivElement>(null);
+  const [answerListOpen, setAnswerListOpen] = useState(false);
+  const answerClosedFormRef = useRef<HTMLDivElement>(null);
+
+  const [userSolvingStatus, setUserSolvingStatus] = useState<
+    'No_Data' | 'Can_Not_Solve' | 'Can_Solve' | 'Unknown_Error'
+  >('Can_Solve');
+
+  const router = useRouter();
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (
+        answerFormRef.current &&
+        !answerFormRef.current.contains(event.target as Node)
+      ) {
+        closeAnswerList();
+      }
+    };
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, []);
+  const closeAnswerList = () => {
+    setAnswerListOpen(false);
+  };
+  const openAnswerList = () => {
+    setAnswerListOpen(true);
+  };
+
+  const handleAnswerSelect = (index: number) => {
+    setSelectedAnswer(String(index));
+  };
 
   const getRandomProblem = async () => {
     try {
@@ -102,7 +130,9 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
       const solveType = checkCanSolveProblemType(targetCategory);
       if (!solveType) return;
       const randomType =
-        solveType === 'BOTH' ? getRandomProblemType() : solveType;
+        //* 현재는 MAQ만 풀 수 있으므로 주석처리
+        // solveType === 'BOTH' ? getRandomProblemType() : solveType;
+        ProblemCategoryType.MAQ;
       if (randomType === ProblemCategoryType.MAQ) {
         currentSolveCategoryRef.current =
           `${targetCategory}_${ProblemCategoryType.MAQ}` as ProblemCategory;
@@ -157,16 +187,16 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
           item.category.split('_')[0] === targetCategory
       );
       if (canSolveData.length) {
-        // MAQ, SAQ
-        const first = canSolveData[0].canSolve
+        // MAQ, SAQ 순서대로 0인덱스, 1인덱스에 들어있음
+        const canSolveMAQ = canSolveData[0].canSolve
           ? (canSolveData[0].category.split('_')[1] as ProblemCategoryType)
           : null;
-        const second = canSolveData[1].canSolve
+        const canSolveSAQ = canSolveData[1].canSolve
           ? (canSolveData[1].category.split('_')[1] as ProblemCategoryType)
           : null;
-        if (first && second) {
+        if (canSolveMAQ && canSolveSAQ) {
           return 'BOTH';
-        } else if (!first && second) {
+        } else if (!canSolveMAQ && canSolveSAQ) {
           const newData = data.map((value: CanSolveProblemInfo) => {
             if (value.category === canSolveData[0].category) {
               return {
@@ -177,8 +207,8 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
             return value;
           });
           sessionStorage.setItem('canSolveProblem', JSON.stringify(newData));
-          return second;
-        } else if (first && !second) {
+          return canSolveSAQ as ProblemCategoryType.SAQ;
+        } else if (canSolveMAQ && !canSolveSAQ) {
           const newData = data.map((value: CanSolveProblemInfo) => {
             if (value.category === canSolveData[1].category) {
               return {
@@ -189,7 +219,7 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
             return value;
           });
           sessionStorage.setItem('canSolveProblem', JSON.stringify(newData));
-          return first;
+          return canSolveMAQ as ProblemCategoryType.MAQ;
         } else {
           const newData = data.map((value: CanSolveProblemInfo) => {
             if (value.category.split('_')[0] === category) {
@@ -223,8 +253,13 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
         await getProblemByCategory(category);
       }
     } catch (e) {
-      console.log(e);
-      if ((e as ServerErrorResponse).ecode === Ecode.E0406) {
+      console.log('error occured', e);
+      if ((e as ServerErrorResponse).ecode === Ecode.E0404) {
+        setSelectedAnswer(null);
+        setProblemAnswer(null);
+        setCurrentQuestionWithType(null);
+        setUserSolvingStatus('No_Data');
+      } else if ((e as ServerErrorResponse).ecode === Ecode.E0406) {
         const disableCanSolveDataStorage =
           sessionStorage.getItem('canSolveProblem');
         if (disableCanSolveDataStorage) {
@@ -285,21 +320,43 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
     try {
       if (currentQuestionWithType.problemType === ProblemCategoryType.MAQ) {
         const res = await sendMAQAnswerApi(id, answer);
-        setProblemAnswer(res.payload as SendMAQAnswerRes);
-        setUser({
-          ...user,
-          userScore: (res.payload as SendMAQAnswerRes).userScore,
-        } as UserInfo);
+        if (res.ok) {
+          setProblemAnswer(res.payload as SendMAQAnswerRes);
+          setUser({
+            ...user,
+            userScore: (res.payload as SendMAQAnswerRes).userScore,
+          } as UserInfo);
+          return;
+        }
+        throw res.payload as ServerErrorResponse;
       } else {
         const res = await sendSAQAnswerApi(id, answer);
-        setProblemAnswer(res.payload as SendSAQAnswerRes);
-        setUser({
-          ...user,
-          userScore: (res.payload as SendSAQAnswerRes).userScore,
-        } as UserInfo);
+        if (res.ok) {
+          setProblemAnswer(res.payload as SendSAQAnswerRes);
+          setUser({
+            ...user,
+            userScore: (res.payload as SendSAQAnswerRes).userScore,
+          } as UserInfo);
+          return;
+        }
+        throw res.payload as ServerErrorResponse;
       }
     } catch (e) {
       console.log(e);
+      console.log('problemAnswer', problemAnswer);
+      if ((e as ServerErrorResponse).ecode !== undefined) {
+        switch ((e as ServerErrorResponse).ecode) {
+          case Ecode.E0407:
+            setUserSolvingStatus('Can_Not_Solve');
+            return;
+          case Ecode.E0406:
+            setUserSolvingStatus('No_Data');
+            return;
+          default:
+            setUserSolvingStatus('Unknown_Error');
+            return;
+        }
+      }
     } finally {
       setIsLoading(false);
     }
@@ -310,21 +367,27 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
       const res = await questionBookmarkToggleApi(questionId);
       if (res.ok) {
         if (res.payload) {
-          setToastDescription('북마크가 추가되었습니다.');
+          toastStore.update({
+            status: ToastType.success,
+            title: '북마크가 추가되었습니다.',
+          });
         } else {
-          setToastDescription('북마크가 삭제되었습니다.');
+          toastStore.update({
+            status: ToastType.success,
+            title: '북마크가 삭제되었습니다.',
+          });
         }
-        setToastIcon(ToastType.success);
         return res.payload as boolean;
       }
       return false;
     } catch (e) {
       console.log(e);
-      setToastDescription('일시적인 오류가 발생하였습니다.');
-      setToastIcon(ToastType.error);
+      toastStore.update({
+        status: ToastType.error,
+        title: '일시적인 오류가 발생하였습니다.',
+      });
+
       return false;
-    } finally {
-      setToastOpen(true);
     }
   };
 
@@ -334,7 +397,12 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
   }, []);
 
   useEffect(() => {
-    if (!isPageLoading && category === 'random' && !currentQuestionWithType) {
+    if (
+      !isPageLoading &&
+      category === 'random' &&
+      !currentQuestionWithType &&
+      userSolvingStatus === 'Can_Solve'
+    ) {
       getProblem(category);
     }
   }, [isPageLoading]);
@@ -343,13 +411,20 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
     selectedAnswer,
     currentQuestionWithType,
     problemAnswer,
+    userSolvingStatus,
     setSelectedAnswer,
     sendAnswerButton,
     bookMarkToggle,
     handleNextButton,
     isLoading,
     isPageLoading,
-    Toaster,
+    router,
+    answerFormRef,
+    answerListOpen,
+    openAnswerList,
+    closeAnswerList,
+    answerClosedFormRef,
+    handleAnswerSelect,
   };
 };
 export default useSolvingProblem;

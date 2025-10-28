@@ -1,11 +1,24 @@
 'use client';
+import { userStore } from '@/shared/state/userStore/model';
 import useWriteSuggestionPage from '../model/writeSuggestionPageHook';
+import ButtonPixel from '@/shared/button/buttonPixel';
+import { ComponentLoader } from '@/feature/spinner/ui/componentLoader';
 
 const WriteSuggestionPage = () => {
-  const { title, setTitle, content, setContent, submitted, handleSubmit } =
-    useWriteSuggestionPage();
+  const {
+    title,
+    setTitle,
+    content,
+    setContent,
+    submitted,
+    handleSubmit,
+    isSumitting,
+  } = useWriteSuggestionPage();
+
+  const user = userStore.getState().user;
+
   return (
-    <div className="flex h-screen w-[90vw] max-w-[1100px] flex-col">
+    <div className="flex w-full flex-col px-4">
       <div className="relative w-full flex-col items-center">
         <div
           className={`absolute left-1/2 top-4 z-50 w-[90%] max-w-md -translate-x-1/2 transform rounded-md bg-green-500 px-4 py-3 text-center text-white shadow-lg transition-all duration-500 ease-in-out ${
@@ -16,43 +29,42 @@ const WriteSuggestionPage = () => {
         >
           건의사항이 제출되었습니다!
         </div>
-
-        <div className="flex h-[50px] items-center text-lg font-bold">
-          건의사항 작성하기
+        <div className="mt-4 font-pretandard text-title-section leading-[1.1] text-black dark:text-white">
+          Hey <span className="font-pixel">{user?.nickname}</span>,<br /> What
+          can I help you with?
         </div>
-
-        <div className="rounded-xl bg-white p-6 shadow-md">
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="mt-2 font-pretandard text-black dark:text-white">
+          <form className="space-y-4" autoComplete="off">
             <div>
-              <label className="mb-1 block font-medium">제목</label>
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
-                placeholder="제목을 입력하세요"
-                className="w-full rounded-md border p-2"
+                placeholder="Title"
+                className="w-full rounded-t-2xl border-b-[1.5px] border-black bg-transparent p-3 pl-3 font-semibold focus:outline-none dark:border-white"
               />
             </div>
 
             <div>
-              <label className="mb-1 block font-medium">내용</label>
               <textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 required
-                placeholder="건의하고 싶은 내용을 작성해주세요"
-                className="h-40 w-full resize-none rounded-md border p-2"
+                placeholder="Text"
+                className="h-[clamp(50px,80vh,320px)] w-full resize-none rounded-md border-[1.5px] border-black bg-transparent p-3 font-semibold focus:outline-none"
               />
-            </div>
-
-            <div className="text-right">
-              <button className="rounded-xl bg-orange-300 px-6 py-2 font-semibold text-white shadow-md transition-colors duration-200 hover:bg-orange-500">
-                제출하기
-              </button>
             </div>
           </form>
         </div>
+      </div>
+      <div className="mt-3 w-full">
+        <ButtonPixel
+          status={isSumitting ? 'inactive' : 'default'}
+          onClick={handleSubmit}
+        >
+          {isSumitting ? <ComponentLoader /> : 'Submit'}
+        </ButtonPixel>
       </div>
     </div>
   );

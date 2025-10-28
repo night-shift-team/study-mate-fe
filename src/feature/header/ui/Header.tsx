@@ -1,67 +1,41 @@
 'use client';
 import React from 'react';
-import Logo from '@public/assets/icons/header/mascotIcon.svg';
-import TextLogo from '@public/assets/backgroundImages/main/logo.svg';
-import RightHeader from '../ui/rightHeader';
-import Link from 'next/link';
+
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import { usePathname } from 'next/navigation';
-import { FaArrowLeft } from 'react-icons/fa';
-import UserStateWrapper from '@/shared/state/userStore/model/clientSideWrapper';
+// import { userStore } from '@/shared/state/userStore/model';
 
-const Header = () => {
-  const path = usePathname();
+import NewHeader from './newheader';
+const Header = ({ path }: { path: string }) => {
+  // const user = userStore.getState().user;
 
-  return (
-    <UserStateWrapper>
-      <div
-        className={`relative flex h-full w-full items-center justify-between px-0 md:px-4 md:shadow-sm ${path.startsWith(RouteTo.Store) ? 'bg-transparent backdrop-blur-sm' : 'bg-pointcolor-yogurt'}`}
-      >
-        {/* 데스크탑 좌측 로고 */}
-        <Link
-          href={RouteTo.Home}
-          className="relative hidden h-full md:flex md:w-[8rem]"
-        >
-          <Logo className="flex object-contain py-2.5 pl-2.5" />
-          <TextLogo
-            className={`h-auto w-full p-2 ${path.startsWith(RouteTo.Store) ? 'text-white' : 'text-black'}`}
-          />
-        </Link>
-        {/* 모바일 가운데 로고 */}
-        <div className="absolute flex h-full w-full items-center justify-center md:hidden">
-          <Link
-            href={RouteTo.Home}
-            className="relative flex h-full w-[6.5rem] p-0"
-          >
-            <Logo className="w-full p-2" />
-          </Link>
-        </div>
-
-        {/* 모바일 좌측 뒤로가기 버튼 */}
-        {path === RouteTo.Home ||
-        path === RouteTo.Login ||
-        path === RouteTo.Solve ||
-        path === RouteTo.AdminLogin ||
-        path === RouteTo.AdminDashboard ? null : (
-          <Link
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              window.history.back();
-            }}
-            className="relative flex h-full w-[6.5rem] items-center pl-4 md:ml-8 md:hidden md:w-[8rem]"
-          >
-            <FaArrowLeft />
-          </Link>
-        )}
-
-        {/* 우측 메뉴 */}
-        <div className="flex h-full w-full items-center justify-end pr-4 md:w-auto">
-          <RightHeader />
-        </div>
-      </div>
-    </UserStateWrapper>
-  );
+  if (path === RouteTo.ResetPassword) {
+    return <NewHeader left="Back" center="None" right="None" />;
+  } else if (path === RouteTo.ChangePassword) {
+    return <NewHeader left="Back" center="None" right="None" />;
+  } else if (path === RouteTo.Solve) {
+    return <NewHeader left="None" center="StudyMate" right="Avartar" />;
+  } else if (path === RouteTo.SolveSolution) {
+    return <NewHeader left="Back" center="StudyMate" right="Avartar" />;
+  } else if (path === RouteTo.Rank) {
+    return <NewHeader left="None" center="StudyMate" right="None" />;
+  } else if (path === RouteTo.Store) {
+    return <NewHeader left="None" center="StudyMate" right="Avartar" />;
+  } else if (path === RouteTo.StorePurchaseHistory) {
+    return <NewHeader left="Back" center="StudyMate" right="Avartar" />;
+  } else if (path === RouteTo.Announcement) {
+    return <NewHeader left="None" center="StudyMate" right="None" />;
+  } else if (path.startsWith(RouteTo.Announcement + '/')) {
+    return <NewHeader left="Back" center="StudyMate" right="None" />;
+  } else if (path === RouteTo.Mypage) {
+    return <NewHeader left="None" center="StudyMate" right="DarkMode" />;
+  } else if (path.startsWith(RouteTo.Suggestion)) {
+    return <NewHeader left="Back" center="StudyMate" right="None" />;
+  } else if (path.startsWith(RouteTo.LevelTestResult + '/')) {
+    return <NewHeader left="Back" center="StudyMate" right="Avartar" />;
+  } else if (path.startsWith(RouteTo.Mypage)) {
+    return <NewHeader left="Back" center="StudyMate" right="Avartar" />;
+  }
+  return null;
 };
 
 export default Header;

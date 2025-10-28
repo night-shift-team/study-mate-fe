@@ -1,12 +1,13 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { getQuestionHistoryApi } from '../api';
+import { getQuestionHistoryApi, QuestionHistoryRes } from '../api';
 import { useParams } from 'next/navigation';
 import { ProblemCategoryTitle } from '@/shared/problem/model/problemInfo.types';
 
 const useCategoryProblemHistory = () => {
   const { category } = useParams();
-  const [questionHistory, setQuestionHistory] = useState<any[]>([]);
+  const [questionHistory, setQuestionHistory] =
+    useState<QuestionHistoryRes['content']>();
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const itemsPerPage = 5;
@@ -15,17 +16,20 @@ const useCategoryProblemHistory = () => {
     if (!category) return;
 
     setLoading(true);
-    getQuestionHistoryApi(100, 100000)
+    getQuestionHistoryApi(10, 100000)
       .then((res) => {
         if (res.ok && res.payload && 'content' in res.payload) {
           setQuestionHistory(res.payload.content);
         }
       })
-      .catch(console.error)
+      .catch((e) => {
+        console.log(e);
+        setQuestionHistory([]);
+      })
       .finally(() => setLoading(false));
   }, [category]);
 
-  const filteredHistory = questionHistory.filter(
+  const filteredHistory = questionHistory?.filter(
     (history) =>
       history.questionType === `${category}_MAQ` ||
       history.questionType === `${category}_SAQ`
@@ -33,7 +37,7 @@ const useCategoryProblemHistory = () => {
 
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedHistory = filteredHistory.slice(startIndex, endIndex);
+  const paginatedHistory = filteredHistory?.slice(startIndex, endIndex);
 
   const categoryBgColors: Record<ProblemCategoryTitle, string> = {
     ALGORITHUM: 'bg-[#DDEDFB]',

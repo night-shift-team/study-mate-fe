@@ -1,3 +1,4 @@
 export const resetFocus = () => {
-  (document.activeElement as HTMLElement).blur();
+  if (typeof document !== 'undefined')
+    (document.activeElement as HTMLElement).blur();
 };

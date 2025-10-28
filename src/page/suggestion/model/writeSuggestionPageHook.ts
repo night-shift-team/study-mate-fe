@@ -8,12 +8,15 @@ const useWriteSuggestionPage = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [isSumitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log('handleSubmit');
     e.preventDefault();
 
     try {
+      setIsSubmitting(true);
       await createQnABoardApi({ title, content });
       setSubmitted(true);
       setTitle('');
@@ -21,6 +24,8 @@ const useWriteSuggestionPage = () => {
     } catch (error) {
       console.error('게시글 생성 실패:', error);
       alert('게시글 생성 중 오류가 발생했습니다.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -28,13 +33,21 @@ const useWriteSuggestionPage = () => {
     if (submitted) {
       const timer = setTimeout(() => {
         setSubmitted(false);
-        router.push(RouteTo.Suggestion);
+        router.push(RouteTo.Announcement);
       }, 2000);
 
       return () => clearTimeout(timer);
     }
   }, [submitted, router]);
 
-  return { title, setTitle, content, setContent, submitted, handleSubmit };
+  return {
+    title,
+    setTitle,
+    content,
+    setContent,
+    submitted,
+    handleSubmit,
+    isSumitting,
+  };
 };
 export default useWriteSuggestionPage;

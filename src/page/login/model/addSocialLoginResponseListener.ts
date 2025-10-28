@@ -10,15 +10,18 @@ import { setTokens } from './setTokens';
 import { getUserInfo } from './getUserInfo';
 
 import { LoginToastText } from './loginToastText';
-import { ToastType } from '@/shared/toast/model/toastHook';
 import { UserInfo } from '@/shared/user/model/userInfo.types';
 import { Ecode, EcodeMessage } from '@/shared/api/model/ecode';
+import { ToastType } from '@/shared/state/toast/toastStore';
 
 export const addSocialLoginRedirectDataListener = (
   setLoading: Dispatch<SetStateAction<boolean>>,
-  setToastDescription: (description: string) => void,
-  setToastOpen: Dispatch<SetStateAction<boolean>>,
-  setToastIcon: (status: ToastType) => void,
+  setToastOpen: (
+    status?: ToastType,
+    title?: string,
+    description?: string,
+    duration?: number
+  ) => void,
   setUser: (newUser: UserInfo | null) => void
 ) => {
   const router = useRouter();
@@ -37,18 +40,10 @@ export const addSocialLoginRedirectDataListener = (
       }
       setTokens(res.payload as LoginRes);
       setTokenToHeader(localStorage.getItem('accessToken'));
-      await getUserInfo(
-        setToastDescription,
-        setToastOpen,
-        setToastIcon,
-        setUser,
-        router
-      );
+      await getUserInfo(setToastOpen, setUser, router);
     } catch (e: any) {
       console.log(e);
-      setToastDescription(LoginToastText.LOGIN_FAILED);
-      setToastIcon(ToastType.error);
-      setToastOpen(true);
+      setToastOpen(ToastType.error, LoginToastText.LOGIN_FAILED);
     } finally {
       setLoading(false);
     }

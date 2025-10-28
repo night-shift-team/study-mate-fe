@@ -17,7 +17,6 @@ export interface SignUpRes {
 
 export interface GetUserInfoRes {
   userId: string;
-  loginType: UserLoginType;
   loginId: string;
   nickname: string;
   profileImg: string;
@@ -25,6 +24,11 @@ export interface GetUserInfoRes {
   role: number;
   registeredAt: string;
   userScore: number;
+  userOAuth: {
+    oauthType: UserLoginType;
+    accessToken: string;
+  }[];
+  passwordChangeRequired: boolean;
 }
 
 export const checkDuplicateNicknameApi = async (nickname: string) => {
@@ -52,6 +56,27 @@ export const signUpApi = async (data: SignUpFormData) => {
   return await _apiFetch<SignUpRes>(
     'POST',
     API_Prefix + '/sign-up/local',
+    body
+  );
+};
+
+export const sendSignUpEmailVerificationApi = async (email: string) => {
+  const body = { email: email };
+  return await _apiFetch<string>(
+    'POST',
+    API_Prefix + '/sign-up/local/email-verification',
+    body
+  );
+};
+
+export const verifySignUpEmailApi = async (
+  email: string,
+  authNumber: string
+) => {
+  const body = { email: email, code: authNumber };
+  return await _apiFetch<string>(
+    'POST',
+    API_Prefix + '/sign-up/local/email-verification/verify',
     body
   );
 };

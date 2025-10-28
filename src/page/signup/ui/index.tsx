@@ -1,9 +1,14 @@
 'use client';
 
-import { Spinner } from '@/feature/spinner/ui/spinnerUI';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
-import { PopupConfirm } from '@/shared/popUp/ui/popupV2';
 import useSignUpPage from '../model/signUpPageHook';
+import InputForm from '@/shared/input/inputForm';
+import ButtonPixel from '@/shared/button/buttonPixel';
+import Link from 'next/link';
+import { SvgIcon } from '@mui/material';
+import HomeLogo from '@public/assets/icons/header/mobile_logo.svg';
+import EmailValidationPage from './emailValidation';
+import { ComponentLoader } from '@/feature/spinner/ui/componentLoader';
 
 export interface SignUpFormData {
   name: string;
@@ -20,114 +25,153 @@ const SignUpPage = () => {
     confirmPasswordRef,
     formData,
     handleChange,
-    Toaster,
-    popupOpen,
-    router,
+    // Toaster,
     handleSubmit,
     isLoading,
+    validationStatus,
+    isFormChecked,
+    setIsFormChecked,
+    getButtonText,
+    AuthNumberRef,
+    setFormData,
+    isAuthNumberValid,
+    isEmailAuthComplete,
+    setIsEmailAuthComplete,
+    passwordValidation,
   } = useSignUpPage();
+
   return (
-    <div className="relative flex h-full w-full items-center justify-center p-4">
-      <Toaster />
-      {popupOpen && (
-        <PopupConfirm
-          size="sm"
-          title="회원가입"
-          content="회원가입이 정상적으로 완료되었습니다"
-          onConfirm={() => {
-            router.push(RouteTo.Login);
-          }}
+    <div className="relative flex h-full w-full flex-col items-center justify-center px-4">
+      <SvgIcon
+        component={HomeLogo}
+        inheritViewBox
+        sx={{ width: 'auto', height: '40px' }}
+      />
+      {!isFormChecked.email || isEmailAuthComplete ? (
+        <>
+          <span className="mt-6 text-title-main">Sign Up</span>
+          <div className="mt-12 flex w-full flex-col items-center gap-4">
+            <form
+              onSubmit={handleSubmit}
+              className="w-full max-w-[400px]"
+              noValidate
+              autoComplete="off"
+            >
+              <div className="flex flex-col gap-2">
+                <div className="flex flex-col">
+                  <InputForm
+                    ref={nameRef}
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="Nickname"
+                    status={validationStatus.name.status}
+                    className="font-pretandard text-label"
+                    disabled={isFormChecked.nickname}
+                  />
+                  <span className="mt-2 pl-2 text-[11px] text-[#ED3241]">
+                    {validationStatus.name.status !== 'empty' &&
+                      validationStatus.name.message}
+                  </span>
+                </div>
+                {isFormChecked.nickname && (
+                  <div className="flex flex-col">
+                    <InputForm
+                      ref={emailRef}
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="Enter your Email"
+                      status={validationStatus.email.status}
+                      className="font-pretandard text-label"
+                      disabled={isFormChecked.email && isEmailAuthComplete}
+                    />
+                    <span className="mt-2 pl-2 text-[11px] text-[#ED3241]">
+                      {validationStatus.email.status !== 'empty' &&
+                        validationStatus.email.message}
+                    </span>
+                  </div>
+                )}
+                {isFormChecked.email && (
+                  <>
+                    <div className="flex flex-col font-pretandard">
+                      <InputForm
+                        ref={passwordRef}
+                        type="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        placeholder="Password"
+                        status={validationStatus.password.status}
+                        className="font-pretandard text-label"
+                      />
+                      <span
+                        className={`mt-2 pl-1 text-[11px] ${formData.password.length >= 6 ? 'text-success' : 'text-[#ED3241]'} `}
+                      >
+                        • 6글자 이상
+                      </span>
+                      <span
+                        className={`pl-1 text-[11px] ${passwordValidation(formData.password) ? 'text-success' : 'text-[#ED3241]'}`}
+                      >
+                        • 영문 대문자 또는 특수문자 포함
+                      </span>
+                      {/* <span className="mt-2 pl-2 text-[11px] text-[#ED3241]">
+                        {validationStatus.password.status !== 'empty' &&
+                          validationStatus.password.message}
+                      </span> */}
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                      <InputForm
+                        ref={confirmPasswordRef}
+                        type="password"
+                        name="confirmPassword"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        placeholder="Check Password"
+                        status={validationStatus.confirmPassword.status}
+                        className="font-pretandard text-label"
+                      />
+                      <span className="mt-2 pl-2 text-[11px] text-[#ED3241]">
+                        {validationStatus.confirmPassword.status !== 'empty' &&
+                          validationStatus.confirmPassword.message}
+                      </span>
+                    </div>
+                  </>
+                )}
+                <div className="mt-4">
+                  {isLoading ? (
+                    <ButtonPixel type="submit" disabled status="inactive">
+                      <ComponentLoader />
+                    </ButtonPixel>
+                  ) : (
+                    <ButtonPixel type="submit" status="default">
+                      {getButtonText(isFormChecked)}
+                    </ButtonPixel>
+                  )}
+                </div>
+                <div className="mt-12 flex justify-center whitespace-pre-wrap font-pretandard text-label">
+                  <span>{'Already have an account? '}</span>
+                  <Link href={RouteTo.Login}>
+                    <span className="text-point-orange">Login here</span>
+                  </Link>
+                </div>
+              </div>
+            </form>
+          </div>
+        </>
+      ) : (
+        <EmailValidationPage
+          ref={AuthNumberRef}
+          email={formData.email}
+          setIsEmailAuthComplete={setIsEmailAuthComplete}
+          checkEmailAuthFunc={isAuthNumberValid}
+          resetEmail={setFormData}
+          resetEmailChcked={setIsFormChecked}
         />
       )}
-      <div className="flex w-full max-w-[550px] flex-col justify-center gap-8 rounded-[1rem] bg-white p-4 shadow-lg md:p-8">
-        <div className="flex flex-col items-center gap-6">
-          <h1 className="mt-5 text-xl font-semibold">이메일 회원가입</h1>
-          <form
-            onSubmit={handleSubmit}
-            className="w-full max-w-[400px]"
-            noValidate
-          >
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-col gap-2">
-                <label className="flex items-center gap-1 pl-1 text-sm text-gray-600">
-                  이름 <span className="text-red-500">&#9913;</span>
-                </label>
-                <input
-                  ref={nameRef}
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="이름을 입력하세요"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FEA1A1]"
-                />
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <label className="flex items-center gap-1 pl-1 text-sm text-gray-600">
-                  이메일 <span className="text-red-500">&#9913;</span>
-                </label>
-                <input
-                  ref={emailRef}
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="이메일을 입력하세요"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FEA1A1]"
-                />
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <label className="flex items-center gap-1 pl-1 text-sm text-gray-600">
-                  비밀번호 <span className="text-red-500">&#9913;</span>
-                </label>
-                <input
-                  ref={passwordRef}
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="비밀번호를 입력하세요"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FEA1A1]"
-                />
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <label className="flex items-center gap-1 pl-1 text-sm text-gray-600">
-                  비밀번호 확인 <span className="text-red-500">&#9913;</span>
-                </label>
-                <input
-                  ref={confirmPasswordRef}
-                  type="password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  placeholder="비밀번호를 확인해주세요"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FEA1A1]"
-                />
-              </div>
-
-              {isLoading ? (
-                <button
-                  type="submit"
-                  disabled
-                  className="mt-4 flex h-[42px] w-full items-center justify-center rounded-lg bg-gray-400 p-2 text-white"
-                >
-                  <Spinner color="#ffffff" />
-                </button>
-              ) : (
-                <button
-                  type="submit"
-                  className="mt-4 h-[42px] rounded-lg bg-pointcolor-sand/80 py-2 text-gray-600 transition-colors inner-border-pointcolor-beigebrown hover:bg-[#F0EDD4] hover:text-black hover:inner-border-[1.2px]"
-                >
-                  회원가입
-                </button>
-              )}
-            </div>
-          </form>
-        </div>
-      </div>
     </div>
   );
 };

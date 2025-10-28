@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useRef, useState } from 'react';
 import {
   getQuestionFavoriteApi,
@@ -5,23 +6,11 @@ import {
   QuestionFavoriteRes,
 } from '../api';
 import { ProblemDetailInfoRes } from '@/page/adminProblem/api';
-import {
-  Cloud_IMG,
-  Dust_IMG,
-  Grain_IMG,
-  Peddle_IMG,
-  Range_IMG,
-  Rock_IMG,
-  Star_IMG,
-  Strom_IMG,
-} from './img';
-import Image from 'next/image';
-import { LuBookCheck } from 'react-icons/lu';
-import { PiRankingLight } from 'react-icons/pi';
-import { SlNote } from 'react-icons/sl';
+
 import { Swiper as SwiperType } from 'swiper';
 import { getUserRankingApi } from '@/page/rank/api';
 import { userStore } from '@/shared/state/userStore/model';
+import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
 
 const useMyPage = () => {
   const [questionHistory, setQuestionHistory] = useState<any[]>([]);
@@ -33,12 +22,8 @@ const useMyPage = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popUpProblemDetail, setPopupProblemDetail] =
     useState<ProblemDetailInfoRes | null>(null);
-
-  useEffect(() => {
-    userRanking();
-    userQuestionHistory();
-    userFavoriteApi();
-  }, []);
+  const [isFetched, setIsFetched] = useState(false);
+  const setLoadingStatus = pageLoaderStore.getState().setStatus;
 
   const userRanking = async () => {
     try {
@@ -86,41 +71,27 @@ const useMyPage = () => {
     }
   };
 
-  const getScoreTierInfo = (score: number) => {
-    if (score >= 256000) return { img: Star_IMG };
-    if (score >= 128000) return { img: Strom_IMG };
-    if (score >= 32000) return { img: Cloud_IMG };
-    if (score >= 16000) return { img: Range_IMG };
-    if (score >= 8000) return { img: Rock_IMG };
-    if (score >= 4000) return { img: Peddle_IMG };
-    if (score >= 2000) return { img: Grain_IMG };
-    if (score >= 1000) return { img: Dust_IMG };
-    return { img: Dust_IMG };
+  const getRankInfo = (myRanking: number) => {
+    if (myRanking === 1) return 'st';
+    if (myRanking === 2) return 'nd';
+    if (myRanking === 1) return 'rd';
+    return 'th';
   };
 
   const cardData = [
     {
-      count: (!myRanking ? '-' : myRanking) + '등',
-      label: '순위',
-      img: <PiRankingLight />,
+      count: (!myRanking ? '-' : myRanking) + getRankInfo(myRanking ?? 0),
+      label: 'Rank',
     },
     {
       count: (
         <div className="relative aspect-1 w-6 md:w-8">
-          {user ? (
-            <Image
-              src={getScoreTierInfo(user.userScore ?? 0).img}
-              alt="Score Tier"
-              onError={(e) => (e.currentTarget.src = Dust_IMG)}
-              fill
-            />
-          ) : null}
+          {myRanking ? user?.userScore : ''}
         </div>
       ),
-      label: '점수',
-      img: <SlNote />,
+      label: 'Score',
     },
-    { count: totalElements, label: '문제수', img: <LuBookCheck /> },
+    { count: totalElements, label: 'Solved' },
   ];
 
   const scrollByCard = (direction: 'left' | 'right') => {
@@ -132,6 +103,30 @@ const useMyPage = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      await Promise.all([
+        userRanking(),
+        userQuestionHistory(),
+        userFavoriteApi(),
+      ]);
+    };
+    fetchData().finally(() => {
+      setTimeout(() => {
+        requestAnimationFrame(() => {
+          setIsFetched(true);
+        });
+      }, 0);
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log('isFetched changed:', isFetched);
+    if (cardData[2].count) {
+      setLoadingStatus('loaded');
+    }
+  }, [cardData[2].count]);
+
   return {
     cardData,
     favoriteList,
@@ -142,6 +137,8 @@ const useMyPage = () => {
     isPopupOpen,
     setIsPopupOpen,
     swiperRef,
+    setIsFetched,
+    isFetched,
   };
 };
 export default useMyPage;

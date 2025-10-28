@@ -1,9 +1,17 @@
+'use client';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { levelTestCaching } from './levelTestCaching';
+import { useEffect, useRef, useState } from 'react';
+import levelTestCaching from './levelTestCaching';
 import { getLevelTestResultApi, GetLevelTestResultRes } from '../api';
 import { ServerErrorResponse } from '@/shared/api/model/config';
 import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import { getWithCache } from '@/shared/api/model/apiCacheHook';
+import { userStore } from '@/shared/state/userStore/model';
+
+export interface UserAnswerWithId {
+  id: string;
+  answer: '1' | '2' | '3' | '4';
+}
 
 const useLevelTest = () => {
   const router = useRouter();
@@ -11,7 +19,11 @@ const useLevelTest = () => {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState<boolean>(false);
   const [userAnswers, setUserAnswers] = useState<number[]>([]);
-  const [isStarted, setIsStarted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [answerListOpen, setAnswerListOpen] = useState(false);
+  const answerFormRef = useRef<HTMLDivElement>(null);
+  const answerClosedFormRef = useRef<HTMLDivElement>(null);
+  const user = userStore((s) => s.user);
 
   // const [levelTestLists, setLevelTestLists] = useState<ProblemInfoLevelTest[]>(
   //   []
@@ -20,11 +32,10 @@ const useLevelTest = () => {
   const [isGetResultApiLoading, setIsGetResultApiLoading] =
     useState<boolean>(false);
 
-  const { data: levelTestLists = [], isLoading: isPageLoading } =
-    levelTestCaching();
+  const { data: levelTestLists, isLoading: isPageLoading } = levelTestCaching();
 
   useEffect(() => {
-    if (levelTestLists.length > 0) {
+    if (levelTestLists && levelTestLists.length > 0) {
       const questionList = levelTestLists.map((item, index) => ({
         no: index + 1,
         id: item.id,
@@ -42,12 +53,23 @@ const useLevelTest = () => {
   };
 
   const getLevelTestResult = async (updateAnswer: number[]) => {
+    if (!levelTestLists || levelTestLists.length === 0) return;
+
     try {
       const reqData = updateAnswer.map((answer, index) => ({
         id: levelTestLists[index].id,
         answer: answer.toString() as '1' | '2' | '3' | '4',
       }));
-      const res = await getLevelTestResultApi(reqData);
+      sessionStorage.setItem(
+        'levelTestUserAnswersWithId',
+        JSON.stringify(reqData)
+      );
+      const res = await getWithCache({
+        key: `LevelTest-getLevelTestResult-${user?.loginId ?? 'unknown'}`,
+        fetcher: async () => await getLevelTestResultApi(reqData),
+        expires: 9999 * 24 * 60 * 60, // 9999일
+      });
+
       if (!res.ok) throw res.payload as ServerErrorResponse;
       return res.payload as GetLevelTestResultRes;
     } catch (e) {
@@ -63,7 +85,7 @@ const useLevelTest = () => {
   };
 
   const handleNextQuestion = async () => {
-    if (!selectedAnswer) return;
+    if (!selectedAnswer || !levelTestLists) return;
     let updateAnswer: number[] = [];
     if (currentQuestionNo <= levelTestLists.length - 1) {
       if (!userAnswers[currentQuestionNo]) {
@@ -84,6 +106,7 @@ const useLevelTest = () => {
     // 마지막 문제일 경우
     try {
       setIsGetResultApiLoading(true);
+      setIsSubmitting(true);
       const res = await getLevelTestResult(updateAnswer);
       const userData = { ...res, userAnswers: updateAnswer };
       sessionStorage.setItem('levelTestResult', JSON.stringify(userData));
@@ -92,11 +115,32 @@ const useLevelTest = () => {
       console.log(e);
     }
   };
+  const closeAnswerList = () => {
+    setAnswerListOpen(false);
+  };
+  const openAnswerList = () => {
+    setAnswerListOpen(true);
+  };
+
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (
+        answerFormRef.current &&
+        !answerFormRef.current.contains(event.target as Node)
+      ) {
+        closeAnswerList();
+      }
+    };
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, []);
 
   return {
     isPageLoading,
-    isStarted,
-    setIsStarted,
+    isSubmitting,
+    setIsSubmitting,
     currentQuestionNo,
     levelTestLists,
     isGetResultApiLoading,
@@ -105,6 +149,11 @@ const useLevelTest = () => {
     handleAnswerSelect,
     handlePrevQuestion,
     handleNextQuestion,
+    answerListOpen,
+    openAnswerList,
+    closeAnswerList,
+    answerFormRef,
+    answerClosedFormRef,
   };
 };
 export default useLevelTest;
