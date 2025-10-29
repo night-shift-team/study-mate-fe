@@ -18,6 +18,7 @@ import { TooltipContents } from '@/shared/state/tooltip/model/tooltipContents';
 import { InputStatus } from '@/shared/components/input/useInput';
 import dynamic from 'next/dynamic';
 import { toastStore, ToastType } from '@/shared/state/toast/toastStore';
+import { RouteTo } from '@/shared/routes/model/getRoutePath';
 const Toaster = dynamic(() => import('@/shared/toast/ui/toaster'), {
   ssr: false,
 });
@@ -134,7 +135,26 @@ const useLoginPage = () => {
       const tokens = await requestSignIn(formData.email, formData.password);
       setTokens(tokens);
       setTokenToHeader(localStorage.getItem('accessToken'));
-      await getUserInfo(setToastOpen, setUser, router);
+      const userInfoRes = await getUserInfo(setToastOpen, setUser, router);
+      if (!userInfoRes) {
+        throw new Error('유저 정보 불러오기 실패');
+      }
+      const res = await fetch('/api/session/start', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${tokens.accessToken}`,
+        },
+        credentials: 'include',
+      });
+      console.log('middleware set session res:', res);
+      if (userInfoRes.userScore === 0) {
+        router.push(RouteTo.Onboarding);
+      }
+      if (userInfoRes.passwordChangeRequired) {
+        router.push(RouteTo.ChangePassword);
+      } else {
+        router.push(RouteTo.Solve);
+      }
     } catch (error) {
       if ((error as ServerErrorResponse).ecode !== undefined) {
         console.log('에러,', error);

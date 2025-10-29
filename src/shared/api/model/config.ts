@@ -101,6 +101,13 @@ export const _apiFetch = async <T = any>(
         const refreshToken = localStorage.getItem('refreshToken');
         setTokenToHeader(refreshToken);
         const accessToken = await getAccessTokenFromRefreshToken(refreshToken);
+        await fetch('/api/session/start', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          credentials: 'include',
+        });
         setTokenToHeader(accessToken);
         return await _apiFetch(
           method,

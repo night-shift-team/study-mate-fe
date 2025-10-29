@@ -33,32 +33,26 @@ export const getUserInfo = async (
         localStorage.removeItem(UserStoreStorage.userStore);
 
         setToastOpen(ToastType.success, LoginToastText.LOGIN_FAILED);
-        return;
       }
-      router.push(RouteTo.Home);
+      // router.push(RouteTo.Home);
+      return;
     } else {
       const userData = res.payload as UserInfoRes;
       setUser(userData);
-      setToastOpen(ToastType.success, LoginToastText.LOGIN_SUCCESS);
-      setTimeout(() => {
-        if (isAdmin && userData.role >= 7) {
-          router.push(RouteTo.AdminDashboard);
-          return;
-        }
-        if (userData.userScore === 0) {
-          router.push(RouteTo.Onboarding);
-        }
-        if (userData.passwordChangeRequired) {
-          router.push(RouteTo.ChangePassword);
-        } else {
-          router.push(RouteTo.Solve);
-        }
-      }, 2500);
+      // setToastOpen(ToastType.success, LoginToastText.LOGIN_SUCCESS);
+
+      if (isAdmin && userData.role >= 7) {
+        router.push(RouteTo.AdminDashboard);
+        return;
+      }
+
+      return userData;
     }
   } catch (e: any) {
     const error = handleFetchErrors(e);
     if (error === 'TypeError' || error === 'AbortError') {
       console.log(e);
     }
+    return;
   }
 };
