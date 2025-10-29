@@ -39,6 +39,7 @@
     "dayjs": "^1.11.13",
     "framer-motion": "^12.6.0",
     "install": "^0.13.0",
+    "jose": "^6.1.0",
     "lexical": "^0.25.0",
     "lodash": "^4.17.21",
     "lowlight": "^3.3.0",
