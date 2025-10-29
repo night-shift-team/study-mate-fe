@@ -83,7 +83,7 @@ export const _backendFetch = async <T = any>({
     } as ApiResponse<ServerErrorResponse>;
   }
 };
-export const _serverFetch = async <T = any>({
+export const _bffFetch = async <T = any>({
   method,
   path,
   body,
@@ -96,7 +96,7 @@ export const _serverFetch = async <T = any>({
   requestContentType?: string;
   requestConfig?: RequestInit;
 }) => {
-  console.log('_serverFetch called... url: ', `${FrontendAPIDomain}${path}`);
+  console.log('_bffFetch called... url: ', `${FrontendAPIDomain}${path}`);
   Sentry.logger.info('User triggered test log', {
     log_source: 'sentry_test',
   });
