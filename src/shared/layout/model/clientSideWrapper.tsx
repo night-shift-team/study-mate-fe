@@ -9,18 +9,24 @@ const TabBarComponent = dynamic(
     import('@/shared/components/bar/TabBar').then((mod) => mod.TabBarComponent),
   { ssr: false }
 );
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import QueryProvider from './queryProvider';
 import ToastPortal from '@/shared/toast/ui/toaster';
 import PageWrapperLoader from '@/shared/state/spinner/pageWrapper';
 import { useLayoutEffect, useState } from 'react';
 import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
+import { userStore } from '@/shared/state/userStore/model';
+import { isAuthNeedPage } from '@/shared/api/model/getAuthNeedPage';
+import { getUserInfoApi } from '@/page/signup/api';
 
 const ClientSideWrapper = ({ children }: { children: React.ReactNode }) => {
   const path = usePathname();
   const getPageLoader = pageLoaderStore((s) => s.status);
   const setPageLoader = pageLoaderStore((s) => s.setStatus);
   const [pendingTime, setPendingTime] = useState(0);
+  const getUser = userStore((s) => s.user);
+  const setUser = userStore((s) => s.setUser);
+  const router = useRouter();
   const isNeccessaryHeader = (path: string) => {
     if (
       path === RouteTo.ResetPassword ||
@@ -39,6 +45,21 @@ const ClientSideWrapper = ({ children }: { children: React.ReactNode }) => {
     }
     return false;
   };
+
+  useLayoutEffect(() => {
+    if (isAuthNeedPage(path) && !getUser) {
+      getUserInfoApi()
+        .then((res) => {
+          if (res.ok) {
+            setUser('ecode' in res.payload ? null : res.payload);
+          }
+        })
+        .catch(() => {
+          setUser(null);
+          router.push(RouteTo.Login);
+        });
+    }
+  }, [getUser]);
 
   // 오래 지속되는 페이지 로더 해제
   useLayoutEffect(() => {
