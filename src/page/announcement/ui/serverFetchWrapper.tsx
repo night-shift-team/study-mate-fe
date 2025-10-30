@@ -7,7 +7,7 @@ const AnnouncementServerFetchWrapper = async () => {
     method: 'GET',
     path: '/api/v1/notice?page=0&limit=10',
     requestConfig: {
-      cache: 'force-cache',
+      cache: 'no-cache',
     },
   });
 
