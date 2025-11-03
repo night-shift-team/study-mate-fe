@@ -35,7 +35,7 @@ export async function POST(req: Request) {
   const isHttps = new URL(req.url).protocol === 'https:';
   res.headers.append(
     'Set-Cookie',
-    `__Host-sm_session=${session}; Path=/; HttpOnly; SameSite=Lax; Max-Age=900${isHttps ? '; Secure' : ''}`
+    `__Host-sm_session=${session}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${15 * 60}${isHttps ? '; Secure' : ''}`
   );
   res.headers.append(
     'Set-Cookie',

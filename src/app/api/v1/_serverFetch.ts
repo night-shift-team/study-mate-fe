@@ -68,6 +68,7 @@ export const _backendFetch = async <T = any>({
       // 텍스트 응답 처리
       payload = (await response.text()) as T;
     }
+    console.log('backend payload', payload);
     return {
       ok: response.ok,
       payload: payload,
