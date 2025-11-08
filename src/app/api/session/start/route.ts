@@ -32,14 +32,31 @@ export async function POST(req: Request) {
     .sign(secret);
 
   const res = NextResponse.json({ ok: true });
-  const isHttps = new URL(req.url).protocol === 'https:';
-  res.headers.append(
-    'Set-Cookie',
-    `__Host-sm_session=${session}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${15 * 60}${isHttps ? '; Secure' : ''}`
-  );
-  res.headers.append(
-    'Set-Cookie',
-    `__Host-sm_refresh=${refresh}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${60 * 60}${isHttps ? '; Secure' : ''}`
-  );
+  const isHttps =
+    process.env.NODE_ENV === 'production'
+      ? new URL(req.url).protocol === 'https:'
+      : false;
+
+  if (!isHttps) {
+    res.headers.append(
+      'Set-Cookie',
+      `__Local-sm_session=${session}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${15 * 60}`
+    );
+    res.headers.append(
+      'Set-Cookie',
+      `__Local-sm_refresh=${refresh}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${60 * 60}`
+    );
+  } else {
+    res.headers.append(
+      'Set-Cookie',
+      `__Host-sm_session=${session}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${15 * 60}; Secure`
+    );
+    res.headers.append(
+      'Set-Cookie',
+      `__Host-sm_refresh=${refresh}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${60 * 60}; Secure`
+    );
+  }
+
+  console.log("res, 'session started'", res);
   return res;
 }

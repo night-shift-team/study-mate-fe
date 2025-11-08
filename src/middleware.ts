@@ -18,10 +18,21 @@ export async function middleware(req: NextRequest) {
 
   const isHtmlNav = req.headers.get('accept')?.includes('text/html') ?? false;
   const isHttps = req.nextUrl.protocol === 'https:';
-
-  const session = req.cookies.get('__Host-sm_session')?.value || null;
-  const refresh = req.cookies.get('__Host-sm_refresh')?.value || null;
-
+  const isProduction = process.env.NODE_ENV === 'production';
+  const session = isProduction
+    ? req.cookies.get('__Host-sm_session')?.value || null
+    : req.cookies.get('__Local-sm_session')?.value || null;
+  const refresh = isProduction
+    ? req.cookies.get('__Host-sm_refresh')?.value || null
+    : req.cookies.get('__Local-sm_refresh')?.value || null;
+  console.log(
+    'isHtmlNav:',
+    isHtmlNav,
+    'Session:',
+    session,
+    'Refresh:',
+    refresh
+  );
   // 1) 세션이 없는 경우: refresh만으로 복구 시도
   if (!session) {
     if (refresh && (await isValidRefresh(refresh))) {
@@ -29,13 +40,17 @@ export async function middleware(req: NextRequest) {
       const sub = (await readSubFromToken(refresh))!;
       const newSession = await mintSession(sub);
       const res = NextResponse.next();
-      res.cookies.set('__Host-sm_session', newSession, {
-        httpOnly: true,
-        sameSite: 'lax',
-        path: '/',
-        maxAge: 15 * 60, // 15분
-        secure: isHttps,
-      });
+      res.cookies.set(
+        isProduction ? '__Host-sm_session' : '__Local-sm_session',
+        newSession,
+        {
+          httpOnly: true,
+          sameSite: 'lax',
+          path: '/',
+          maxAge: 15 * 60, // 15분
+          secure: isHttps,
+        }
+      );
       return res;
     }
     return redirectToLogin(req);
@@ -50,13 +65,17 @@ export async function middleware(req: NextRequest) {
       const sub = verified.sub!;
       const newSession = await mintSession(sub);
       const res = NextResponse.next();
-      res.cookies.set('__Host-sm_session', newSession, {
-        httpOnly: true,
-        sameSite: 'lax',
-        path: '/',
-        maxAge: 60 * 60,
-        secure: isHttps,
-      });
+      res.cookies.set(
+        isProduction ? '__Host-sm_session' : '__Local-sm_session',
+        newSession,
+        {
+          httpOnly: true,
+          sameSite: 'lax',
+          path: '/',
+          maxAge: 60 * 60,
+          secure: isHttps,
+        }
+      );
       return res;
     }
     // 리프레시가 없거나 무효 → 로그인 요구
