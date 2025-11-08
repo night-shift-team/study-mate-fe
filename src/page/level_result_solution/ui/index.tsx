@@ -230,14 +230,6 @@ const TestResultSolutionPage = ({
                 'Save this result'
               )}
             </ButtonPixel>
-            <ButtonPixel
-              status="default"
-              onClick={() => {
-                // 스크랩 폴더로 이동
-              }}
-            >
-              Go to Scrap Folder
-            </ButtonPixel>
           </>
         )}
         {type === 'solve' && (
