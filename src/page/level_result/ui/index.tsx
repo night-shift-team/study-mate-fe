@@ -67,9 +67,9 @@ const TestResultPage = () => {
         problemsIdWithTitle={problemListsArray}
         userAnswers={userAnswers}
       />
-      <ButtonPixel status="default">
-        <Link href={RouteTo.Home}> Go to Home </Link>
-      </ButtonPixel>
+      <Link href={RouteTo.Home}>
+        <ButtonPixel status="default">Go to Home</ButtonPixel>
+      </Link>
     </div>
   );
 };
