@@ -18,7 +18,7 @@ import { TooltipContents } from '@/shared/state/tooltip/model/tooltipContents';
 import { InputStatus } from '@/shared/components/input/useInput';
 import dynamic from 'next/dynamic';
 import { toastStore, ToastType } from '@/shared/state/toast/toastStore';
-import { RouteTo } from '@/shared/routes/model/getRoutePath';
+import { getRoutePathByUserInfo } from './userInfoRoute';
 const Toaster = dynamic(() => import('@/shared/toast/ui/toaster'), {
   ssr: false,
 });
@@ -147,14 +147,8 @@ const useLoginPage = () => {
         credentials: 'include',
       });
       console.log('middleware set session res:', res);
-      if (userInfoRes.userScore === 0) {
-        router.push(RouteTo.Onboarding);
-      }
-      if (userInfoRes.passwordChangeRequired) {
-        router.push(RouteTo.ChangePassword);
-      } else {
-        router.push(RouteTo.Solve);
-      }
+      const routePath = getRoutePathByUserInfo(userInfoRes);
+      router.push(routePath);
     } catch (error) {
       if ((error as ServerErrorResponse).ecode !== undefined) {
         console.log('에러,', error);

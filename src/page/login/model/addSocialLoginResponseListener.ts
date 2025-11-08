@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useEffect } from 'react';
-import { googleSignInApi, LoginRes } from '../api';
+import { googleSignInApi } from '../api';
 import {
   ServerErrorResponse,
   setTokenToHeader,
@@ -13,6 +13,7 @@ import { LoginToastText } from './loginToastText';
 import { UserInfo } from '@/shared/user/model/userInfo.types';
 import { Ecode, EcodeMessage } from '@/shared/api/model/ecode';
 import { ToastType } from '@/shared/state/toast/toastStore';
+import { getRoutePathByUserInfo } from './userInfoRoute';
 
 export const addSocialLoginRedirectDataListener = (
   setLoading: Dispatch<SetStateAction<boolean>>,
@@ -37,10 +38,25 @@ export const addSocialLoginRedirectDataListener = (
           EcodeMessage(Ecode.E0106);
           throw new Error(EcodeMessage(Ecode.E0106));
         }
+        return;
       }
-      setTokens(res.payload as LoginRes);
+      const tokens = res.payload;
+      setTokens(tokens);
       setTokenToHeader(localStorage.getItem('accessToken'));
-      await getUserInfo(setToastOpen, setUser, router);
+      const userInfoRes = await getUserInfo(setToastOpen, setUser, router);
+      if (!userInfoRes) {
+        throw new Error('유저 정보 불러오기 실패');
+      }
+      const sessionApiRes = await fetch('/api/session/start', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${tokens.accessToken}`,
+        },
+        credentials: 'include',
+      });
+      console.log('middleware set session res:', sessionApiRes);
+      const routePath = getRoutePathByUserInfo(userInfoRes);
+      router.push(routePath);
     } catch (e: any) {
       console.log(e);
       setToastOpen(ToastType.error, LoginToastText.LOGIN_FAILED);
