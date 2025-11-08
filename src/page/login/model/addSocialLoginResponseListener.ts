@@ -2,10 +2,7 @@
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import { googleSignInApi } from '../api';
-import {
-  ServerErrorResponse,
-  setTokenToHeader,
-} from '@/shared/api/model/config';
+import { setTokenToHeader } from '@/shared/api/model/config';
 import { setTokens } from './setTokens';
 import { getUserInfo } from './getUserInfo';
 
@@ -33,12 +30,8 @@ export const addSocialLoginRedirectDataListener = (
       const res = await googleSignInApi(authData);
 
       if (!res.ok || (res.payload && 'ecode' in res.payload)) {
-        const errData = res.payload as ServerErrorResponse;
-        if (errData.ecode === Ecode.E0106) {
-          EcodeMessage(Ecode.E0106);
-          throw new Error(EcodeMessage(Ecode.E0106));
-        }
-        return;
+        EcodeMessage(Ecode.E0106);
+        throw new Error(EcodeMessage(Ecode.E0106));
       }
       const tokens = res.payload;
       setTokens(tokens);
@@ -60,7 +53,6 @@ export const addSocialLoginRedirectDataListener = (
     } catch (e: any) {
       console.log(e);
       setToastOpen(ToastType.error, LoginToastText.LOGIN_FAILED);
-    } finally {
       setLoading(false);
     }
   };

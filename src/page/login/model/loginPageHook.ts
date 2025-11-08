@@ -192,14 +192,15 @@ const useLoginPage = () => {
             }
             break;
           default:
+            setToastOpen(ToastType.error, 'Login Failed');
+            setLoginLoading(false);
             break;
         }
       } else {
         console.error('로그인 에러:', error);
         setToastOpen(ToastType.error, 'Login Failed');
+        setLoginLoading(false);
       }
-    } finally {
-      setLoginLoading(false);
     }
   };
 
