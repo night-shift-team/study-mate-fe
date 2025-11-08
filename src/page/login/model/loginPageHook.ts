@@ -171,6 +171,7 @@ const useLoginPage = () => {
               }));
               // setToastOpen(ToastType.error, TooltipContents.InvalidEmail);
               emailInputRef.current.focus();
+              setLoginLoading(false);
             }
             break;
           case Ecode.E0104:
@@ -190,6 +191,7 @@ const useLoginPage = () => {
               }));
               // setToastOpen(ToastType.error, TooltipContents.InvalidPassword);
               passwordInputRef.current.focus();
+              setLoginLoading(false);
             }
             break;
           default:
