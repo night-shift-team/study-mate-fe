@@ -3,13 +3,13 @@ import { ComponentSize } from '../ui/pageLoader';
 export const getSpinnerSize = (size?: ComponentSize) => {
   switch (size) {
     case 'sm':
-      return { width: '5rem' };
+      return { width: '20%' };
     case 'md':
-      return { width: '10vw' };
+      return { width: '25%' };
     case 'lg':
-      return { width: '20vw' };
+      return { width: '35%' };
     default:
-      return { width: '10vw' };
+      return { width: '25%' };
   }
 };
 

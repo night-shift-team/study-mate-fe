@@ -12,7 +12,7 @@ const PageWrapperLoader = ({ children }: { children: ReactNode }) => {
     if (loadingStatus === 'loaded') {
       setTimeout(() => {
         setLoadingStatus('none');
-      }, 50);
+      }, 0);
       return;
     }
   }, [loadingStatus]);
