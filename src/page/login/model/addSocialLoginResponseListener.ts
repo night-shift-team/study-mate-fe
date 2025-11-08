@@ -52,7 +52,7 @@ export const addSocialLoginRedirectDataListener = (
       router.push(routePath);
     } catch (e: any) {
       console.log(e);
-      setToastOpen(ToastType.error, LoginToastText.LOGIN_FAILED);
+      setToastOpen(ToastType.error, LoginToastText.LOGIN_TRY_AGAIN);
       setLoading(false);
     }
   };

@@ -19,6 +19,7 @@ import { InputStatus } from '@/shared/components/input/useInput';
 import dynamic from 'next/dynamic';
 import { toastStore, ToastType } from '@/shared/state/toast/toastStore';
 import { getRoutePathByUserInfo } from './userInfoRoute';
+import { LoginToastText } from './loginToastText';
 const Toaster = dynamic(() => import('@/shared/toast/ui/toaster'), {
   ssr: false,
 });
@@ -198,7 +199,7 @@ const useLoginPage = () => {
         }
       } else {
         console.error('로그인 에러:', error);
-        setToastOpen(ToastType.error, 'Login Failed');
+        setToastOpen(ToastType.error, LoginToastText.LOGIN_TRY_AGAIN);
         setLoginLoading(false);
       }
     }
