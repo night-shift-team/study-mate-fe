@@ -20,7 +20,7 @@ const ScrapProblemDetail = () => {
       if (!problemId) return;
       try {
         const res = await getWithCache({
-          key: `question-detail-${problemId}`,
+          key: `/cache/question-detail-${problemId}`,
           fetcher: async () => await getProblemDetailInfoApi(problemId),
           expires: 180 * 24 * 60 * 60 * 1000, // 180일
         });

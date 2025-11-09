@@ -59,7 +59,7 @@ const TestResultSolutionPage = ({
   const getProblemDetail = async (id: string) => {
     try {
       const res = await getWithCache({
-        key: `question-detail-${id}`,
+        key: `/cache/question-detail-${id}`,
         fetcher: async () => await getProblemDetailInfoApi(id),
         expires: 180 * 24 * 60 * 60 * 1000, // 180일
       });
@@ -100,7 +100,11 @@ const TestResultSolutionPage = ({
 
   const bookMarkToggle = async (problemId: string) => {
     try {
-      const res = await questionBookmarkToggleApi(problemId);
+      const res = await getWithCache({
+        key: `/cache/bookmark-toggle`,
+        fetcher: async () => await questionBookmarkToggleApi(problemId),
+        expires: 0,
+      });
       console.log('북마크 api', res);
       if (res.payload === true) {
         return 'added';

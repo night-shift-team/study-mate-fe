@@ -63,7 +63,7 @@ const useTestResultContent = () => {
       await Promise.all(
         problemLists.map(async (problem) => {
           const res = await getWithCache({
-            key: `question-detail-${problem.id}`,
+            key: `/cache/question-detail-${problem.id}`,
             fetcher: async () => await getQuestionDetailApi(problem.id),
             expires: 180 * 24 * 60 * 60 * 1000, // 180 days
           });

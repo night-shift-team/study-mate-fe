@@ -25,7 +25,7 @@ const useAnnouncementDetailPage = () => {
     if (isNaN(Number(id))) return;
     try {
       const res = await getWithCache({
-        key: 'AnnouncementByIdDetail-getNoticeDetail',
+        key: '/cache/AnnouncementByIdDetail-getNoticeDetail',
         fetcher: async () => await getNoticeDetailApi(Number(id)),
         expires: 5 * 60 * 1000, // 5분
       });

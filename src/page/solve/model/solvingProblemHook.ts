@@ -27,6 +27,7 @@ import { ProblemProps } from '../ui/solvingProblemPage';
 import { userStore } from '@/shared/state/userStore/model';
 import { useRouter } from 'next/navigation';
 import { toastStore, ToastType } from '@/shared/state/toast/toastStore';
+import { getWithCache } from '@/shared/api/model/apiCacheHook';
 
 export interface QuestionType extends ProblemInfoMAQ, ProblemInfoSAQ {
   problemType: ProblemCategoryType;
@@ -136,7 +137,11 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
       if (randomType === ProblemCategoryType.MAQ) {
         currentSolveCategoryRef.current =
           `${targetCategory}_${ProblemCategoryType.MAQ}` as ProblemCategory;
-        const res = await getMAQbyCategoryApi(targetCategory);
+        const res = await getWithCache({
+          key: '/cache/solve-problem-maq-request',
+          fetcher: async () => await getMAQbyCategoryApi(targetCategory),
+          expires: 0,
+        });
         if (res.ok) {
           setCurrentQuestionWithType({
             ...(res.payload as ProblemInfoMAQ),

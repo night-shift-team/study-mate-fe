@@ -11,6 +11,7 @@ import { PurchaseStatus, StoreItemInfo } from '../ui';
 import useOutsideClick from '@/shared/routes/model/useOutsideClick';
 import { toastStore, ToastType } from '@/shared/state/toast/toastStore';
 import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
+import { getWithCache } from '@/shared/api/model/apiCacheHook';
 
 const useStorePage = () => {
   const [purchaseOpen, setPurchaseOpen] = useState(false);
@@ -27,7 +28,11 @@ const useStorePage = () => {
 
   const getStoreItemLists = async () => {
     try {
-      const res = await getStoreItemListApi(0, 99);
+      const res = await getWithCache({
+        key: '/cache/store-item-list',
+        fetcher: async () => await getStoreItemListApi(0, 99),
+        expires: 60 * 60,
+      });
       if (res.ok) {
         const data = res.payload as PageResponseDtoStoreItemDto;
         if ('content' in data && data.content) {

@@ -13,7 +13,7 @@ const useNoticeSection = () => {
   const getValidNoticeList = async () => {
     try {
       const res = await getWithCache({
-        key: 'NoticeComponent-getValidNoticeList',
+        key: '/cache/NoticeComponent-getValidNoticeList',
         fetcher: async () => await getValidNoticeListApi(),
         expires: 3 * 60 * 60 * 1000, // 3시간
       });

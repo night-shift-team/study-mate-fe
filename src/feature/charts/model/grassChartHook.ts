@@ -3,6 +3,7 @@
 import useTooltip from '@/feature/tooltip/model/tooltipController';
 import tooltipMountHook from '@/feature/tooltip/model/tooltipMount';
 import { getSolveStatsApi, SolveStats } from '@/page/mypage/api';
+import { callWithConditionalApiCalled } from '@/shared/api/model/apiCacheHook';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 const useGrassChart = (setIsFetched: Dispatch<SetStateAction<boolean>>) => {
@@ -18,7 +19,11 @@ const useGrassChart = (setIsFetched: Dispatch<SetStateAction<boolean>>) => {
   useEffect(() => {
     const fetchSolveStats = async () => {
       try {
-        const res = await getSolveStatsApi();
+        const res = await callWithConditionalApiCalled({
+          calledFuncKey: '/cache/mypage-solve-stats',
+          calledFetcher: async () => await getSolveStatsApi(),
+          fetchersKey: ['/cache/solve-problem-maq-request'],
+        });
         if (res.ok && 'solveStats' in res.payload) {
           setStats(res.payload.solveStats);
         } else {

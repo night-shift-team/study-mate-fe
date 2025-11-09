@@ -34,6 +34,9 @@ const Mypage = () => {
     console.log('page loader status:', getPageLoader);
   }, []);
 
+  // questionHistory, stats(GrassChart)는 문제 풀이 호출 캐싱
+  // cardData는 실시간
+  // favoriteList는 북마크 호출 캐싱
   return (
     <div className="relative flex h-full w-full overflow-y-auto scrollbar-hide">
       <div className="flex w-full flex-col items-center">

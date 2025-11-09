@@ -11,6 +11,7 @@ import { Swiper as SwiperType } from 'swiper';
 import { getUserRankingApi } from '@/page/rank/api';
 import { userStore } from '@/shared/state/userStore/model';
 import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
+import { callWithConditionalApiCalled } from '@/shared/api/model/apiCacheHook';
 
 const useMyPage = () => {
   const [questionHistory, setQuestionHistory] = useState<any[]>([]);
@@ -42,7 +43,11 @@ const useMyPage = () => {
 
   const userQuestionHistory = async () => {
     try {
-      const res = await getQuestionHistoryApi(100, 100000);
+      const res = await callWithConditionalApiCalled({
+        calledFuncKey: '/cache/mypage-question-history',
+        calledFetcher: async () => await getQuestionHistoryApi(100, 100000),
+        fetchersKey: ['/cache/solve-problem-maq-request'],
+      });
       if (res.ok) {
         if (res.payload && 'content' in res.payload) {
           setQuestionHistory(res.payload.content);

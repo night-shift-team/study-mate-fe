@@ -6,6 +6,10 @@ import {
   QuestionCategoryInfoDetail,
 } from '../api';
 import { ProblemCategoryTitle } from '@/shared/problem/model/problemInfo.types';
+import {
+  callWithConditionalApiCalled,
+  getWithCache,
+} from '@/shared/api/model/apiCacheHook';
 interface ProblemCategoryInfo
   extends Omit<
     QuestionCategoryInfoDetail,
@@ -20,7 +24,16 @@ const useSolveMainPage = () => {
 
   const getQuestionCategoryInfo = async () => {
     try {
-      const res = await getQuestionCategoryInfoApi();
+      const res = await callWithConditionalApiCalled({
+        calledFuncKey: '/cache/question-category-info',
+        calledFetcher: async () =>
+          await getWithCache({
+            key: '/cache/question-category-info',
+            fetcher: async () => await getQuestionCategoryInfoApi(),
+            expires: 0,
+          }),
+        fetchersKey: ['/cache/solve-problem-maq-request'],
+      });
       if (res.ok) {
         const data = (res.payload as GetQuestionCategoryInfoRes).detail;
         const convertedData: ProblemCategoryInfo[] = [];

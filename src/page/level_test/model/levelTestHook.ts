@@ -65,7 +65,7 @@ const useLevelTest = () => {
         JSON.stringify(reqData)
       );
       const res = await getWithCache({
-        key: `LevelTest-getLevelTestResult-${user?.loginId ?? 'unknown'}`,
+        key: `/cache/LevelTest-getLevelTestResult-${user?.loginId ?? 'unknown'}`,
         fetcher: async () => await getLevelTestResultApi(reqData),
         expires: 9999 * 24 * 60 * 60, // 9999일
       });

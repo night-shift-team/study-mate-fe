@@ -20,7 +20,7 @@ const useQuestionItem = (questionId: string) => {
   const fetchQuestionDetail = async () => {
     try {
       const res = await getWithCache({
-        key: `QuestionItem-fetchQuestionDetail-${questionId}`,
+        key: `/cache/QuestionItem-fetchQuestionDetail-${questionId}`,
         fetcher: async () => await getQuestionDetailApi(questionId),
         expires: 3 * 24 * 60 * 60 * 1000, // 3일
       });
