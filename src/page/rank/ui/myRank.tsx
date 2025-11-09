@@ -28,7 +28,7 @@ export const MyRankBox = () => {
   const score = user?.userScore ?? 0;
   const level = Math.floor(score / 1000);
 
-  const myRankData = displayedUsers.find((u) => u.userId === user?.userId);
+  const myRankData = displayedUsers?.find((u) => u.userId === user?.userId);
   const rankNo = myRankData?.rankNo ?? '-';
 
   const userData: UserDataItem[] = [

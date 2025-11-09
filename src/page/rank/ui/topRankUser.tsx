@@ -1,6 +1,9 @@
 'use client';
 
 import { SvgIcon } from '@mui/material';
+import { UserRankingRes } from '../api';
+import { useEffect } from 'react';
+import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
 
 export const TopRankUser = ({
   user,
@@ -9,16 +12,20 @@ export const TopRankUser = ({
   delayClass = '',
   rank,
 }: {
-  user: any;
+  user: UserRankingRes['list'][number] | undefined;
   levelIcon: any;
   heightClass: string;
   delayClass?: string;
   rank: string;
 }) => {
-  if (!user) return null;
-
+  const setPageLoader = pageLoaderStore.getState().setStatus;
+  useEffect(() => {
+    if (!user) return;
+    setPageLoader('loaded');
+  }, [user]);
   return (
     <div
+      key={user?.loginId}
       className={`relative flex ${heightClass} w-[10rem] animate-fade-up justify-center ${delayClass}`}
     >
       <div className="flex flex-col items-center">
@@ -30,9 +37,9 @@ export const TopRankUser = ({
           className="mt-4"
         />
         <div className="text-[20px] text-black dark:text-white">
-          {user.nickname}
+          {user?.nickname}
         </div>
-        <div className="text-[20px] text-point-yellow">{user.userScore}</div>
+        <div className="text-[20px] text-point-yellow">{user?.userScore}</div>
       </div>
     </div>
   );
