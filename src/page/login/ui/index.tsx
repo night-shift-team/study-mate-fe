@@ -24,6 +24,7 @@ const LoginPage = () => {
     loginLoading,
     windowReference,
     validationStatus,
+    handleGuestLogin,
     // animationClass,
   } = useLoginPage();
 
@@ -143,21 +144,30 @@ const LoginPage = () => {
               <button
                 key={item.id}
                 disabled={loginLoading}
-                onClick={(e) => {
-                  if (item.title != 'google') {
-                    e.preventDefault();
-                    // testToast();
+                onClick={async () => {
+                  if (item.id === 2) {
+                    await handleGuestLogin();
                     return;
                   }
                   openNewWindowWithoutDuplicate(windowReference, item.link);
                 }}
                 className="aspect-1 h-[44px]"
               >
-                <SvgIcon
-                  component={item.img}
-                  inheritViewBox
-                  sx={{ width: 44, height: 44 }}
-                />
+                {item.id === 2 ? (
+                  <div className="flex aspect-1 w-[44px] items-center justify-center rounded-full bg-grayscale-100">
+                    <span className="text-[16px] font-bold text-grayscale-600">
+                      Guest
+                    </span>
+                  </div>
+                ) : (
+                  <SvgIcon
+                    component={item.img}
+                    inheritViewBox
+                    sx={{ width: 44, height: 44 }}
+                  />
+                )}
+
+                <span className="font-pretandard text-sm">{item.title}</span>
               </button>
             ))}
           </div>

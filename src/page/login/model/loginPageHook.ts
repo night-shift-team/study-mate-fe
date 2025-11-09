@@ -206,6 +206,43 @@ const useLoginPage = () => {
       }
     }
   };
+  const handleGuestLogin = async () => {
+    setLoginLoading(true);
+    try {
+      // 여기에 실제 로그인 API 호출 로직 구현
+      const tokens = await requestSignIn('test@test.com', 'test');
+      setTokens(tokens);
+      setTokenToHeader(localStorage.getItem('accessToken'));
+      const userInfoRes = await getUserInfo(setToastOpen, setUser, router);
+      if (!userInfoRes) {
+        throw new Error('유저 정보 불러오기 실패');
+      }
+      const res = await fetch('/api/session/start', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${tokens.accessToken}`,
+        },
+        credentials: 'include',
+      });
+      console.log('middleware set session res:', res);
+      const routePath = getRoutePathByUserInfo(userInfoRes);
+      router.push(routePath);
+    } catch (error) {
+      if ((error as ServerErrorResponse).ecode !== undefined) {
+        console.log('에러,', error);
+        switch ((error as ServerErrorResponse).ecode) {
+          default:
+            setToastOpen(ToastType.error, 'Login Failed');
+            setLoginLoading(false);
+            break;
+        }
+      } else {
+        console.error('로그인 에러:', error);
+        setToastOpen(ToastType.error, LoginToastText.LOGIN_TRY_AGAIN);
+        setLoginLoading(false);
+      }
+    }
+  };
 
   useEffect(() => {
     if (loginLoading) {
@@ -265,6 +302,7 @@ const useLoginPage = () => {
     // animationClass,
     windowReference,
     validationStatus,
+    handleGuestLogin,
   };
 };
 export default useLoginPage;
