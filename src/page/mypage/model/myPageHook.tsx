@@ -4,6 +4,7 @@ import {
   getQuestionFavoriteApi,
   getQuestionHistoryApi,
   QuestionFavoriteRes,
+  QuestionHistoryRes,
 } from '../api';
 import { ProblemDetailInfoRes } from '@/page/adminProblem/api';
 
@@ -11,10 +12,14 @@ import { Swiper as SwiperType } from 'swiper';
 import { getUserRankingApi } from '@/page/rank/api';
 import { userStore } from '@/shared/state/userStore/model';
 import { pageLoaderStore } from '@/shared/state/spinner/pageLoader';
-import { callWithConditionalApiCalled } from '@/shared/api/model/apiCacheHook';
+import {
+  callWithConditionalApiCalled,
+  getWithCache,
+} from '@/shared/api/model/apiCacheHook';
 
 const useMyPage = () => {
-  const [questionHistory, setQuestionHistory] = useState<any[]>([]);
+  const [questionHistory, setQuestionHistory] =
+    useState<QuestionHistoryRes['content']>();
   const user = userStore.getState().user;
   const swiperRef = useRef<SwiperType | null>(null);
   const [myRanking, setMyRanking] = useState<number>();
@@ -24,11 +29,15 @@ const useMyPage = () => {
   const [popUpProblemDetail, setPopupProblemDetail] =
     useState<ProblemDetailInfoRes | null>(null);
   const [isFetched, setIsFetched] = useState(false);
-  const setLoadingStatus = pageLoaderStore.getState().setStatus;
+  const setLoadingStatus = pageLoaderStore((selector) => selector.setStatus);
 
   const userRanking = async () => {
     try {
-      const res = await getUserRankingApi(0, 12); // 예제:
+      const res = await getWithCache({
+        key: '/cache/mypage-user-ranking',
+        fetcher: async () => await getUserRankingApi(0, 10000),
+        expires: 60 * 60, // 1시간
+      });
       if (res.ok) {
         if (res.payload && 'myRanking' in res.payload) {
           setMyRanking(res.payload.myRanking);
@@ -63,7 +72,11 @@ const useMyPage = () => {
 
   const userFavoriteApi = async () => {
     try {
-      const res = await getQuestionFavoriteApi(0, 12);
+      const res = await callWithConditionalApiCalled({
+        calledFuncKey: '/cache/mypage-question-favorite',
+        calledFetcher: async () => await getQuestionFavoriteApi(0, 100),
+        fetchersKey: ['/cache/bookmark-toggle'],
+      });
       if (res.ok) {
         if (Array.isArray(res.payload)) {
           setFavoriteList(res.payload as QuestionFavoriteRes[]);
@@ -126,11 +139,10 @@ const useMyPage = () => {
   }, []);
 
   useEffect(() => {
-    console.log('isFetched changed:', isFetched);
-    if (cardData[2].count) {
+    if (isFetched && myRanking && questionHistory && favoriteList) {
       setLoadingStatus('loaded');
     }
-  }, [cardData[2].count]);
+  }, [isFetched, myRanking, questionHistory, favoriteList]);
 
   return {
     cardData,

@@ -35,7 +35,7 @@ const Mypage = () => {
   }, []);
 
   // questionHistory, stats(GrassChart)는 문제 풀이 호출 캐싱
-  // cardData는 실시간
+  // cardData(ranking, solved count 등) 1시간 캐싱
   // favoriteList는 북마크 호출 캐싱
   return (
     <div className="relative flex h-full w-full overflow-y-auto scrollbar-hide">

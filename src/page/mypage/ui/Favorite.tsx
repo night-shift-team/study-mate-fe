@@ -24,7 +24,7 @@ interface FavoriteListProps {
   >;
   isPopupOpen: boolean;
   setIsPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  questionHistory: QuestionHistory[];
+  questionHistory: QuestionHistory[] | undefined;
 }
 const Favorite = ({
   favoriteList,
@@ -49,12 +49,12 @@ const Favorite = ({
 
   return (
     <div className="animate-fade-up">
-      {currentFavoriteList.length !== 0 ? (
+      {currentFavoriteList?.length !== 0 ? (
         <div>
           <div className="flex flex-col items-center gap-3 overflow-auto scrollbar-hide">
             <div className="w-full overflow-auto rounded-xl scrollbar-hide">
               <div className="flex w-full gap-1 overflow-x-auto scroll-smooth pb-2">
-                {currentFavoriteList.map((item, index) => {
+                {currentFavoriteList?.map((item, index) => {
                   // const categoryBgColors: Record<ProblemCategoryTitle, string> =
                   //   {
                   //     [ProblemCategoryTitle.ALGORITHUM]: 'bg-[#DDEDFB]',

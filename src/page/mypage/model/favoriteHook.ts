@@ -3,15 +3,13 @@ import { QuestionFavoriteRes, removeFavoriteApi } from '../api';
 import { useEffect, useState, useTransition } from 'react';
 
 const useFavorite = (
-  favoriteList: QuestionFavoriteRes[],
+  favoriteList: QuestionFavoriteRes[] | undefined,
   setPopupProblemDetail: React.Dispatch<
     React.SetStateAction<ProblemDetailInfoRes | null>
   >,
   setIsPopupOpen: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
-  const [currentFavoriteList, setCurrentFavoriteList] = useState([
-    ...favoriteList,
-  ]);
+  const [currentFavoriteList, setCurrentFavoriteList] = useState(favoriteList);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [confirmItem, setConfirmItem] = useState<QuestionFavoriteRes | null>(
@@ -53,7 +51,7 @@ const useFavorite = (
       try {
         await removeFavoriteApi(confirmItem.questionId);
         setCurrentFavoriteList((prevList) =>
-          prevList.filter(
+          prevList?.filter(
             (favorite) => favorite.questionId !== confirmItem.questionId
           )
         );
