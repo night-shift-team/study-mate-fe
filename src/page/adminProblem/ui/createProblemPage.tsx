@@ -30,7 +30,7 @@ const CreateProblemPage = () => {
     useCreateProblem();
   return (
     <form
-      onSubmit={async (e) => await handleSubmit(e)}
+      onSubmit={async (e) => await handleSubmit(e, problemDetailInfo)}
       className="relative flex h-full w-full flex-col items-center p-4"
     >
       <div className="fixed left-0 flex h-12 w-full items-center justify-between border-b-2 bg-pointcolor-sand px-4">

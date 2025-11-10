@@ -1,3 +1,4 @@
+'use client';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import {
@@ -56,10 +57,14 @@ const useCreateProblem = () => {
     }
   }, [problemDetailInfo?.category]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+    problemDetailInfo: ProblemDetailInfoRes | null
+  ) => {
     e.preventDefault();
+    console.log('problemDetailInfo:', problemDetailInfo, !problemDetailInfo);
     if (!problemDetailInfo) return;
-    const [, pType] = problemDetailInfo.category.split('_')[1];
+    const pType = problemDetailInfo.category.split('_')[1];
 
     setIsLoading(true);
     try {
@@ -71,6 +76,7 @@ const useCreateProblem = () => {
         difficulty: problemDetailInfo.difficulty,
         category: problemDetailInfo.category,
       };
+
       if (pType === ProblemCategoryType.MAQ) {
         const body: CreateAdminMAQReq = {
           ...commontBody,
@@ -79,6 +85,7 @@ const useCreateProblem = () => {
           choice3: (problemDetailInfo.options as string[])[2],
           choice4: (problemDetailInfo.options as string[])[3],
         };
+        console.log('body:', body);
         const res = await createAdminMAQApi(body);
         if (res.ok) {
           toastStore.show({
