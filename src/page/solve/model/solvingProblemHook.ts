@@ -348,7 +348,7 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
       }
     } catch (e) {
       console.log(e);
-      console.log('problemAnswer', problemAnswer);
+      setIsLoading(false);
       if ((e as ServerErrorResponse).ecode !== undefined) {
         switch ((e as ServerErrorResponse).ecode) {
           case Ecode.E0407:
@@ -362,8 +362,6 @@ const useSolvingProblem = (category: ProblemProps['category']) => {
             return;
         }
       }
-    } finally {
-      setIsLoading(false);
     }
   };
 
