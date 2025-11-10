@@ -28,7 +28,8 @@ export const TabBarComponent = ({ path: pathname }: { path: string }) => {
     pathname === RouteTo.MypageProblemDetail ||
     pathname === RouteTo.LevelTest ||
     pathname.startsWith(RouteTo.LevelTestResult) ||
-    pathname.startsWith(RouteTo.Solve + '/')
+    pathname.startsWith(RouteTo.Solve + '/') ||
+    pathname.startsWith(RouteTo.AdminLogin)
   ) {
     return null;
   }

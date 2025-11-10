@@ -82,7 +82,9 @@ const ClientSideWrapper = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <QueryProvider>
-      <div className="base relative h-full w-full max-w-[450px] bg-[#FAFAFA] dark:bg-grayscale-900">
+      <div
+        className={`base relative h-full w-full ${path.startsWith(RouteTo.AdminLogin) ? '' : 'max-w-[450px]'} bg-[#FAFAFA] dark:bg-grayscale-900`}
+      >
         <div className="absolute flex w-full">
           <Header path={path} />
         </div>
