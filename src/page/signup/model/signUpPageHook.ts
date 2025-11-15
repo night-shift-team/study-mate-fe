@@ -292,9 +292,21 @@ const useSignUpPage = () => {
       const tokens = await requestSignIn(email, password);
       setTokens(tokens);
       setTokenToHeader(localStorage.getItem('accessToken'));
-      const res = await userInfoApi();
-      if (res.ok) {
-        const userData = res.payload as UserInfoRes;
+      const userInfoRes = await userInfoApi();
+      if (!userInfoRes.ok) {
+        throw new Error('유저 정보 불러오기 실패');
+      }
+      const res = await fetch('/api/session/start', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${tokens.accessToken}`,
+        },
+        credentials: 'include',
+      });
+      console.log('middleware set session res:', res);
+
+      if (userInfoRes.ok) {
+        const userData = userInfoRes.payload as UserInfoRes;
         setUser(userData);
         router.push(RouteTo.SignupComplete);
         return;
