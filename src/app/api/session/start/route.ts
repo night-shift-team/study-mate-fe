@@ -18,7 +18,7 @@ export async function POST(req: Request) {
   const session = await new SignJWT({ sub: accessToken, type: 'session' })
     .setProtectedHeader({ alg })
     .setIssuer('study-mate')
-    .setAudience('developer-dev.study-mate.academy')
+    .setAudience(process.env.NEXT_PUBLIC_FRONTEND_URL ?? 'studymate.dinn.dev')
     .setIssuedAt()
     .setExpirationTime('15m')
     .sign(secret);
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
   const refresh = await new SignJWT({ sub: accessToken, type: 'refresh' })
     .setProtectedHeader({ alg })
     .setIssuer('study-mate')
-    .setAudience('developer-dev.study-mate.academy')
+    .setAudience(process.env.NEXT_PUBLIC_FRONTEND_URL ?? 'studymate.dinn.dev')
     .setIssuedAt()
     .setExpirationTime('60m')
     .sign(secret);

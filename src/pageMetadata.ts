@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-const baseUrl = 'https://developer-dev.study-mate.academy';
+const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_URL ?? 'studymate.dinn.dev';
 export const pageMetadata = {
   home: {
     applicationName: 'StudyMate',

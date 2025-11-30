@@ -12,7 +12,7 @@ export async function verifySession(
   try {
     const { payload } = await jwtVerify(token, secret, {
       issuer: 'study-mate',
-      audience: 'developer-dev.study-mate.academy',
+      audience: process.env.NEXT_PUBLIC_FRONTEND_URL ?? 'studymate.dinn.dev',
     });
     const sub = String(payload.sub ?? '');
     const exp = Number(payload.exp ?? 0);
@@ -32,7 +32,7 @@ export async function isValidRefresh(token: string) {
   try {
     const { payload } = await jwtVerify(token, secret, {
       issuer: 'study-mate',
-      audience: 'developer-dev.study-mate.academy',
+      audience: process.env.NEXT_PUBLIC_FRONTEND_URL ?? 'studymate.dinn.dev',
     });
     return payload?.type === 'refresh' && typeof payload.sub === 'string';
   } catch {
@@ -51,7 +51,7 @@ async function verifySessionOrRefresh(
   try {
     const { payload } = await jwtVerify(token, secret, {
       issuer: 'study-mate',
-      audience: 'developer-dev.study-mate.academy',
+      audience: process.env.NEXT_PUBLIC_FRONTEND_URL ?? 'studymate.dinn.dev',
     });
     const sub = typeof payload.sub === 'string' ? payload.sub : null;
     return sub ? { sub } : null;
@@ -64,7 +64,7 @@ export async function mintSession(sub: string) {
   return await new SignJWT({ sub, type: 'session' })
     .setProtectedHeader({ alg })
     .setIssuer('study-mate')
-    .setAudience('developer-dev.study-mate.academy')
+    .setAudience(process.env.NEXT_PUBLIC_FRONTEND_URL ?? 'studymate.dinn.dev')
     .setIssuedAt()
     .setExpirationTime('60m')
     .sign(secret);
