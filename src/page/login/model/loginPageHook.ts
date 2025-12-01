@@ -210,7 +210,7 @@ const useLoginPage = () => {
     setLoginLoading(true);
     try {
       // 여기에 실제 로그인 API 호출 로직 구현
-      const tokens = await requestSignIn('test@test.com', 'test');
+      const tokens = await requestSignIn('test@test.com', 'test1234!');
       setTokens(tokens);
       setTokenToHeader(localStorage.getItem('accessToken'));
       const userInfoRes = await getUserInfo(setToastOpen, setUser, router);
