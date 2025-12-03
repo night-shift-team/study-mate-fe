@@ -18,7 +18,7 @@
     <!-- <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
     <br /> -->
     <br />
-    <a href="https://developer-dev.study-mate.academy">웹사이트 바로가기</a>
+    <a href="https://studymate.dinn.dev">웹사이트 바로가기</a>
     &middot;
     <a href="https://github.com/night-shift-team/study-mate-fe/issues/new?labels=bug&template=bug-report---.md">버그 리포트</a>
     &middot;
@@ -106,7 +106,7 @@ AI 기반 문제 생성, 랭킹 시스템, 상점 기능을 통해
 
 Study Mate는 웹 브라우저에서 바로 이용할 수 있습니다.
 
-> [https://developer-dev.study-mate.academy](https://developer-dev.study-mate.academy)
+> [https://studymate.dinn.dev](https://studymate.dinn.dev)
 
 **소셜 로그인 지원:**
 
@@ -129,7 +129,7 @@ Study Mate는 웹 브라우저에서 바로 이용할 수 있습니다.
 
 <br/>
 
-## Team & Contributors
+## 팀 및 기여자
 
 Study Mate는 Night Shift Team 에 의해 개발되었습니다.
 
